@@ -116,5 +116,5 @@ app.get('/signup', users);//pagina de alta usuario
 app.use(express.static('public'));
  
 app.listen(4000, function(){
-    console.log('Server iniciado en el puerto 3000: http://127.0.0.1:4000')
+    console.log('Server iniciado en el puerto 4000: http://127.0.0.1:4000')
 })
