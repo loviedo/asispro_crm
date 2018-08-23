@@ -1,0 +1,76 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ../layouts/header.ejs %>
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>    
+ 
+<table width='80%' border=0>
+ 
+    <tr style='text-align:left; background-color:#CCC'>
+        <th>Fecha</th>
+        <th>monto</th>
+        <th>exentas</th>
+        <th>iva_10</th>
+        <th>iva_5</th>
+        <th>gasto_real</th>
+        <th>concepto</th>
+        <th>tipo_fact</th>
+        <th>proveedor</th>
+        <th>detalle</th>
+        <th>encargado</th>
+        <th>codigo</th>
+        <th>cliente</th>
+        <th>imputado_a</th>
+        <th>imputado_a_2</th>
+    </tr>
+    
+    <!--
+        Using FOREACH LOOP for the users array
+        
+        myArray.forEach(function(el, index) {
+            // el - current element, i - index
+        });
+    -->
+    <% if (data) { %>
+    <% data.forEach(function(factura){ %>
+        <tr>
+            <td><%= factura.fecha %></td>
+            <td><%= factura.monto %></td>
+            <td><%= factura.exentas %></td>
+            <td><%= factura.iva_10 %></td>
+            <td><%= factura.iva_5 %></td>
+            <td><%= factura.gasto_real %></td>
+            <td><%= factura.concepto %></td>
+            <td><%= factura.tipo_fact %></td>
+            <td><%= factura.proveedor %></td>
+            <td><%= factura.detalle %></td>
+            <td><%= factura.encargado %></td>
+            <td><%= factura.codigo %></td>
+            <td><%= factura.cliente %></td>
+            <td><%= factura.imputado_a %></td>
+            <td><%= factura.imputado_a %></td>
+            <td>
+                <div style="float:left">
+                    <a href='/facturas/editar/<%= factura.id %>'>Editar</a> &nbsp;                            
+                    <form method="post" action="/facturas/eliminar/<%= factura.id %>" style="float:right">
+                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
+                        <input type="hidden" name="_method" value="DELETE" />
+                    </form>
+                </div>
+            </td>
+        </tr>
+    <% }) %>
+    <% } %>
+</table>
+
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>
