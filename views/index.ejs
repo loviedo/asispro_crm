@@ -271,12 +271,13 @@ $(document).ready(function () {
     });
 });
 </script>
+
 <% if (usuario.length > 0) { %>
 <div class="wrapper">
         <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>Bootstrap Sidebar</h3>
+                <h3>PRUEBA SIDEBAR</h3>
                 <strong>BS</strong>
             </div>
     
@@ -336,6 +337,9 @@ $(document).ready(function () {
             </nav>
         </div>
     </div>
+<% } %>
+<% if (usuario.length <= 0) { %>
+    <img src="/public/img/logo.png" class="center" style="width:10%; display: block; margin-top: auto; margin-bottom: auto; margin-left: auto; margin-right: auto;">
 <% } %>
 
 <!--

@@ -24,7 +24,6 @@ app.get('/', function(req, res) {
         // render to views/index.ejs template file
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
     }
-
 })
 
 app.get('/login', function(req, res) {
@@ -40,15 +39,15 @@ app.get('/signup', function(req, res) {
 
 //PARA DESLOGAR SESION - APLICAR
 app.get('/logout', function(req, res) {
+    var user1 = req.session.user;//quien cerro sesion
     req.session.destroy(function(err){  
-        if(err){  
-            console.log(err);  
-        }  
+        if(err){  console.log(err);  }  
         else  
-        {  
-            res.redirect('/');  
-        }  
-    });  
+        {  console.log('sesion cerrada / usuario: ' + user1); }  
+    }); 
+    //req.session = null;
+    user = '';
+    res.redirect('/'); //cerramos la sesion y vamos al home
 })
 
 

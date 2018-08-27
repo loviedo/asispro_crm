@@ -5,6 +5,8 @@ editing, deleting and viewing users from database. Database queries, form valida
  */
 var express = require('express')
 var app = express()
+var user = '';//global para ver el usuario
+var userId = '';
  
 // MOSTRAR LISTA DE FACTURAS
 app.get('/', function(req, res, next) {
@@ -12,48 +14,51 @@ app.get('/', function(req, res, next) {
     {   user =  req.session.user;
         userId = req.session.userId;
     }
-    
-    req.getConnection(function(error, conn) {
-        conn.query('SELECT * FROM facturas ORDER BY id DESC',function(err, rows, fields) {
-            //if(err) throw err
-            if (err) {
-                req.flash('error', err)
-                res.render('factura/listar', {
-                    title: 'Listado de Facturas', 
-                    data: ''//
-                })
-            } else {
-                // render to views/facturas/listar.ejs template file
-                res.render('factura/listar', {
-                    title: 'Listado de Facturas', 
-                    data: rows
-                })
-            }
+
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT * FROM facturas ORDER BY id DESC',function(err, rows, fields) {
+                //if(err) throw err
+                if (err) {
+                    req.flash('error', err)
+                    res.render('factura/listar', {title: 'Listado de Facturas', data: '',usuario: user})
+                } else {
+                    // render views/facturas/listar.ejs
+                    res.render('factura/listar', {title: 'Listado de Facturas',usuario: user, data: rows})
+                }
+            })
         })
-    })
+    }
+    else {
+        // render to views/index.ejs template file
+        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
+    }
+    
+
 })
  
 // SHOW ADD USER FORM
 app.get('/add', function(req, res, next){    
-    // render to views/user/add.ejs
-    res.render('factura/add', {
-        title: 'Cargar nueva Factura',
-        fecha: '',
-        monto: '',
-        exentas: '',
-        iva_10: '',
-        iva_5: '',
-        gasto_real: '', 
-        concepto: '',
-        tipo_fact: '',
-        proveedor: '', 
-        detalle: '',
-        encargado: '',
-        codigo: '', 
-        cliente: '',
-        imputado_a: '',
-        imputado_a_2: ''      
-    })
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+        // render to views/user/add.ejs
+        res.render('factura/add', {
+            title: 'Cargar nueva Factura', usuario: user, fecha: '',monto: '',exentas: '',iva_10: '',iva_5: '',gasto_real: '', 
+            concepto: '',tipo_fact: '', proveedor: '', detalle: '',encargado: '',codigo: '', cliente: '',imputado_a: '',imputado_a_2: ''      
+        })
+    }
+    else {
+        // render to views/index.ejs template file
+        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
+    }
+
+
 })
  
 // ADD NEW factura POST ACTION

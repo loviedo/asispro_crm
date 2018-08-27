@@ -1,5 +1,7 @@
 var express = require('express')
 var app = express()
+
+var path = require('path');//para las direcciones locales
  
 var mysql = require('mysql')//instaciamos mysql
  
@@ -113,7 +115,8 @@ app.get('/login', index);//pagina de login usuario
 app.get('/signup', users);//pagina de alta usuario
 */
 
-app.use(express.static('public'));
+//hacemos que la carpeta public sea accesible
+app.use("/public", express.static(path.join(__dirname, 'public')));
  
 app.listen(4000, function(){
     console.log('Server iniciado en el puerto 4000: http://127.0.0.1:4000')

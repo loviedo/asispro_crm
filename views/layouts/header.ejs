@@ -1,7 +1,7 @@
 <html>
     <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
             * {box-sizing: border-box;}
             
             body { 
@@ -11,16 +11,16 @@
             .header {
                 overflow: hidden;
                 background-color: #6c81a8;
-                padding: 20px 10px;
+                padding: 10px 10px; 
             }
             .header a {
                 float: left;
                 color: black;
                 text-align: center;
-                padding: 12px;
+                padding: 10px;
                 text-decoration: none;
                 font-size: 18px; 
-                line-height: 25px;
+                line-height: 10px;
                 border-radius: 4px;
             }
             
@@ -63,26 +63,38 @@
     </head>
     <title><%= title %></title>
     <body>
-            <div class="header">
-                <!--<img class="logo" src="/img/logo.png" alt="ASISPRO">-->
+        <div class="header">
+            <!--<img class="logo" src="/img/logo.png" alt="ASISPRO">-->
+            <% if (usuario.length > 0) { %>
                 <div class="header-left"> 
-                <% if (usuario.length > 0) { %>
-                    <a href="/">Home</a>
-                    <a href="/facturas/add">Agregar Factura</a>
-                    <a href="/facturas">Listar Facturas</a>
-                <% } %>
+                    <a href="/">
+                        <span class="glyphicon glyphicon-home"></span>
+                        Home
+                    </a>
+                    <!--<a href="/facturas/add">Agregar Factura</a>
+                    <a href="/facturas">Listar Facturas</a>-->
                 </div>
-                <% if (usuario.length <= 0) { %>
-                    <div class="header-right">
-                        <a href="/login">ingresar</a>
-                        <a href="/signup">Registrarse</a>
-                    </div>
-                <% } %>
-            </div> 
+                <div class="header-right">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <%= usuario %>
+                    </a>
+                    <a href="/logout">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        salir
+                    </a>
+                </div>
+            <% } %>
+            <% if (usuario.length <= 0) { %>
+                <div class="header-right">
+                    <a href="/login">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                        ingresar</a>
+                    <!--<a href="/signup">Registrarse</a>--><!-- por ahora no colocamos esto a pesar de estar funcional-->
+                </div>
+            <% } %>
+        </div> 
 
-            <div style="padding-left:20px">
-                <h1><%= title %></h1>
-            </div>
     </body>
 </html>
 
