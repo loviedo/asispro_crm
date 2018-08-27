@@ -20,7 +20,7 @@ app.get('/', function(req, res) {
 		res.render("index", {title: 'ASISPRO ERP', message: 'UD ESTA LOGADO:', usuario: user});
 		return;
     }
-    else{
+    else {
         // render to views/index.ejs template file
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
     }
