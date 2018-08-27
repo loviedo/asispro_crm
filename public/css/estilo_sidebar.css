@@ -252,7 +252,4 @@ a.article:hover {
     #sidebarCollapse span {
         display: none;
     }
-    .collapse.show {
-        visibility: visible;
-    }
 }
