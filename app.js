@@ -1,14 +1,14 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 
 var path = require('path');//para las direcciones locales
  
-var mysql = require('mysql')//instaciamos mysql
+var mysql = require('mysql');//instaciamos mysql
  
 /**
  * middleware que provee API consistente para conns mysql mientras hacemos el ciclo request/response 
  */ 
-var myConnection  = require('express-myconnection')
+var myConnection  = require('express-myconnection');
 
 /**
  * Guardamos las credenciales de bbdd en ./config/config.js
@@ -28,24 +28,25 @@ var dbOptions = {
  * pool: Creates pool of connections. Connection is auto release when response ends.
  * request: Creates new connection per new request. Connection is auto close when response ends.
  */ 
-app.use(myConnection(mysql, dbOptions, 'pool'))
+app.use(myConnection(mysql, dbOptions, 'pool'));
  
 //setting up the templating view engine
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs');
  
 /**
  * import routes/index.js
  * import routes/users.js
  */ 
-var index = require('./routes/index')
-var users = require('./routes/users')
-var facturas = require('./routes/facturas')
+var index = require('./routes/index');
+var users = require('./routes/users');
+var facturas = require('./routes/facturas');
+var ots = require('./routes/ot');
  
 /**
  * Express Validator Middleware for Form Validation
  */ 
-var expressValidator = require('express-validator')
-app.use(expressValidator())
+var expressValidator = require('express-validator');
+app.use(expressValidator());
  
  
 /**
@@ -53,21 +54,21 @@ app.use(expressValidator())
  * it's an express middleware that reads form's input 
  * and store it as javascript object
  */ 
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 /**
  * bodyParser.urlencoded() parses the text as URL encoded data 
  * (which is how browsers tend to send form data from regular forms set to POST) 
  * and exposes the resulting object (containing the keys and values) on req.body.
  */ 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
  
  
 /**
  * This module let us use HTTP verbs such as PUT or DELETE 
  * in places where they are not supported
  */ 
-var methodOverride = require('method-override')
+var methodOverride = require('method-override');
  
 /**
  * using custom logic to override method
@@ -82,7 +83,7 @@ app.use(methodOverride(function (req, res) {
     delete req.body._method
     return method
   }
-}))
+}));
  
 /**
  * This module shows flash messages
@@ -106,9 +107,10 @@ app.use(session({
 app.use(flash())
 
 //cargamos los lugares en donde tenemos los archivos de logica del proyecto
-app.use('/', index)//el home
-app.use('/users', users)//gestión de usuarios
-app.use('/facturas', facturas)//gestion de facturas
+app.use('/', index);//el home
+app.use('/users', users);//gestión de usuarios
+app.use('/facturas', facturas);//gestion de facturas
+app.use('/ot', ots);//gestion de OT
 
 /*
 app.get('/login', index);//pagina de login usuario

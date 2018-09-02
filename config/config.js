@@ -4,7 +4,7 @@ var config = {
         user:       'root', //username del pass
         password: 'Super123', //pass
         port:       3306, // default MySQL port
-        db:       'test' // nombre BBDD
+        db:       'asispro_erp' //BBDD
     },
     server: {
         host: '127.0.0.1',

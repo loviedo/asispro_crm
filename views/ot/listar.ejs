@@ -1,0 +1,63 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ../layouts/header.ejs %>
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>    
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #00b4c5;" >
+    <div class="container-fluid" style="background:#bcd3f1;"><!-- modificar el estilo y el color -->
+
+        <table width='90%' border=0 >
+            <tr style='text-align:left; background-color:#CCC'>
+                <th>Nro OT</th>
+                <th>fec_emision</th>
+                <th>fec_ini_ejecucion</th>
+                <th>fec_fin_ejecucion</th>
+                <th>fact_nro</th>
+                <th>recibo_nro</th>
+                <th>remision_nro</th>
+                <th>fact_tipo</th>
+                <th>cliente</th>
+                <th>obra</th>
+                <th>  </th><!-- PARA LAS COLUMNAS DE  -->
+            </tr>
+            
+            <% if (data) { %>
+            <% data.forEach(function(ot){ %>
+                <tr>
+                    <td><%= ot.ot_nro %></td>
+                    <td><%= ot.fec_emision %></td>
+                    <td><%= ot.fec_ini_ejecucion %></td>
+                    <td><%= ot.fec_fin_ejecucion %></td>
+                    <td><%= ot.fact_nro %></td>
+                    <td><%= ot.recibo_nro %></td>
+                    <td><%= ot.remision_nro %></td>
+                    <td><%= ot.fact_tipo %></td>
+                    <td><%= ot.cliente %></td>
+                    <td><%= ot.obra %></td>
+                    <td>
+                        <div style="float:left">
+                            <a href='/ot/editar/<%= ot.id %>'>Editar</a> &nbsp;                            
+                            <form method="post" action="/ot/eliminar/<%= ot.id %>" style="float:right">
+                                <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
+                                <input type="hidden" name="_method" value="DELETE" />
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            <% }) %>
+            <% } %>
+        </table>
+    </div>
+</nav>
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

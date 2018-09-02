@@ -111,26 +111,23 @@
             <!-- Sidebar  -->
             <nav id="sidebar">
                     <div class="sidebar-header">
-                        <h3>Bootstrap Sidebar</h3>
-                        <strong>BS</strong>
+                        <h3>ASISPRO</h3>
+                        <strong>AP</strong>
                     </div>
         
                     <ul class="list-unstyled components">
                         <li class="active">
-                            <a href="#homesub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                            <a href="#otsub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                                 <i class="fas fa-home"></i>
-                                Home
+                                Orden de Trabajo
                             </a>
-                            <ul class="collapse list-unstyled" id="homesub" >
+                            <ul class="collapse list-unstyled" id="otsub" >
                                 <li>
-                                    <a href="/facturas/add">Agregar Factura</a>
+                                    <a href="/ot/add">Agregar OT</a>
                                 </li>
                                 <li>
-                                    <a href="/facturas">Listar Facturas</a>
-                                </li>
-                                <li>
-                                    <a href="#">Home 3</a>
-                                </li>
+                                    <a href="/ot/">Listar OTs</a>
+                                </li>   
                             </ul>
                         </li>
                         <li>
@@ -175,11 +172,10 @@
                     </ul>
                 </nav>
         
-            <!-- PAGINA -->
+            <!-- PAGINA -- EL DIV QUEDA ABIERTO PARA QUE EL CONTENEDOR META LOS FORMS Y OTRAS COSAS // SE CIERRA EN EL FOOTER-->
             <div id="content">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
-        
                         <button type="button" id="sidebarCollapse" class="btn btn-info">
                             <i class="fas fa-align-left"></i>
                             <span>activar</span>
@@ -187,7 +183,7 @@
                     </div>
                 </nav>
                 
-        <!--    </div>
+        <!--    </div> 
         </div>-->
         <% } %>
         <% if (usuario.length <= 0) { %>
