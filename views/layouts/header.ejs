@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <!-- Bootstrap CSS CDN -->
@@ -13,6 +13,283 @@
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
         
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script>
+            jQuery(function () {
+            
+                jQuery('#line_chart').highcharts({
+                    chart: {
+                        type: 'areaspline',
+                        marginBottom: '0',
+                        marginLeft: '0',          
+                        marginRight: '0',                    
+                        marginTop: '0',                    
+                        plotBorderWidth: 0,
+                        plotShadow: false,
+                        spacingTop: 0,
+                        spacingLeft: 0,
+                        spacingRight: 0,
+                        spacingBottom: 0
+                    },
+                    title: {
+                        text: ''
+                    },
+                    legend: {
+                        enabled: false,
+                    },
+                    tooltip: {
+                        pointFormat: 'Value: <b>{point.y}</b>'
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        areaspline: {
+                            fillOpacity: 0.5
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            enabled: false
+                        },
+                        min: 0, max:36,
+                        gridLineWidth: 0,
+                    },
+                    xAxis: {
+                        gridLineWidth: 0,
+                        categories: '',
+                        title: {
+                            enabled: false
+                        }
+                    },
+                    series: [{
+                        name: 'Value',
+                        data: [12,15,11,18,12,25,21,16,15,32,22],
+                        color:'#6FB9CE',
+                        marker : {
+                                enabled : true,
+                                radius : 0
+                            },
+                        fillColor : {
+                            linearGradient : [0, 0, 0, 100],
+                            stops : [
+                            [0, '#BCD9EE'],
+                            [1, 'white']
+                            ]
+                        },
+            
+                    }]
+                });
+            
+            
+                //     jQuery('#column_chart').highcharts({
+                //         chart: {
+                //           type: 'column',
+                //           marginBottom: '0',
+                //           marginLeft: '0',          
+                //           marginRight: '0',                    
+                //           marginTop: '0',                    
+                //           plotBorderWidth: 0,
+                // 	        plotShadow: false,
+                //           spacingTop: 0,
+                //           spacingLeft: 0,
+                //           spacingRight: 0,
+                //           spacingBottom: 0
+                //         },
+                //         title: {
+                //             text: ''
+                //         },
+                //         legend: {
+                //             enabled: false,
+                //         },
+                //         tooltip: {
+                //             pointFormat: 'Value: <b>{point.y}</b>'
+                //         },
+                //         credits: {
+                //             enabled: false
+                //         },
+                //         plotOptions: {
+                //             areaspline: {
+                //                 fillOpacity: 0.5
+                //             }
+                //         },
+                //         yAxis: {
+                //            title: {
+                //              enabled: false
+                //            },
+                //           // min: 0, max:36,
+                //           gridLineWidth: 0,
+                //         },
+                //         xAxis: {
+                //           gridLineWidth: 0,
+                //           categories: '',
+                //            title: {
+                //              enabled: false
+                //            }
+                //         },
+                //         series: [{
+                //             name: 'Value',
+                //             data: [['M',12],['T',25],['W',21],['Th',16],['F',15],['S',32],['S',22]],
+                //             color:'#6FB9CE',
+                //           marker : {
+                //                     enabled : true,
+                //                     radius : 0
+                //                 },
+                //             },
+            
+                //         }]
+                //     });
+            
+                });
+        </script>
+        <style>
+        body {
+            background: #f5f8fb;
+            font-family: helvetica;
+        }
+        .green {
+            color: #24c279 !important;
+        }
+        .red {
+            color: #bc2929 !important;
+        }
+        .metric {
+            float: left;
+            margin-right: 50px;
+            background-color: #fff;
+            border-radius: 10px 10px 10px 10px;
+            box-shadow: 0px 0px 15px #a9bacb;
+            width: 340px;
+            height: 300px;
+            overflow: hidden;
+        }
+        .metric .metric-inner header.metric-header {
+            overflow: hidden;
+            margin: 0;
+            border-bottom: 1px solid #f0f0f0;
+            height: 60px;
+            line-height: 60px;
+            width: 100%;
+        }
+        .metric .metric-inner header.metric-header h1.metric-title {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: #666;
+            display: block;
+            text-align: center;
+            font-family: Helvetica;
+            font-weight: 400;
+            font-size: 22px;
+        }
+        .metric .metric-inner .metric-body {
+            width: 100%;
+            height: 210px;
+            overflow: hidden;
+        }
+        .metric .metric-inner .metric-body h1, .metric .metric-inner .metric-body h2, .metric .metric-inner .metric-body h3, .metric .metric-inner .metric-body h4 {
+            margin: 0;
+            padding: 0;
+            font-family: Helvetica;
+            font-weight: 400;
+            color: #444;
+            text-align: center;
+        }
+        .metric .metric-inner .metric-body h1 {
+            font-size: 70px;
+            font-weight: 300;
+        }
+        .metric .metric-inner .metric-body h1.primary-value {
+            color: #5bc1de;
+        }
+        .metric .metric-inner .metric-body h2 {
+            color: #888;
+            font-family: Helvetica;
+            font-weight: 300;
+            font-size: 28px;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .metric .metric-inner .metric-body h3 {
+            font-size: 22px;
+            font-weight: 500;
+            color: #666;
+        }
+        .metric .metric-inner .metric-body h4 {
+            font-size: 14px;
+            color: #666;
+        }
+        .metric .metric-inner .viz-basic {
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            -webkit-box-align: center;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .metric .metric-inner .viz-basic .value {
+            text-align: center;
+        }
+        .metric .metric-inner .viz-basic-with-7-and-40-day-comparison {
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            -webkit-box-align: center;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: 100%;
+        }
+        .metric .metric-inner .viz-basic-with-7-and-40-day-comparison .value {
+            width: 100%;
+        }
+        .metric .metric-inner .viz-basic-with-7-and-40-day-comparison .value .comparison_wrapper {
+            padding-top: 15px;
+            width: 90%;
+            margin: 0px auto;
+        }
+        .metric .metric-inner .viz-basic-with-7-and-40-day-comparison .value .comparison_wrapper .left_comparison {
+            float: left;
+            width: 50%;
+        }
+        .metric .metric-inner .viz-basic-with-7-and-40-day-comparison .value .comparison_wrapper .right_comparison {
+            float: right;
+            width: 50%;
+        }
+        .metric .metric-inner .viz-line-chart {
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .metric .metric-inner .viz-line-chart .value .chart {
+            width: 100%;
+            height: 100px;
+        }
+        .metric .metric-inner .viz-column-chart {
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .metric .metric-inner .viz-column-chart .value .chart {
+            width: 100%;
+            height: 200px;
+        }
+        
+        </style>
+
+
+
         <!--ESTILO DEL HEADER-->
         <style>
                 * {box-sizing: border-box;}
@@ -20,6 +297,7 @@
                 body { 
                     margin: 0;
                     font-family: Arial;
+                    background-color: #9cbfe77a;
                 }
                 .header {
                     overflow: hidden;
@@ -67,12 +345,14 @@
                     }
                 }
         </style>
-
     </head>
+
+
+
+
 
     <title><%= title %></title>
     <body>
-        
         <div class="header">
             <!--<img class="logo" src="/img/logo.png" alt="ASISPRO">-->
             <% if (usuario.length > 0) { %>
@@ -110,67 +390,69 @@
         <div class="wrapper">
             <!-- Sidebar  -->
             <nav id="sidebar">
-                    <div class="sidebar-header">
-                        <h3>ASISPRO</h3>
-                        <strong>AP</strong>
-                    </div>
-        
-                    <ul class="list-unstyled components">
-                        <li class="active">
-                            <a href="#otsub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
-                                <i class="fas fa-home"></i>
-                                Orden de Trabajo
-                            </a>
-                            <ul class="collapse list-unstyled" id="otsub" >
-                                <li>
-                                    <a href="/ot/add">Agregar OT</a>
-                                </li>
-                                <li>
-                                    <a href="/ot/">Listar OTs</a>
-                                </li>   
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-briefcase"></i>
-                                About
-                            </a>
-                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                                <i class="fas fa-copy"></i>
-                                Pages
-                            </a>
-                            <ul class="collapse list-unstyled" id="pageSubmenu">
-                                <li>
-                                    <a href="#">Page 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Page 2</a>
-                                </li>
-                                <li>
-                                    <a href="#">Page 3</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-image"></i>
-                                Portfolio
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-question"></i>
-                                FAQ
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-paper-plane"></i>
-                                Contact
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="sidebar-header">
+                    <h3>ASISPRO</h3>
+                    <strong>AP</strong>
+                </div>
+    
+                <ul class="list-unstyled components">
+                    <li class="active">
+                        <a href="#otsub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                            <i class="fas fa-home"></i>
+                            Orden de Trabajo
+                        </a>
+                        <ul class="collapse list-unstyled" id="otsub" >
+                            <li>
+                                <a href="/ot/add">Agregar OT</a>
+                            </li>
+                            <li>
+                                <a href="/ot/">Listar OTs</a>
+                            </li>   
+                        </ul>
+                    </li>
+                    <!--
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-briefcase"></i>
+                            About
+                        </a>
+                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <i class="fas fa-copy"></i>
+                            Pages
+                        </a>
+                        <ul class="collapse list-unstyled" id="pageSubmenu">
+                            <li>
+                                <a href="#">Page 1</a>
+                            </li>
+                            <li>
+                                <a href="#">Page 2</a>
+                            </li>
+                            <li>
+                                <a href="#">Page 3</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-image"></i>
+                            Portfolio
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-question"></i>
+                            FAQ
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-paper-plane"></i>
+                            Contact
+                        </a>
+                    </li>
+                -->
+                </ul>
+            </nav>
         
             <!-- PAGINA -- EL DIV QUEDA ABIERTO PARA QUE EL CONTENEDOR META LOS FORMS Y OTRAS COSAS // SE CIERRA EN EL FOOTER-->
             <div id="content">
@@ -178,7 +460,6 @@
                     <div class="container-fluid">
                         <button type="button" id="sidebarCollapse" class="btn btn-info">
                             <i class="fas fa-align-left"></i>
-                            <span>activar</span>
                         </button>
                     </div>
                 </nav>

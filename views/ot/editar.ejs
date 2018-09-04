@@ -15,54 +15,52 @@ including header content which is common for all pages
     <div class="container-fluid">
         
         <form action="/ot/editar/<%= id %>" method="post" name="form1">
-            <table width="25%" border="0">
-                <tr> 
-                    <td>Nro OT</td>
-                    <td><input type="text" name="ot_nro" id="ot_nro" value="<%= ot_nro %>" /></td>
-                </tr>
-                <tr> 
-                    <td>FEC EMISION</td>
-                    <td><input type="text" name="fec_emision" id="fec_emision" value="<%= fec_emision %>" /></td>
-                </tr>
-                <tr> 
-                    <td>fec_ini_ejecucion</td>
-                    <td><input type="text" name="fec_ini_ejecucion" id="fec_ini_ejecucion"  value="<%= fec_ini_ejecucion %>" /></td>
-                </tr>
-                <tr> 
-                    <td>fec_fin_ejecucion</td>
-                    <td><input type="text" name="fec_fin_ejecucion" id="fec_fin_ejecucion" value="<%= fec_fin_ejecucion %>" /></td>
-                </tr>
-                <tr> 
-                    <td>fact_nro</td>
-                    <td><input type="text" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" /></td>
-                </tr>
-                <tr> 
-                    <td>recibo_nro</td>
-                    <td><input type="text" name="recibo_nro" id="recibo_nro" value="<%= recibo_nro %>" /></td>
-                </tr>
-                <tr> 
-                    <td>remision_nro</td>
-                    <td><input type="text" name="remision_nro" id="remision_nro" value="<%= remision_nro %>" /></td>
-                </tr>
-                <tr> 
-                    <td>fact_tipo</td>
-                    <td><input type="text" name="fact_tipo" id="fact_tipo" value="<%= fact_tipo %>" /></td>
-                </tr>
-                <tr> 
-                    <td>cliente</td>
-                    <td><input type="text" name="cliente" id="cliente" value="<%= cliente %>" /></td>
-                </tr>
-                <tr> 
-                    <td>obra</td>
-                    <td><input type="text" name="obra" id="obra" value="<%= obra %>" /></td>
-                </tr>
-                <tr> 
-                    <td></td>
-                    <td><input type="submit" name="Submit" value="Actualizar"/></td>
-                </tr>
-            </table>
-            <input type="hidden" name="_method" value="POST" />
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="ot_nro">OT Nro.</label>
+                    <input type="text" class="form-control" name="ot_nro" id="ot_nro" value="<%= ot_nro %>" placeholder="Número de Orden de Trabajo">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fec_emision">FECHA EMISION</label>
+                    <input type="text" class="form-control" name="fec_emision" id="fec_emision" value="<%= fec_emision %>" placeholder="Fecha de Emisión">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fec_ini_ejecucion">FECHA INICIO EJECUCION</label>
+                    <input type="text" class="form-control" name="fec_ini_ejecucion" id="fec_ini_ejecucion" value="<%= fec_ini_ejecucion %>" placeholder="Fecha de inicio de ejecución">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fec_fin_ejecucion">FECHA FIN EJECUCION</label>
+                    <input type="text" class="form-control" name="fec_fin_ejecucion" id="fec_fin_ejecucion" value="<%= fec_fin_ejecucion %>" placeholder="Fecha de fin de ejecución">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fact_nro">FACTURA Nro</label>
+                    <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="Número de Factura">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="recibo_nro">RECIBO Nro</label>
+                    <input type="text" class="form-control" name="recibo_nro" id="recibo_nro" value="<%= recibo_nro %>" placeholder="Número de Recibo">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="remision_nro">REMISION Nro</label>
+                    <input type="text" class="form-control" name="remision_nro" id="remision_nro" value="<%= remision_nro %>" placeholder="Número de Remisión">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fact_tipo">FACTURA TIPO</label>
+                    <input type="text" class="form-control" name="fact_tipo" id="fact_tipo" value="<%= fact_tipo %>" placeholder="Tipo Factura">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente">CLIENTE</label>
+                    <input type="text" class="form-control" name="cliente" id="cliente" value="<%= cliente %>" placeholder="Nombre Cliente">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="obra">OBRA</label>
+                    <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra">
+                </div>
+                <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>
+            </div>
+            <!-- <input type="hidden" name="_method" value="POST" />  no se por que esta aca-->
         </form>
+        
     </div>
 </nav>
 

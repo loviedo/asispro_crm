@@ -11,56 +11,64 @@ including header content which is common for all pages
     <p style="color:green"><%- messages.success %></p>
 <% } %>
  
-<form action="/ot/add" method="post" name="form1">
-    <table width="25%" border="0">
-        <tr> 
-            <td>NRO OT</td>
-            <td><input type="text" name="ot_nro" id="ot_nro" value="<%= ot_nro %>" /></td>
-        </tr>
-        <tr> 
-            <td>FECHA EMISION</td>
-            <td><input type="text" name="fec_emision" id="fec_emision" value="<%= fec_emision %>" /></td>
-        </tr>
-        <tr> 
-            <td>FECHA INICIO EJECUCION</td>
-            <td><input type="text" name="fec_ini_ejecucion" id="fec_ini_ejecucion" value="<%= fec_ini_ejecucion %>" /></td>
-        </tr>
-        <tr> 
-            <td>FECHA FIN EJECUCION</td>
-            <td><input type="text" name="fec_fin_ejecucion" id="fec_fin_ejecucion" value="<%= fec_fin_ejecucion %>" /></td>
-        </tr>
-        <tr> 
-            <td>NRO FACTURA</td>
-            <td><input type="text" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" /></td>
-        </tr>
-        <tr> 
-            <td>NRO RECIBO</td>
-            <td><input type="text" name="recibo_nro" id="recibo_nro" value="<%= recibo_nro %>" /></td>
-        </tr>
-        <tr> 
-            <td>NRO REMISION</td>
-            <td><input type="text" name="remision_nro"id="remision_nro" value="<%= remision_nro %>" /></td>
-        </tr>
-        <tr> 
-            <td>TIPO FACTURA</td>
-            <td><input type="text" name="fact_tipo" id="fact_tipo" value="<%= fact_tipo %>" /></td>
-        </tr>
-        <tr> 
-            <td>CLIENTE</td>
-            <td><input type="text" name="cliente" id="cliente" value="<%= cliente %>" /></td>
-        </tr>
-        <tr> 
-            <td>OBRA</td>
-            <td><input type="text" name="obra" id="obra" value="<%= obra %>" /></td>
-        </tr>
-        <tr> 
-            <td></td>
-            <td><input type="submit" name="Submit" value="Insertar" /></td>
-        </tr>
-        
-    </table>
-</form>
- 
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+
+        <form action="/ot/add" method="post" name="form1">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="ot_nro">OT Nro.</label>
+                    <input type="text" class="form-control" name="ot_nro" id="ot_nro" value="<%= ot_nro %>" placeholder="Número de Orden de Trabajo">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fec_emision">FECHA EMISION</label>
+                    <input type="text" class="form-control" name="fec_emision" id="fec_emision" value="<%= fec_emision %>" placeholder="Fecha de Emisión">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fec_ini_ejecucion">FECHA INICIO EJECUCION</label>
+                    <input type="text" class="form-control" name="fec_ini_ejecucion" id="fec_ini_ejecucion" value="<%= fec_ini_ejecucion %>" placeholder="Fecha de inicio de ejecución">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fec_fin_ejecucion">FECHA FIN EJECUCION</label>
+                    <input type="text" class="form-control" name="fec_fin_ejecucion" id="fec_fin_ejecucion" value="<%= fec_fin_ejecucion %>" placeholder="Fecha de fin de ejecución">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fact_nro">FACTURA Nro</label>
+                    <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="Número de Factura">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="recibo_nro">RECIBO Nro</label>
+                    <input type="text" class="form-control" name="recibo_nro" id="recibo_nro" value="<%= recibo_nro %>" placeholder="Número de Recibo">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="remision_nro">REMISION Nro</label>
+                    <input type="text" class="form-control" name="remision_nro" id="remision_nro" value="<%= remision_nro %>" placeholder="Número de Remisión">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fact_tipo">FACTURA TIPO</label>
+                    <input type="text" class="form-control" name="fact_tipo" id="fact_tipo" value="<%= fact_tipo %>" placeholder="Tipo Factura">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente">CLIENTE</label>
+                    <input type="text" class="form-control" name="cliente" id="cliente" value="<%= cliente %>" placeholder="Nombre Cliente">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="obra">OBRA</label>
+                    <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra">
+                </div>
+                <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
+            </div>
+        </form>
+    </div>
+</nav>
+
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-strong">
+    <div class="container-fluid">
+
+    </div>
+</nav>
 <!--
 including footer content which is common for all pages
 -->

@@ -11,10 +11,11 @@ including header content which is common for all pages
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #00b4c5;" >
-    <div class="container-fluid" style="background:#bcd3f1;"><!-- modificar el estilo y el color -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+    <div class="container-fluid" ><!-- modificar el estilo y el color -->
 
-        <table width='90%' border=0 >
+        <!-- <table width='90%' border=0 > -->
+        <table class="table table-sm table-hover table-dark">
             <tr style='text-align:left; background-color:#CCC'>
                 <th>Nro OT</th>
                 <th>fec_emision</th>
@@ -55,6 +56,14 @@ including header content which is common for all pages
             <% }) %>
             <% } %>
         </table>
+    </div>
+</nav>
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-strong">
+    <div class="container-fluid">
+        <button type="button" id="expotar" class="btn btn-info">
+            <i class="fas fa-share"></i>
+        </button>
     </div>
 </nav>
 <!--
