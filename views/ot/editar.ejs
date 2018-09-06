@@ -54,6 +54,13 @@ function formatear_fecha_yyyymmdd(date) {
     }
 </style>
 
+<!-- NAV PARA TITULO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <h3>Editar Órden de Trabajo</h3>
+    </div>
+</nav>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
         
@@ -98,6 +105,10 @@ function formatear_fecha_yyyymmdd(date) {
                 <div class="form-group col-md-6">
                     <label for="obra">OBRA</label>
                     <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="descripcion">DESCRIPCION</label>
+                    <input type="text" class="form-control" name="descripcion" id="descripcion" value="<%= descripcion %>" placeholder="Descripción del trabajo a realizar">
                 </div>
                 <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>
             </div>

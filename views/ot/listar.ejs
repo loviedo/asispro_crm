@@ -26,9 +26,15 @@ function formatear_fecha(date) {
 }
 %>
 
+<!-- NAV PARA TITULO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <h3>Listado de Órdenes de Trabajo</h3>
+    </div>
+</nav>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" >
-    <div class="container-fluid" ><!-- modificar el estilo y el color -->
+    <div class="container-fluid" style="height: 400px; overflow: scroll;"><!-- modificar el estilo y el color -- verificar como se muestra -->
 
         <!-- <table width='90%' border=0 > -->
         <table class="table table-sm table-hover table-dark">
@@ -43,6 +49,7 @@ function formatear_fecha(date) {
                 <th>fact_tipo</th>
                 <th>cliente</th>
                 <th>obra</th>
+                <th>descripcion</th>
                 <th>  </th><!-- PARA LAS COLUMNAS DE  -->
             </tr>
             
@@ -59,6 +66,7 @@ function formatear_fecha(date) {
                     <td><%= ot.fact_tipo %></td>
                     <td><%= ot.cliente %></td>
                     <td><%= ot.obra %></td>
+                    <td><%= ot.descripcion %></td>
                     <td>
                         <div style="float:left">
                             <a href='/ot/editar/<%= ot.id %>'>Editar</a> &nbsp;                            

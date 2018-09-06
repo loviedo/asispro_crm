@@ -6,7 +6,7 @@ routes/index.js and routes/users.js. These two files contains code to show conte
 var express = require('express')
 var app = express()
 var user = '';//global para ver el usuario
-var userId = '';
+var userId = '';//global userid
  
 app.get('/', function(req, res) {
     if(req.session.user)
@@ -16,12 +16,12 @@ app.get('/', function(req, res) {
     
     //controlamos quien se loga.
 	if(user.length >0){
-        //si no estalogado entonces pasamos null y no se muestran algunas cosas.
+        //si no esta logado entonces pasamos null y no se muestran algunas cosas.
 		res.render("index", {title: 'ASISPRO ERP', message: 'UD ESTA LOGADO:', usuario: user});
 		return;
     }
     else {
-        // render to views/index.ejs template file
+        // render views/nolog.ejs
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
     }
 })
@@ -50,7 +50,6 @@ app.get('/logout', function(req, res) {
     res.redirect('/'); //cerramos la sesion y vamos al home
 })
 
-
 //EJEMPLO DE PAGINA PARA USAR COMO SESION
 //pagina que debemos controlar si ya se logo el usuario
 app.get('/dashboard', function(req, res,next) {
@@ -75,7 +74,6 @@ app.get('/dashboard', function(req, res,next) {
     }
 
 })
-
 
 //ACCION PARA LOGIN
 app.post('/login', function(req, res, next) {
@@ -131,7 +129,7 @@ app.post('/signup', function(req, res, next) {
                 res.render('signup',{title: 'TEST APLICACION ASISPRO', message: err.sql+ " - " + err.sqlMessage, usuario: ''});
             } else {
                 // render to views/facturas/listar.ejs template file
-                message = "Succesfully! Your account has been created.";
+                message = "Succes! Su cuenta ha sido creada.";
                 res.render('signup',{title: 'TEST APLICACION ASISPRO',message: message, usuario: ''});
             }
         })

@@ -20,6 +20,7 @@ function formatear_fecha_yyyymmdd(date) {
 
     return [year, month, day].join('-');//retornamos valor como a mysql le gusta
 }
+
 // MOSTRAR LISTA DE FACTURAS
 app.get('/', function(req, res, next) {
     if(req.session.user)
@@ -62,7 +63,7 @@ app.get('/add', function(req, res, next){
         // render to views/user/add.ejs
         res.render('ot/add', {
             title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '',remision_nro: '', 
-            fact_tipo: '',cliente: '', obra: '', usuario_insert: user, usuario: user})
+            fact_tipo: '',cliente: '', obra: '', descripcion: '', usuario_insert: user, usuario: user})
     }
     else {
         // render to views/index.ejs template file
@@ -108,6 +109,7 @@ app.post('/add', function(req, res, next){
             fact_tipo: req.sanitize('fact_tipo').escape().trim(),
             cliente: req.sanitize('cliente').escape().trim(),
             obra: req.sanitize('obra').escape().trim(),
+            descripcion: req.sanitize('descripcion').escape().trim(),
             usuario_insert: user
             //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
         }   
@@ -132,6 +134,7 @@ app.post('/add', function(req, res, next){
                         fact_tipo: ot.fact_tipo,
                         cliente: ot.cliente,
                         obra: ot.obra,
+                        descripcion: ot.descripcion,
                         usuario: user
                     })
                 } else {                
@@ -150,6 +153,7 @@ app.post('/add', function(req, res, next){
                         fact_tipo: '',
                         cliente: '',
                         obra: '',
+                        descripcion: '',
                         usuario: user                 
                     })
                 }
@@ -181,6 +185,7 @@ app.post('/add', function(req, res, next){
             remision_nro: req.body.remision_nro,
             cliente: req.body.cliente,
             obra: req.body.obra,
+            descripcion: req.body.descripcion,
             usuario_insert: user
         })
     }
@@ -213,6 +218,7 @@ app.get('/editar/:id', function(req, res, next){
                     fact_tipo: rows[0].fact_tipo,
                     cliente: rows[0].cliente,
                     obra: rows[0].obra,
+                    descripcion: rows[0].descripcion,
                     usuario_insert: user,
                     usuario: user
                 })
@@ -258,6 +264,7 @@ app.post('/editar/:id', function(req, res, next) {
             fact_tipo: req.sanitize('fact_tipo').escape().trim(),
             cliente: req.sanitize('cliente').escape().trim(),
             obra: req.sanitize('obra').escape().trim(),
+            descripcion: req.sanitize('descripcion').escape().trim(),
             usuario_insert: user
             //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
         }
@@ -282,6 +289,7 @@ app.post('/editar/:id', function(req, res, next) {
                         fact_tipo: req.body.fact_tipo,
                         cliente: req.body.cliente,
                         obra: req.body.obra,
+                        descripcion: req.body.descripcion,
                         usuario_insert: user,
                         usuario: user
                     })
@@ -302,6 +310,7 @@ app.post('/editar/:id', function(req, res, next) {
                         fact_tipo: req.body.fact_tipo,
                         cliente: req.body.cliente,
                         obra: req.body.obra,
+                        descripcion:req.body.descripcion,
                         usuario_insert: user,
                         usuario: user
                     })
@@ -333,6 +342,7 @@ app.post('/editar/:id', function(req, res, next) {
             remision_nro: req.body.remision_nro,
             cliente: req.body.cliente,
             obra: req.body.obra,
+            descripcion: req.body.descripcion,
             usuario_insert: user,
             usuario: user
         })
