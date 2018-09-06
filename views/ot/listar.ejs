@@ -11,6 +11,22 @@ including header content which is common for all pages
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
 
+<!-- funcion para arreglar el formato de las fechas -->
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [day,month,year].join('/');//retornamos valor como a mysql le gusta
+}
+%>
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light" >
     <div class="container-fluid" ><!-- modificar el estilo y el color -->
 
@@ -34,9 +50,9 @@ including header content which is common for all pages
             <% data.forEach(function(ot){ %>
                 <tr>
                     <td><%= ot.ot_nro %></td>
-                    <td><%= ot.fec_emision %></td>
-                    <td><%= ot.fec_ini_ejecucion %></td>
-                    <td><%= ot.fec_fin_ejecucion %></td>
+                    <td><%= formatear_fecha(ot.fec_emision) %></td>
+                    <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                    <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                     <td><%= ot.fact_nro %></td>
                     <td><%= ot.recibo_nro %></td>
                     <td><%= ot.remision_nro %></td>

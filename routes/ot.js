@@ -8,6 +8,18 @@ var app = express()
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
  
+
+function formatear_fecha_yyyymmdd(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');//retornamos valor como a mysql le gusta
+}
 // MOSTRAR LISTA DE FACTURAS
 app.get('/', function(req, res, next) {
     if(req.session.user)
@@ -19,7 +31,7 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM OT ORDER BY id DESC',function(err, rows) {
+            conn.query('SELECT * FROM ot ORDER BY id DESC',function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
@@ -81,11 +93,15 @@ app.post('/add', function(req, res, next){
         ********************************************/
 
         //mysql acepta solos YYYY-MM-DD
+        var date1 = new Date(req.sanitize('fec_emision').escape().trim()).toDateString("YYYY-MM-DD");
+        var date2 = new Date(req.sanitize('fec_ini_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
+        var date3 = new Date(req.sanitize('fec_fin_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
+
         var ot = {
             ot_nro: req.sanitize('ot_nro').escape().trim(),
-            fec_emision: req.sanitize('fec_emision').escape().trim(),
-            fec_ini_ejecucion: req.sanitize('fec_ini_ejecucion').escape().trim(),
-            fec_fin_ejecucion: req.sanitize('fec_fin_ejecucion').escape().trim(),
+            fec_emision: formatear_fecha_yyyymmdd(date1),
+            fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
+            fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3),
             fact_nro: req.sanitize('fact_nro').escape().trim(),
             recibo_nro: req.sanitize('recibo_nro').escape().trim(),
             remision_nro: req.sanitize('remision_nro').escape().trim(),
@@ -173,7 +189,7 @@ app.post('/add', function(req, res, next){
 // SHOW EDIT USER FORM
 app.get('/editar/:id', function(req, res, next){
     req.getConnection(function(error, conn) {
-        conn.query('SELECT * FROM OT WHERE id = ' + req.params.id, function(err, rows, fields) {
+        conn.query('SELECT * FROM ot WHERE id = ' + req.params.id, function(err, rows, fields) {
             if(err) throw err
             
             // if user not found
@@ -225,11 +241,17 @@ app.post('/editar/:id', function(req, res, next) {
         req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
         req.sanitize('username').trim(); // returns 'a user'
         ********************************************/
+
+        //mysql acepta solos YYYY-MM-DD
+        var date1 = new Date(req.sanitize('fec_emision').escape().trim()).toDateString("YYYY-MM-DD");
+        var date2 = new Date(req.sanitize('fec_ini_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
+        var date3 = new Date(req.sanitize('fec_fin_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
+
        var ot = {
             ot_nro: req.sanitize('ot_nro').escape().trim(),
-            fec_emision: req.sanitize('fec_emision').escape().trim(),
-            fec_ini_ejecucion: req.sanitize('fec_ini_ejecucion').escape().trim(),
-            fec_fin_ejecucion: req.sanitize('fec_fin_ejecucion').escape().trim(),
+            fec_emision: formatear_fecha_yyyymmdd(date1),
+            fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
+            fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3),
             fact_nro: req.sanitize('fact_nro').escape().trim(),
             recibo_nro: req.sanitize('recibo_nro').escape().trim(),
             remision_nro: req.sanitize('remision_nro').escape().trim(),
@@ -241,7 +263,7 @@ app.post('/editar/:id', function(req, res, next) {
         }
         
         req.getConnection(function(error, conn) {
-            conn.query('UPDATE OT SET ? WHERE id = ' + req.params.id, ot, function(err, result) {
+            conn.query('UPDATE ot SET ? WHERE id = ' + req.params.id, ot, function(err, result) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
@@ -322,7 +344,7 @@ app.delete('/eliminar/(:id)', function(req, res, next) {
     var ot = { id: req.params.id }
     
     req.getConnection(function(error, conn) {
-        conn.query('DELETE FROM OT WHERE id = ' + req.params.id, ot, function(err, result) {
+        conn.query('DELETE FROM ot WHERE id = ' + req.params.id, ot, function(err, result) {
             //if(err) throw err
             if (err) {
                 req.flash('error', err)
