@@ -63,7 +63,7 @@ app.get('/add', function(req, res, next){
         // render to views/user/add.ejs
         res.render('ot/add', {
             title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '',remision_nro: '', 
-            fact_tipo: '',cliente: '', obra: '', descripcion: '', usuario_insert: user, usuario: user})
+            fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '', usuario_insert: user, usuario: user})
     }
     else {
         // render to views/index.ejs template file
@@ -107,6 +107,7 @@ app.post('/add', function(req, res, next){
             recibo_nro: req.sanitize('recibo_nro').escape().trim(),
             remision_nro: req.sanitize('remision_nro').escape().trim(),
             fact_tipo: req.sanitize('fact_tipo').escape().trim(),
+            fact_estado: req.sanitize('fact_estado').escape().trim(),
             cliente: req.sanitize('cliente').escape().trim(),
             obra: req.sanitize('obra').escape().trim(),
             descripcion: req.sanitize('descripcion').escape().trim(),
@@ -132,6 +133,7 @@ app.post('/add', function(req, res, next){
                         recibo_nro: ot.recibo_nro,
                         remision_nro: ot.remision_nro,
                         fact_tipo: ot.fact_tipo,
+                        fact_estado: ot.fact_estado,
                         cliente: ot.cliente,
                         obra: ot.obra,
                         descripcion: ot.descripcion,
@@ -151,6 +153,7 @@ app.post('/add', function(req, res, next){
                         recibo_nro: '',
                         remision_nro: '',
                         fact_tipo: '',
+                        fact_estado: '',
                         cliente: '',
                         obra: '',
                         descripcion: '',
@@ -182,6 +185,7 @@ app.post('/add', function(req, res, next){
             recibo_nro: req.body.recibo_nro,
             remision_nro: req.body.remision_nro,
             fact_tipo: req.body.fact_tipo,
+            fact_estado: req.body.fact_estado,
             remision_nro: req.body.remision_nro,
             cliente: req.body.cliente,
             obra: req.body.obra,
@@ -216,6 +220,7 @@ app.get('/editar/:id', function(req, res, next){
                     recibo_nro: rows[0].recibo_nro,
                     remision_nro: rows[0].remision_nro,
                     fact_tipo: rows[0].fact_tipo,
+                    fact_estado: rows[0].fact_estado,
                     cliente: rows[0].cliente,
                     obra: rows[0].obra,
                     descripcion: rows[0].descripcion,
@@ -262,6 +267,7 @@ app.post('/editar/:id', function(req, res, next) {
             recibo_nro: req.sanitize('recibo_nro').escape().trim(),
             remision_nro: req.sanitize('remision_nro').escape().trim(),
             fact_tipo: req.sanitize('fact_tipo').escape().trim(),
+            fact_estado: req.sanitize('fact_estado').escape().trim(),
             cliente: req.sanitize('cliente').escape().trim(),
             obra: req.sanitize('obra').escape().trim(),
             descripcion: req.sanitize('descripcion').escape().trim(),
@@ -287,6 +293,7 @@ app.post('/editar/:id', function(req, res, next) {
                         recibo_nro: req.body.recibo_nro,
                         remision_nro: req.body.remision_nro,
                         fact_tipo: req.body.fact_tipo,
+                        fact_estado: req.body.fact_estado,
                         cliente: req.body.cliente,
                         obra: req.body.obra,
                         descripcion: req.body.descripcion,
@@ -308,6 +315,7 @@ app.post('/editar/:id', function(req, res, next) {
                         recibo_nro: req.body.recibo_nro,
                         remision_nro: req.body.remision_nro,
                         fact_tipo: req.body.fact_tipo,
+                        fact_estado: req.body.fact_estado,
                         cliente: req.body.cliente,
                         obra: req.body.obra,
                         descripcion:req.body.descripcion,
@@ -339,6 +347,7 @@ app.post('/editar/:id', function(req, res, next) {
             recibo_nro: req.body.recibo_nro,
             remision_nro: req.body.remision_nro,
             fact_tipo: req.body.fact_tipo,
+            fact_estado: req.body.fact_estado,
             remision_nro: req.body.remision_nro,
             cliente: req.body.cliente,
             obra: req.body.obra,

@@ -357,7 +357,7 @@
         <div class="header">
             <!--<img class="logo" src="/img/logo.png" alt="ASISPRO">-->
             
-            <% if (usuario.length > 0) { %>
+            <% if (usuario) { %>
                 <div class="header-left"> 
                     <a href="/">
                         <span class="fas fa-home"></span>
@@ -377,18 +377,17 @@
                     </a>
                 </div>
             <% } %>
-            <% if (usuario.length <= 0) { %>
+            <% if (usuario.length <=0) { %>
                 <div class="header-right">
                     <a href="/login">
                         <span class="glyphicon glyphicon-log-in"></span>
                         ingresar</a>
-                    <!--<a href="/signup">Registrarse</a>--><!-- por ahora no colocamos esto a pesar de estar funcional-->
                 </div>
             <% } %>
         </div>  
 
         <!-- SECTOR SIDEBAR-->
-        <% if (usuario.length > 0) { %>
+        <% if (usuario) { %>
         <div class="wrapper">
             <!-- Sidebar  -->
             <nav id="sidebar">
@@ -475,6 +474,6 @@
         <!-- DIV ABIERTO... ver arriba   </div> 
         </div>-->
         <% } %>
-        <% if (usuario.length <= 0) { %>
+        <% if (usuario.length <=0) { %>
             <img src="/public/img/logo.png" class="center" style="width:10%; display: block; margin-top: auto; margin-bottom: auto; margin-left: auto; margin-right: auto;">
         <% } %>

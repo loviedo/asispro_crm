@@ -6,27 +6,37 @@ routes/index.js and routes/users.js. These two files contains code to show conte
 var express = require('express')
 var app = express()
 var user = '';//global para ver el usuario
-var userId = '';//global userid
- 
+var userId = 0;//global userid
+
+
 app.get('/', function(req, res) {
-    if(req.session.user)
+    //console.log(req.session.cookie.maxAge) //debug
+    /*if(req.session.user)
     {   user =  req.session.user;
         userId = req.session.userId;
-    }
+    }*/ //debug
     
-    //controlamos quien se loga.
-	if(user.length >0){
+    //controlamos quien se loga. 
+	if(req.session.user){
+        //si esta definido entonces pasamos el valor
+        user =  req.session.user;
+        userId = req.session.userId;
         //si no esta logado entonces pasamos null y no se muestran algunas cosas.
 		res.render("index", {title: 'ASISPRO ERP', message: 'UD ESTA LOGADO:', usuario: user});
 		return;
     }
     else {
         // render views/nolog.ejs
+        user = '';
+        //res.render('login', {title: 'ASISPRO ERP', message: 'login', usuario: user})
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
+        /*if (typeof res.usuario == 'undefined')//debug
+        {console.log(typeof res.usuario);}*/
     }
 })
 
 app.get('/login', function(req, res) {
+    user = '';
     // render to views/index.ejs template file
     res.render('login', {title: 'ASISPRO ERP', message: 'login', usuario: user})
 })
@@ -41,7 +51,7 @@ app.get('/signup', function(req, res) {
 app.get('/logout', function(req, res) {
     var user1 = req.session.user;//quien cerro sesion
     req.session.destroy(function(err){  
-        if(err){  console.log(err);  }  
+        if(err){console.log(err);  }  
         else  
         {  console.log('sesion cerrada / usuario: ' + user1); }  
     }); 
@@ -53,17 +63,17 @@ app.get('/logout', function(req, res) {
 //EJEMPLO DE PAGINA PARA USAR COMO SESION
 //pagina que debemos controlar si ya se logo el usuario
 app.get('/dashboard', function(req, res,next) {
-    if(req.session.user)
-    {   user =  req.session.user;
-        userId = req.session.userId;
-    }
     
     //controlamos quien se loga.
-	if(user.length>0){
+	if(req.session.user){
+        //si esta definido entonces pasamos el valor
+        user =  req.session.user;
+        userId = req.session.userId;
+        
         req.getConnection(function(error, conn) {
             var sql="SELECT * FROM `users` WHERE `id`='"+userId+"'"; 
             conn.query(sql,function(err, rows, fields) {
-                console.log(rows);
+                console.log(rows);//a la consola los datos del logado
                 res.render('dashboard', {title: 'ASISPRO ERP', message: 'fulano',usuario:rows[0].user_name});
             })
         })
@@ -86,17 +96,19 @@ app.post('/login', function(req, res, next) {
         conn.query(sql,function(err, rows, fields) {
             //SI ERROR / MOSTRAR / mejorar el mensaje segun codigo
             if (err) {
-                res.render('login',{title: 'TEST APLICACION ASISPRO', message: 'Usuario o Contrasena equivocada'});
+                user = '';
+                res.render('login',{title: 'TEST APLICACION ASISPRO', message: 'Usuario o Contrasena equivocada', usuario: user});
             } else {
                 if (rows.length > 0)
                 {   // render views/facturas/listar.ejs
                     req.session.userId = rows[0].id;
                     req.session.user = rows[0].user_name;
-                    console.log(rows[0].id);
+                    //console.log(rows[0].id);
                     res.redirect('/dashboard');
                 }
                 else
-                {   res.render('login',{title: 'TEST APLICACION ASISPRO', message: 'Usuario o Contrasena equivocada'});}
+                {   user = '';
+                    res.render('login',{title: 'TEST APLICACION ASISPRO', message: 'Usuario o Contrasena equivocada', usuario: user});}
 
             }
         })

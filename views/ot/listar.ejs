@@ -26,6 +26,17 @@ function formatear_fecha(date) {
 }
 %>
 
+<style>
+table {
+  width: 500px;
+}
+
+.scroll {
+  max-height: 700px;
+  overflow: auto;
+}
+</style>
+
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
@@ -34,25 +45,27 @@ function formatear_fecha(date) {
 </nav>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" >
-    <div class="container-fluid" style="height: 400px; overflow: scroll;"><!-- modificar el estilo y el color -- verificar como se muestra -->
+    <div class="container-fluid" style="height: 400px;"><!-- modificar el estilo y el color -- verificar como se muestra -->
 
         <!-- <table width='90%' border=0 > -->
-        <table class="table table-sm table-hover table-dark">
+        <div class="scroll">
+        <table class="table table-sm table-hover">
             <tr style='text-align:left; background-color:#CCC'>
                 <th>Nro OT</th>
-                <th>fec_emision</th>
-                <th>fec_ini_ejecucion</th>
-                <th>fec_fin_ejecucion</th>
-                <th>fact_nro</th>
-                <th>recibo_nro</th>
-                <th>remision_nro</th>
-                <th>fact_tipo</th>
-                <th>cliente</th>
-                <th>obra</th>
-                <th>descripcion</th>
+                <th>FECHA EMISION</th>
+                <th>F INI EJECUCION</th>
+                <th>F FIN EJECUCION</th>
+                <th>Nro FACTURA</th>
+                <th>Est FACTURA</th>
+                <th>Nro RECIBO</th>
+                <th>No REMISION</th>
+                <th>TTIPO FACTURA</th>
+                <th>CLIENTE</th>
+                <th>OBRA</th>
+                <th>DESCRIPCION</th>
                 <th>  </th><!-- PARA LAS COLUMNAS DE  -->
             </tr>
-            
+
             <% if (data) { %>
             <% data.forEach(function(ot){ %>
                 <tr>
@@ -61,6 +74,7 @@ function formatear_fecha(date) {
                     <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
                     <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                     <td><%= ot.fact_nro %></td>
+                    <td><%= ot.fact_estado %></td>
                     <td><%= ot.recibo_nro %></td>
                     <td><%= ot.remision_nro %></td>
                     <td><%= ot.fact_tipo %></td>
@@ -79,7 +93,7 @@ function formatear_fecha(date) {
                 </tr>
             <% }) %>
             <% } %>
-        </table>
+        </table></div>
     </div>
 </nav>
 <!-- BOTONES DE EXPORTACION -->

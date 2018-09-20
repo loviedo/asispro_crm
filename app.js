@@ -1,8 +1,6 @@
 var express = require('express');
 var app = express();
-
 var path = require('path');//para las direcciones locales
- 
 var mysql = require('mysql');//instaciamos mysql
  
 /**
@@ -102,7 +100,8 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 }
+    /*cookie: { maxAge: 60000 }*//* DEBUG */
+    cookie: { expires: false }/* con esto indicamos que la sesion dura solamente mientras este abierta la ventana del browser */
 }))
 app.use(flash())
 

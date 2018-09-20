@@ -74,6 +74,18 @@ input {
                     <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="Número de Factura">
                 </div>
                 <div class="form-group col-md-6">
+                    <label for="fact_estado">FACTURA ESTADO</label>
+                    <select class="form-control" name="fact_estado" id="fact_estado" value="<%= fact_estado %>" placeholder="Estado Factura">
+                        <option value="NO_FACTURADO">NO FACTURADO</option>
+                        <option value="SIN_FACTURA">SIN FACTURA</option>
+                        <option value="NO_FACTURAR">NO FACTURAR</option>
+                        <option value="CON_RECIBO">CON RECIBO</option>
+                        <option value="SIN_RECIBO">SIN RECIBO</option>
+                        <option value="CON_REMISION">CON REMISION</option>
+                        <option value="SIN_REMISION">SIN REMISION</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
                     <label for="recibo_nro">RECIBO Nro</label>
                     <input type="text" class="form-control" name="recibo_nro" id="recibo_nro" value="<%= recibo_nro %>" placeholder="Número de Recibo">
                 </div>
