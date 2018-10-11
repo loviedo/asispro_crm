@@ -97,15 +97,18 @@ app.post('/add', function(req, res, next){
         var date1 = new Date(req.sanitize('fec_emision').escape().trim()).toDateString("YYYY-MM-DD");
         var date2 = new Date(req.sanitize('fec_ini_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
         var date3 = new Date(req.sanitize('fec_fin_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
+        var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
+        var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
+        var remision_nro = Number(req.sanitize('remision_nro').escape().trim());
 
         var ot = {
             ot_nro: req.sanitize('ot_nro').escape().trim(),
             fec_emision: formatear_fecha_yyyymmdd(date1),
             fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
             fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3),
-            fact_nro: req.sanitize('fact_nro').escape().trim(),
-            recibo_nro: req.sanitize('recibo_nro').escape().trim(),
-            remision_nro: req.sanitize('remision_nro').escape().trim(),
+            fact_nro: fact_nro,
+            recibo_nro: recibo_nro,
+            remision_nro: remision_nro,
             fact_tipo: req.sanitize('fact_tipo').escape().trim(),
             fact_estado: req.sanitize('fact_estado').escape().trim(),
             cliente: req.sanitize('cliente').escape().trim(),
@@ -258,14 +261,18 @@ app.post('/editar/:id', function(req, res, next) {
         var date2 = new Date(req.sanitize('fec_ini_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
         var date3 = new Date(req.sanitize('fec_fin_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
 
+        var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
+        var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
+        var remision_nro = Number(req.sanitize('remision_nro').escape().trim());
+
        var ot = {
             ot_nro: req.sanitize('ot_nro').escape().trim(),
             fec_emision: formatear_fecha_yyyymmdd(date1),
             fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
             fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3),
-            fact_nro: req.sanitize('fact_nro').escape().trim(),
-            recibo_nro: req.sanitize('recibo_nro').escape().trim(),
-            remision_nro: req.sanitize('remision_nro').escape().trim(),
+            fact_nro: fact_nro,
+            recibo_nro: recibo_nro,
+            remision_nro: remision_nro,
             fact_tipo: req.sanitize('fact_tipo').escape().trim(),
             fact_estado: req.sanitize('fact_estado').escape().trim(),
             cliente: req.sanitize('cliente').escape().trim(),
