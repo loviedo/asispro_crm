@@ -11,19 +11,8 @@ including header content which is common for all pages
     <p style="color:green"><%- messages.success %></p>
 <% } %>
  
-<%
-function formatear_fecha_yyyymmdd(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
 
-    return [year, month, day].join('-');//retornamos valor como a mysql le gusta
-} 
-%>
 <!-- ESTILO PARA DATEPICKER -->
 <style>
     [type="date"] {
@@ -54,6 +43,17 @@ function formatear_fecha_yyyymmdd(date) {
     }
 </style>
 
+<script>
+SelectElement("fact_estado", fact_estado);
+SelectElement("fact_tipo", fact_tipo);
+
+function SelectElement(id, valueToSelect)
+{    
+    var element = document.getElementById(id);
+    element.value = valueToSelect;
+}
+</script>
+
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
@@ -72,15 +72,15 @@ function formatear_fecha_yyyymmdd(date) {
                 </div>
                 <div class="form-group col-md-6">
                     <label for="fec_emision">FECHA EMISION</label>
-                    <input type="date" class="form-control" name="fec_emision" id="fec_emision" value="<%= formatear_fecha_yyyymmdd(fec_emision) %>" placeholder="Fecha de Emisión">
+                    <input type="date" class="form-control" name="fec_emision" id="fec_emision" value="<%= (fec_emision) %>" placeholder="Fecha de Emisión">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="fec_ini_ejecucion">FECHA INICIO EJECUCION</label>
-                    <input type="date" class="form-control" name="fec_ini_ejecucion" id="fec_ini_ejecucion" value="<%= formatear_fecha_yyyymmdd(fec_ini_ejecucion) %>" placeholder="Fecha de inicio de ejecución">
+                    <input type="date" class="form-control" name="fec_ini_ejecucion" id="fec_ini_ejecucion" value="<%= (fec_ini_ejecucion) %>" placeholder="Fecha de inicio de ejecución">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="fec_fin_ejecucion">FECHA FIN EJECUCION</label>
-                    <input type="date" class="form-control" name="fec_fin_ejecucion" id="fec_fin_ejecucion" value="<%= formatear_fecha_yyyymmdd(fec_fin_ejecucion) %>" placeholder="Fecha de fin de ejecución">
+                    <input type="date" class="form-control" name="fec_fin_ejecucion" id="fec_fin_ejecucion" value="<%= (fec_fin_ejecucion) %>" placeholder="Fecha de fin de ejecución">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="fact_nro">FACTURA Nro</label>

@@ -10,10 +10,23 @@ var userId = '';//global para userid
  
 
 function formatear_fecha_yyyymmdd(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
+    var d;
+    //hay que ver si es string o date el objeto que viene
+    if(date.constructor == String)
+    {   
+        var arr = date.split("-");
+        d = new Date(arr[0],arr[1],arr[2],0,0,0,0);
+        month = '' + (d.getMonth());
+        day = '' + (d.getDate());
         year = d.getFullYear();
+    }
+    else
+    {   d = new Date(date);
+        month = '' + (d.getMonth()+1);
+        day = '' + (d.getDate());
+        year = d.getFullYear();
+    }
+
 
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
@@ -211,14 +224,19 @@ app.get('/editar/:id', function(req, res, next){
             }
             else { // Si existe la factura
                 // render to views/factura/edit.ejs template file
+
+                var date1 = rows[0].fec_emision;
+                var date2 = rows[0].fec_ini_ejecucion;
+                var date3 = rows[0].fec_fin_ejecucion;
+
                 res.render('ot/editar', {
                     title: 'Editar OT', 
                     //data: rows[0],
                     id: rows[0].id,
                     ot_nro: rows[0].ot_nro,
-                    fec_emision: rows[0].fec_emision,
-                    fec_ini_ejecucion: rows[0].fec_ini_ejecucion,
-                    fec_fin_ejecucion: rows[0].fec_fin_ejecucion,
+                    fec_emision: formatear_fecha_yyyymmdd(date1),
+                    fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
+                    fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3),
                     fact_nro: rows[0].fact_nro,
                     recibo_nro: rows[0].recibo_nro,
                     remision_nro: rows[0].remision_nro,
@@ -257,9 +275,10 @@ app.post('/editar/:id', function(req, res, next) {
         ********************************************/
 
         //mysql acepta solos YYYY-MM-DD
-        var date1 = new Date(req.sanitize('fec_emision').escape().trim()).toDateString("YYYY-MM-DD");
-        var date2 = new Date(req.sanitize('fec_ini_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
-        var date3 = new Date(req.sanitize('fec_fin_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
+        //console.log(req.sanitize('fec_emision').escape().trim());//debug
+        var date1 = req.sanitize('fec_emision').escape().trim();
+        var date2 = req.sanitize('fec_ini_ejecucion').escape().trim();
+        var date3 = req.sanitize('fec_fin_ejecucion').escape().trim();
 
         var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
         var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
