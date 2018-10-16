@@ -39,6 +39,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var facturas = require('./routes/facturas');
 var ots = require('./routes/ot');
+var gastos = require('./routes/gastos');
  
 /**
  * Express Validator Middleware for Form Validation
@@ -110,6 +111,7 @@ app.use('/', index);//el home
 app.use('/users', users);//gestión de usuarios
 app.use('/facturas', facturas);//gestion de facturas
 app.use('/ot', ots);//gestion de OT
+app.use('/gastos', gastos);//gestion de GASTOS
 
 /*
 app.get('/login', index);//pagina de login usuario
