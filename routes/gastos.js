@@ -9,7 +9,7 @@ function formatear_fecha_yyyymmdd(date) {
     //hay que ver si es string o date el objeto que viene
     if(date.constructor == String)
     {   
-        var arr = date.split("-");
+        var arr = date.split("-");  
         d = new Date(arr[0],arr[1],arr[2],0,0,0,0);
         month = '' + (d.getMonth());
         day = '' + (d.getDate());
@@ -301,44 +301,48 @@ app.post('/editar/:id', function(req, res, next) {
                 if (err) {
                     req.flash('error', err)
                     
-                    // render to views/factura/add.ejs
-                    res.render('gastos/add', {
-                        title: 'Agregar Nuevo GASTO',
-                        fecha: gasto.fecha,
-                        monto: gasto.monto,
-                        exentas: gasto.exentas,
-                        iva_10: gasto.iva_10,
-                        iva_5: gasto.iva_5,
-                        gasto_real: gasto.gasto_real,
-                        concepto: gasto.concepto,
-                        fact_estado: gasto.fact_estado,
-                        proveedor: gasto.proveedor,
-                        fact_nro: gasto.fact_nro,
-                        encargado: gasto.encargado,
-                        codigo: gasto.codigo,
-                        nro_ot: gasto.nro_ot,
+                    // render to views/gastos/add.ejs
+                    res.render('gastos/editar', {
+                        title: 'Editar GASTO',
+                        id: req.params.id,
+                        fecha: req.body.fecha,
+                        monto: req.body.monto,
+                        exentas: req.body.exentas,
+                        iva_10: req.body.iva_10,
+                        iva_5: req.body.iva_5,
+                        gasto_real: req.body.gasto_real,
+                        concepto: req.body.concepto,
+                        fact_estado: req.body.fact_estado,
+                        proveedor: req.body.proveedor,
+                        fact_nro: req.body.fact_nro,
+                        encargado: req.body.encargado,
+                        codigo: req.body.codigo,
+                        nro_ot: req.body.nro_ot,
+                        usuario_insert: user,
                         usuario: user
                     })
                 } else {                
-                    req.flash('success', 'Datos agregados correctamente!')
+                    req.flash('success', 'Datos actualizados correctamente!')
                     
                     // render to views/ot/add.ejs
-                    res.render('gastos/add', {
-                        title: 'Agregar nuevo Gasto',
-                        fecha: '',
-                        monto: '',
-                        exentas: '',
-                        iva_10: '',
-                        iva_5: '',
-                        gasto_real: '',
-                        concepto: '',
-                        fact_estado: '',
-                        proveedor: '',
-                        fact_nro: '',
-                        encargado: '',
-                        codigo: '',
-                        nro_ot: '',
-                        usuario: user                 
+                    res.render('gastos/editar', {
+                        title: 'Editar GASTO',
+                        id: req.params.id,
+                        fecha: req.body.fecha,
+                        monto: req.body.monto,
+                        exentas: req.body.exentas,
+                        iva_10: req.body.iva_10,
+                        iva_5: req.body.iva_5,
+                        gasto_real: req.body.gasto_real,
+                        concepto: req.body.concepto,
+                        fact_estado: req.body.fact_estado,
+                        proveedor: req.body.proveedor,
+                        fact_nro: req.body.fact_nro,
+                        encargado: req.body.encargado,
+                        codigo: req.body.codigo,
+                        nro_ot: req.body.nro_ot,
+                        usuario_insert: user,
+                        usuario: user               
                     })
                 }
             })
@@ -356,7 +360,7 @@ app.post('/editar/:id', function(req, res, next) {
          * because req.param('name') is deprecated
          */ 
         res.render('gastos/editar', { 
-            title: 'Agregar Nuevo GASTO',
+            title: 'Editar GASTO',
             fecha: req.body.fecha,
             monto: req.body.monto,
             exentas: req.body.exentas,

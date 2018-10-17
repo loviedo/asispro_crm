@@ -105,9 +105,9 @@ app.post('/add', function(req, res, next){
         ********************************************/
 
         //mysql acepta solos YYYY-MM-DD
-        var date1 = new Date(req.sanitize('fec_emision').escape().trim()).toDateString("YYYY-MM-DD");
-        var date2 = new Date(req.sanitize('fec_ini_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
-        var date3 = new Date(req.sanitize('fec_fin_ejecucion').escape().trim()).toDateString("YYYY-MM-DD");
+        var date1 = req.sanitize('fec_emision').escape().trim();
+        var date2 = req.sanitize('fec_ini_ejecucion').escape().trim();
+        var date3 = req.sanitize('fec_fin_ejecucion').escape().trim();
         var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
         var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
         var remision_nro = Number(req.sanitize('remision_nro').escape().trim());
