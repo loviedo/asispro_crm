@@ -1,19 +1,29 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
+var path = require('path');
+var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
  
 
 function formatear_fecha_yyyymmdd(date) {
     var d;
+
+    if(date)
+    {
     //hay que ver si es string o date el objeto que viene
     if(date.constructor == String)
     {   
-        var arr = date.split("-");  
-        d = new Date(arr[0],arr[1],arr[2],0,0,0,0);
+        var arr = date.split("-");
+        /*d = new Date(arr[0],arr[1],arr[2],0,0,0,0);
         month = '' + (d.getMonth());
         day = '' + (d.getDate());
-        year = d.getFullYear();
+        year = d.getFullYear();*/
+        month = arr[1];
+        day = arr[2];
+        year = arr[0];
+
+
     }
     else
     {   d = new Date(date);
@@ -27,8 +37,84 @@ function formatear_fecha_yyyymmdd(date) {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');//retornamos valor como a mysql le gusta
+    }
+    else{return null;}
 }
 
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+
+function generar_excel_gastos(rows){
+    var workbook = new excel.Workbook();
+    //Add Worksheets to the workbook
+    var worksheet = workbook.addWorksheet('GASTOS');
+    // Create a reusable style
+    var style = workbook.createStyle({
+    font: {
+        color: '#000000',
+        size: 12
+    },
+    numberFormat: '#,##0.00; (#,##0.00); -'
+    });
+    var style1 = workbook.createStyle({
+        font: {
+            color: '#000000',
+            size: 12
+        },
+        numberFormat: '#,##0; (#,##0); -'
+        });
+
+    //dibujamos el excel
+    //primero la cabecera
+    worksheet.cell(1,1).string('FECHA').style(style);
+    worksheet.cell(1,2).string('MONTO').style(style);
+    worksheet.cell(1,3).string('EXENTAS').style(style);
+    worksheet.cell(1,4).string('IVA 10%').style(style);
+    worksheet.cell(1,5).string('IVA 5%').style(style);
+    worksheet.cell(1,6).string('GASTO REAL').style(style);
+    worksheet.cell(1,7).string('CONCEPTO').style(style);
+    worksheet.cell(1,8).string('ESTADO FACTURA').style(style);
+    worksheet.cell(1,9).string('PROVEEDOR').style(style);
+    worksheet.cell(1,10).string('NRO FACTURA').style(style);
+    worksheet.cell(1,11).string('ENCARGADO').style(style);
+    worksheet.cell(1,12).string('CODIGO').style(style);
+    worksheet.cell(1,13).string('OT NRO').style(style);
+    //worksheet.cell(1,1).string('').style(style);
+
+    //luego los datos
+    var i = 1;
+    rows.forEach(function(row) {
+        worksheet.cell(i+1,1).string(String(formatear_fecha(row.fecha))).style(style);
+        worksheet.cell(i+1,2).number(Number(row.monto)).style(style);
+        worksheet.cell(i+1,3).number(Number(row.exentas)).style(style);
+        worksheet.cell(i+1,4).number(Number(row.iva_10)).style(style);
+        worksheet.cell(i+1,5).number(Number(row.iva_5)).style(style);
+        worksheet.cell(i+1,6).number(Number(row.gasto_real)).style(style);
+        worksheet.cell(i+1,7).string(String(row.concepto)).style(style);
+        worksheet.cell(i+1,8).string(String(row.fact_estado)).style(style);
+        worksheet.cell(i+1,9).string(String(row.proveedor)).style(style);
+        worksheet.cell(i+1,10).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,11).string(String(row.encargado)).style(style);
+        worksheet.cell(i+1,12).number(Number(row.codigo)).style(style1);
+        worksheet.cell(i+1,13).number(Number(row.nro_ot)).style(style1);
+        //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
+        i=i+1;
+        //console.log(row.descripcion);//debug
+    });
+    workbook.write('Listado_GASTOS.xlsx');
+}
 
 // MOSTRAR LISTADO DE GASTOS
 app.get('/', function(req, res, next) {
@@ -47,7 +133,7 @@ app.get('/', function(req, res, next) {
                     req.flash('error', err)
                     res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
                 } else {
-                    // render views/ot/listar.ejs
+                    generar_excel_gastos(rows);//generamos excel gastos
                     res.render('gastos/listar', {title: 'Listado de GASTOS', usuario: user, data: rows})
                 }
             })
@@ -57,8 +143,6 @@ app.get('/', function(req, res, next) {
         // render to views/index.ejs template file
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
     }
-    
-
 })
 
 //RESPONSE PARA CARGA DE GASTOS -- FORMULARIO 
@@ -378,6 +462,36 @@ app.post('/editar/:id', function(req, res, next) {
         })
     }
 })
+
+/* GENERAMOS Y ENVIAMOS EXCEL */
+app.post('/descargar', function(req, res, next) {
+    //primero traemos los datos de la tabla
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        //DESCARGAR PDF CON DATOS DEL ESTUDIO
+        var file = path.resolve("Listado_GASTOS.xlsx");
+        res.contentType('Content-Type',"application/pdf");
+        res.download(file, function (err) {
+            if (err) {
+                console.log("ERROR AL ENVIAR EL ARCHIVO:");
+                console.log(err);
+            } else {
+                console.log("ARCHIVO ENVIADO!");
+            }
+        });
+    }
+    else {
+        // render to views/index.ejs template file
+        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
+    }
+});
+
 
 // DELETE USER
 app.delete('/eliminar/(:id)', function(req, res, next) {

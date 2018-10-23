@@ -3,22 +3,33 @@
 16) routes/users.js is responsible for handling CRUD operations like adding, 
 editing, deleting and viewing users from database. Database queries, form validation and template rendering is done here.
  */
-var express = require('express')
-var app = express()
+
+var path = require('path');
+var express = require('express');
+var app = express();
+var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
  
 
 function formatear_fecha_yyyymmdd(date) {
     var d;
+
+    if(date)
+    {
     //hay que ver si es string o date el objeto que viene
     if(date.constructor == String)
     {   
         var arr = date.split("-");
-        d = new Date(arr[0],arr[1],arr[2],0,0,0,0);
+        /*d = new Date(arr[0],arr[1],arr[2],0,0,0,0);
         month = '' + (d.getMonth());
         day = '' + (d.getDate());
-        year = d.getFullYear();
+        year = d.getFullYear();*/
+        month = arr[1];
+        day = arr[2];
+        year = arr[0];
+
+
     }
     else
     {   d = new Date(date);
@@ -32,7 +43,80 @@ function formatear_fecha_yyyymmdd(date) {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');//retornamos valor como a mysql le gusta
+    }
+    else{return null;}
 }
+
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+
+function generar_excel_ot(rows){
+    var workbook = new excel.Workbook();
+    //Add Worksheets to the workbook
+    var worksheet = workbook.addWorksheet('OTs');
+    // Create a reusable style
+    var style = workbook.createStyle({
+    font: {
+        color: '#000000',
+        size: 12
+    },
+    numberFormat: '$#,##0.00; ($#,##0.00); -'
+    });
+
+    //dibujamos el excel
+    //primero la cabecera
+    worksheet.cell(1,1).string('OT NRO').style(style);
+    worksheet.cell(1,2).string('FECHA EMISION').style(style);
+    worksheet.cell(1,3).string('FECHA INICIO EJECUCION').style(style);
+    worksheet.cell(1,4).string('FECHA FIN EJECUCION').style(style);
+    worksheet.cell(1,5).string('FACTURA NRO').style(style);
+    worksheet.cell(1,6).string('RECIBO NRO').style(style);
+    worksheet.cell(1,7).string('REMISION NRO').style(style);
+    worksheet.cell(1,8).string('TIPO FACTURA').style(style);
+    worksheet.cell(1,9).string('ESTADO FACTURA').style(style);
+    worksheet.cell(1,10).string('CLIENTE').style(style);
+    worksheet.cell(1,11).string('OBRA').style(style);
+    worksheet.cell(1,12).string('DESCRIPCION').style(style);
+    //worksheet.cell(1,1).string('').style(style);
+
+    //luego los datos
+    var i = 1;
+    rows.forEach(function(row) {
+
+        worksheet.cell(i+1,1).string(String(row.ot_nro)).style(style);
+        worksheet.cell(i+1,2).string(String(formatear_fecha(row.fec_emision))).style(style);
+        worksheet.cell(i+1,3).string(String(formatear_fecha(row.fec_ini_ejecucion))).style(style);
+        worksheet.cell(i+1,4).string(String(formatear_fecha(row.fec_fin_ejecucion))).style(style);
+        //worksheet.cell(i+1,2).date(Date(formatear_fecha(row.fec_emision))).style({numberFormat: 'dd/mm/yyyy'});
+        //worksheet.cell(i+1,3).date(Date(formatear_fecha(row.fec_ini_ejecucion))).style({numberFormat: 'dd/mm/yyyy'});
+        //worksheet.cell(i+1,4).date(Date(formatear_fecha(row.fec_fin_ejecucion))).style({numberFormat: 'dd/mm/yyyy'});
+        worksheet.cell(i+1,5).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,6).string(String(row.recibo_nro)).style(style);
+        worksheet.cell(i+1,7).string(String(row.remision_nro)).style(style);
+        worksheet.cell(i+1,8).string(String(row.fact_tipo)).style(style);
+        worksheet.cell(i+1,9).string(String(row.fact_estado)).style(style);
+        worksheet.cell(i+1,10).string(String(row.cliente)).style(style);
+        worksheet.cell(i+1,11).string(String(row.obra)).style(style);
+        worksheet.cell(i+1,12).string(String(row.descripcion)).style(style);
+        //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
+        i=i+1;
+        //console.log(row.descripcion);//debug
+    });
+    workbook.write('Listado_OT.xlsx');
+}
+
 
 // MOSTRAR LISTA DE FACTURAS
 app.get('/', function(req, res, next) {
@@ -45,13 +129,14 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM ot ORDER BY id DESC',function(err, rows) {
+            conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
                     res.render('ot/listar', {title: 'Listado de OTs', data: '',usuario: user})
                 } else {
                     // render views/ot/listar.ejs
+                    generar_excel_ot(rows);//generamos excel
                     res.render('ot/listar', {title: 'Listado de Facturas',usuario: user, data: rows})
                 }
             })
@@ -382,6 +467,36 @@ app.post('/editar/:id', function(req, res, next) {
     }
 })
  
+
+/* GENERAMOS Y ENVIAMOS EXCEL OT */
+app.post('/descargar', function(req, res, next) {
+    //primero traemos los datos de la tabla
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        //DESCARGAR PDF CON DATOS DEL ESTUDIO
+        var file = path.resolve("Listado_OT.xlsx");
+        res.contentType('Content-Type',"application/pdf");
+        res.download(file, function (err) {
+            if (err) {
+                console.log("ERROR AL ENVIAR EL ARCHIVO:");
+                console.log(err);
+            } else {
+                console.log("ARCHIVO ENVIADO!");
+            }
+        });
+    }
+    else {
+        // render to views/index.ejs template file
+        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
+    }
+});
+
 // DELETE USER
 app.delete('/eliminar/(:id)', function(req, res, next) {
     var ot = { id: req.params.id }

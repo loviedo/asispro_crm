@@ -21,8 +21,11 @@ function formatear_fecha(date) {
 
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
-
-    return [day,month,year].join('/');//retornamos valor como a mysql le gusta
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
 }
 %>
 
@@ -183,9 +186,11 @@ color: #ffffff;
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">
     <div class="container-fluid">
-        <button type="button" id="expotar" class="btn btn-info">
-            <i class="fas fa-share"></i>
-        </button>
+            <form action="/ot/descargar" method="POST" name="form">
+                <button type="submit" id="submit" class="btn btn-info">
+                    <i class="fas fa-share"></i>
+                </button>
+            </form>
     </div>
 </nav>
 <!--
