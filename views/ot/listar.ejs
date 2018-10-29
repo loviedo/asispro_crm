@@ -67,66 +67,11 @@ color: #ffffff;
 </style>
 
 
-<!-- NAV PARA TITULO -->
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
-    <div class="container-fluid">
-        <h3>Listado de Órdenes de Trabajo</h3>
-    </div>
-</nav>-->
-<!--
-<table class="table table-fixed" cellspacing="0" width="100%" style="table-layout: auto;">
-    <thead>
-    <tr>
-            <th>Nro OT</th>
-            <th>FECHA EMISION</th>
-            <th>F INI EJECUCION</th>
-            <th>F FIN EJECUCION</th>
-            <th>Nro FACTURA</th>
-            <th>Est FACTURA</th>
-            <th>Nro RECIBO</th>
-            <th>Nro REMISION</th>
-            <th>TIPO FACTURA</th>       
-            <th>CLIENTE</th>
-            <th>OBRA</th>
-            <th>DESCRIPCION</th>
-            <th>ACCIONES</th>  
-    </tr>
-    </thead>
 
-    <tbody>
-            <% if (data) { %>
-                <% data.forEach(function(ot){ %>
-                    <tr style="height=200px">
-                            <td ><%= ot.ot_nro %></td>
-                            <td ><%= formatear_fecha(ot.fec_emision) %></td>
-                            <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
-                            <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
-                            <td><%= ot.fact_nro %></td>
-                            <td><%= ot.fact_estado %></td>
-                            <td><%= ot.recibo_nro %></td>
-                            <td><%= ot.remision_nro %></td>
-                            <td><%= ot.fact_tipo %></td>
-                            <td><%= ot.cliente %></td>
-                            <td><%= ot.obra %></td>
-                            <td><%= ot.descripcion %></td>
-                            <td>
-                                <div>
-                                    <a href='/ot/editar/<%= ot.id %>'>Editar</a> &nbsp;                            
-                                    <form method="post" action="/ot/eliminar/<%= ot.id %>" style="float:right">
-                                        <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
 
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-    <% }) %>
-    <% } %>
-    </tbody>
-</table>
--->
 <!-- FORMA VIEJA -->
-<div class="container-fluid" style="height: 500px; overflow-y: auto;" width="100%">
-    <table class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+<div class="container-fluid" width="100%">
+    <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead style="background: rgb(137, 151, 212);
             border-left: 1px solid #EB8;
             border-right: 1px solid #B74;
@@ -167,7 +112,7 @@ color: #ffffff;
                 <td><%= ot.descripcion %></td>
                 <td>
                     <div>
-                        <a href='/ot/editar/<%= ot.id %>'>Editar</a> &nbsp;                            
+                        <a href='/ot/editar/<%= ot.id %>'>Ver</a> &nbsp;                            
                         <form method="post" action="/ot/eliminar/<%= ot.id %>" style="float:right">
                             <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
                             <input type="hidden" name="_method" value="DELETE" />
@@ -178,7 +123,6 @@ color: #ffffff;
             <% }) %>
             <% } %>
         </tbody>
-
     </table>
 </div>
 <!---->

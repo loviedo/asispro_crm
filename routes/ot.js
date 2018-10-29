@@ -146,8 +146,6 @@ app.get('/', function(req, res, next) {
         // render to views/index.ejs template file
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
     }
-    
-
 })
  
 // SHOW ADD USER FORM

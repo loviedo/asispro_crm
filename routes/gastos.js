@@ -85,7 +85,7 @@ function generar_excel_gastos(rows){
     worksheet.cell(1,5).string('IVA 5%').style(style);
     worksheet.cell(1,6).string('GASTO REAL').style(style);
     worksheet.cell(1,7).string('CONCEPTO').style(style);
-    worksheet.cell(1,8).string('ESTADO FACTURA').style(style);
+    worksheet.cell(1,8).string('CONDICION FACTURA').style(style);
     worksheet.cell(1,9).string('PROVEEDOR').style(style);
     worksheet.cell(1,10).string('NRO FACTURA').style(style);
     worksheet.cell(1,11).string('ENCARGADO').style(style);
@@ -103,7 +103,7 @@ function generar_excel_gastos(rows){
         worksheet.cell(i+1,5).number(Number(row.iva_5)).style(style);
         worksheet.cell(i+1,6).number(Number(row.gasto_real)).style(style);
         worksheet.cell(i+1,7).string(String(row.concepto)).style(style);
-        worksheet.cell(i+1,8).string(String(row.fact_estado)).style(style);
+        worksheet.cell(i+1,8).string(String(row.fact_condicion)).style(style);
         worksheet.cell(i+1,9).string(String(row.proveedor)).style(style);
         worksheet.cell(i+1,10).string(String(row.fact_nro)).style(style);
         worksheet.cell(i+1,11).string(String(row.encargado)).style(style);
@@ -156,7 +156,7 @@ app.get('/add', function(req, res, next){
         // render to views/user/add.ejs
         res.render('gastos/add', {
             title: 'Cargar nuevo GASTO', fecha: '', monto: '',exentas: '',iva_10: '',iva_5: '',gasto_real: '',concepto: '', 
-            fact_estado: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user})
+            fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user})
     }
     else {
         // render to views/index.ejs template file
@@ -197,7 +197,7 @@ app.post('/add', function(req, res, next){
             iva_5: iva5,
             gasto_real: gasreal,
             concepto: req.sanitize('concepto').escape().trim(),
-            fact_estado: req.sanitize('fact_estado').escape().trim(),
+            fact_estado: req.sanitize('fact_condicion').escape().trim(),
             proveedor: req.sanitize('proveedor').escape().trim(),
             fact_nro: req.sanitize('fact_nro').escape().trim(),
             encargado: req.sanitize('encargado').escape().trim(),
@@ -224,7 +224,7 @@ app.post('/add', function(req, res, next){
                         iva_5: gasto.iva_5,
                         gasto_real: gasto.gasto_real,
                         concepto: gasto.concepto,
-                        fact_estado: gasto.fact_estado,
+                        fact_condicion: gasto.fact_condicion,
                         proveedor: gasto.proveedor,
                         fact_nro: gasto.fact_nro,
                         encargado: gasto.encargado,
@@ -245,7 +245,7 @@ app.post('/add', function(req, res, next){
                         iva_5: '',
                         gasto_real: '',
                         concepto: '',
-                        fact_estado: '',
+                        fact_condicion: '',
                         proveedor: '',
                         fact_nro: '',
                         encargado: '',
@@ -278,7 +278,7 @@ app.post('/add', function(req, res, next){
             iva_5: req.body.iva_5,
             gasto_real: req.body.gasto_real,
             concepto: req.body.concepto,
-            fact_estado: req.body.fact_estado,
+            fact_condicion: req.body.fact_condicion,
             proveedor: req.body.proveedor,
             fact_nro: req.body.fact_nro,
             encargado: req.body.encargado,
@@ -316,7 +316,7 @@ app.get('/editar/:id', function(req, res, next){
                     iva_5: rows[0].iva_5,
                     gasto_real: rows[0].gasto_real,
                     concepto: rows[0].concepto,
-                    fact_estado: rows[0].fact_estado,
+                    fact_condicion: rows[0].fact_condicion,
                     proveedor: rows[0].proveedor,
                     fact_nro: rows[0].fact_nro,
                     encargado: rows[0].encargado,
@@ -369,7 +369,7 @@ app.post('/editar/:id', function(req, res, next) {
             iva_5: iva5,
             gasto_real: gasreal,
             concepto: req.sanitize('concepto').escape().trim(),
-            fact_estado: req.sanitize('fact_estado').escape().trim(),
+            fact_condicion: req.sanitize('fact_condicion').escape().trim(),
             proveedor: req.sanitize('proveedor').escape().trim(),
             fact_nro: req.sanitize('fact_nro').escape().trim(),
             encargado: req.sanitize('encargado').escape().trim(),
@@ -396,7 +396,7 @@ app.post('/editar/:id', function(req, res, next) {
                         iva_5: req.body.iva_5,
                         gasto_real: req.body.gasto_real,
                         concepto: req.body.concepto,
-                        fact_estado: req.body.fact_estado,
+                        fact_condicion: req.body.fact_condicion,
                         proveedor: req.body.proveedor,
                         fact_nro: req.body.fact_nro,
                         encargado: req.body.encargado,
@@ -419,7 +419,7 @@ app.post('/editar/:id', function(req, res, next) {
                         iva_5: req.body.iva_5,
                         gasto_real: req.body.gasto_real,
                         concepto: req.body.concepto,
-                        fact_estado: req.body.fact_estado,
+                        fact_condicion: req.body.fact_condicion,
                         proveedor: req.body.proveedor,
                         fact_nro: req.body.fact_nro,
                         encargado: req.body.encargado,
@@ -452,7 +452,7 @@ app.post('/editar/:id', function(req, res, next) {
             iva_5: req.body.iva_5,
             gasto_real: req.body.gasto_real,
             concepto: req.body.concepto,
-            fact_estado: req.body.fact_estado,
+            fact_condicion: req.body.fact_condicion,
             proveedor: req.body.proveedor,
             fact_nro: req.body.fact_nro,
             encargado: req.body.encargado,
@@ -515,4 +515,4 @@ app.delete('/eliminar/(:id)', function(req, res, next) {
     })
 })
 
-module.exports = app
+module.exports = app;

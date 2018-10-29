@@ -12,12 +12,12 @@
         <!-- Font Awesome JS -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-        
+
         <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script>
             jQuery(function () {
-            
                 jQuery('#line_chart').highcharts({
                     chart: {
                         type: 'areaspline',
@@ -143,7 +143,7 @@
             
                 });
         </script>
-        
+
         <style>
             /* INICIO ESTILO BASICO */
             body {
@@ -313,9 +313,13 @@
             width: 100%;
             height: 200px;
         }
-        
         </style>
 
+
+        <!-- COSAS PARA EL PAGINADOR DE LAS TABLAS -->
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="jquery/dataTables.bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css"    href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"></link>
 
 
         <!--ESTILO DEL HEADER-->
@@ -455,6 +459,20 @@
                             </li>
                             <li>
                                 <a href="/gastos/">Listar Gastos</a>
+                            </li>   
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#rrhhsub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                            <i class="fas fa-home"></i>
+                            RRHH
+                        </a>
+                        <ul class="collapse list-unstyled" id="rrhhsub" >
+                            <li>
+                                <a href="/rrhh/add">Agregar Empleado</a>
+                            </li>
+                            <li>
+                                <a href="/rrhh/">Listar Empleado</a>
                             </li>   
                         </ul>
                     </li>

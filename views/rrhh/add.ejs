@@ -1,0 +1,78 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ../layouts/header.ejs %>    
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ 
+
+<!-- ESTILO PARA DATEPICKER -->
+<style>
+[type="date"] {
+  background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+}
+[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+/* custom styles */
+body {
+  background: #e5e5e5;
+  font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+}
+label {
+  display: block;
+}
+input {
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 3px 5px;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+  width: 190px;
+}
+</style>
+
+<!-- NAV PARA TITULO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <h3>Carga de EMPLEADOS</h3>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <form action="/rrhh/add" method="post" name="form1">
+            <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="nombre">NOMBRE</label>
+                <input type="text" class="form-control" name="nombre" id="nombre" value="<%= nombre %>" placeholder="Nombre Empleado">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="telefono">TELEFONO</label>
+                <input type="text" class="form-control" name="telefono" id="telefono" value="<%= telefono %>" placeholder="Telefono Empleado">
+            </div>
+            </div>
+            <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
+        </form>
+    </div>
+</nav>
+
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-strong">
+    <div class="container-fluid">
+
+    </div>
+</nav>
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

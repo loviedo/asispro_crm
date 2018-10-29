@@ -23,6 +23,7 @@ including header content which is common for all pages
 [type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
+
 /* custom styles */
 body {
   background: #e5e5e5;
@@ -41,18 +42,16 @@ input {
 }
 </style>
 
-
-
-<script type="text/javascript"> 
-function changeText() {
-
-    //document.getElementById('gasto_real').value = parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value);
-
-    //document.getElementById('gasto').value = Math.round((document.getElementById('monto').value /11)*100) /100;
-    //document.getElementById('iva_5').value = Math.round((document.getElementById('monto').value *5/100)*100) /100;  
-
-}
+<script>
+$(function() {
+    $('#btnSave').click(function() {
+        var value = $('.modal-body #nombre').val();
+        $(this).data('#proveedor').html(value);
+        $('#modal_proveedor').modal('hide');
+    });
+});
 </script>
+
 
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
@@ -63,20 +62,9 @@ function changeText() {
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
+
         <form action="/gastos/add" method="post" name="form1">
             <div class="form-row">
-                <div class="form-group col-md-6">
-                        <label for="fact_condicion">CONDICION FACTURA</label>
-                        <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" placeholder="condicion Factura">
-                            <option value="NO_FACTURADO">CONTADO</option>
-                            <option value="SIN_FACTURA">CREDITO</option>
-                            <option value="NO_FACTURAR">COMPROBANTE DE INGRESO</option>
-                            <option value="CON_RECIBO">RECIBO</option>
-                            <option value="SIN_RECIBO">RECIBO COMUN</option>
-                            <option value="CON_REMISION">BOLETA DE PAGO</option>
-                            <option value="CON_REMISION">S/F</option>
-                        </select>
-                    </div>
                 <div class="form-group col-md-6">
                     <label for="fecha">FECHA</label>
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto">
@@ -99,14 +87,29 @@ function changeText() {
                 </div>
                 <div class="form-group col-md-6">
                     <label for="gasto_real">GASTO REAL</label>
-                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL" onclick="changeText()">
+                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="concepto">CONCEPTO</label>
                     <input type="text" class="form-control" name="concepto" id="concepto" value="<%= concepto %>" placeholder="CONCEPTO">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="proveedor">PROVEEDOR</label>
+                    <label for="fact_estado">ESTADO FACTURACION</label>
+                    <select class="form-control" name="fact_estado" id="fact_estado" value="<%= fact_estado %>" placeholder="Estado Factura">
+                        <option value="NO_FACTURADO">NO FACTURADO</option>
+                        <option value="SIN_FACTURA">SIN FACTURA</option>
+                        <option value="NO_FACTURAR">NO FACTURAR</option>
+                        <option value="CON_RECIBO">CON RECIBO</option>
+                        <option value="SIN_RECIBO">SIN RECIBO</option>
+                        <option value="CON_REMISION">CON REMISION</option>
+                        <option value="SIN_REMISION">SIN REMISION</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="proveedor">PROVEEDOR
+                        <!-- boton para mostrar el modal -->
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_proveedor">+</button>
+                    </label>
                     <input type="text" class="form-control" name="proveedor" id="proveedor" value="<%= proveedor %>" placeholder="PROVEEDOR">
                 </div>
                 <div class="form-group col-md-6">
@@ -115,8 +118,7 @@ function changeText() {
                 </div>
                 <div class="form-group col-md-6">
                     <label for="encargado">ENCARGADO</label>
-                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" placeholder="ENCARGADO GASTO">
-                    <!--<select class="form-control" name="encargado" id="encargado" value="<%= encargado %>" placeholder="ENCARGADO GASTO">
+                    <select class="form-control" name="encargado" id="encargado" value="<%= encargado %>" placeholder="ENCARGADO GASTO">
                         <option value="CARLOS MALDONADO">CARLOS MALDONADO</option>
                         <option value="CARLOS O">CARLOS O</option>
                         <option value="CRISTINA I">CRISTINA I</option>
@@ -129,22 +131,11 @@ function changeText() {
                         <option value="OSCAR GONZALEZ">OSCAR GONZALEZ</option>
                         <option value="RODRIGO BOBADILLA">RODRIGO BOBADILLA</option>
                         <option value="SR ROMERO">SR ROMERO</option>
-                    </select>-->
+                    </select>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="codigo">CODIGO</label>
-                    <!--<input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">-->
-                        <select class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                    </select>
+                    <input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="nro_ot">NRO OT</label>
@@ -155,6 +146,36 @@ function changeText() {
         </form>
     </div>
 </nav>
+
+<!-- Modal insercion CLIENTE -->
+<div class="modal fade" id="modal_proveedor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Insertar Proveedor</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+
+            <form action="/proveedor/add" method="post" name="form1">
+                <div class="modal-body">
+                    <div class="form-group col-md-6">
+                        <label for="nombre">Nombre Cliente</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="ruc">RUC Cliente</label>
+                        <input type="text" class="form-control" name="ruc" id="ruc" placeholder="RUC">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" href="#btnSave" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+
+            </div>
+        </div>
+    </div>
 
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">

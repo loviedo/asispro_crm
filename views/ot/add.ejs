@@ -101,7 +101,10 @@ input {
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente">CLIENTE</label>
+                    <label for="cliente">CLIENTE 
+                        <!-- boton para mostrar el modal 
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_cliente">+</button>-->
+                    </label>
                     <input type="text" class="form-control" name="cliente" id="cliente" value="<%= cliente %>" placeholder="Nombre Cliente">
                 </div>
                 <div class="form-group col-md-6">
@@ -117,6 +120,34 @@ input {
         </form>
     </div>
 </nav>
+
+<!-- Modal insercion CLIENTE -->
+<div class="modal fade" id="modal_cliente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Insertar Cliente</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <form action="/cliente/add" method="post" name="form1">
+            <div class="modal-body">
+                <div class="form-group col-md-6">
+                    <label for="nombre">Nombre Cliente</label>
+                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ruc">RUC Cliente</label>
+                    <input type="text" class="form-control" name="ruc" id="ruc" placeholder="RUC">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
 
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">

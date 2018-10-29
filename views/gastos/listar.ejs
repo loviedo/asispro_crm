@@ -1,6 +1,7 @@
 <!--
 including header content which is common for all pages
 -->
+
 <%- include ../layouts/header.ejs %>
  
 <% if (messages.error) { %>
@@ -27,6 +28,105 @@ function formatear_fecha(date) {
     {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
 }
 %>
+
+<script>
+$(document).ready( function() {
+    $('#dtBasicExample').DataTable( {
+        "scrollY":        "20px",
+        "scrollCollapse": true,
+        "paging":         false
+    } );
+    $('#tablex').DataTable( {
+        "scrollY":        "200px",
+        "scrollCollapse": true,
+        "paging":         false
+    } );
+});
+
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#dtBasicExample').DataTable(
+            {"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"}}
+        );
+    });
+</script>
+
+
+<!-- DEBUG
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <tr>
+            <th>FECHA</th>
+            <th>MONTO</th>
+            <th>EXENTAS</th>
+            <th>IVA 10%</th>
+            <th>IVA 5%</th>
+            <th>GASTO REAL</th>
+            <th>CONCEPTO</th>
+            <th>CONDICION FACTURACION</th>
+            <th>PROVEEDOR</th>       
+            <th>FACTURA NRO</th>
+            <th>ENCARGADO</th>
+            <th>CODIGO</th>
+            <th>NRO OT</th> 
+            <th>ACCIONES</th>            
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data) { %>
+            <% data.forEach(function(gasto){ %>
+            <tr>
+                <td><%= formatear_fecha(gasto.fecha) %></td>
+                <td><%= gasto.monto %></td>
+                <td><%= gasto.exentas %></td>
+                <td><%= gasto.iva_10 %></td>
+                <td><%= gasto.iva_5 %></td>
+                <td><%= gasto.gasto_real %></td>
+                <td><%= gasto.concepto %></td>
+                <td><%= gasto.fact_condicion %></td>
+                <td><%= gasto.proveedor %></td>
+                <td><%= gasto.fact_nro %></td>
+                <td><%= gasto.encargado %></td>
+                <td><%= gasto.codigo %></td>
+                <td><%= gasto.nro_ot %></td>
+                <td>
+                    <div>
+                        <a href='/gastos/editar/<%= gasto.id %>'>Editar</a> &nbsp;                            
+                        <form method="post" action="/gastos/eliminar/<%= gasto.id %>" style="float:right">
+                            <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
+                            <input type="hidden" name="_method" value="DELETE" />
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <% }) %>
+            <% } %>
+        </tbody>
+    <tfoot>
+      <tr>
+        <th>Name
+        </th>
+        <th>Position
+        </th>
+        <th>Office
+        </th>
+        <th>Age
+        </th>
+        <th>Start date
+        </th>
+        <th>Salary
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+-->
+
+
+
+
 
 <style>
 .table-fixed tbody {
@@ -67,8 +167,8 @@ color: #ffffff;
 
 
 <!-- FORMA VIEJA -->
-<div class="container-fluid" style="height: 500px; overflow-y: auto;" width="100%">
-    <table class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+<div class="container-fluid" width="100%">
+    <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>
@@ -79,7 +179,7 @@ color: #ffffff;
                     <th>IVA 5%</th>
                     <th>GASTO REAL</th>
                     <th>CONCEPTO</th>
-                    <th>ESTADO FACTURACION</th>
+                    <th>CONDICION FACTURACION</th>
                     <th>PROVEEDOR</th>       
                     <th>FACTURA NRO</th>
                     <th>ENCARGADO</th>
@@ -99,7 +199,7 @@ color: #ffffff;
                 <td><%= gasto.iva_5 %></td>
                 <td><%= gasto.gasto_real %></td>
                 <td><%= gasto.concepto %></td>
-                <td><%= gasto.fact_estado %></td>
+                <td><%= gasto.fact_condicion %></td>
                 <td><%= gasto.proveedor %></td>
                 <td><%= gasto.fact_nro %></td>
                 <td><%= gasto.encargado %></td>
@@ -107,7 +207,7 @@ color: #ffffff;
                 <td><%= gasto.nro_ot %></td>
                 <td>
                     <div>
-                        <a href='/gastos/editar/<%= gasto.id %>'>Editar</a> &nbsp;                            
+                        <a href='/gastos/editar/<%= gasto.id %>'>Ver</a> &nbsp;                            
                         <form method="post" action="/gastos/eliminar/<%= gasto.id %>" style="float:right">
                             <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
                             <input type="hidden" name="_method" value="DELETE" />
