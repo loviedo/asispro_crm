@@ -4,7 +4,7 @@ var path = require('path');
 var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
- 
+var datos = []; 
 
 function formatear_fecha_yyyymmdd(date) {
     var d;
@@ -146,17 +146,33 @@ app.get('/', function(req, res, next) {
 })
 
 //RESPONSE PARA CARGA DE GASTOS -- FORMULARIO 
-app.get('/add', function(req, res, next){    
+app.get('/add', function(req, res, next){
+   
     if(req.session.user)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
     //controlamos quien se loga.
 	if(user.length >0){
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT ot_nro FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                //if(err) throw err
+                if (err) {
+                    console.log(err);
+                }
+                else{
+                    rows.forEach(function(row) {
+                        datos.push(row.ot_nro);
+                    });
+                    //console.log(rows);//debug
+                }
+            })
+        })
+        console.log(datos);
         // render to views/user/add.ejs
         res.render('gastos/add', {
             title: 'Cargar nuevo GASTO', fecha: '', monto: '',exentas: '',iva_10: '',iva_5: '',gasto_real: '',concepto: '', 
-            fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user})
+            fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user, data: datos})
     }
     else {
         // render to views/index.ejs template file

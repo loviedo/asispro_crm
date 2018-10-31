@@ -44,15 +44,72 @@ input {
 
 
 <script type="text/javascript"> 
+
 function changeText() {
+    //LOGICA CARGA GASTOS
+    var cond = document.getElementById("fact_condicion").value;
+    //alert(cond);
+    if(cond == "BOLETA_PAGO" || cond == "COMP_INGRESO" || cond == "RECIBO" || cond == "S_F" || cond == "RECIBO_COMUN")
+    {   //HABLITAR- DESHABILITAR
+        document.getElementById("monto").disabled = true; 
+        document.getElementById("exentas").disabled = true; 
+        document.getElementById("iva_10").disabled = true; 
+        document.getElementById("iva_5").disabled = true;
+        document.getElementById("gasto_real").disabled = false; //solo gasto real habilitado
+        //ASIGNAR VALORES
+        document.getElementById("monto").value = ''; 
+        document.getElementById("exentas").value = ''; 
+        document.getElementById("iva_10").value = ''; 
+        document.getElementById("iva_5").value = '';
+        document.getElementById("gasto_real").value = 0; 
+    }
+    if(cond == "CREDITO")//SOLO 
+    {   //HABLITAR- DESHABILITAR
+        document.getElementById("monto").disabled = false; 
+        document.getElementById("exentas").disabled = true; 
+        document.getElementById("iva_10").disabled = true; 
+        document.getElementById("iva_5").disabled = true;
+        document.getElementById("gasto_real").disabled = true;  
+        //ASIGNAR VALORES
+        //document.getElementById("monto").value = ''; 
+        document.getElementById("exentas").value = ''; 
+        document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; 
+        document.getElementById("iva_5").value = '';
+        document.getElementById("gasto_real").value = ''; 
+    }
+    if(cond == "CONTADO")
+    {   //HABLITAR- DESHABILITAR
+        document.getElementById("monto").disabled = false; 
+        document.getElementById("exentas").disabled = false; 
+        document.getElementById("iva_10").disabled = false; 
+        document.getElementById("iva_5").disabled = false;
+        document.getElementById("gasto_real").disabled = true;  
+        //ASIGNAR VALORES
+        //document.getElementById("monto").value = ''; 
+       // document.getElementById("exentas").value = ''; 
+        document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
+        document.getElementById("iva_5").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value));
+    }
 
     //document.getElementById('gasto_real').value = parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value);
 
     //document.getElementById('gasto').value = Math.round((document.getElementById('monto').value /11)*100) /100;
     //document.getElementById('iva_5').value = Math.round((document.getElementById('monto').value *5/100)*100) /100;  
-
 }
 </script>
+
+
+<script>
+$(document).ready(function(){
+    $("input").click(function(){
+            $(this).next().show();
+            $(this).next().hide();
+        });
+    
+    });
+</script>
+
 
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
@@ -67,39 +124,39 @@ function changeText() {
             <div class="form-row">
                 <div class="form-group col-md-6">
                         <label for="fact_condicion">CONDICION FACTURA</label>
-                        <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" placeholder="condicion Factura">
-                            <option value="NO_FACTURADO">CONTADO</option>
-                            <option value="SIN_FACTURA">CREDITO</option>
-                            <option value="NO_FACTURAR">COMPROBANTE DE INGRESO</option>
-                            <option value="CON_RECIBO">RECIBO</option>
-                            <option value="SIN_RECIBO">RECIBO COMUN</option>
-                            <option value="CON_REMISION">BOLETA DE PAGO</option>
-                            <option value="CON_REMISION">S/F</option>
+                        <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" placeholder="condicion Factura" onclick="changeText()">
+                            <option value="CONTADO">CONTADO</option>
+                            <option value="CREDITO">CREDITO</option>
+                            <option value="COMP_INGRESO">COMPROBANTE DE INGRESO</option>
+                            <option value="RECIBO">RECIBO</option>
+                            <option value="RECIBO_COMUN">RECIBO COMUN</option>
+                            <option value="BOLETA_PAGO">BOLETA DE PAGO</option>
+                            <option value="S_F">S/F</option>
                         </select>
                     </div>
                 <div class="form-group col-md-6">
                     <label for="fecha">FECHA</label>
-                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto">
+                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" >
                 </div>
                 <div class="form-group col-md-6">
                     <label for="monto">MONTO</label>
-                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto">
+                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" onclick="changeText()">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="exentas">EXENTAS</label>
-                    <input type="text" class="form-control" name="exentas" id="exentas" value="<%= exentas %>" placeholder="Exentas">
+                    <input type="text" class="form-control" name="exentas" id="exentas" value="<%= exentas %>" placeholder="Exentas" onclick="changeText()">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="iva_10">IVA 10%</label>
-                    <input type="text" class="form-control" name="iva_10" id="iva_10" value="<%= iva_10 %>" placeholder="IVA 10%">
+                    <input type="text" class="form-control" name="iva_10" id="iva_10" value="<%= iva_10 %>" placeholder="IVA 10%" onclick="changeText()">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="iva_5">IVA 5%</label>
-                    <input type="text" class="form-control" name="iva_5" id="iva_5" value="<%= iva_5 %>" placeholder="IVA 5%">
+                    <input type="text" class="form-control" name="iva_5" id="iva_5" value="<%= iva_5 %>" placeholder="IVA 5%" onclick="changeText()">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="gasto_real">GASTO REAL</label>
-                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL" onclick="changeText()">
+                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="concepto">CONCEPTO</label>
@@ -148,7 +205,25 @@ function changeText() {
                 </div>
                 <div class="form-group col-md-6">
                     <label for="nro_ot">NRO OT</label>
-                    <input type="text" class="form-control" name="nro_ot" id="nro_ot" value="<%= nro_ot %>" placeholder="Nro OT">
+                    <select class="form-control" name="nro_ot" id="nro_ot" placeholder="Nro OT">
+                    <% if (data) { %>
+                        <% data.forEach(function(fila_ot){ %>
+                            <option value="<%= fila_ot %>"><%= fila_ot %></option>
+                        <% }) %>
+                    <% } %>
+                    </select>
+                    <!--<input type="text" class="form-control" name="nro_ot" id="nro_ot" value="<%= nro_ot %>" placeholder="Nro OT"> VIEJO-->
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="nro_ot">NRO OT</label>
+                    <input type="text" class="form-control" list="datos">
+                    <datalist id="datos">
+                            <% if (data) { %>
+                                <% data.forEach(function(fila_ot){ %>
+                                    <option value="<%= fila_ot %>" href="/ot/editar/<%= fila_ot %>"><%= fila_ot %></option>
+                                <% }) %>
+                            <% } %>
+                    </datalist> 
                 </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
