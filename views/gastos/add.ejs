@@ -57,10 +57,10 @@ function changeText() {
         document.getElementById("iva_5").disabled = true;
         document.getElementById("gasto_real").disabled = false; //solo gasto real habilitado
         //ASIGNAR VALORES
-        document.getElementById("monto").value = ''; 
-        document.getElementById("exentas").value = ''; 
-        document.getElementById("iva_10").value = ''; 
-        document.getElementById("iva_5").value = '';
+        document.getElementById("monto").value = 0; 
+        document.getElementById("exentas").value = 0; 
+        document.getElementById("iva_10").value = 0; 
+        document.getElementById("iva_5").value = 0;
         document.getElementById("gasto_real").value = 0; 
     }
     if(cond == "CREDITO")//SOLO 
@@ -72,10 +72,10 @@ function changeText() {
         document.getElementById("gasto_real").disabled = true;  
         //ASIGNAR VALORES
         //document.getElementById("monto").value = ''; 
-        document.getElementById("exentas").value = ''; 
+        document.getElementById("exentas").value = 0; 
         document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; 
-        document.getElementById("iva_5").value = '';
-        document.getElementById("gasto_real").value = ''; 
+        document.getElementById("iva_5").value = 0;
+        document.getElementById("gasto_real").value = 0; 
     }
     if(cond == "CONTADO")
     {   //HABLITAR- DESHABILITAR
@@ -83,7 +83,7 @@ function changeText() {
         document.getElementById("exentas").disabled = false; 
         document.getElementById("iva_10").disabled = false; 
         document.getElementById("iva_5").disabled = false;
-        document.getElementById("gasto_real").disabled = true;  
+        document.getElementById("gasto_real").disabled = false;  
         //ASIGNAR VALORES
         //document.getElementById("monto").value = ''; 
        // document.getElementById("exentas").value = ''; 
@@ -103,11 +103,10 @@ function changeText() {
 <script>
 $(document).ready(function(){
     $("input").click(function(){
-            $(this).next().show();
-            $(this).next().hide();
-        });
-    
+        $(this).next().show();
+        $(this).next().hide();
     });
+});
 </script>
 
 
@@ -203,7 +202,7 @@ $(document).ready(function(){
                         <option value="8">8</option>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
+                <!--<div class="form-group col-md-6">
                     <label for="nro_ot">NRO OT</label>
                     <select class="form-control" name="nro_ot" id="nro_ot" placeholder="Nro OT">
                     <% if (data) { %>
@@ -212,17 +211,16 @@ $(document).ready(function(){
                         <% }) %>
                     <% } %>
                     </select>
-                    <!--<input type="text" class="form-control" name="nro_ot" id="nro_ot" value="<%= nro_ot %>" placeholder="Nro OT"> VIEJO-->
-                </div>
+                </div>-->
                 <div class="form-group col-md-6">
                     <label for="nro_ot">NRO OT</label>
-                    <input type="text" class="form-control" list="datos">
-                    <datalist id="datos">
-                            <% if (data) { %>
-                                <% data.forEach(function(fila_ot){ %>
-                                    <option value="<%= fila_ot %>" href="/ot/editar/<%= fila_ot %>"><%= fila_ot %></option>
-                                <% }) %>
-                            <% } %>
+                    <input type="text" class="form-control" list="lista_ot" id="nro_ot" name="nro_ot">
+                    <datalist id="lista_ot">
+                        <% if (data) { %>
+                            <% data.forEach(function(fila_ot){ %>
+                                <option value="<%= fila_ot %>"><%= fila_ot %></option>
+                            <% }) %>
+                        <% } %>
                     </datalist> 
                 </div>
             </div>

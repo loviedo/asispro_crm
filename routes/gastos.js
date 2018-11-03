@@ -156,23 +156,22 @@ app.get('/add', function(req, res, next){
 	if(user.length >0){
         req.getConnection(function(error, conn) {
             conn.query('SELECT ot_nro FROM ot ORDER BY ot_nro DESC',function(err, rows) {
-                //if(err) throw err
                 if (err) {
                     console.log(err);
                 }
                 else{
-                    rows.forEach(function(row) {
+                    datos = [];
+                    rows.forEach(function(row) {    
                         datos.push(row.ot_nro);
                     });
-                    //console.log(rows);//debug
+                    //console.log(datos);//debug
+                    // render to views/user/add.ejs
+                    res.render('gastos/add', {
+                        title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', 
+                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user, data: datos});
                 }
             })
         })
-        console.log(datos);
-        // render to views/user/add.ejs
-        res.render('gastos/add', {
-            title: 'Cargar nuevo GASTO', fecha: '', monto: '',exentas: '',iva_10: '',iva_5: '',gasto_real: '',concepto: '', 
-            fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user, data: datos})
     }
     else {
         // render to views/index.ejs template file
@@ -187,7 +186,7 @@ app.post('/add', function(req, res, next){
     req.assert('age', 'Edad es requerida').notEmpty()             //Validar edad
     req.assert('email', 'SE requiere un email valido').isEmail()  //Validar email
  */
-    var errors = req.validationErrors()
+    var errors = req.validationErrors();
     
     if(!errors) {//Si no hay errores, entonces conitnuamos
 
@@ -213,7 +212,7 @@ app.post('/add', function(req, res, next){
             iva_5: iva5,
             gasto_real: gasreal,
             concepto: req.sanitize('concepto').escape().trim(),
-            fact_estado: req.sanitize('fact_condicion').escape().trim(),
+            fact_condicion: req.sanitize('fact_condicion').escape().trim(),
             proveedor: req.sanitize('proveedor').escape().trim(),
             fact_nro: req.sanitize('fact_nro').escape().trim(),
             encargado: req.sanitize('encargado').escape().trim(),
@@ -246,28 +245,28 @@ app.post('/add', function(req, res, next){
                         encargado: gasto.encargado,
                         codigo: gasto.codigo,
                         nro_ot: gasto.nro_ot,
-                        usuario: user
+                        usuario: user,
+                        data: datos
                     })
                 } else {                
                     req.flash('success', 'Datos agregados correctamente!')
                     
                     // render to views/ot/add.ejs
-                    res.render('gastos/add', {
-                        title: 'Agregar nuevo Gasto',
-                        fecha: '',
-                        monto: '',
-                        exentas: '',
-                        iva_10: '',
-                        iva_5: '',
-                        gasto_real: '',
-                        concepto: '',
-                        fact_condicion: '',
-                        proveedor: '',
-                        fact_nro: '',
-                        encargado: '',
-                        codigo: '',
-                        nro_ot: '',
-                        usuario: user                 
+                    conn.query('SELECT ot_nro FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else{
+                            datos = [];
+                            rows.forEach(function(row) {    
+                                datos.push(row.ot_nro);
+                            });
+                            //console.log(datos);//debug
+                            // render to views/user/add.ejs
+                            res.render('gastos/add', {
+                                title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', 
+                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user, data: datos});
+                        }
                     })
                 }
             })
