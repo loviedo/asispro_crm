@@ -328,25 +328,25 @@ app.get('/editar/:id', function(req, res, next){
                                 datos.push(row);
                             });
                             //console.log(datos);//debug
-                            var date1 = rows2[0].fecha;
+                            var date1 = rows[0].fecha;
 
                             res.render('gastos/editar', {
                                 title: 'Editar GASTO', 
                                 //data: rows[0],
-                                id: rows2[0].id,
+                                id: rows[0].id,
                                 fecha: formatear_fecha_yyyymmdd(date1),
-                                monto: rows2[0].monto,
-                                exentas: rows2[0].exentas,
-                                iva_10: rows2[0].iva_10,
-                                iva_5: rows2[0].iva_5,
-                                gasto_real: rows2[0].gasto_real,
-                                concepto: rows2[0].concepto,
-                                fact_condicion: rows2[0].fact_condicion,
-                                proveedor: rows2[0].proveedor,
-                                fact_nro: rows2[0].fact_nro,
-                                encargado: rows2[0].encargado,
-                                codigo: rows2[0].codigo,
-                                nro_ot: rows2[0].nro_ot,
+                                monto: rows[0].monto,
+                                exentas: rows[0].exentas,
+                                iva_10: rows[0].iva_10,
+                                iva_5: rows[0].iva_5,
+                                gasto_real: rows[0].gasto_real,
+                                concepto: rows[0].concepto,
+                                fact_condicion: rows[0].fact_condicion,
+                                proveedor: rows[0].proveedor,
+                                fact_nro: rows[0].fact_nro,
+                                encargado: rows[0].encargado,
+                                codigo: rows[0].codigo,
+                                nro_ot: rows[0].nro_ot,
                                 usuario: user, data: datos
                             })
                         }

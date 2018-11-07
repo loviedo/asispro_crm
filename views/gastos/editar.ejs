@@ -173,14 +173,15 @@ function formatear_fecha(date) {
                         <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">
                                 ver OTs</button>
                         </label>
-                        <input type="text" class="form-control" list="lista_ot" id="nro_ot" name="nro_ot">
-                        <datalist id="lista_ot">
+                        <input type="text" class="form-control" id="nro_ot" name="nro_ot">
+                        <!--<input type="text" class="form-control" list="lista_ot" id="nro_ot" name="nro_ot">-->
+                        <!--<datalist id="lista_ot">
                             <% if (data) { %>
                                 <% data.forEach(function(fila_ot){ %>
                                     <option value="<%= fila_ot.ot_nro %>"><%= fila_ot.ot_nro %></option>
                                 <% }) %>
                             <% } %>
-                        </datalist> 
+                        </datalist> -->
                     </div> 
             </div>
             <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>
