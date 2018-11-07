@@ -110,11 +110,11 @@ function changeText() {
         document.getElementById("iva_5").disabled = false;
         document.getElementById("gasto_real").disabled = false;  
         //ASIGNAR VALORES
-        //document.getElementById("monto").value = ''; 
+        //document.getElementById("monto").value = 0; 
        // document.getElementById("exentas").value = ''; 
         //document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
         //document.getElementById("iva_5").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
-        document.getElementById("gasto_real").value = (parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value));
+        document.getElementById("gasto_real").value = ((parseInt(document.getElementById('monto').value) || 0) + (parseInt(document.getElementById('exentas').value) || 0));
     }
 
     //document.getElementById('gasto_real').value = parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value);
@@ -191,7 +191,7 @@ function cal_iva(){
                 </div>
                 <div class="form-group col-md-6">
                     <label for="gasto_real">GASTO REAL</label>
-                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL">
+                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL" onclick="changeText()">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="concepto">CONCEPTO</label>
