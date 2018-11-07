@@ -10,7 +10,23 @@ including header content which is common for all pages
 <% if (messages.success) { %>
     <p style="color:green"><%- messages.success %></p>
 <% } %>
- 
+
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+%>
 
 
 <!-- ESTILO PARA DATEPICKER -->
@@ -41,17 +57,33 @@ including header content which is common for all pages
       box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
       width: 190px;
     }
+    body .modal-dialog { /* Width */
+    max-width: 80%;
+    width: auto !important;
+    }
 </style>
 
-<script>
-SelectElement("fact_estado", fact_estado);
-SelectElement("fact_tipo", fact_tipo);
-
-function SelectElement(id, valueToSelect)
-{    
-    var element = document.getElementById(id);
-    element.value = valueToSelect;
-}
+<script type="text/javascript"> 
+    //al cargar la pagina ocultamos iva_5
+    window.onload = function() {
+      document.getElementById('iva_5').hidden = true;
+    };
+    
+    function cal_iva(){
+        var val = String(document.getElementById("calcu_iva").value);
+        if(val == "IVA_10"){
+            document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
+            document.getElementById("iva_5").value = 0; //iva 5% incluido
+            document.getElementById("iva_10").hidden = false;
+            document.getElementById("iva_5").hidden = true;
+        }
+        if(val == "IVA_5"){
+            document.getElementById("iva_10").value = 0; //iva 10% incluido
+            document.getElementById("iva_5").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
+            document.getElementById("iva_10").hidden = true;
+            document.getElementById("iva_5").hidden = false;
+        }
+    }
 </script>
 
 <!-- NAV PARA TITULO -->
@@ -91,12 +123,16 @@ function SelectElement(id, valueToSelect)
                         <input type="text" class="form-control" name="exentas" id="exentas" value="<%= exentas %>" placeholder="Exentas">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="iva_10">IVA 10%</label>
-                        <input type="text" class="form-control" name="iva_10" id="iva_10" value="<%= iva_10 %>" placeholder="IVA 10%">
+                        <label for="calcu_iva">PORCENTAJE IVA</label>
+                        <select class="form-control" name="calcu_iva" id="calcu_iva" onclick="cal_iva()">
+                            <option value="IVA_10">IVA 10%</option>
+                            <option value="IVA_5">IVA 5%</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="iva_5">IVA 5%</label>
-                        <input type="text" class="form-control" name="iva_5" id="iva_5" value="<%= iva_5 %>" placeholder="IVA 5%">
+                        <label for="iva_10">MONTO IVA</label>
+                        <input type="text" class="form-control" name="iva_10" id="iva_10" value="<%= iva_10 %>" placeholder="IVA...">
+                        <input type="text" class="form-control" name="iva_5" id="iva_5" value="<%= iva_5 %>" placeholder="IVA..." >
                     </div>
                     <div class="form-group col-md-6">
                         <label for="gasto_real">GASTO REAL</label>
@@ -117,20 +153,6 @@ function SelectElement(id, valueToSelect)
                     <div class="form-group col-md-6">
                         <label for="encargado">ENCARGADO</label>
                         <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" placeholder="ENCARGADO GASTO">
-                        <!--<select class="form-control" name="encargado" id="encargado" value="<%= encargado %>" placeholder="ENCARGADO GASTO">
-                            <option value="CARLOS MALDONADO">CARLOS MALDONADO</option>
-                            <option value="CARLOS O">CARLOS O</option>
-                            <option value="CRISTINA I">CRISTINA I</option>
-                            <option value="JOSE OSORIO">JOSE OSORIO</option>
-                            <option value="JOSE LOPEZ">JOSE LOPEZ</option>
-                            <option value="JUAN ARIAS">JUAN ARIAS</option>
-                            <option value="JUAN ROMERO">JUAN ROMERO</option>
-                            <option value="KAREN">KAREN</option>
-                            <option value="MARIO JARA">MARIO JARA</option>
-                            <option value="OSCAR GONZALEZ">OSCAR GONZALEZ</option>
-                            <option value="RODRIGO BOBADILLA">RODRIGO BOBADILLA</option>
-                            <option value="SR ROMERO">SR ROMERO</option>
-                        </select>-->
                     </div>
                     <div class="form-group col-md-6">
                         <label for="codigo">CODIGO</label>
@@ -148,9 +170,18 @@ function SelectElement(id, valueToSelect)
                         </select>
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="nro_ot">NRO OT</label>
-                        <input type="text" class="form-control" name="nro_ot" id="nro_ot" value="<%= nro_ot %>" placeholder="Nro OT">
-                    </div>  
+                        <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">
+                                ver OTs</button>
+                        </label>
+                        <input type="text" class="form-control" list="lista_ot" id="nro_ot" name="nro_ot">
+                        <datalist id="lista_ot">
+                            <% if (data) { %>
+                                <% data.forEach(function(fila_ot){ %>
+                                    <option value="<%= fila_ot.ot_nro %>"><%= fila_ot.ot_nro %></option>
+                                <% }) %>
+                            <% } %>
+                        </datalist> 
+                    </div> 
             </div>
             <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>
             <!-- <input type="hidden" name="_method" value="POST" />  no se por que esta aca-->
@@ -158,6 +189,74 @@ function SelectElement(id, valueToSelect)
         
     </div>
 </nav>
+
+
+<!-- MODAL -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" width="100%" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Listado de OTs</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- ACA PONEMOS LA TABLA QUE DEBE SER COMO /LISTAR -->
+
+<div class="container-fluid" width="100%">
+        <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>Nro OT</th>
+                        <th>FECHA EMISION</th>
+                        <th>F INI EJECUCION</th>
+                        <th>F FIN EJECUCION</th>
+                        <th>Nro FACTURA</th>
+                        <th>Est FACTURA</th>
+                        <th>Nro RECIBO</th>
+                        <th>Nro REMISION</th>
+                        <th>TIPO FACTURA</th>       
+                        <th>CLIENTE</th>
+                        <th>OBRA</th>
+                        <th>DESCRIPCION</th>           
+                    </tr>
+                </thead>
+            <tbody>
+                    <% if (data) { %>
+                        <% data.forEach(function(ot){ %>
+                <tr>
+                    <td><%= ot.ot_nro %></td>
+                    <td><%= formatear_fecha(ot.fec_emision) %></td>
+                    <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                    <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
+                    <td><%= ot.fact_nro %></td>
+                    <td><%= ot.fact_estado %></td>
+                    <td><%= ot.recibo_nro %></td>
+                    <td><%= ot.remision_nro %></td>
+                    <td><%= ot.fact_tipo %></td>
+                    <td><%= ot.cliente %></td>
+                    <td><%= ot.obra %></td>
+                    <td><%= ot.descripcion %></td>
+                </tr>
+                <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+        </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

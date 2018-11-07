@@ -42,6 +42,8 @@ var ots = require('./routes/ot');
 var gastos = require('./routes/gastos');
 var prov = require('./routes/proveedor');
 var rrhh = require('./routes/rrhh');
+var clientes = require('./routes/clientes');
+var ingresos = require('./routes/ingresos');
  
 /**
  * Express Validator Middleware for Form Validation
@@ -116,6 +118,8 @@ app.use('/ot', ots);//gestion de OT
 app.use('/gastos', gastos);//gestion de GASTOS
 app.use('/proveedor', prov);//gestion de proveedores
 app.use('/rrhh', rrhh);//gestion de proveedores
+app.use('/clientes', clientes);//gestion de clientes
+app.use('/ingresos', ingresos);//gestion de ingresos
 
 /*
 app.get('/login', index);//pagina de login usuario

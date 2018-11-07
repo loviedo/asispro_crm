@@ -1,0 +1,140 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ../layouts/header.ejs %>    
+        
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ 
+
+
+<!-- ESTILO PARA DATEPICKER -->
+<style>
+    [type="date"] {
+      background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+    }
+    [type="date"]::-webkit-inner-spin-button {
+      display: none;
+    }
+    [type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 0;
+    }
+    
+    /* custom styles */
+    body {
+      background: #e5e5e5;
+      font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+    }
+    label {
+      display: block;
+    }
+    input {
+      border: 1px solid #c4c4c4;
+      border-radius: 5px;
+      background-color: #fff;
+      padding: 3px 5px;
+      box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+      width: 190px;
+    }
+</style>
+
+
+<!-- NAV PARA TITULO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <h3>Editar INGRESO</h3>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        
+        <form action="/ingresos/editar/<%= id %>" method="post" name="form1">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fecha">FECHA</label>
+                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha Ingreso" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente">CLIENTE</label>
+                    <input type="text" class="form-control" list="lista_cli" id="cliente" name="cliente">
+                    <datalist id="lista_cli">
+                        <% if (data) { %>
+                            <% data.forEach(function(fila_cli){ %>
+                                <option value="<%= fila_cli %>"><%= fila_cli %></option>
+                            <% }) %>
+                        <% } %>
+                    </datalist> 
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="obra">OBRA</label>
+                    <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra Descripcion">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="pago">PAGO</label>
+                    <input type="text" class="form-control" name="pago" id="pago" value="<%= pago %>" placeholder="Pago...">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fact_nro">FACTURA NRO</label>
+                    <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fact_condicion">CONDICION FACTURA</label>
+                    <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" placeholder="condicion Factura">
+                        <option value="CONTADO">CONTADO</option>
+                        <option value="CREDITO">CREDITO</option>
+                        <option value="COMP_INGRESO">COMPROBANTE DE INGRESO</option>
+                        <option value="RECIBO">RECIBO</option>
+                        <option value="RECIBO_COMUN">RECIBO COMUN</option>
+                        <option value="BOLETA_PAGO">BOLETA DE PAGO</option>
+                        <option value="S_F">S/F</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="monto">MONTO</label>
+                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="monto_s_iva">MONTO sin IVA</label>
+                    <input type="text" class="form-control" name="monto_s_iva" id="monto_s_iva" value="<%= monto_s_iva %>" placeholder="MONTO sin IVA">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="iva">IVA</label>
+                    <input type="text" class="form-control" name="iva_10" id="iva_10" value="<%= iva_10 %>" placeholder="IVA 10%">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="retencion">RETENCION</label>
+                    <input type="text" class="form-control" name="retencion" id="retencion" value="<%= retencion %>" placeholder="Retencion">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="porcentaje">PORCENTAJE</label>
+                    <input type="text" class="form-control" name="porcentaje" id="porcentaje" value="<%= porcentaje %>" placeholder="Porcentaje">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="total_facturado">TOTAL FACTURADO</label>
+                    <input type="text" class="form-control" name="total_facturado" id="total_facturado" value="<%= total_facturado %>" placeholder="Total Facturado">
+                </div>
+            </div>
+            <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>
+            <!-- <input type="hidden" name="_method" value="POST" />  no se por que esta aca-->
+        </form>
+        
+    </div>
+</nav>
+
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+
+    </div>
+</nav>
+
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>
