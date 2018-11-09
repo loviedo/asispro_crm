@@ -91,6 +91,7 @@ function generar_excel_gastos(rows){
     worksheet.cell(1,11).string('ENCARGADO').style(style);
     worksheet.cell(1,12).string('CODIGO').style(style);
     worksheet.cell(1,13).string('OT NRO').style(style);
+    worksheet.cell(1,14).string('IMPUTADO').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
@@ -109,6 +110,7 @@ function generar_excel_gastos(rows){
         worksheet.cell(i+1,11).string(String(row.encargado)).style(style);
         worksheet.cell(i+1,12).number(Number(row.codigo)).style(style1);
         worksheet.cell(i+1,13).number(Number(row.nro_ot)).style(style1);
+        worksheet.cell(i+1,14).string(String(row.imputado)).style(style);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -168,7 +170,7 @@ app.get('/add', function(req, res, next){
                     // render to views/user/add.ejs
                     res.render('gastos/add', {
                         title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', 
-                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user, data: datos});
+                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'', usuario_insert: user, usuario: user, data: datos});
                 }
             })
         })
@@ -218,6 +220,7 @@ app.post('/add', function(req, res, next){
             encargado: req.sanitize('encargado').escape().trim(),
             codigo: cod,
             nro_ot: ot,
+            imputado: req.sanitize('imputado').escape().trim(),
             usuario_insert: user
             //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
         }   
@@ -245,6 +248,7 @@ app.post('/add', function(req, res, next){
                         encargado: gasto.encargado,
                         codigo: gasto.codigo,
                         nro_ot: gasto.nro_ot,
+                        imputado: gasto.imputado,
                         usuario: user,
                         data: datos
                     })
@@ -265,7 +269,7 @@ app.post('/add', function(req, res, next){
                             // render to views/user/add.ejs
                             res.render('gastos/add', {
                                 title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', 
-                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', usuario_insert: user, usuario: user, data: datos});
+                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', imputado:'', usuario_insert: user, usuario: user, data: datos});
                         }
                     })
                 }
@@ -299,6 +303,7 @@ app.post('/add', function(req, res, next){
             encargado: req.body.encargado,
             codigo: req.body.codigo,
             nro_ot: req.body.nro_ot,
+            imputado: req.body.imputado,
             usuario_insert: user
         })
     }
@@ -347,6 +352,7 @@ app.get('/editar/:id', function(req, res, next){
                                 encargado: rows[0].encargado,
                                 codigo: rows[0].codigo,
                                 nro_ot: rows[0].nro_ot,
+                                imputado: rows[0].imputado,
                                 usuario: user, data: datos
                             })
                         }
@@ -386,8 +392,6 @@ app.post('/editar/:id', function(req, res, next) {
         var gasreal = Number(req.sanitize('gasto_real').escape().trim());
         var cod = Number(req.sanitize('codigo').escape().trim());
         var ot = Number(req.sanitize('nro_ot').escape().trim());
-    
-
 
         var gasto = {
             fecha: formatear_fecha_yyyymmdd(date1),
@@ -403,6 +407,7 @@ app.post('/editar/:id', function(req, res, next) {
             encargado: req.sanitize('encargado').escape().trim(),
             codigo: cod,
             nro_ot: ot,
+            imputado: req.sanitize('imputado').escape().trim(),
             usuario_insert: user
             //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
         }  
@@ -430,6 +435,7 @@ app.post('/editar/:id', function(req, res, next) {
                         encargado: req.body.encargado,
                         codigo: req.body.codigo,
                         nro_ot: req.body.nro_ot,
+                        imputado: req.body.imputado,
                         usuario_insert: user,
                         usuario: user
                     })
@@ -453,6 +459,7 @@ app.post('/editar/:id', function(req, res, next) {
                         encargado: req.body.encargado,
                         codigo: req.body.codigo,
                         nro_ot: req.body.nro_ot,
+                        imputado: req.body.imputado,
                         usuario_insert: user,
                         usuario: user               
                     })
@@ -486,6 +493,7 @@ app.post('/editar/:id', function(req, res, next) {
             encargado: req.body.encargado,
             codigo: req.body.codigo,
             nro_ot: req.body.nro_ot,
+            imputado: req.body.imputado,
             usuario_insert: user
         })
     }
@@ -519,7 +527,6 @@ app.post('/descargar', function(req, res, next) {
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
     }
 });
-
 
 // DELETE USER
 app.delete('/eliminar/(:id)', function(req, res, next) {

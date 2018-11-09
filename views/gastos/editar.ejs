@@ -183,6 +183,10 @@ function formatear_fecha(date) {
                             <% } */%>
                         </datalist> -->
                     </div> 
+                    <div class="form-group col-md-6">
+                        <label for="imputado">IMPUTADO A</label>
+                        <input type="text" class="form-control" name="imputado" id="imputado" value="<%= imputado %>" placeholder="Imputado a...">
+                    </div>
             </div>
             <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>
             <!-- <input type="hidden" name="_method" value="POST" />  no se por que esta aca-->
@@ -221,7 +225,7 @@ function formatear_fecha(date) {
                         <th>TIPO FACTURA</th>       
                         <th>CLIENTE</th>
                         <th>OBRA</th>
-                        <th>DESCRIPCION</th>           
+                        <th>DESCRIPCION</th>         
                     </tr>
                 </thead>
             <tbody>
