@@ -47,24 +47,63 @@ including header content which is common for all pages
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
-        <h3>Editar EMPLEADO</h3>
+        <h3>EDITAR EMPLEADO</h3>
     </div>
 </nav>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
-        <form action="/rrhh/add" method="post" name="form1">
+        <form action="/rrhh/editar/<%= id %>" method="post" name="form1">
             <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="nombre">NOMBRE</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" value="<%= nombre %>" placeholder="Nombre Empleado">
+                <div class="form-group col-md-6">
+                    <label for="codigo">CODIGO</label>
+                    <input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="Codigo Empleado">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="nombre">NOMBRE</label>
+                    <input type="text" class="form-control" name="nombre" id="nombre" value="<%= nombre %>" placeholder="Nombre Empleado">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="telefono">TELEFONO</label>
+                    <input type="text" class="form-control" name="telefono" id="telefono" value="<%= telefono %>" placeholder="Telefono Empleado">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="ocupacion">OCUPACION</label>
+                    <input type="text" class="form-control" name="ocupacion" id="ocupacion" value="<%= ocupacion %>" placeholder="Ocupacion Empleado">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fecha_inicio">ANTIGUEDAD</label>
+                    <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="<%= fecha_inicio %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="motivo_salida">MOTIVO</label>
+                    <input type="text" class="form-control" name="motivo_salida" id="motivo_salida" value="<%= motivo_salida %>" placeholder="Motivo Salida">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fecha_nac">FECHA NACIMIENTO</label>
+                    <input type="date" class="form-control" name="fecha_nac" id="fecha_nac" value="<%= fecha_nac %>" placeholder="Fecha Nacimiento" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="direccion">DIRECCION</label>
+                    <input type="text" class="form-control" name="direccion" id="direccion" value="<%= direccion %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="hijos">HIJOS</label>
+                    <input type="text" class="form-control" name="hijos" id="hijos" value="<%= hijos %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="edad">EDAD</label>
+                    <input type="text" class="form-control" name="edad" id="edad" value="<%= edad %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="tipo_empleado">TIPO</label>
+                    <select class="form-control" name="tipo_empleado" id="tipo_empleado" value="<%= tipo_empleado %>">
+                        <option value="FIJO">FIJO</option>
+                        <option value="TERCERIZADO">TERCERIZADO</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-                <label for="telefono">TELEFONO</label>
-                <input type="text" class="form-control" name="telefono" id="telefono" value="<%= telefono %>" placeholder="Telefono Empleado">
-            </div>
-            </div>
-            <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
+            <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">ACTUALIZAR</button>
         </form>
     </div>
 </nav>

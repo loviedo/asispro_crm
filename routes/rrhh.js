@@ -5,19 +5,39 @@ var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
 
-function formatear_fecha(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
+function formatear_fecha_yyyymmdd(date) {
+    var d;
+
+    if(date)
+    {
+    //hay que ver si es string o date el objeto que viene
+    if(date.constructor == String)
+    {   
+        var arr = date.split("-");
+        /*d = new Date(arr[0],arr[1],arr[2],0,0,0,0);
+        month = '' + (d.getMonth());
+        day = '' + (d.getDate());
+        year = d.getFullYear();*/
+        month = arr[1];
+        day = arr[2];
+        year = arr[0];
+
+
+    }
+    else
+    {   d = new Date(date);
+        month = '' + (d.getMonth()+1);
+        day = '' + (d.getDate());
         year = d.getFullYear();
+    }
+
 
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
-    
-    if(month == 12 && day == 31 && year == 1969)
-    { return "-";}
-    else
-    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+
+    return [year, month, day].join('-');//retornamos valor como a mysql le gusta
+    }
+    else{return null;}
 }
 
 function generar_excel_emples(rows){
@@ -42,15 +62,33 @@ function generar_excel_emples(rows){
 
     //dibujamos el excel
     //primero la cabecera
-    worksheet.cell(1,1).string('NOMBRE').style(style);
-    worksheet.cell(1,2).string('TELEFONO').style(style);
+    worksheet.cell(1,1).string('CODIGO').style(style);
+    worksheet.cell(1,2).string('NOMBRE').style(style);
+    worksheet.cell(1,3).string('TELEFONO').style(style);
+    worksheet.cell(1,4).string('OCUPACION').style(style);
+    worksheet.cell(1,5).string('ANTIGUEDAD').style(style);
+    worksheet.cell(1,6).string('MOTIVO').style(style);
+    worksheet.cell(1,7).string('FECHA NACIMIENTO').style(style);
+    worksheet.cell(1,8).string('DIRECCION').style(style);
+    worksheet.cell(1,9).string('HiJOS').style(style);
+    worksheet.cell(1,10).string('EDAD').style(style);
+    worksheet.cell(1,11).string('TIPO').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).string(String(row.nombre)).style(style);
-        worksheet.cell(i+1,2).number(Number(row.telefono)).style(style);
+        worksheet.cell(i+1,1).string(String(row.codigo)).style(style);
+        worksheet.cell(i+1,2).string(String(row.nombre)).style(style);
+        worksheet.cell(i+1,3).string(String(row.telefono)).style(style);
+        worksheet.cell(i+1,4).string(String(row.ocupacion)).style(style);
+        worksheet.cell(i+1,5).string(String(formatear_fecha(row.fecha_inicio))).style(style);
+        worksheet.cell(i+1,6).string(String(row.motivo)).style(style);
+        worksheet.cell(i+1,7).string(String(formatear_fecha(row.fecha_nac))).style(style);
+        worksheet.cell(i+1,8).string(String(row.direccion)).style(style);
+        worksheet.cell(i+1,9).number(Number(row.hijos)).style(style);
+        worksheet.cell(i+1,10).number(Number(row.edad)).style(style);
+        worksheet.cell(i+1,11).string(String(row.tipo_empleado)).style(style);
         i=i+1;
         //console.log(row.descripcion);//debug
     });
@@ -96,7 +134,8 @@ app.get('/add', function(req, res, next){
 	if(user.length >0){
         // render to views/user/add.ejs
         res.render('rrhh/add', {
-            title: 'Cargar nuevo EMPLEADO', nombre: '', telefono: '', usuario_insert: user, usuario: user})
+            title: 'Cargar nuevo EMPLEADO', codigo:'', nombre: '', telefono: '',ocupacion:'', fecha_inicio:'',motivo_salida:'',fecha_nac:'',
+            direccion:'',hijos:'',edad:'',tipo_empleado:'', usuario_insert: user, usuario: user})
     }
     else {
         // render to views/index.ejs template file
@@ -111,15 +150,24 @@ app.post('/add', function(req, res, next){
     
     if(!errors) {//Si no hay errores, entonces conitnuamos
 
-        var gasto = {
+        var recurso = {
+            codigo: req.sanitize('codigo').escape().trim(),
             nombre: req.sanitize('nombre').escape().trim(),
             telefono: req.sanitize('telefono').escape().trim(),
+            ocupacion: req.sanitize('ocupacion').escape().trim(),
+            fecha_inicio: formatear_fecha_yyyymmdd(req.sanitize('fecha_inicio').escape().trim()),
+            motivo_salida: req.sanitize('motivo_salida').escape().trim(),
+            fecha_nac: formatear_fecha_yyyymmdd(req.sanitize('fecha_nac').escape().trim()),
+            direccion: req.sanitize('direccion').escape().trim(),
+            hijos: Number(req.sanitize('hijos').escape().trim()),
+            edad: Number(req.sanitize('edad').escape().trim()),
+            tipo_empleado: req.sanitize('tipo_empleado').escape().trim(),
             usuario_insert: user
         }   
         
         //conectamos a la base de datos
         req.getConnection(function(error, conn) {
-            conn.query('INSERT INTO empleados SET ?', gasto, function(err, result) {
+            conn.query('INSERT INTO empleados SET ?', recurso, function(err, result) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
@@ -127,8 +175,17 @@ app.post('/add', function(req, res, next){
                     // render to views/factura/add.ejs
                     res.render('rrhh/add', {
                         title: 'Agregar Nuevo EMPLEADO',
-                        nombre: gasto.fecha,
-                        telefono: gasto.monto,
+                        codigo: recurso.codigo,
+                        nombre: recurso.nombre,
+                        telefono: recurso.telefono,
+                        ocupacion: recurso.ocupacion,
+                        fecha_inicio: recurso.fecha_inicio,
+                        motivo_salida: recurso.motivo_salida,
+                        fecha_nac: recurso.fecha_nac,
+                        direccion: recurso.direccion,
+                        hijos: recurso.hijos,
+                        edad: recurso.edad,
+                        tipo_empleado: recurso.tipo_empleado,
                         usuario: user
                     })
                 } else {                
@@ -137,8 +194,17 @@ app.post('/add', function(req, res, next){
                     // render to views/ot/add.ejs
                     res.render('rrhh/add', {
                         title: 'Agregar nuevo EMPLEADO',
-                        nombre: '',
-                        telefono: '',
+                        codigo: recurso.codigo,
+                        nombre: recurso.nombre,
+                        telefono: recurso.telefono,
+                        ocupacion: recurso.ocupacion,
+                        fecha_inicio: recurso.fecha_inicio,
+                        motivo_salida: recurso.motivo_salida,
+                        fecha_nac: recurso.fecha_nac,
+                        direccion: recurso.direccion,
+                        hijos: recurso.hijos,
+                        edad: recurso.edad,
+                        tipo_empleado: recurso.tipo_empleado,
                         usuario: user                 
                     })
                 }
@@ -159,8 +225,17 @@ app.post('/add', function(req, res, next){
          */ 
         res.render('rrhh/add', { 
             title: 'Agregar Nuevo GASTO',
-            nombre: req.body.nombre,
-            telefono: req.body.telefono,
+            codigo: recurso.codigo,
+            nombre: recurso.fecha,
+            telefono: recurso.telefono,
+            ocupacion: recurso.ocupacion,
+            fecha_inicio: recurso.fecha_inicio,
+            motivo_salida: recurso.motivo_salida,
+            fecha_nac: recurso.fecha_nac,
+            direccion: recurso.direccion,
+            hijos: recurso.hijos,
+            edad: recurso.edad,
+            tipo_empleado: recurso.tipo_empleado,
             usuario_insert: user
         })
     }
@@ -181,10 +256,18 @@ app.get('/editar/:id', function(req, res, next){
 
                 res.render('rrhh/editar', {
                     title: 'Editar EMPLEADO', 
-                    //data: rows[0],
                     id: rows[0].id,
+                    codigo: rows[0].codigo,
                     nombre: rows[0].nombre,
                     telefono: rows[0].telefono,
+                    ocupacion: rows[0].ocupacion,
+                    fecha_inicio: formatear_fecha_yyyymmdd(rows[0].fecha_inicio),
+                    motivo_salida: rows[0].motivo_salida,
+                    fecha_nac: formatear_fecha_yyyymmdd(rows[0].fecha_nac),
+                    direccion: rows[0].direccion,
+                    hijos: rows[0].hijos,
+                    edad: rows[0].edad,
+                    tipo_empleado: rows[0].tipo_empleado,
                     usuario: user
                 })
             }            
@@ -200,11 +283,20 @@ app.post('/editar/:id', function(req, res, next) {
     */
     var errors = req.validationErrors()
     
-    if( !errors ) {   //No errors were found.  Passed Validation!
+    if( !errors ) {//No errors were found.  Passed Validation!
 
         var emple = {
+            codigo: req.sanitize('codigo').escape().trim(),
             nombre: req.sanitize('nombre').escape().trim(),
             telefono: req.sanitize('telefono').escape().trim(),
+            ocupacion: req.sanitize('ocupacion').escape().trim(),
+            fecha_inicio: formatear_fecha_yyyymmdd(req.sanitize('fecha_inicio').escape().trim()),
+            motivo_salida: req.sanitize('motivo_salida').escape().trim(),
+            fecha_nac: formatear_fecha_yyyymmdd(req.sanitize('fecha_nac').escape().trim()),
+            direccion: req.sanitize('direccion').escape().trim(),
+            hijos: Number(req.sanitize('hijos').escape().trim()),
+            edad: Number(req.sanitize('edad').escape().trim()),
+            tipo_empleado: req.sanitize('tipo_empleado').escape().trim(),
             usuario_insert: user
         }  
         
@@ -217,9 +309,18 @@ app.post('/editar/:id', function(req, res, next) {
                     // render to views/rrhh/add.ejs
                     res.render('rrhh/editar', {
                         title: 'Editar EMPLEADO',
+                        id: req.params.id,
+                        codigo: req.body.codigo,
                         nombre: req.body.nombre,
                         telefono: req.body.telefono,
-                        usuario_insert: user,
+                        ocupacion: req.body.ocupacion,
+                        fecha_inicio: req.body.fecha_inicio,
+                        motivo_salida: req.body.motivo_salida,
+                        fecha_nac: req.body.fecha_nac,
+                        direccion: req.body.direccion,
+                        hijos: req.body.hijos,
+                        edad: req.body.edad,
+                        tipo_empleado: req.body.tipo_empleado,
                         usuario: user
                     })
                 } else {                
@@ -228,8 +329,18 @@ app.post('/editar/:id', function(req, res, next) {
                     // render to views/rrhh/add.ejs
                     res.render('rrhh/editar', {
                         title: 'Editar EMPLEADO',
+                        id: req.param.id,
+                        codigo: req.body.codigo,
                         nombre: req.body.nombre,
                         telefono: req.body.telefono,
+                        ocupacion: req.body.ocupacion,
+                        fecha_inicio: req.body.fecha_inicio,
+                        motivo_salida: req.body.motivo_salida,
+                        fecha_nac: req.body.fecha_nac,
+                        direccion: req.body.direccion,
+                        hijos: req.body.hijos,
+                        edad: req.body.edad,
+                        tipo_empleado: req.body.tipo_empleado,
                         usuario_insert: user,
                         usuario: user               
                     })
@@ -246,8 +357,17 @@ app.post('/editar/:id', function(req, res, next) {
 
         res.render('rrhh/editar', { 
             title: 'Editar EMPLEADO',
+            codigo: req.body.codigo,
             nombre: req.body.nombre,
             telefono: req.body.telefono,
+            ocupacion: req.body.ocupacion,
+            fecha_inicio: req.body.fecha_inicio,
+            motivo_salida: req.body.motivo_salida,
+            fecha_nac: req.body.fecha_nac,
+            direccion: req.body.direccion,
+            hijos: req.body.hijos,
+            edad: req.body.edad,
+            tipo_empleado: req.body.tipo_empleado,
             usuario_insert: user
         })
     }
@@ -281,7 +401,6 @@ app.post('/descargar', function(req, res, next) {
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
     }
 });
-
 
 // DELETE EMPLEADO
 app.delete('/eliminar/(:id)', function(req, res, next) {
