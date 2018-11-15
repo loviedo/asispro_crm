@@ -26,8 +26,6 @@ function formatear_fecha(date) {
     {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
 }
 %>
-
-
 <!-- ESTILO PARA DATEPICKER -->
 <style>
 [type="date"] {
@@ -69,6 +67,17 @@ body .modal-dialog { /* Width */
 window.onload = function() {
   document.getElementById('iva_5').hidden = true;
 };
+
+
+var table = $('#tablex').DataTable();
+$('#tablex').on('click', '.close', function(){
+    var value = $('#search.dt').val();
+    $('#nro_ot').val(value);
+    $('#tablex').modal('hide');
+    console.log(value); // <-- the value
+    //var value = $('.dataTables_filter input').val();
+    //console.log(value); // <-- the value
+});
 
 function changeText() {
     //LOGICA CARGA GASTOS

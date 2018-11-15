@@ -4,7 +4,7 @@ var path = require('path');
 var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
-var datos = []; 
+//var datos = []; 
 
 function formatear_fecha_yyyymmdd(date) {
     var d;
@@ -59,7 +59,7 @@ function formatear_fecha(date) {
 function generar_excel_ingresos(rows){
     var workbook = new excel.Workbook();
     //Add Worksheets to the workbook
-    var worksheet = workbook.addWorksheet('GASTOS');
+    var worksheet = workbook.addWorksheet('INGRESOS');
     // Create a reusable style
     var style = workbook.createStyle({
     font: {
@@ -81,15 +81,15 @@ function generar_excel_ingresos(rows){
     worksheet.cell(1,1).string('FECHA').style(style);
     worksheet.cell(1,2).string('CLIENTE').style(style);
     worksheet.cell(1,3).string('OBRA').style(style);
-    worksheet.cell(1,4).string('PAGO').style(style);
-    worksheet.cell(1,5).string('FACTURA NRO').style(style);
-    worksheet.cell(1,6).string('FACTURA CONDICION').style(style);
-    worksheet.cell(1,7).string('MONTO').style(style);
-    worksheet.cell(1,8).string('MONTO SIN IVA').style(style);
-    worksheet.cell(1,9).string('IVA').style(style);
-    worksheet.cell(1,10).string('RETENCION').style(style);
-    worksheet.cell(1,11).string('PORCENTAJE').style(style);
-    worksheet.cell(1,12).string('TOTAL FACTURADO').style(style);
+    //worksheet.cell(1,4).string('PAGO').style(style);
+    worksheet.cell(1,4).string('FACTURA NRO').style(style);
+    worksheet.cell(1,5).string('FACTURA CONDICION').style(style);
+    worksheet.cell(1,6).string('MONTO').style(style);
+    //worksheet.cell(1,8).string('MONTO SIN IVA').style(style);
+    worksheet.cell(1,7).string('IVA').style(style);
+    worksheet.cell(1,8).string('RETENCION').style(style);
+    worksheet.cell(1,9).string('PORCENTAJE').style(style);
+    worksheet.cell(1,11).string('TOTAL FACTURADO').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
@@ -98,20 +98,20 @@ function generar_excel_ingresos(rows){
         worksheet.cell(i+1,1).string(String(formatear_fecha(row.fecha))).style(style);
         worksheet.cell(i+1,2).string(String(row.cliente)).style(style);
         worksheet.cell(i+1,3).string(String(row.obra)).style(style);
-        worksheet.cell(i+1,4).string(String(row.pago)).style(style);
-        worksheet.cell(i+1,5).string(String(row.fact_nro)).style(style);
-        worksheet.cell(i+1,6).string(String(row.fact_condicion)).style(style);
-        worksheet.cell(i+1,7).number(Number(row.monto)).style(style);
-        worksheet.cell(i+1,8).number(Number(row.monto_s_iva)).style(style);
-        worksheet.cell(i+1,9).number(Number(row.iva)).style(style);
-        worksheet.cell(i+1,10).number(Number(row.retencion)).style(style);
-        worksheet.cell(i+1,11).number(Number(row.porcentaje)).style(style);
-        worksheet.cell(i+1,12).number(Number(row.total_facturado)).style(style1);
+        //worksheet.cell(i+1,4).string(String(row.pago)).style(style);
+        worksheet.cell(i+1,4).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,5).string(String(row.fact_condicion)).style(style);
+        worksheet.cell(i+1,6).number(Number(row.monto)).style(style);
+        //worksheet.cell(i+1,8).number(Number(row.monto_s_iva)).style(style);
+        worksheet.cell(i+1,7).number(Number(row.iva)).style(style);
+        worksheet.cell(i+1,8).number(Number(row.retencion)).style(style);
+        worksheet.cell(i+1,9).number(Number(row.porcentaje)).style(style);
+        worksheet.cell(i+1,10).number(Number(row.total_facturado)).style(style1);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
     });
-    workbook.write('Listado_GASTOS.xlsx');
+    workbook.write('Listado_INGRESOS.xlsx');
 }
 
 // MOSTRAR LISTADO DE INGRESOS
@@ -153,7 +153,7 @@ app.get('/add', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){
         res.render('ingresos/add', {
-            title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',pago: '',fact_nro: '',fact_condicion: '',monto: '0',monto_s_iva: '0', 
+            title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',fact_nro: '',fact_condicion: '',monto: '0', 
             iva: '',retencion: '',porcentaje: '', total_facturado: '', usuario_insert: user, usuario: user});
     }
     else {
@@ -181,11 +181,9 @@ app.post('/add', function(req, res, next){
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').escape().trim()),
             cliente: req.sanitize('cliente').escape().trim(),
             obra: req.sanitize('obra').escape().trim(),
-            pago: req.sanitize('pago').escape().trim(),
             fact_nro: req.sanitize('fact_nro').escape().trim(),
             fact_condicion: req.sanitize('fact_condicion').escape().trim(),
             monto: Number(req.sanitize('monto').escape().trim()),
-            monto_s_iva: Number(req.sanitize('monto_s_iva').escape().trim()),
             iva: Number(req.sanitize('iva').escape().trim()),
             retencion: Number(req.sanitize('retencion').escape().trim()),
             porcentaje: Number(req.sanitize('porcentaje').escape().trim()),
@@ -207,11 +205,9 @@ app.post('/add', function(req, res, next){
                         fecha: ingreso.fecha,
                         cliente: ingreso.cliente,
                         obra: ingreso.obra,
-                        pago: ingreso.pago,
                         fact_nro: ingreso.fact_nro,
                         fact_condicion: ingreso.fact_condicion,
                         monto: ingreso.monto,
-                        monto_s_iva: ingreso.monto_s_iva,
                         iva: ingreso.iva,
                         retencion: ingreso.retencion,
                         porcentaje: ingreso.porcentaje,
@@ -225,7 +221,7 @@ app.post('/add', function(req, res, next){
                     //console.log(datos);//debug
                     // render to views/user/add.ejs
                     res.render('ingresos/add', {
-                        title: 'Cargar nuevo INGRESO', fecha: '',cliente: '', obra: '',pago: '',fact_nro: '',fact_condicion: '',monto: '0',monto_s_iva: '0', 
+                        title: 'Cargar nuevo INGRESO', fecha: '',cliente: '', obra: '',fact_nro: '',fact_condicion: '',monto: '0',
                         iva: '',retencion: '',porcentaje: '', total_facturado: '', usuario_insert: user, usuario: user});
                 }
             })
@@ -248,11 +244,9 @@ app.post('/add', function(req, res, next){
             fech: ingreso.fecha,
             cliente: ingreso.cliente,
             obra: ingreso.obra,
-            pago: ingreso.pago,
             fact_nro: ingreso.fact_nro,
             fact_condicion: ingreso.fact_condicion,
             monto: ingreso.monto,
-            monto_s_iva: ingreso.monto_s_iva,
             iva: ingreso.iva,
             retencion: ingreso.retencion,
             porcentaje: ingreso.porcentaje,
@@ -285,11 +279,9 @@ app.get('/editar/:id', function(req, res, next){
                     fecha: formatear_fecha_yyyymmdd(date1),
                     cliente: rows[0].cliente,
                     obra: rows[0].obra,
-                    pago: rows[0].pago,
                     fact_nro: rows[0].fact_nro,
                     fact_condicion: rows[0].fact_condicion,
                     monto: rows[0].monto,
-                    monto_s_iva: rows[0].monto_s_iva,
                     iva: rows[0].iva,
                     retencion: rows[0].retencion,
                     porcentaje: rows[0].porcentaje,
@@ -316,11 +308,9 @@ app.post('/editar/:id', function(req, res, next) {
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').escape().trim()),
             cliente: req.sanitize('cliente').escape().trim(),
             obra: req.sanitize('obra').escape().trim(),
-            pago: req.sanitize('pago').escape().trim(),
             fact_nro: req.sanitize('fact_nro').escape().trim(),
             fact_condicion: req.sanitize('fact_condicion').escape().trim(),
             monto: Number(req.sanitize('monto').escape().trim()),
-            monto_s_iva: Number(req.sanitize('monto_s_iva').escape().trim()),
             iva: Number(req.sanitize('iva').escape().trim()),
             retencion: Number(req.sanitize('retencion').escape().trim()),
             porcentaje: Number(req.sanitize('porcentaje').escape().trim()),
@@ -341,11 +331,9 @@ app.post('/editar/:id', function(req, res, next) {
                         fecha: ingreso.fecha,
                         cliente: ingreso.cliente,
                         obra: ingreso.obra,
-                        pago: ingreso.pago,
                         fact_nro: ingreso.fact_nro,
                         fact_condicion: ingreso.fact_condicion,
                         monto: ingreso.monto,
-                        monto_s_iva: ingreso.monto_s_iva,
                         iva: ingreso.iva,
                         retencion: ingreso.retencion,
                         porcentaje: ingreso.porcentaje,
@@ -362,11 +350,9 @@ app.post('/editar/:id', function(req, res, next) {
                         fecha: req.body.fecha,
                         cliente: req.body.cliente,
                         obra: req.body.obra,
-                        pago: req.body.pago,
                         fact_nro: req.body.fact_nro,
                         fact_condicion: req.body.fact_condicion,
                         monto: req.body.monto,
-                        monto_s_iva: req.body.monto_s_iva,
                         iva: req.body.iva,
                         retencion: req.body.retencion,
                         porcentaje: req.body.porcentaje,
@@ -393,11 +379,9 @@ app.post('/editar/:id', function(req, res, next) {
             fecha: req.body.fecha,
             cliente: req.body.cliente,
             obra: req.body.obra,
-            pago: req.body.pago,
             fact_nro: req.body.fact_nro,
             fact_condicion: req.body.fact_condicion,
             monto: req.body.monto,
-            monto_s_iva: req.body.monto_s_iva,
             iva: req.body.iva,
             retencion: req.body.retencion,
             porcentaje: req.body.porcentaje,

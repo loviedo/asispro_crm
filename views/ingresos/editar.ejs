@@ -43,6 +43,31 @@ including header content which is common for all pages
     }
 </style>
 
+<script>
+function cal_iva(){
+    var val = String(document.getElementById("calcu_iva").value);
+    if(val == "IVA_10"){
+        document.getElementById("iva").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
+    }
+    if(val == "IVA_5"){
+        document.getElementById("iva").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
+    }
+}
+
+function cal_ret(){
+    var val = String(document.getElementById("calcu_ret").value);
+    if(val == "RET_30"){
+        document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *30/100)*100) /100; //ret 30% incluido
+    }
+    if(val == "RET_70"){
+        document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *70/100)*100) /100; //ret 70% incluido
+    }
+    if(val == "RET_100"){
+        document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *1)*100) /100; //ret 100% incluido
+    }
+}
+</script>
+
 
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
@@ -76,10 +101,6 @@ including header content which is common for all pages
                     <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra Descripcion">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="pago">PAGO</label>
-                    <input type="text" class="form-control" name="pago" id="pago" value="<%= pago %>" placeholder="Pago...">
-                </div>
-                <div class="form-group col-md-6">
                     <label for="fact_nro">FACTURA NRO</label>
                     <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
                 </div>
@@ -101,12 +122,23 @@ including header content which is common for all pages
                     <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" >
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="monto_s_iva">MONTO sin IVA</label>
-                    <input type="text" class="form-control" name="monto_s_iva" id="monto_s_iva" value="<%= monto_s_iva %>" placeholder="MONTO sin IVA">
+                    <label for="calcu_iva">PORCENTAJE IVA</label>
+                    <select class="form-control" name="calcu_iva" id="calcu_iva" onclick="cal_iva()">
+                        <option value="IVA_10">IVA 10%</option>
+                        <option value="IVA_5">IVA 5%</option>
+                    </select>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="iva">IVA</label>
                     <input type="text" class="form-control" name="iva_10" id="iva_10" value="<%= iva_10 %>" placeholder="IVA 10%">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="calcu_ret">PORCENTAJE RETENCION</label>
+                    <select class="form-control" name="calcu_ret" id="calcu_ret" onclick="cal_ret()">
+                        <option value="RET_30">RET 10%</option>
+                        <option value="RET_70">RET 70%</option>
+                        <option value="RET_100">RET 100%</option>
+                    </select>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="retencion">RETENCION</label>
