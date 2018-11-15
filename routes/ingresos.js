@@ -153,8 +153,8 @@ app.get('/add', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){
         res.render('ingresos/add', {
-            title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',fact_nro: '',fact_condicion: '',monto: '0', 
-            iva: '',retencion: '',porcentaje: '', total_facturado: '', usuario_insert: user, usuario: user});
+            title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',fact_nro: '',fact_condicion: 'CONTADO',monto: '0', 
+            iva: '',retencion: '',porcentaje: '', total_facturado: '0', usuario_insert: user, usuario: user});
     }
     else {
         // render to views/index.ejs template file
