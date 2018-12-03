@@ -84,6 +84,12 @@ function formatear_fecha(date) {
             document.getElementById("iva_5").hidden = false;
         }
     }
+
+    function asignar_ot(){
+        //recuperamos el valor de la busqueda del filtro del datatable y asignamos al valor del OT
+        document.getElementById("nro_ot").value = document.querySelector('.dataTables_filter input').value;
+        //alert(valor); //debug
+    }
 </script>
 
 <!-- NAV PARA TITULO -->
@@ -253,7 +259,7 @@ function formatear_fecha(date) {
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
             <!--<button type="button" class="btn btn-primary">Save changes</button>-->
         </div>
         </div>
