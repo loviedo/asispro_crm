@@ -1,5 +1,5 @@
-<!-- including header content which is common for all pages -->
-<%- include ../layouts/header.ejs %>    
+<!-- including header content which is common for all pages  -->
+<%- include ../layouts/header.ejs %>   
  
 <% if (messages.error) { %>
     <p style="color:red"><%- messages.error %></p>
@@ -61,23 +61,13 @@ body .modal-dialog { /* Width */
 </style>
 
 
+<!--script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" ></script>-->
 
 <script type="text/javascript"> 
 //al cargar la pagina ocultamos iva_5
 window.onload = function() {
   document.getElementById('iva_5').hidden = true;
 };
-
-
-var table = $('#tablex').DataTable();
-$('#tablex').on('click', '.close', function(){
-    var value = $('#search.dt').val();
-    $('#nro_ot').val(value);
-    $('#tablex').modal('hide');
-    console.log(value); // <-- the value
-    //var value = $('.dataTables_filter input').val();
-    //console.log(value); // <-- the value
-});
 
 function changeText() {
     //LOGICA CARGA GASTOS
@@ -146,6 +136,12 @@ function cal_iva(){
         document.getElementById("iva_10").hidden = true;
         document.getElementById("iva_5").hidden = false;
     }
+}
+
+function asignar_ot(){
+    //recuperamos el valor de la busqueda del filtro del datatable y asignamos al valor del OT
+    document.getElementById("nro_ot").value = document.querySelector('.dataTables_filter input').value;
+    //alert(valor); //debug
 }
 
 </script>
@@ -315,7 +311,7 @@ function cal_iva(){
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
             <!--<button type="button" class="btn btn-primary">Save changes</button>-->
         </div>
         </div>
