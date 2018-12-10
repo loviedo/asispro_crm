@@ -464,6 +464,21 @@
                             </li>   
                         </ul>
                     </li>
+                    <% if (usuario != 'cibanez') { %>
+                    <li>
+                        <a href="#manosub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                            <i class="fas fa-home"></i>
+                            Plan Laboral / Mano Obra
+                        </a>
+                        <ul class="collapse list-unstyled" id="manosub" >
+                            <li>
+                                <a href="/mano/add">Agregar PLan Laboral</a>
+                            </li>
+                            <li>
+                                <a href="/mano/">Listar PLan Laboral<</a>
+                            </li>   
+                        </ul>
+                    </li>
                     <li>
                         <a href="#rrhhsub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
@@ -478,7 +493,7 @@
                             </li>   
                         </ul>
                     </li>
-                    <% if (usuario != 'cibanez') { %>
+
                     <li>
                         <a href="#ingresub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
@@ -493,7 +508,6 @@
                             </li>   
                         </ul>
                     </li>
-                    <% } %>
                     <li>
                         <a href="#cliensub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
@@ -508,6 +522,7 @@
                             </li>   
                         </ul>
                     </li>
+                    <% } %>
                     <!--
                     <li>
                         <a href="#">

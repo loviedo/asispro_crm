@@ -44,6 +44,7 @@ var prov = require('./routes/proveedor');
 var rrhh = require('./routes/rrhh');
 var clientes = require('./routes/clientes');
 var ingresos = require('./routes/ingresos');
+var manoobra = require('./routes/mano');
  
 /**
  * Express Validator Middleware for Form Validation
@@ -120,6 +121,7 @@ app.use('/proveedor', prov);//gestion de proveedores
 app.use('/rrhh', rrhh);//gestion de proveedores
 app.use('/clientes', clientes);//gestion de clientes
 app.use('/ingresos', ingresos);//gestion de ingresos
+app.use('/mano', manoobra);//gestion de ingresos
 
 /*
 app.get('/login', index);//pagina de login usuario

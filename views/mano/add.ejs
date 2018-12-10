@@ -1,0 +1,216 @@
+<!-- including header content which is common for all pages  -->
+<%- include ../layouts/header.ejs %>   
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ 
+<!-- funcion para arreglar el formato de las fechas en este caso usamos para el listado de OTs -->
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+%>
+<!-- ESTILO PARA DATEPICKER -->
+<style>
+[type="date"] {
+  background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+}
+[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+/* custom styles */
+body {
+  background: #e5e5e5;
+  font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+}
+label {
+  display: block;
+}
+input {
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 3px 5px;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+  width: 190px;
+}
+
+body .modal-dialog { /* Width */
+    max-width: 80%;
+    width: auto !important;
+}
+</style>
+
+
+<script type="text/javascript"> 
+
+function asignar_ot(){
+    //recuperamos el valor de la busqueda del filtro del datatable y asignamos al valor del OT
+    document.getElementById("nro_ot").value = document.querySelector('.dataTables_filter input').value;
+    //alert(valor); //debug
+}
+
+</script>
+
+
+<!-- NAV PARA TITULO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <h3>Carga de Plan Laboral / Mano de Obra </h3>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <form action="/mano/add" method="post" name="form1">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fecha">FECHA</label>
+                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" >
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">
+                            ver OTs</button>
+                    </label>
+                    <input type="text" class="form-control" id="nro_ot" name="nro_ot">
+                    <!--<input type="text" class="form-control" list="lista_ot" id="nro_ot" name="nro_ot">-->
+                    <!--<datalist id="lista_ot">
+                        <% /* if (data) { %>
+                            <% data.forEach(function(fila_ot){ %>
+                                <option value="<%= fila_ot.ot_nro %>"><%= fila_ot.ot_nro %></option>
+                            <% }) %>
+                        <% } */ %>
+                    </datalist> -->
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="empleado">PERSONAL ASISPRO</label>
+                    <input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente_plan">CLIENTE PLANIFICADO</label>
+                    <input type="text" class="form-control" name="cliente_plan" id="cliente_plan" value="<%= cliente_plan %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="cliente_real">CLIENTE REAL</label>
+                    <input type="text" class="form-control" name="cliente_real" id="cliente_real" value="<%= cliente_real %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="encargado">ENCARGADO</label>
+                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="trato_cliente">TRATO C/ EL CLIENTE</label>
+                    <input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="h_entrada">Hs. ENTRADA</label>
+                    <input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="h_salida">Hs. SALIDA</label>
+                    <input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="imputacion">IMPUTACION</label>
+                    <input type="text" class="form-control" name="imputacion" id="imputacion" value="<%= imputacion %>">
+                </div>
+            </div>
+            <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
+        </form>
+    </div>
+</nav>
+
+
+<!-- MODAL de OTs -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" width="100%" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Listado de OTs</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- ACA PONEMOS LA TABLA QUE DEBE SER COMO /LISTAR -->
+
+<div class="container-fluid" width="100%">
+        <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>Nro OT</th>
+                        <th>FECHA EMISION</th>
+                        <th>F INI EJECUCION</th>
+                        <th>F FIN EJECUCION</th>
+                        <th>Nro FACTURA</th>
+                        <th>Est FACTURA</th>
+                        <th>Nro RECIBO</th>
+                        <th>Nro REMISION</th>
+                        <th>TIPO FACTURA</th>       
+                        <th>CLIENTE</th>
+                        <th>OBRA</th>
+                        <th>DESCRIPCION</th>           
+                    </tr>
+                </thead>
+            <tbody>
+                    <% if (data) { %>
+                        <% data.forEach(function(ot){ %>
+                <tr>
+                    <td><%= ot.ot_nro %></td>
+                    <td><%= formatear_fecha(ot.fec_emision) %></td>
+                    <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                    <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
+                    <td><%= ot.fact_nro %></td>
+                    <td><%= ot.fact_estado %></td>
+                    <td><%= ot.recibo_nro %></td>
+                    <td><%= ot.remision_nro %></td>
+                    <td><%= ot.fact_tipo %></td>
+                    <td><%= ot.cliente %></td>
+                    <td><%= ot.obra %></td>
+                    <td><%= ot.descripcion %></td>
+                </tr>
+                <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
+            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-strong">
+    <div class="container-fluid">
+
+    </div>
+</nav>
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

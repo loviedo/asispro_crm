@@ -90,44 +90,35 @@ color: #ffffff;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>
                     <th>FECHA</th>
-                    <th>MONTO</th>
-                    <th>EXENTAS</th>
-                    <th>IVA 10%</th>
-                    <th>IVA 5%</th>
-                    <th>GASTO REAL</th>
-                    <th>CONCEPTO</th>
-                    <th>CONDICION FACTURACION</th>
-                    <th>PROVEEDOR</th>       
-                    <th>FACTURA NRO</th>
+                    <th>NRO OT</th>
+                    <th>EMPLEADO</th>
+                    <th>CLIENTE PLANIFICADO</th>
+                    <th>CLIENTE REAL</th>
                     <th>ENCARGADO</th>
-                    <th>CODIGO</th>
-                    <th>NRO OT</th> 
-                    <th>IMPUTADO</th> 
-                    <th>ACCIONES</th>            
+                    <th>TRATO C/ CLIENTE</th>
+                    <th>HS ENTRADA</th>
+                    <th>HS SALIDA</th>       
+                    <th>IMPUTADO</th>         
                 </tr>
             </thead>
         <tbody>
         <% if (data) { %>
-        <% data.forEach(function(gasto){ %>
+        <% data.forEach(function(mano){ %>
             <tr>
-                <td><%= formatear_fecha(gasto.fecha) %></td>
-                <td><%= gasto.monto %></td>
-                <td><%= gasto.exentas %></td>
-                <td><%= gasto.iva_10 %></td>
-                <td><%= gasto.iva_5 %></td>
-                <td><%= gasto.gasto_real %></td>
-                <td><%= gasto.concepto %></td>
-                <td><%= gasto.fact_condicion %></td>
-                <td><%= gasto.proveedor %></td>
-                <td><%= gasto.fact_nro %></td>
-                <td><%= gasto.encargado %></td>
-                <td><%= gasto.codigo %></td>
-                <td><%= gasto.nro_ot %></td>
-                <td><%= gasto.imputado %></td>
+                <td><%= formatear_fecha(mano.fecha) %></td>
+                <td><%= mano.nro_ot %></td>
+                <td><%= mano.empleado %></td>
+                <td><%= mano.cliente_plan %></td>
+                <td><%= mano.cliente_real %></td>
+                <td><%= mano.encargado %></td>
+                <td><%= mano.trato_cliente %></td>
+                <td><%= mano.h_entrada %></td>
+                <td><%= mano.h_salida %></td>
+                <td><%= mano.imputacion %></td>
                 <td>
                     <div>
-                        <a href='/gastos/editar/<%= gasto.id %>'>Ver</a> &nbsp;                            
-                        <form method="post" action="/gastos/eliminar/<%= gasto.id %>" style="float:right">
+                        <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp;                            
+                        <form method="post" action="/mano/eliminar/<%= mano.id %>" style="float:right">
                             <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
                             <input type="hidden" name="_method" value="DELETE" />
                         </form>
@@ -145,7 +136,7 @@ color: #ffffff;
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">
     <div class="container-fluid">
-            <form action="/gastos/descargar" method="POST" name="form">
+            <form action="/mano/descargar" method="POST" name="form">
                 <button type="submit" id="submit" class="btn btn-info">
                     <i class="fas fa-share"></i>
                 </button>
