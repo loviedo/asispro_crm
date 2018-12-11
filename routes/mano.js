@@ -83,13 +83,16 @@ function generar_excel_plan_laboral(rows){
     worksheet.cell(1,1).string('FECHA').style(style);
     worksheet.cell(1,2).string('NRO OT').style(style);
     worksheet.cell(1,3).string('EMPLEADO').style(style);
-    worksheet.cell(1,4).string('CLIENTE PLAN').style(style);
-    worksheet.cell(1,5).string('CLIENTE REAL').style(style);
+    worksheet.cell(1,4).string('CLIENTE PLAN MAÑANA').style(style);
+    worksheet.cell(1,5).string('CLIENTE REAL MAÑANA').style(style);
+    worksheet.cell(1,4).string('CLIENTE PLAN TARDE').style(style);
+    worksheet.cell(1,5).string('CLIENTE REAL TARDE').style(style);
     worksheet.cell(1,6).string('ENCARGADO').style(style);
     worksheet.cell(1,7).string('TRATO CLIENTE').style(style);
     worksheet.cell(1,8).string('HS ENTRADA').style(style);
     worksheet.cell(1,9).string('HS SALIDA').style(style);
-    worksheet.cell(1,11).string('IMPUTACION').style(style);
+    worksheet.cell(1,11).string('IMPUTACION 1').style(style);
+    worksheet.cell(1,12).string('IMPUTACION 2').style(style);
 
     //luego los datos
     var i = 1;
@@ -97,20 +100,22 @@ function generar_excel_plan_laboral(rows){
         worksheet.cell(i+1,1).string(String(formatear_fecha(row.fecha))).style(style);
         worksheet.cell(i+1,2).string(String(row.nro_ot)).style(style);
         worksheet.cell(i+1,3).string(String(row.empleado)).style(style);
-        worksheet.cell(i+1,4).string(String(row.cliente_plan)).style(style);
-        worksheet.cell(i+1,5).string(String(row.cliente_real)).style(style);
-        worksheet.cell(i+1,6).string(String(row.encargado)).style(style);
-        worksheet.cell(i+1,7).string(String(row.trato_cliente)).style(style);
-        worksheet.cell(i+1,8).string(String(row.h_entrada)).style(style);
-        worksheet.cell(i+1,9).string(String(row.h_salida)).style(style);
-        worksheet.cell(i+1,10).string(String(row.imputacion)).style(style1);
+        worksheet.cell(i+1,4).string(String(row.cliente_plan_m)).style(style);
+        worksheet.cell(i+1,5).string(String(row.cliente_real_m)).style(style);
+        worksheet.cell(i+1,6).string(String(row.cliente_plan_t)).style(style);
+        worksheet.cell(i+1,7).string(String(row.cliente_real_t)).style(style);
+        worksheet.cell(i+1,8).string(String(row.encargado)).style(style);
+        worksheet.cell(i+1,9).string(String(row.trato_cliente)).style(style);
+        worksheet.cell(i+1,10).string(String(row.h_entrada)).style(style);
+        worksheet.cell(i+1,11).string(String(row.h_salida)).style(style);
+        worksheet.cell(i+1,12).string(String(row.imputacion_1)).style(style1);
+        worksheet.cell(i+1,13).string(String(row.imputacion_2)).style(style1);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
     });
     workbook.write('Listado_PLANLABORAL.xlsx');
 }
-
 
 // MOSTRAR LISTADO DE Trabajos / mano de obra programada
 app.get('/', function(req, res, next) {
@@ -151,8 +156,8 @@ app.get('/add', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){
         res.render('mano/add', {
-            title: 'Cargar nuevo Plan Laboral',fecha: '', nro_ot: '', empleado: '',cliente_plan: '',cliente_real: '',encargado: '', 
-            trato_cliente: '',h_entrada: '',h_salida: '', imputacion: '', usuario_insert: user, usuario: user});
+            title: 'Cargar nuevo Plan Laboral',fecha: '', nro_ot: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '',encargado: '', 
+            trato_cliente: '',h_entrada: '',h_salida: '', imputacion_1: '', imputacion_2: '', usuario_insert: user, usuario: user});
     }
     else {
         // render to views/index.ejs template file
@@ -179,13 +184,16 @@ app.post('/add', function(req, res, next){
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').escape().trim()),
             nro_ot: req.sanitize('nro_ot').escape().trim(),
             empleado: req.sanitize('empleado').escape().trim(),
-            cliente_plan: req.sanitize('cliente_plan').escape().trim(),
-            cliente_real: req.sanitize('cliente_real').escape().trim(),
+            cliente_plan_m: req.sanitize('cliente_plan_m').escape().trim(),
+            cliente_real_m: req.sanitize('cliente_real_m').escape().trim(),
+            cliente_plan_t: req.sanitize('cliente_plan_t').escape().trim(),
+            cliente_real_t: req.sanitize('cliente_real_t').escape().trim(),
             encargado: req.sanitize('encargado').escape().trim(),
             trato_cliente: req.sanitize('trato_cliente').escape().trim(),
             h_entrada: req.sanitize('h_entrada').escape().trim(),
             h_salida: req.sanitize('h_salida').escape().trim(),
-            imputacion: req.sanitize('imputacion').escape().trim(),
+            imputacion_1: req.sanitize('imputacion_1').escape().trim(),
+            imputacion_2: req.sanitize('imputacion_2').escape().trim(),
             usuario_insert: user
         }   
         
@@ -202,13 +210,16 @@ app.post('/add', function(req, res, next){
                         fecha: mano_plan.fecha,
                         nro_ot: mano_plan.nro_ot,
                         empleado: mano_plan.empleado,
-                        cliente_plan: mano_plan.cliente_plan,
-                        cliente_real: mano_plan.cliente_real,
+                        cliente_plan_m: mano_plan.cliente_plan_m,
+                        cliente_real_m: mano_plan.cliente_real_m,
+                        cliente_plan_t: mano_plan.cliente_plan_t,
+                        cliente_real_t: mano_plan.cliente_real_t,
                         encargado: mano_plan.encargado,
                         trato_cliente: mano_plan.trato_cliente,
                         h_entrada: mano_plan.h_entrada,
                         h_salida: mano_plan.h_salida,
-                        imputacion: mano_plan.imputacion,
+                        imputacion_1: mano_plan.imputacion_1,
+                        imputacion_2: mano_plan.imputacion_2,
                         usuario: user
                     })
                 } else {                
@@ -218,8 +229,8 @@ app.post('/add', function(req, res, next){
                     //console.log(datos);//debug
                     // render to views/user/add.ejs
                     res.render('mano/add', {
-                        title: 'Cargar nuevo Plan Laboral',fecha: '', nro_ot: '', empleado: '',cliente_plan: '',cliente_real: '',encargado: '', 
-                        trato_cliente: '',h_entrada: '',h_salida: '', imputacion: '', usuario_insert: user, usuario: user});
+                        title: 'Cargar nuevo Plan Laboral',fecha: '', nro_ot: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '',encargado: '', 
+                        trato_cliente: '',h_entrada: '',h_salida: '', imputacion_1: '', imputacion_2: '', usuario_insert: user, usuario: user});
                 }
             })
         })
@@ -241,13 +252,16 @@ app.post('/add', function(req, res, next){
             fecha: mano_plan.fecha,
             nro_ot: mano_plan.nro_ot,
             empleado: mano_plan.empleado,
-            cliente_plan: mano_plan.cliente_plan,
-            cliente_real: mano_plan.cliente_real,
+            cliente_plan_m: mano_plan.cliente_plan_m,
+            cliente_real_m: mano_plan.cliente_real_m,
+            cliente_plan_t: mano_plan.cliente_plan_t,
+            cliente_real_t: mano_plan.cliente_real_t,
             encargado: mano_plan.encargado,
             trato_cliente: mano_plan.trato_cliente,
             h_entrada: mano_plan.h_entrada,
             h_salida: mano_plan.h_salida,
-            imputacion: mano_plan.imputacion,
+            imputacion_1: mano_plan.imputacion_1,
+            imputacion_2: mano_plan.imputacion_2,
             usuario: user
         })
     }
@@ -276,13 +290,16 @@ app.get('/editar/:id', function(req, res, next){
                     fecha: formatear_fecha_yyyymmdd(date1),
                     nro_ot: rows[0].nro_ot,
                     empleado: rows[0].empleado,
-                    cliente_plan: rows[0].cliente_plan,
-                    cliente_real: rows[0].cliente_real,
+                    cliente_plan_m: rows[0].cliente_plan_m,
+                    cliente_real_m: rows[0].cliente_real_m,
+                    cliente_plan_t: rows[0].cliente_plan_t,
+                    cliente_real_t: rows[0].cliente_real_t,
                     encargado: rows[0].encargado,
                     trato_cliente: rows[0].trato_cliente,
                     h_entrada: rows[0].h_entrada,
                     h_salida: rows[0].h_salida,
-                    imputacion: rows[0].imputacion,
+                    imputacion_1: rows[0].imputacion_1,
+                    imputacion_2: rows[0].imputacion_2,
                     usuario: user
                 })
             }            
@@ -305,13 +322,16 @@ app.post('/editar/:id', function(req, res, next) {
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').escape().trim()),
             nro_ot: req.sanitize('nro_ot').escape().trim(),
             empleado: req.sanitize('empleado').escape().trim(),
-            cliente_plan: req.sanitize('cliente_plan').escape().trim(),
-            cliente_real: req.sanitize('cliente_real').escape().trim(),
+            cliente_plan_m: req.sanitize('cliente_plan_m').escape().trim(),
+            cliente_real_m: req.sanitize('cliente_real_m').escape().trim(),
+            cliente_plan_t: req.sanitize('cliente_plan_t').escape().trim(),
+            cliente_real_t: req.sanitize('cliente_real_t').escape().trim(),
             encargado: req.sanitize('encargado').escape().trim(),
             trato_cliente: req.sanitize('trato_cliente').escape().trim(),
             h_entrada: req.sanitize('h_entrada').escape().trim(),
             h_salida: req.sanitize('h_salida').escape().trim(),
-            imputacion: req.sanitize('imputacion').escape().trim(),
+            imputacion_1: req.sanitize('imputacion_1').escape().trim(),
+            imputacion_2: req.sanitize('imputacion_2').escape().trim(),
             usuario_insert: user
         } 
         
@@ -327,13 +347,16 @@ app.post('/editar/:id', function(req, res, next) {
                         fecha: mano_plan.fecha,
                         nro_ot: mano_plan.nro_ot,
                         empleado: mano_plan.empleado,
-                        cliente_plan: mano_plan.cliente_plan,
-                        cliente_real: mano_plan.cliente_real,
+                        cliente_plan_m: mano_plan.cliente_plan_m,
+                        cliente_real_m: mano_plan.cliente_real_m,
+                        cliente_plan_t: mano_plan.cliente_plan_t,
+                        cliente_real_t: mano_plan.cliente_real_t,
                         encargado: mano_plan.encargado,
                         trato_cliente: mano_plan.trato_cliente,
                         h_entrada: mano_plan.h_entrada,
                         h_salida: mano_plan.h_salida,
-                        imputacion: mano_plan.imputacion,
+                        imputacion_m: mano_plan.imputacion_m,
+                        imputacion_t: mano_plan.imputacion_t,
                         usuario: user
                     })
                 } else {                
@@ -346,13 +369,16 @@ app.post('/editar/:id', function(req, res, next) {
                         fecha: req.body.fecha,
                         nro_ot: req.body.nro_ot,
                         empleado: req.body.empleado,
-                        cliente_plan: req.body.cliente_plan,
-                        cliente_real: req.body.cliente_real,
+                        cliente_plan_m: req.body.cliente_plan_m,
+                        cliente_real_m: req.body.cliente_real_m,
+                        cliente_plan_t: req.body.cliente_plan_t,
+                        cliente_real_t: req.body.cliente_real_t,
                         encargado: req.body.encargado,
                         trato_cliente: req.body.trato_cliente,
                         h_entrada: req.body.h_entrada,
                         h_salida: req.body.h_salida,
-                        imputacion: req.body.imputacion,
+                        imputacion_1: req.body.imputacion_1,
+                        imputacion_2: req.body.imputacion_2,
                         usuario_insert: user,
                         usuario: user               
                     })

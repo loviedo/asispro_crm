@@ -92,13 +92,16 @@ color: #ffffff;
                     <th>FECHA</th>
                     <th>NRO OT</th>
                     <th>EMPLEADO</th>
-                    <th>CLIENTE PLANIFICADO</th>
-                    <th>CLIENTE REAL</th>
+                    <th>CLIENTE PLANIFICADO M</th>
+                    <th>CLIENTE REAL M</th>
+                    <th>CLIENTE PLANIFICADO T</th>
+                    <th>CLIENTE REAL T</th>
                     <th>ENCARGADO</th>
                     <th>TRATO C/ CLIENTE</th>
                     <th>HS ENTRADA</th>
                     <th>HS SALIDA</th>       
-                    <th>IMPUTADO</th>         
+                    <th>IMPUTADO 1</th>
+                    <th>IMPUTADO 2</th>
                 </tr>
             </thead>
         <tbody>
@@ -108,13 +111,16 @@ color: #ffffff;
                 <td><%= formatear_fecha(mano.fecha) %></td>
                 <td><%= mano.nro_ot %></td>
                 <td><%= mano.empleado %></td>
-                <td><%= mano.cliente_plan %></td>
-                <td><%= mano.cliente_real %></td>
+                <td><%= mano.cliente_plan_m %></td>
+                <td><%= mano.cliente_real_m %></td>
+                <td><%= mano.cliente_plan_t %></td>
+                <td><%= mano.cliente_real_t %></td>
                 <td><%= mano.encargado %></td>
                 <td><%= mano.trato_cliente %></td>
                 <td><%= mano.h_entrada %></td>
                 <td><%= mano.h_salida %></td>
-                <td><%= mano.imputacion %></td>
+                <td><%= mano.imputacion_1 %></td>
+                <td><%= mano.imputacion_2 %></td>
                 <td>
                     <div>
                         <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp;                            
