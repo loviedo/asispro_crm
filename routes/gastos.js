@@ -196,8 +196,15 @@ app.post('/add', function(req, res, next){
         var date1 = req.sanitize('fecha').escape().trim();
         var mon = Number(req.sanitize('monto').escape().trim()); 
         var exe = Number(req.sanitize('exentas').escape().trim());
-        var iva10 = Number(req.sanitize('iva_10').escape().trim());
-        var iva5 = Number(req.sanitize('iva_5').escape().trim());
+        var calcu_iva = req.sanitize('calcu_iva').escape().trim();
+        if(calcu_iva == "IVA_10"){
+            var iva10 = Number(req.sanitize('iva_10').escape().trim());
+            var iva5 = 0;
+        }
+        if(calcu_iva == "IVA_5"){
+            var iva10 = 0;
+            var iva5 = Number(req.sanitize('iva_5').escape().trim());
+        }
         var gasreal = Number(req.sanitize('gasto_real').escape().trim());
         var cod = Number(req.sanitize('codigo').escape().trim());
         var ot = Number(req.sanitize('nro_ot').escape().trim());

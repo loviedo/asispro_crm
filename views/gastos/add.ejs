@@ -66,7 +66,15 @@ body .modal-dialog { /* Width */
 <script type="text/javascript"> 
 //al cargar la pagina ocultamos iva_5
 window.onload = function() {
-  document.getElementById('iva_5').hidden = true;
+    document.getElementById("iva_10").value = 0; 
+    document.getElementById("iva_5").value = 0;
+    document.getElementById("exentas1").value = 0;
+    document.getElementById("exentas").value = 0;
+    document.getElementById("monto1").value = 0;
+    document.getElementById("monto").value = 0;
+    document.getElementById("gasto_real1").value = 0;
+    document.getElementById("gasto_real").value = 0;
+    document.getElementById('iva_5').hidden = true;
 };
 
 function changeText() {
@@ -76,44 +84,53 @@ function changeText() {
     if(cond == "BOLETA_PAGO" || cond == "COMP_INGRESO" || cond == "RECIBO" || cond == "S_F" || cond == "RECIBO_COMUN")
     {   //HABLITAR- DESHABILITAR
         document.getElementById("monto").disabled = true; 
-        document.getElementById("exentas").disabled = true; 
-        document.getElementById("iva_10").disabled = true; 
-        document.getElementById("iva_5").disabled = true;
+        document.getElementById("exentas1").disabled = true; 
+        document.getElementById("iva_10").false = true; 
+        document.getElementById("iva_5").false = true;
         document.getElementById("gasto_real").disabled = false; //solo gasto real habilitado
         //ASIGNAR VALORES
         document.getElementById("monto").value = 0; 
-        document.getElementById("exentas").value = 0; 
+        document.getElementById("exentas1").value = 0; 
         document.getElementById("iva_10").value = 0; 
         document.getElementById("iva_5").value = 0;
         document.getElementById("gasto_real").value = 0; 
+
+        document.getElementById("exentas").value = (parseInt(document.getElementById('exentas1').value) || 0);
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
     }
     if(cond == "CREDITO")//SOLO 
     {   //HABLITAR- DESHABILITAR
-        document.getElementById("monto").disabled = false; 
-        document.getElementById("exentas").disabled = true; 
-        document.getElementById("iva_10").disabled = true; 
-        document.getElementById("iva_5").disabled = true;
-        document.getElementById("gasto_real").disabled = true;  
+        document.getElementById("monto1").disabled = false; 
+        document.getElementById("exentas1").disabled = true; 
+        document.getElementById("iva_10").disabled = false; 
+        document.getElementById("iva_5").disabled = false;
+        document.getElementById("gasto_real1").disabled = true;  
         //ASIGNAR VALORES
         //document.getElementById("monto").value = ''; 
-        document.getElementById("exentas").value = 0; 
+        document.getElementById("exentas1").value = 0; 
         //document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; 
         document.getElementById("iva_5").value = 0;
-        document.getElementById("gasto_real").value = 0; 
+        document.getElementById("gasto_real1").value = 0; 
+
+        document.getElementById("exentas").value = (parseInt(document.getElementById('exentas1').value) || 0);
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
     }
     if(cond == "CONTADO")
     {   //HABLITAR- DESHABILITAR
-        document.getElementById("monto").disabled = false; 
-        document.getElementById("exentas").disabled = false; 
+        document.getElementById("monto1").disabled = false; 
+        document.getElementById("exentas1").disabled = false; 
         document.getElementById("iva_10").disabled = false; 
         document.getElementById("iva_5").disabled = false;
-        document.getElementById("gasto_real").disabled = false;  
+        document.getElementById("gasto_real1").disabled = false;  
         //ASIGNAR VALORES
         //document.getElementById("monto").value = 0; 
-       // document.getElementById("exentas").value = ''; 
+       // document.getElementById("exentas").value = 0; 
         //document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
         //document.getElementById("iva_5").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
         document.getElementById("gasto_real").value = ((parseInt(document.getElementById('monto').value) || 0) + (parseInt(document.getElementById('exentas').value) || 0));
+        document.getElementById("exentas").value = (parseInt(document.getElementById('exentas1').value) || 0);
     }
 
     //document.getElementById('gasto_real').value = parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value);
@@ -136,6 +153,9 @@ function cal_iva(){
         document.getElementById("iva_10").hidden = true;
         document.getElementById("iva_5").hidden = false;
     }
+    document.getElementById("exentas").value = (parseInt(document.getElementById('exentas1').value) || 0);
+    document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
+    document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
 }
 
 function asignar_ot(){
@@ -175,12 +195,14 @@ function asignar_ot(){
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" >
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="monto">MONTO</label>
-                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" onclick="changeText()">
+                    <label for="monto1">MONTO</label>
+                    <input type="text" class="form-control" name="monto1" id="monto1" value="<%= monto %>" placeholder="Monto" onclick="changeText()">
+                    <input type="hidden" class="form-control" name="monto" id="monto" value="<%= monto %>">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="exentas">EXENTAS</label>
-                    <input type="text" class="form-control" name="exentas" id="exentas" value="<%= exentas %>" placeholder="Exentas" onclick="changeText()">
+                    <label for="exentas1">EXENTAS</label>
+                    <input type="text" class="form-control" name="exentas1" id="exentas1" value="<%= exentas %>" placeholder="Exentas" onclick="changeText()">
+                    <input type="hidden" class="form-control" name="exentas" id="exentas" value="<%= exentas %>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="calcu_iva">PORCENTAJE IVA</label>
@@ -195,8 +217,9 @@ function asignar_ot(){
                     <input type="text" class="form-control" name="iva_5" id="iva_5" value="<%= iva_5 %>" placeholder="IVA..." >
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="gasto_real">GASTO REAL</label>
-                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL" onclick="changeText()">
+                    <label for="gasto_real1">GASTO REAL</label>
+                    <input type="text" class="form-control" name="gasto_real1" id="gasto_real1" value="<%= gasto_real %>" placeholder="GASTO REAL" onclick="changeText()">
+                    <input type="hidden" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="concepto">CONCEPTO</label>

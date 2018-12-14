@@ -155,9 +155,26 @@ app.get('/add', function(req, res, next){
     }
     //controlamos quien se loga.
 	if(user.length >0){
-        res.render('mano/add', {
-            title: 'Cargar nuevo Plan Laboral',fecha: '', nro_ot: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '',encargado: '', 
-            trato_cliente: '',h_entrada: '',h_salida: '', imputacion_1: '', imputacion_2: '', usuario_insert: user, usuario: user});
+        req.getConnection(function(error, conn) {
+            //traemos las OTs para mostrar en la ventana modal
+            conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                if (err) {
+                    console.log(err);
+                }
+                else{
+                    datos = [];
+                    rows.forEach(function(row) {    
+                        datos.push(row);
+                    });
+                    console.log(datos);//debug
+                    // render to views/user/add.ejs
+                    res.render('mano/add', {
+                        title: 'Cargar nuevo Plan Laboral',fecha: '', nro_ot: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '',encargado: '', 
+                        trato_cliente: '',h_entrada: '',h_salida: '', imputacion_1: '',monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'',
+                        hora_neg:'',otros:'', imputacion_2: '', usuario_insert: user, usuario: user, data: datos});
+                }
+            })
+        })
     }
     else {
         // render to views/index.ejs template file
@@ -194,6 +211,13 @@ app.post('/add', function(req, res, next){
             h_salida: req.sanitize('h_salida').escape().trim(),
             imputacion_1: req.sanitize('imputacion_1').escape().trim(),
             imputacion_2: req.sanitize('imputacion_2').escape().trim(),
+            monto: Number(req.sanitize('monto').escape().trim()),
+            subtotal: Number(req.sanitize('subtotal').escape().trim()),
+            hora_50: Number(req.sanitize('hora_50').escape().trim()),
+            hora_100: Number(req.sanitize('hora_100').escape().trim()),
+            hora_normal: Number(req.sanitize('hora_normal').escape().trim()),
+            hora_neg: Number(req.sanitize('hora_neg').escape().trim()),
+            otros: Number(req.sanitize('otros').escape().trim()),
             usuario_insert: user
         }   
         
@@ -220,17 +244,38 @@ app.post('/add', function(req, res, next){
                         h_salida: mano_plan.h_salida,
                         imputacion_1: mano_plan.imputacion_1,
                         imputacion_2: mano_plan.imputacion_2,
+                        monto: mano_plan.monto,
+                        subtotal: mano_plan.subtotal,
+                        hora_50: mano_plan.hora_50,
+                        hora_100: mano_plan.hora_100,
+                        hora_normal: mano_plan.hora_normal,
+                        hora_neg: mano_plan.hora_neg,
+                        otros: mano_plan.otros,
                         usuario: user
                     })
                 } else {                
                     req.flash('success', 'Datos agregados correctamente!')
                     
-                    // render to views/ot/add.ejs
-                    //console.log(datos);//debug
-                    // render to views/user/add.ejs
-                    res.render('mano/add', {
-                        title: 'Cargar nuevo Plan Laboral',fecha: '', nro_ot: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '',encargado: '', 
-                        trato_cliente: '',h_entrada: '',h_salida: '', imputacion_1: '', imputacion_2: '', usuario_insert: user, usuario: user});
+                    // render to views/mano/add.ejs
+                    req.getConnection(function(error, conn) {
+                        conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else{
+                                datos = [];
+                                rows.forEach(function(row) {    
+                                    datos.push(row);
+                                });
+                                console.log(datos);//debug
+                                // render to views/user/add.ejs
+                                res.render('mano/add', {
+                                    title: 'Cargar nuevo Plan Laboral',fecha: '', nro_ot: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '',encargado: '', 
+                                    trato_cliente: '',h_entrada: '',h_salida: '', imputacion_1: '',monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'',
+                                    hora_neg:'',otros:'', imputacion_2: '', usuario_insert: user, usuario: user, data: datos});
+                            }
+                        })
+                    })
                 }
             })
         })
@@ -262,6 +307,13 @@ app.post('/add', function(req, res, next){
             h_salida: mano_plan.h_salida,
             imputacion_1: mano_plan.imputacion_1,
             imputacion_2: mano_plan.imputacion_2,
+            monto: mano_plan.monto,
+            subtotal: mano_plan.subtotal,
+            hora_50: mano_plan.hora_50,
+            hora_100: mano_plan.hora_100,
+            hora_normal: mano_plan.hora_normal,
+            hora_neg: mano_plan.hora_neg,
+            otros: mano_plan.otros,
             usuario: user
         })
     }
@@ -300,6 +352,13 @@ app.get('/editar/:id', function(req, res, next){
                     h_salida: rows[0].h_salida,
                     imputacion_1: rows[0].imputacion_1,
                     imputacion_2: rows[0].imputacion_2,
+                    monto: rows[0].monto,
+                    subtotal: rows[0].subtotal,
+                    hora_50: rows[0].hora_50,
+                    hora_100: rows[0].hora_100,
+                    hora_normal: rows[0].hora_normal,
+                    hora_neg: rows[0].hora_neg,
+                    otros: rows[0].otros,
                     usuario: user
                 })
             }            
@@ -332,6 +391,13 @@ app.post('/editar/:id', function(req, res, next) {
             h_salida: req.sanitize('h_salida').escape().trim(),
             imputacion_1: req.sanitize('imputacion_1').escape().trim(),
             imputacion_2: req.sanitize('imputacion_2').escape().trim(),
+            monto: Number(req.sanitize('monto').escape().trim()),
+            subtotal: Number(req.sanitize('subtotal').escape().trim()),
+            hora_50: Number(req.sanitize('hora_50').escape().trim()),
+            hora_100: Number(req.sanitize('hora_100').escape().trim()),
+            hora_normal: Number(req.sanitize('hora_normal').escape().trim()),
+            hora_neg: Number(req.sanitize('hora_neg').escape().trim()),
+            otros: Number(req.sanitize('otros').escape().trim()),
             usuario_insert: user
         } 
         
@@ -357,6 +423,13 @@ app.post('/editar/:id', function(req, res, next) {
                         h_salida: mano_plan.h_salida,
                         imputacion_m: mano_plan.imputacion_m,
                         imputacion_t: mano_plan.imputacion_t,
+                        monto: mano_plan.monto,
+                        subtotal: mano_plan.subtotal,
+                        hora_50: mano_plan.hora_50,
+                        hora_100: mano_plan.hora_100,
+                        hora_normal: mano_plan.hora_normal,
+                        hora_neg: mano_plan.hora_neg,
+                        otros: mano_plan.otros,
                         usuario: user
                     })
                 } else {                
@@ -379,6 +452,13 @@ app.post('/editar/:id', function(req, res, next) {
                         h_salida: req.body.h_salida,
                         imputacion_1: req.body.imputacion_1,
                         imputacion_2: req.body.imputacion_2,
+                        monto: req.body.monto,
+                        subtotal: req.body.subtotal,
+                        hora_50: req.body.hora_50,
+                        hora_100: req.body.hora_100,
+                        hora_normal: req.body.hora_normal,
+                        hora_neg: req.body.hora_neg,
+                        otros: req.body.otros,
                         usuario_insert: user,
                         usuario: user               
                     })
@@ -402,14 +482,25 @@ app.post('/editar/:id', function(req, res, next) {
             fecha: req.body.fecha,
             nro_ot: req.body.nro_ot,
             empleado: req.body.empleado,
-            cliente_plan: req.body.cliente_plan,
-            cliente_real: req.body.cliente_real,
+            cliente_plan_m: req.body.cliente_plan_m,
+            cliente_real_m: req.body.cliente_real_m,
+            cliente_plan_t: req.body.cliente_plan_t,
+            cliente_real_t: req.body.cliente_real_t,
             encargado: req.body.encargado,
             trato_cliente: req.body.trato_cliente,
             h_entrada: req.body.h_entrada,
             h_salida: req.body.h_salida,
-            imputacion: req.body.imputacion,
-            usuario_insert: user
+            imputacion_1: req.body.imputacion_1,
+            imputacion_2: req.body.imputacion_2,
+            monto: req.body.monto,
+            subtotal: req.body.subtotal,
+            hora_50: req.body.hora_50,
+            hora_100: req.body.hora_100,
+            hora_normal: req.body.hora_normal,
+            hora_neg: req.body.hora_neg,
+            otros: req.body.otros,
+            usuario_insert: user,
+            usuario: user  
         })
     }
 })

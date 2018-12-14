@@ -102,6 +102,13 @@ color: #ffffff;
                     <th>HS SALIDA</th>       
                     <th>IMPUTADO 1</th>
                     <th>IMPUTADO 2</th>
+                    <th>MONTO</th> 
+                    <th>SUBTOTAL</th> 
+                    <th>HORA 50%</th> 
+                    <th>HORA 100%</th> 
+                    <th>HORA NORMAL</th> 
+                    <th>HORA NEGATIVA</th>
+                    <th>OTROS</th>
                 </tr>
             </thead>
         <tbody>
@@ -121,6 +128,13 @@ color: #ffffff;
                 <td><%= mano.h_salida %></td>
                 <td><%= mano.imputacion_1 %></td>
                 <td><%= mano.imputacion_2 %></td>
+                <td><%= mano.monto %></td>
+                <td><%= mano.subtotal %></td>
+                <td><%= mano.hora_50 %></td>
+                <td><%= mano.hora_100 %></td>
+                <td><%= mano.hora_normal %></td>
+                <td><%= mano.hora_neg %></td>
+                <td><%= mano.otros %></td>
                 <td>
                     <div>
                         <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp;                            
