@@ -81,7 +81,7 @@ function changeText() {
     //LOGICA CARGA GASTOS
     var cond = document.getElementById("fact_condicion").value;
     //alert(cond);
-    if(cond == "BOLETA_PAGO" || cond == "COMP_INGRESO" || cond == "RECIBO" || cond == "S_F" || cond == "RECIBO_COMUN")
+    if(cond == "BOLETA_PAGO" || cond == "COMP_INGRESO" || cond == "RECIBO" || cond == "S_F" || cond == "RECIBO_COMUN" || cond == "NOTA_CREDITO")
     {   //HABLITAR- DESHABILITAR
         document.getElementById("monto").disabled = true; 
         document.getElementById("exentas1").disabled = true; 
@@ -129,7 +129,13 @@ function changeText() {
        // document.getElementById("exentas").value = 0; 
         //document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
         //document.getElementById("iva_5").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
+        
+        //calculo de gasto real.
         document.getElementById("gasto_real").value = ((parseInt(document.getElementById('monto').value) || 0) + (parseInt(document.getElementById('exentas').value) || 0));
+        document.getElementById("gasto_real1").value = ((parseInt(document.getElementById('monto').value) || 0) + (parseInt(document.getElementById('exentas').value) || 0));
+
         document.getElementById("exentas").value = (parseInt(document.getElementById('exentas1').value) || 0);
     }
 
@@ -188,6 +194,7 @@ function asignar_ot(){
                         <option value="RECIBO_COMUN">RECIBO COMUN</option>
                         <option value="BOLETA_PAGO">BOLETA DE PAGO</option>
                         <option value="S_F">S/F</option>
+                        <option value="NOTA_CREDITO">NOTA DE CREDITO</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">

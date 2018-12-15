@@ -263,20 +263,20 @@ app.post('/add', function(req, res, next){
                     req.flash('success', 'Datos agregados correctamente!')
                     
                     // render to views/ot/add.ejs
-                    conn.query('SELECT ot_nro FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                    conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
                         if (err) {
                             console.log(err);
                         }
                         else{
                             datos = [];
                             rows.forEach(function(row) {    
-                                datos.push(row.ot_nro);
+                                datos.push(row);
                             });
-                            //console.log(datos);//debug
+                            console.log(datos);//debug
                             // render to views/user/add.ejs
                             res.render('gastos/add', {
                                 title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', 
-                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'', imputado:'', usuario_insert: user, usuario: user, data: datos});
+                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'', usuario_insert: user, usuario: user, data: datos});
                         }
                     })
                 }
