@@ -61,16 +61,16 @@ body .modal-dialog { /* Width */
 </style>
 
 
+
+
 <script type="text/javascript"> 
 
 function asignar_ot(){
     //recuperamos el valor de la busqueda del filtro del datatable y asignamos al valor del OT
-    document.getElementById("nro_ot").value = document.querySelector('.dataTables_filter input').value;
+    document.getElementById("ot_plan_m").value = document.querySelector('.dataTables_filter input').value;
     //alert(valor); //debug
 }
-
 </script>
-
 
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
@@ -83,6 +83,15 @@ function asignar_ot(){
     <div class="container-fluid">
         <form action="/mano/add" method="post" name="form1">
             <div class="form-row">
+
+                <!-- 
+                    OTs seleccionadas
+                -->
+                <input type="hidden" class="form-control" name="ot_plan_m" id="ot_plan_m" value="<%= ot_plan_m %>">
+                <input type="hidden" class="form-control" name="ot_plan_t" id="ot_plan_t" value="<%= ot_plan_t %>">
+                <input type="hidden" class="form-control" name="ot_real_m" id="ot_real_m" value="<%= ot_real_m %>">
+                <input type="hidden" class="form-control" name="ot_real_t" id="ot_real_t" value="<%= ot_real_t %>">
+
                 <div class="form-group col-md-6">
                     <label for="fecha">FECHA</label>
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" >
@@ -97,8 +106,10 @@ function asignar_ot(){
                     <label for="empleado">PERSONAL ASISPRO</label>
                     <input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>">
                 </div>
+                <input type="hidden" class="form-control" name="monto" id="monto" value="<%= monto %>">
                 <div class="form-group col-md-6">
                     <label for="cliente_plan_m">CLIENTE PLANIFICADO MAÑANA</label>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">OTs</button>
                     <input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>">
                 </div>
                 <div class="form-group col-md-6">
@@ -106,15 +117,8 @@ function asignar_ot(){
                     <input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente_real_m">CLIENTE REAL MAÑANA</label>
-                    <input type="text" class="form-control" name="cliente_real_m" id="cliente_real_m" value="<%= cliente_real_m %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="obra_real_m">OBRA REAL MAÑANA</label>
-                    <input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>">
-                </div>
-                <div class="form-group col-md-6">
                     <label for="cliente_plan_t">CLIENTE PLANIFICADO TARDE</label>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">OTs</button>
                     <input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>">
                 </div>
                 <div class="form-group col-md-6">
@@ -122,7 +126,17 @@ function asignar_ot(){
                     <input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>">
                 </div>
                 <div class="form-group col-md-6">
+                    <label for="cliente_real_m">CLIENTE REAL MAÑANA</label>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">OTs</button>
+                    <input type="text" class="form-control" name="cliente_real_m" id="cliente_real_m" value="<%= cliente_real_m %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="obra_real_m">OBRA REAL MAÑANA</label>
+                    <input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>">
+                </div>
+                <div class="form-group col-md-6">
                     <label for="cliente_real_t">CLIENTE REAL TARDE</label>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">OTs</button>
                     <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
                 </div>
                 <div class="form-group col-md-6">
@@ -187,6 +201,7 @@ function asignar_ot(){
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Listado de OTs</h5>
+            <button type="button" id="button">Test</button>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -210,13 +225,13 @@ function asignar_ot(){
                         <th>TIPO FACTURA</th>       
                         <th>CLIENTE</th>
                         <th>OBRA</th>
-                        <th>DESCRIPCION</th>           
+                        <th>DESCRIPCION</th>
                     </tr>
                 </thead>
             <tbody>
                     <% if (data) { %>
                         <% data.forEach(function(ot){ %>
-                <tr>
+                <tr id="<%= ot.ot_nro %>">
                     <td><%= ot.ot_nro %></td>
                     <td><%= formatear_fecha(ot.fec_emision) %></td>
                     <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>

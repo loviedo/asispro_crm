@@ -85,16 +85,20 @@ function generar_excel_plan_laboral(rows){
     worksheet.cell(1,2).string('EMPLEADO').style(style);
     worksheet.cell(1,3).string('CLIENTE PLAN MAÑANA').style(style);
     worksheet.cell(1,4).string('OBRA PLAN MAÑANA').style(style);
-    worksheet.cell(1,5).string('CLIENTE REAL MAÑANA').style(style);
-    worksheet.cell(1,6).string('OBRA REAL MAÑANA').style(style);
+    worksheet.cell(1,5).string('OT PLAN MAÑANA').style(style);
+    worksheet.cell(1,6).string('CLIENTE REAL MAÑANA').style(style);
     worksheet.cell(1,7).string('CLIENTE PLAN TARDE').style(style);
     worksheet.cell(1,8).string('OBRA PLAN TARDE').style(style);
-    worksheet.cell(1,9).string('CLIENTE REAL TARDE').style(style);
-    worksheet.cell(1,10).string('OBRA REAL TARDE').style(style);
-    worksheet.cell(1,11).string('ENCARGADO').style(style);
-    worksheet.cell(1,12).string('TRATO CLIENTE').style(style);
-    worksheet.cell(1,13).string('HS ENTRADA').style(style);
-    worksheet.cell(1,14).string('HS SALIDA').style(style);
+    worksheet.cell(1,9).string('OT PLAN TARDE').style(style);
+    worksheet.cell(1,10).string('OBRA REAL MAÑANA').style(style);
+    worksheet.cell(1,11).string('OT REAL MAÑANA').style(style);
+    worksheet.cell(1,12).string('CLIENTE REAL TARDE').style(style);
+    worksheet.cell(1,13).string('OBRA REAL TARDE').style(style);
+    worksheet.cell(1,14).string('OT REAL TARDE').style(style);
+    worksheet.cell(1,15).string('ENCARGADO').style(style);
+    worksheet.cell(1,16).string('TRATO CLIENTE').style(style);
+    worksheet.cell(1,17).string('HS ENTRADA').style(style);
+    worksheet.cell(1,18).string('HS SALIDA').style(style);
     //worksheet.cell(1,16).string('IMPUTACION 1').style(style);
     //worksheet.cell(1,17).string('IMPUTACION 2').style(style);
 
@@ -106,16 +110,20 @@ function generar_excel_plan_laboral(rows){
         worksheet.cell(i+1,2).string(String(row.empleado)).style(style);
         worksheet.cell(i+1,3).string(String(row.cliente_plan_m)).style(style);
         worksheet.cell(i+1,4).string(String(row.obra_plan_m)).style(style);
-        worksheet.cell(i+1,5).string(String(row.cliente_real_m)).style(style);
-        worksheet.cell(i+1,6).string(String(row.obra_real_m)).style(style);
-        worksheet.cell(i+1,7).string(String(row.cliente_plan_t)).style(style);
-        worksheet.cell(i+1,8).string(String(row.obra_plan_t)).style(style);
-        worksheet.cell(i+1,9).string(String(row.cliente_real_t)).style(style);
-        worksheet.cell(i+1,10).string(String(row.obra_real_t)).style(style);
-        worksheet.cell(i+1,11).string(String(row.encargado)).style(style);
-        worksheet.cell(i+1,12).string(String(row.trato_cliente)).style(style);
-        worksheet.cell(i+1,13).string(String(row.h_entrada)).style(style);
-        worksheet.cell(i+1,14).string(String(row.h_salida)).style(style);
+        worksheet.cell(i+1,5).string(String(row.ot_plan_m)).style(style);
+        worksheet.cell(i+1,6).string(String(row.cliente_plan_t)).style(style);
+        worksheet.cell(i+1,7).string(String(row.obra_plan_t)).style(style);
+        worksheet.cell(i+1,8).string(String(row.ot_plan_t)).style(style);
+        worksheet.cell(i+1,9).string(String(row.cliente_real_m)).style(style);
+        worksheet.cell(i+1,10).string(String(row.obra_real_m)).style(style);
+        worksheet.cell(i+1,11).string(String(row.ot_real_m)).style(style);
+        worksheet.cell(i+1,12).string(String(row.cliente_real_t)).style(style);
+        worksheet.cell(i+1,13).string(String(row.obra_real_t)).style(style);
+        worksheet.cell(i+1,14).string(String(row.ot_real_t)).style(style);
+        worksheet.cell(i+1,15).string(String(row.encargado)).style(style);
+        worksheet.cell(i+1,16).string(String(row.trato_cliente)).style(style);
+        worksheet.cell(i+1,17).string(String(row.h_entrada)).style(style);
+        worksheet.cell(i+1,18).string(String(row.h_salida)).style(style);
         //worksheet.cell(i+1,16).string(String(row.imputacion_1)).style(style1);
         //worksheet.cell(i+1,17).string(String(row.imputacion_2)).style(style1);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
@@ -179,7 +187,7 @@ app.get('/add', function(req, res, next){
                     res.render('mano/add', {
                         title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                         obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
-                        monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'',otros:'', usuario_insert: user, usuario: user, data: datos});
+                        monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'', usuario_insert: user, usuario: user, data: datos});
                 }
             })
         })
@@ -227,6 +235,10 @@ app.post('/add', function(req, res, next){
             hora_100: Number(req.sanitize('hora_100').escape().trim()),
             hora_normal: Number(req.sanitize('hora_normal').escape().trim()),
             hora_neg: Number(req.sanitize('hora_neg').escape().trim()),
+            ot_plan_m: req.sanitize('ot_plan_m').escape().trim(),
+            ot_real_m: req.sanitize('ot_real_m').escape().trim(),
+            ot_plan_t: req.sanitize('ot_plan_t').escape().trim(),
+            ot_real_t: req.sanitize('ot_real_t').escape().trim(),
             otros: Number(req.sanitize('otros').escape().trim()),
             usuario_insert: user
         }   
@@ -262,6 +274,10 @@ app.post('/add', function(req, res, next){
                         hora_100: mano_plan.hora_100,
                         hora_normal: mano_plan.hora_normal,
                         hora_neg: mano_plan.hora_neg,
+                        ot_plan_m: mano_plan.ot_plan_m,
+                        ot_real_m: mano_plan.ot_real_m,
+                        ot_plan_t: mano_plan.ot_plan_t,
+                        ot_real_t: mano_plan.ot_real_t,
                         otros: mano_plan.otros,
                         usuario: user
                     })
@@ -284,7 +300,7 @@ app.post('/add', function(req, res, next){
                                 res.render('mano/add', {
                                     title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '',
                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
-                                    monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'',otros:'', usuario_insert: user, usuario: user, data: datos});
+                                    monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'', usuario_insert: user, usuario: user, data: datos});
                             }
                         })
                     })
@@ -327,6 +343,10 @@ app.post('/add', function(req, res, next){
             hora_100: mano_plan.hora_100,
             hora_normal: mano_plan.hora_normal,
             hora_neg: mano_plan.hora_neg,
+            ot_plan_m: mano_plan.ot_plan_m,
+            ot_real_m: mano_plan.ot_real_m,
+            ot_plan_t: mano_plan.ot_plan_t,
+            ot_real_t: mano_plan.ot_real_t,
             otros: mano_plan.otros,
             usuario: user
         })
@@ -374,6 +394,10 @@ app.get('/editar/:id', function(req, res, next){
                     hora_100: rows[0].hora_100,
                     hora_normal: rows[0].hora_normal,
                     hora_neg: rows[0].hora_neg,
+                    ot_plan_m: rows[0].ot_plan_m,
+                    ot_real_m: rows[0].ot_real_m,
+                    ot_plan_t: rows[0].ot_plan_t,
+                    ot_real_t: rows[0].ot_real_t,
                     otros: rows[0].otros,
                     usuario: user
                 })
@@ -415,6 +439,10 @@ app.post('/editar/:id', function(req, res, next) {
             hora_100: Number(req.sanitize('hora_100').escape().trim()),
             hora_normal: Number(req.sanitize('hora_normal').escape().trim()),
             hora_neg: Number(req.sanitize('hora_neg').escape().trim()),
+            ot_plan_m: req.sanitize('ot_plan_m').escape().trim(),
+            ot_real_m: req.sanitize('ot_real_m').escape().trim(),
+            ot_plan_t: req.sanitize('ot_plan_t').escape().trim(),
+            ot_real_t: req.sanitize('ot_real_t').escape().trim(),
             otros: Number(req.sanitize('otros').escape().trim()),
             usuario_insert: user
         } 
@@ -449,6 +477,10 @@ app.post('/editar/:id', function(req, res, next) {
                         hora_100: mano_plan.hora_100,
                         hora_normal: mano_plan.hora_normal,
                         hora_neg: mano_plan.hora_neg,
+                        ot_plan_m: mano_plan.ot_plan_m,
+                        ot_real_m: mano_plan.ot_real_m,
+                        ot_plan_t: mano_plan.ot_plan_t,
+                        ot_real_t: mano_plan.ot_real_t,
                         otros: mano_plan.otros,
                         usuario: user
                     })
@@ -480,6 +512,10 @@ app.post('/editar/:id', function(req, res, next) {
                         hora_100: req.body.hora_100,
                         hora_normal: req.body.hora_normal,
                         hora_neg: req.body.hora_neg,
+                        ot_plan_m: req.body.ot_plan_m,
+                        ot_real_m: req.body.ot_real_m,
+                        ot_plan_t: req.body.ot_plan_t,
+                        ot_real_t: req.body.ot_real_t,
                         otros: req.body.otros,
                         usuario_insert: user,
                         usuario: user               
@@ -518,6 +554,10 @@ app.post('/editar/:id', function(req, res, next) {
             hora_100: req.body.hora_100,
             hora_normal: req.body.hora_normal,
             hora_neg: req.body.hora_neg,
+            ot_plan_m: req.body.ot_plan_m,
+            ot_real_m: req.body.ot_real_m,
+            ot_plan_t: req.body.ot_plan_t,
+            ot_real_t: req.body.ot_real_t,
             otros: req.body.otros,
             usuario_insert: user,
             usuario: user  

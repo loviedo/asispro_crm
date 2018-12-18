@@ -12,6 +12,9 @@
             <!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
             <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
             <script type="text/javascript">
+
+
+
                 $(document).ready(function () {
                     $('#sidebarCollapse').on('click', function () {
                         $('#sidebar').toggleClass('active');
@@ -20,7 +23,7 @@
                     $('#dtBasicExample').DataTable(
                         //{"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"}}
                     );
-                    $('#tablex').DataTable(
+                    var oTable = $('#tablex').DataTable(
                         {
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
@@ -49,6 +52,22 @@
                             }
                         }}
                     );
+
+                    /*AGREGADO PARA ASIGNAR LA OT*/
+                    $('#tablex tbody').on( 'click', 'tr', function () {
+                        $(this).toggleClass('selected');
+                        var pos = oTable.row(this).index();
+                        var row = oTable.row(pos).data();
+                        //console.log(row);
+                    } );
+
+                    $('#button').click( function () {
+                    var oData = oTable.rows('.selected').data();
+
+                    for (var i=0; i < oData.length ;i++){
+                        //alert("Name: " + oData[i][0] + " Position: " + oData[i][1] + " Office: " + oData[i][2]);
+                    }
+                    } );
                 });
             </script>
         </div>

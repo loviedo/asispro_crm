@@ -95,6 +95,21 @@ function generar_excel_emples(rows){
     workbook.write('Listado_EMPLEADOS.xlsx');
 }
 
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+
 // MOSTRAR LISTADO DE GASTOS
 app.get('/', function(req, res, next) {
     if(req.session.user)
