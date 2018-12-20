@@ -173,22 +173,38 @@ app.get('/add', function(req, res, next){
 	if(user.length >0){
         req.getConnection(function(error, conn) {
             //traemos las OTs para mostrar en la ventana modal
+            datos = [];
             conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
                 if (err) {
                     console.log(err);
                 }
                 else{
-                    datos = [];
+
                     rows.forEach(function(row) {    
                         datos.push(row);
                     });
-                    console.log(datos);//debug
-                    // render to views/user/add.ejs
-                    res.render('mano/add', {
-                        title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
-                        obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
-                        monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'', usuario_insert: user, usuario: user, data: datos});
-                }
+                    console.log(datos);//debug de datos de OT
+                    //traemos los personales para mostrar en el modal
+                    datos_rrhh = [];
+                    conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else{
+
+                            rows.forEach(function(row) {    
+                                datos_rrhh.push(row);
+                            });
+                            console.log(datos_rrhh);//debug de datos de RRHH
+                                        //dibujamos la tabla con los datos que consultamos
+                            res.render('mano/add', {
+                            title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                            obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
+                            monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
+                            usuario_insert: user, usuario: user, data: datos, data_rrhh: datos_rrhh});
+                        }              
+                    })
+                }             
             })
         })
     }
@@ -240,6 +256,7 @@ app.post('/add', function(req, res, next){
             ot_plan_t: req.sanitize('ot_plan_t').escape().trim(),
             ot_real_t: req.sanitize('ot_real_t').escape().trim(),
             otros: Number(req.sanitize('otros').escape().trim()),
+            jornal: Number(req.sanitize('jornal').escape().trim()),
             usuario_insert: user
         }   
         
@@ -279,6 +296,7 @@ app.post('/add', function(req, res, next){
                         ot_plan_t: mano_plan.ot_plan_t,
                         ot_real_t: mano_plan.ot_real_t,
                         otros: mano_plan.otros,
+                        jornal: mano_plan.jornal,
                         usuario: user
                     })
                 } else {                
@@ -286,23 +304,42 @@ app.post('/add', function(req, res, next){
                     
                     // render to views/mano/add.ejs
                     req.getConnection(function(error, conn) {
+                        
+                        //traemos las OTs para mostrar en la ventana modal
+                        datos = [];
                         conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
                             if (err) {
                                 console.log(err);
                             }
                             else{
-                                datos = [];
+
                                 rows.forEach(function(row) {    
                                     datos.push(row);
                                 });
-                                console.log(datos);//debug
-                                // render to views/user/add.ejs
-                                res.render('mano/add', {
-                                    title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '',
-                                    obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
-                                    monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'', usuario_insert: user, usuario: user, data: datos});
-                            }
+                                console.log(datos);//debug de datos de OT
+                                //traemos los personales para mostrar en el modal
+                                datos_rrhh = [];
+                                conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    else{
+
+                                        rows.forEach(function(row) {    
+                                            datos_rrhh.push(row);
+                                        });
+                                        console.log(datos_rrhh);//debug de datos de RRHH
+                                                    //dibujamos la tabla con los datos que consultamos
+                                        res.render('mano/add', {
+                                        title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                                        obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
+                                        monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
+                                        usuario_insert: user, usuario: user, data: datos, data_rrhh: datos_rrhh});
+                                    }              
+                                })
+                            }             
                         })
+
                     })
                 }
             })
@@ -348,6 +385,7 @@ app.post('/add', function(req, res, next){
             ot_plan_t: mano_plan.ot_plan_t,
             ot_real_t: mano_plan.ot_real_t,
             otros: mano_plan.otros,
+            jornal: mano_plan.jornal,
             usuario: user
         })
     }
@@ -399,6 +437,7 @@ app.get('/editar/:id', function(req, res, next){
                     ot_plan_t: rows[0].ot_plan_t,
                     ot_real_t: rows[0].ot_real_t,
                     otros: rows[0].otros,
+                    jornal: rows[0].jornal,
                     usuario: user
                 })
             }            
@@ -444,6 +483,7 @@ app.post('/editar/:id', function(req, res, next) {
             ot_plan_t: req.sanitize('ot_plan_t').escape().trim(),
             ot_real_t: req.sanitize('ot_real_t').escape().trim(),
             otros: Number(req.sanitize('otros').escape().trim()),
+            jornal: Number(req.sanitize('jornal').escape().trim()),
             usuario_insert: user
         } 
         
@@ -482,6 +522,7 @@ app.post('/editar/:id', function(req, res, next) {
                         ot_plan_t: mano_plan.ot_plan_t,
                         ot_real_t: mano_plan.ot_real_t,
                         otros: mano_plan.otros,
+                        jornal: mano_plan.jornal,
                         usuario: user
                     })
                 } else {                
@@ -517,6 +558,7 @@ app.post('/editar/:id', function(req, res, next) {
                         ot_plan_t: req.body.ot_plan_t,
                         ot_real_t: req.body.ot_real_t,
                         otros: req.body.otros,
+                        jornal: req.body.jornal,
                         usuario_insert: user,
                         usuario: user               
                     })
@@ -559,6 +601,7 @@ app.post('/editar/:id', function(req, res, next) {
             ot_plan_t: req.body.ot_plan_t,
             ot_real_t: req.body.ot_real_t,
             otros: req.body.otros,
+            jornal: req.body.jornal,
             usuario_insert: user,
             usuario: user  
         })

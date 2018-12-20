@@ -12,9 +12,6 @@
             <!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
             <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
             <script type="text/javascript">
-
-
-
                 $(document).ready(function () {
                     $('#sidebarCollapse').on('click', function () {
                         $('#sidebar').toggleClass('active');
@@ -23,7 +20,8 @@
                     $('#dtBasicExample').DataTable(
                         //{"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"}}
                     );
-                    var oTable = $('#tablex').DataTable(
+
+                    $('#tablex').DataTable(
                         {
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
@@ -53,20 +51,208 @@
                         }}
                     );
 
-                    /*AGREGADO PARA ASIGNAR LA OT*/
-                    $('#tablex tbody').on( 'click', 'tr', function () {
-                        $(this).toggleClass('selected');
-                        var pos = oTable.row(this).index();
-                        var row = oTable.row(pos).data();
-                        //console.log(row);
+                    var RRHH_DATOS = $('#table_rrhh_mano').DataTable(
+                                            {
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+
+                    var OT_DATOS_1 = $('#table_ot_plan_m_mano').DataTable(//
+                        {
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+                    var OT_DATOS_2 = $('#table_ot_plan_t_mano').DataTable(//
+                        {
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+                    var OT_DATOS_3 = $('#table_ot_real_m_mano').DataTable(//
+                        {
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+                    var OT_DATOS_4 = $('#table_ot_real_t_mano').DataTable(//
+                        {
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+
+
+                    /*JQUERY PARA ASIGNAR EL NOMBRE DEL EMPLEADO EN EL FORM https://stackoverflow.com/questions/36550092/how-to-get-selected-values-from-datatable?rq=1*/
+                    $('#table_rrhh_mano tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = RRHH_DATOS.row(this).index();
+                        var row = RRHH_DATOS.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //aca tenemos que asignar el valor
+                        $('#empleado').val(row[1]);
+                        $('#jornal').val(row[11]);
                     } );
 
-                    $('#button').click( function () {
-                    var oData = oTable.rows('.selected').data();
-
-                    for (var i=0; i < oData.length ;i++){
-                        //alert("Name: " + oData[i][0] + " Position: " + oData[i][1] + " Office: " + oData[i][2]);
-                    }
+                    /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA PLAN MANANA*/
+                    $('#table_ot_plan_m_mano tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = OT_DATOS_1.row(this).index();
+                        var row = OT_DATOS_1.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //aca tenemos que asignar el valor
+                        $('#cliente_plan_m').val(row[9]);
+                        $('#obra_plan_m').val(row[10]);
+                        $('#ot_plan_m').val(row[0]);
+                    } );
+                    /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA PLAN TARDE*/
+                    $('#table_ot_plan_t_mano tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = OT_DATOS_2.row(this).index();
+                        var row = OT_DATOS_2.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //aca tenemos que asignar el valor
+                        $('#cliente_plan_t').val(row[9]);
+                        $('#obra_plan_t').val(row[10]);
+                        $('#ot_plan_t').val(row[0]);
+                    } );
+                    /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA REAL MANANA*/
+                    $('#table_ot_real_m_mano tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = OT_DATOS_3.row(this).index();
+                        var row = OT_DATOS_3.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //aca tenemos que asignar el valor
+                        $('#cliente_real_m').val(row[9]);
+                        $('#obra_real_m').val(row[10]);
+                        $('#ot_real_m').val(row[0]);
+                    } );
+                    /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA REAL TARDE*/
+                    $('#table_ot_real_t_mano tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = OT_DATOS_4.row(this).index();
+                        var row = OT_DATOS_4.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //aca tenemos que asignar el valor
+                        $('#cliente_real_t').val(row[9]);
+                        $('#obra_real_t').val(row[10]);
+                        $('#ot_real_t').val(row[0]);
                     } );
                 });
             </script>

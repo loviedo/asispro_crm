@@ -73,6 +73,7 @@ function generar_excel_emples(rows){
     worksheet.cell(1,9).string('HiJOS').style(style);
     worksheet.cell(1,10).string('EDAD').style(style);
     worksheet.cell(1,11).string('TIPO').style(style);
+    worksheet.cell(1,12).string('JORNAL').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
@@ -89,6 +90,7 @@ function generar_excel_emples(rows){
         worksheet.cell(i+1,9).number(Number(row.hijos)).style(style);
         worksheet.cell(i+1,10).number(Number(row.edad)).style(style);
         worksheet.cell(i+1,11).string(String(row.tipo_empleado)).style(style);
+        worksheet.cell(i+1,12).number(Number(row.jornal)).style(style);
         i=i+1;
         //console.log(row.descripcion);//debug
     });
@@ -150,7 +152,7 @@ app.get('/add', function(req, res, next){
         // render to views/user/add.ejs
         res.render('rrhh/add', {
             title: 'Cargar nuevo EMPLEADO', codigo:'', nombre: '', telefono: '',ocupacion:'', fecha_inicio:'',motivo_salida:'',fecha_nac:'',
-            direccion:'',hijos:'',edad:'',tipo_empleado:'', usuario_insert: user, usuario: user})
+            direccion:'',hijos:'',edad:'',tipo_empleado:'',jornal:'', usuario_insert: user, usuario: user})
     }
     else {
         // render to views/index.ejs template file
@@ -177,6 +179,7 @@ app.post('/add', function(req, res, next){
             hijos: Number(req.sanitize('hijos').escape().trim()),
             edad: Number(req.sanitize('edad').escape().trim()),
             tipo_empleado: req.sanitize('tipo_empleado').escape().trim(),
+            jornal: Number(req.sanitize('jornal').escape().trim()),
             usuario_insert: user
         }   
         
@@ -201,6 +204,7 @@ app.post('/add', function(req, res, next){
                         hijos: recurso.hijos,
                         edad: recurso.edad,
                         tipo_empleado: recurso.tipo_empleado,
+                        jornal: recurso.jornal,
                         usuario: user
                     })
                 } else {                
@@ -220,6 +224,7 @@ app.post('/add', function(req, res, next){
                         hijos: recurso.hijos,
                         edad: recurso.edad,
                         tipo_empleado: recurso.tipo_empleado,
+                        jornal: recurso.jornal,
                         usuario: user                 
                     })
                 }
@@ -251,6 +256,7 @@ app.post('/add', function(req, res, next){
             hijos: recurso.hijos,
             edad: recurso.edad,
             tipo_empleado: recurso.tipo_empleado,
+            jornal: recurso.jornal,
             usuario_insert: user
         })
     }
@@ -312,6 +318,7 @@ app.post('/editar/:id', function(req, res, next) {
             hijos: Number(req.sanitize('hijos').escape().trim()),
             edad: Number(req.sanitize('edad').escape().trim()),
             tipo_empleado: req.sanitize('tipo_empleado').escape().trim(),
+            jornal: Number(req.sanitize('jornal').escape().trim()),
             usuario_insert: user
         }  
         
@@ -336,6 +343,7 @@ app.post('/editar/:id', function(req, res, next) {
                         hijos: req.body.hijos,
                         edad: req.body.edad,
                         tipo_empleado: req.body.tipo_empleado,
+                        jornal: req.body.jornal,
                         usuario: user
                     })
                 } else {                
@@ -356,6 +364,7 @@ app.post('/editar/:id', function(req, res, next) {
                         hijos: req.body.hijos,
                         edad: req.body.edad,
                         tipo_empleado: req.body.tipo_empleado,
+                        jornal: req.body.jornal,
                         usuario_insert: user,
                         usuario: user               
                     })
@@ -383,6 +392,7 @@ app.post('/editar/:id', function(req, res, next) {
             hijos: req.body.hijos,
             edad: req.body.edad,
             tipo_empleado: req.body.tipo_empleado,
+            jornal: req.body.jornal,
             usuario_insert: user
         })
     }
