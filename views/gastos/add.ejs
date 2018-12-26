@@ -83,11 +83,15 @@ function changeText() {
     //alert(cond);
     if(cond == "BOLETA_PAGO" || cond == "COMP_INGRESO" || cond == "RECIBO" || cond == "S_F" || cond == "RECIBO_COMUN" || cond == "NOTA_CREDITO")
     {   //HABLITAR- DESHABILITAR
-        document.getElementById("monto").disabled = true; 
+        //document.getElementById("monto").disabled = true; 
         document.getElementById("exentas1").disabled = true; 
         document.getElementById("iva_10").false = true; 
         document.getElementById("iva_5").false = true;
         document.getElementById("gasto_real").disabled = false; //solo gasto real habilitado
+        document.getElementById("gasto_real1").disabled = false; //solo gasto real habilitado
+        document.getElementById("monto1").disabled = false; //solo gasto real habilitado
+        document.getElementById("monto").disabled = false;
+        document.getElementById("exentas1").disabled = false; //solo gasto real habilitado
         //ASIGNAR VALORES
         document.getElementById("monto").value = 0; 
         document.getElementById("exentas1").value = 0; 
@@ -95,9 +99,11 @@ function changeText() {
         document.getElementById("iva_5").value = 0;
         document.getElementById("gasto_real").value = 0; 
 
-        document.getElementById("exentas").value = (parseInt(document.getElementById('exentas1').value) || 0);
-        document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
-        document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
+        document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById("monto1").value) || 0);
+
+        console.log(document.getElementById("gasto_real").value);//debug en la consola del navegador
     }
     if(cond == "CREDITO")//SOLO 
     {   //HABLITAR- DESHABILITAR
@@ -113,9 +119,9 @@ function changeText() {
         document.getElementById("iva_5").value = 0;
         document.getElementById("gasto_real1").value = 0; 
 
-        document.getElementById("exentas").value = (parseInt(document.getElementById('exentas1').value) || 0);
-        document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
-        document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
+        document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById("monto1").value) || 0);
     }
     if(cond == "CONTADO")
     {   //HABLITAR- DESHABILITAR
@@ -133,16 +139,16 @@ function changeText() {
         document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
         
         //calculo de gasto real.
-        document.getElementById("gasto_real").value = ((parseInt(document.getElementById('monto').value) || 0) + (parseInt(document.getElementById('exentas').value) || 0));
-        document.getElementById("gasto_real1").value = ((parseInt(document.getElementById('monto').value) || 0) + (parseInt(document.getElementById('exentas').value) || 0));
-
-        document.getElementById("exentas").value = (parseInt(document.getElementById('exentas1').value) || 0);
+        document.getElementById("gasto_real").value = ((parseInt(document.getElementById("monto").value) || 0) + (parseInt(document.getElementById("exentas").value) || 0));
+        document.getElementById("gasto_real1").value = ((parseInt(document.getElementById("monto").value) || 0) + (parseInt(document.getElementById("exentas").value) || 0));
+        document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
     }
 
     //document.getElementById('gasto_real').value = parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value);
 
     //document.getElementById('gasto').value = Math.round((document.getElementById('monto').value /11)*100) /100;
     //document.getElementById('iva_5').value = Math.round((document.getElementById('monto').value *5/100)*100) /100;  
+
 }
 
 function cal_iva(){
