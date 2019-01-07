@@ -127,18 +127,18 @@ app.post('/add', function(req, res, next){
     if(!errors) {//Si no hay errores, entonces conitnuamos
 
         //mysql acepta solos YYYY-MM-DD
-        var nombre = req.sanitize('nombre').escape().trim();
-        var ruc = req.sanitize('ruc').escape().trim();
+        var nombre = req.sanitize('nombre').trim();
+        var ruc = req.sanitize('ruc').trim();
 
-        /*var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
-        var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
-        var remision_nro = Number(req.sanitize('remision_nro').escape().trim());*/
+        /*var fact_nro = Number(req.sanitize('fact_nro').trim());
+        var recibo_nro = Number(req.sanitize('recibo_nro').trim());
+        var remision_nro = Number(req.sanitize('remision_nro').trim());*/
 
         var cli = {
             nombre: nombre,
             ruc: ruc,
             usuario_insert: user
-            //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
+            //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
         }   
         
         //conectamos a la base de datos
@@ -224,17 +224,17 @@ app.post('/editar/:id', function(req, res, next) {
         req.body.comment = 'a <span>comment</span>';
         req.body.username = '   a user    ';
         
-        req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
+        req.sanitize('comment'); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
         req.sanitize('username').trim(); // returns 'a user'
         ********************************************/
     
 
 
         var clie = {
-            nombre: req.sanitize('nombre').escape().trim(),
-            ruc: req.sanitize('ruc').escape().trim(),
+            nombre: req.sanitize('nombre').trim(),
+            ruc: req.sanitize('ruc').trim(),
             usuario_insert: user
-            //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
+            //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
         }  
         
         req.getConnection(function(error, conn) {

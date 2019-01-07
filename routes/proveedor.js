@@ -16,8 +16,8 @@ app.post('/add', function(req, res, next){
 	if(user.length >0){
         //vemos los datos en la base
         var prov = {
-            nombre: req.sanitize('nombre').escape().trim(),
-            ruc: req.sanitize('ruc').escape().trim(),
+            nombre: req.sanitize('nombre').trim(),
+            ruc: req.sanitize('ruc').trim(),
             usuario_insert: user
         }   
         

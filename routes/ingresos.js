@@ -173,23 +173,23 @@ app.post('/add', function(req, res, next){
     
     if(!errors) {//Si no hay errores, entonces conitnuamos
 
-        /*var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
-        var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
-        var remision_nro = Number(req.sanitize('remision_nro').escape().trim());*/
+        /*var fact_nro = Number(req.sanitize('fact_nro').trim());
+        var recibo_nro = Number(req.sanitize('recibo_nro').trim());
+        var remision_nro = Number(req.sanitize('remision_nro').trim());*/
 
         var ingreso = {
-            fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').escape().trim()),
-            cliente: req.sanitize('cliente').escape().trim(),
-            obra: req.sanitize('obra').escape().trim(),
-            fact_nro: req.sanitize('fact_nro').escape().trim(),
-            fact_condicion: req.sanitize('fact_condicion').escape().trim(),
-            monto: Number(req.sanitize('monto').escape().trim()),
-            iva: Number(req.sanitize('iva').escape().trim()),
-            retencion: Number(req.sanitize('retencion').escape().trim()),
-            porcentaje: Number(req.sanitize('porcentaje').escape().trim()),
-            total_facturado: Number(req.sanitize('total_facturado').escape().trim()),
+            fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+            cliente: req.sanitize('cliente').trim(),
+            obra: req.sanitize('obra').trim(),
+            fact_nro: req.sanitize('fact_nro').trim(),
+            fact_condicion: req.sanitize('fact_condicion').trim(),
+            monto: Number(req.sanitize('monto').trim()),
+            iva: Number(req.sanitize('iva').trim()),
+            retencion: Number(req.sanitize('retencion').trim()),
+            porcentaje: Number(req.sanitize('porcentaje').trim()),
+            total_facturado: Number(req.sanitize('total_facturado').trim()),
             usuario_insert: user
-            //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
+            //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
         }   
         
         //conectamos a la base de datos
@@ -305,18 +305,18 @@ app.post('/editar/:id', function(req, res, next) {
 
 
        var ingreso = {
-            fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').escape().trim()),
-            cliente: req.sanitize('cliente').escape().trim(),
-            obra: req.sanitize('obra').escape().trim(),
-            fact_nro: req.sanitize('fact_nro').escape().trim(),
-            fact_condicion: req.sanitize('fact_condicion').escape().trim(),
-            monto: Number(req.sanitize('monto').escape().trim()),
-            iva: Number(req.sanitize('iva').escape().trim()),
-            retencion: Number(req.sanitize('retencion').escape().trim()),
-            porcentaje: Number(req.sanitize('porcentaje').escape().trim()),
-            total_facturado: Number(req.sanitize('total_facturado').escape().trim()),
+            fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+            cliente: req.sanitize('cliente').trim(),
+            obra: req.sanitize('obra').trim(),
+            fact_nro: req.sanitize('fact_nro').trim(),
+            fact_condicion: req.sanitize('fact_condicion').trim(),
+            monto: Number(req.sanitize('monto').trim()),
+            iva: Number(req.sanitize('iva').trim()),
+            retencion: Number(req.sanitize('retencion').trim()),
+            porcentaje: Number(req.sanitize('porcentaje').trim()),
+            total_facturado: Number(req.sanitize('total_facturado').trim()),
             usuario_insert: user
-            //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
+            //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
         } 
         
         req.getConnection(function(error, conn) {

@@ -126,7 +126,7 @@ app.post('/signup', function(req, res, next) {
 
     //aqui construimos el insert, los nombres de los campos de la tabla deben ser asignados
     var usuario = {
-        first_name: req.sanitize('first_name').escape(),
+        first_name: req.sanitize('first_name'),
         last_name: req.sanitize('last_name'),
         mob_no: req.sanitize('mob_no'),
         user_name: req.sanitize('user_name'),

@@ -183,33 +183,33 @@ app.post('/add', function(req, res, next){
          
         req.body.comment = 'a <span>comment</span>';
         req.body.username = '   a user    ';
-        req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
+        req.sanitize('comment'); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
         req.sanitize('username').trim(); // returns 'a user'
         ********************************************/
 
         //mysql acepta solos YYYY-MM-DD
-        var date1 = req.sanitize('fec_emision').escape().trim();
-        var date2 = req.sanitize('fec_ini_ejecucion').escape().trim();
-        var date3 = req.sanitize('fec_fin_ejecucion').escape().trim();
-        var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
-        var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
-        var remision_nro = Number(req.sanitize('remision_nro').escape().trim());
+        var date1 = req.sanitize('fec_emision').trim();
+        var date2 = req.sanitize('fec_ini_ejecucion').trim();
+        var date3 = req.sanitize('fec_fin_ejecucion').trim();
+        var fact_nro = Number(req.sanitize('fact_nro').trim());
+        var recibo_nro = Number(req.sanitize('recibo_nro').trim());
+        var remision_nro = Number(req.sanitize('remision_nro').trim());
 
         var ot = {
-            ot_nro: req.sanitize('ot_nro').escape().trim(),
+            ot_nro: req.sanitize('ot_nro').trim(),
             fec_emision: formatear_fecha_yyyymmdd(date1),
             fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
             fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3),
             fact_nro: fact_nro,
             recibo_nro: recibo_nro,
             remision_nro: remision_nro,
-            fact_tipo: req.sanitize('fact_tipo').escape().trim(),
-            fact_estado: req.sanitize('fact_estado').escape().trim(),
-            cliente: req.sanitize('cliente').escape().trim(),
-            obra: req.sanitize('obra').escape().trim(),
-            descripcion: req.sanitize('descripcion').escape().trim(),
+            fact_tipo: req.sanitize('fact_tipo').trim(),
+            fact_estado: req.sanitize('fact_estado').trim(),
+            cliente: req.sanitize('cliente').trim(),
+            obra: req.sanitize('obra').trim(),
+            descripcion: req.sanitize('descripcion').trim(),
             usuario_insert: user
-            //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
+            //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
         }   
         
         //conectamos a la base de datos
@@ -351,35 +351,35 @@ app.post('/editar/:id', function(req, res, next) {
         req.body.comment = 'a <span>comment</span>';
         req.body.username = '   a user    ';
  
-        req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
+        req.sanitize('comment'); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
         req.sanitize('username').trim(); // returns 'a user'
         ********************************************/
 
         //mysql acepta solos YYYY-MM-DD
-        //console.log(req.sanitize('fec_emision').escape().trim());//debug
-        var date1 = req.sanitize('fec_emision').escape().trim();
-        var date2 = req.sanitize('fec_ini_ejecucion').escape().trim();
-        var date3 = req.sanitize('fec_fin_ejecucion').escape().trim();
+        //console.log(req.sanitize('fec_emision').trim());//debug
+        var date1 = req.sanitize('fec_emision').trim();
+        var date2 = req.sanitize('fec_ini_ejecucion').trim();
+        var date3 = req.sanitize('fec_fin_ejecucion').trim();
 
-        var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
-        var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
-        var remision_nro = Number(req.sanitize('remision_nro').escape().trim());
+        var fact_nro = Number(req.sanitize('fact_nro').trim());
+        var recibo_nro = Number(req.sanitize('recibo_nro').trim());
+        var remision_nro = Number(req.sanitize('remision_nro').trim());
 
        var ot = {
-            ot_nro: req.sanitize('ot_nro').escape().trim(),
+            ot_nro: req.sanitize('ot_nro').trim(),
             fec_emision: formatear_fecha_yyyymmdd(date1),
             fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
             fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3),
             fact_nro: fact_nro,
             recibo_nro: recibo_nro,
             remision_nro: remision_nro,
-            fact_tipo: req.sanitize('fact_tipo').escape().trim(),
-            fact_estado: req.sanitize('fact_estado').escape().trim(),
-            cliente: req.sanitize('cliente').escape().trim(),
-            obra: req.sanitize('obra').escape().trim(),
-            descripcion: req.sanitize('descripcion').escape().trim(),
+            fact_tipo: req.sanitize('fact_tipo').trim(),
+            fact_estado: req.sanitize('fact_estado').trim(),
+            cliente: req.sanitize('cliente').trim(),
+            obra: req.sanitize('obra').trim(),
+            descripcion: req.sanitize('descripcion').trim(),
             usuario_insert: user
-            //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
+            //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
         }
         
         req.getConnection(function(error, conn) {

@@ -168,18 +168,18 @@ app.post('/add', function(req, res, next){
     if(!errors) {//Si no hay errores, entonces conitnuamos
 
         var recurso = {
-            codigo: req.sanitize('codigo').escape().trim(),
-            nombre: req.sanitize('nombre').escape().trim(),
-            telefono: req.sanitize('telefono').escape().trim(),
-            ocupacion: req.sanitize('ocupacion').escape().trim(),
-            fecha_inicio: formatear_fecha_yyyymmdd(req.sanitize('fecha_inicio').escape().trim()),
-            motivo_salida: req.sanitize('motivo_salida').escape().trim(),
-            fecha_nac: formatear_fecha_yyyymmdd(req.sanitize('fecha_nac').escape().trim()),
-            direccion: req.sanitize('direccion').escape().trim(),
-            hijos: Number(req.sanitize('hijos').escape().trim()),
-            edad: Number(req.sanitize('edad').escape().trim()),
-            tipo_empleado: req.sanitize('tipo_empleado').escape().trim(),
-            jornal: Number(req.sanitize('jornal').escape().trim()),
+            codigo: req.sanitize('codigo').trim(),
+            nombre: req.sanitize('nombre').trim(),
+            telefono: req.sanitize('telefono').trim(),
+            ocupacion: req.sanitize('ocupacion').trim(),
+            fecha_inicio: formatear_fecha_yyyymmdd(req.sanitize('fecha_inicio').trim()),
+            motivo_salida: req.sanitize('motivo_salida').trim(),
+            fecha_nac: formatear_fecha_yyyymmdd(req.sanitize('fecha_nac').trim()),
+            direccion: req.sanitize('direccion').trim(),
+            hijos: Number(req.sanitize('hijos').trim()),
+            edad: Number(req.sanitize('edad').trim()),
+            tipo_empleado: req.sanitize('tipo_empleado').trim(),
+            jornal: Number(req.sanitize('jornal').trim()),
             usuario_insert: user
         }   
         
@@ -307,18 +307,18 @@ app.post('/editar/:id', function(req, res, next) {
     if( !errors ) {//No errors were found.  Passed Validation!
 
         var emple = {
-            codigo: req.sanitize('codigo').escape().trim(),
-            nombre: req.sanitize('nombre').escape().trim(),
-            telefono: req.sanitize('telefono').escape().trim(),
-            ocupacion: req.sanitize('ocupacion').escape().trim(),
-            fecha_inicio: formatear_fecha_yyyymmdd(req.sanitize('fecha_inicio').escape().trim()),
-            motivo_salida: req.sanitize('motivo_salida').escape().trim(),
-            fecha_nac: formatear_fecha_yyyymmdd(req.sanitize('fecha_nac').escape().trim()),
-            direccion: req.sanitize('direccion').escape().trim(),
-            hijos: Number(req.sanitize('hijos').escape().trim()),
-            edad: Number(req.sanitize('edad').escape().trim()),
-            tipo_empleado: req.sanitize('tipo_empleado').escape().trim(),
-            jornal: Number(req.sanitize('jornal').escape().trim()),
+            codigo: req.sanitize('codigo').trim(),
+            nombre: req.sanitize('nombre').trim(),
+            telefono: req.sanitize('telefono').trim(),
+            ocupacion: req.sanitize('ocupacion').trim(),
+            fecha_inicio: formatear_fecha_yyyymmdd(req.sanitize('fecha_inicio').trim()),
+            motivo_salida: req.sanitize('motivo_salida').trim(),
+            fecha_nac: formatear_fecha_yyyymmdd(req.sanitize('fecha_nac').trim()),
+            direccion: req.sanitize('direccion').trim(),
+            hijos: Number(req.sanitize('hijos').trim()),
+            edad: Number(req.sanitize('edad').trim()),
+            tipo_empleado: req.sanitize('tipo_empleado').trim(),
+            jornal: Number(req.sanitize('jornal').trim()),
             usuario_insert: user
         }  
         

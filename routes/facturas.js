@@ -78,25 +78,25 @@ app.post('/add', function(req, res, next){
         req.body.comment = 'a <span>comment</span>';
         req.body.username = '   a user    ';
  
-        req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
+        req.sanitize('comment'); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
         req.sanitize('username').trim(); // returns 'a user'
         ********************************************/
         var factura = {
-            fecha: req.sanitize('fecha').escape().trim(),
-            monto: req.sanitize('monto').escape().trim(),
-            exentas: req.sanitize('exentas').escape().trim(),
-            iva_10: req.sanitize('iva_10').escape().trim(),
-            iva_5: req.sanitize('iva_5').escape().trim(),
-            gasto_real: req.sanitize('gasto_real').escape().trim(),
-            concepto: req.sanitize('concepto').escape().trim(),
-            tipo_fact: req.sanitize('tipo_fact').escape().trim(),
-            proveedor: req.sanitize('proveedor').escape().trim(),
-            detalle: req.sanitize('detalle').escape().trim(),
-            encargado: req.sanitize('encargado').escape().trim(),
-            codigo: req.sanitize('codigo').escape().trim(),
-            cliente: req.sanitize('cliente').escape().trim(),
-            imputado_a: req.sanitize('imputado_a').escape().trim(),
-            imputado_a_2: req.sanitize('imputado_a_2').escape().trim()
+            fecha: req.sanitize('fecha').trim(),
+            monto: req.sanitize('monto').trim(),
+            exentas: req.sanitize('exentas').trim(),
+            iva_10: req.sanitize('iva_10').trim(),
+            iva_5: req.sanitize('iva_5').trim(),
+            gasto_real: req.sanitize('gasto_real').trim(),
+            concepto: req.sanitize('concepto').trim(),
+            tipo_fact: req.sanitize('tipo_fact').trim(),
+            proveedor: req.sanitize('proveedor').trim(),
+            detalle: req.sanitize('detalle').trim(),
+            encargado: req.sanitize('encargado').trim(),
+            codigo: req.sanitize('codigo').trim(),
+            cliente: req.sanitize('cliente').trim(),
+            imputado_a: req.sanitize('imputado_a').trim(),
+            imputado_a_2: req.sanitize('imputado_a_2').trim()
         }
         
         //conectamos a la base de datos
@@ -239,25 +239,25 @@ app.put('/editar/:id', function(req, res, next) {
         req.body.comment = 'a <span>comment</span>';
         req.body.username = '   a user    ';
  
-        req.sanitize('comment').escape(); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
+        req.sanitize('comment'); // returns 'a &lt;span&gt;comment&lt;/span&gt;'
         req.sanitize('username').trim(); // returns 'a user'
         ********************************************/
         var factura = {
-            fecha: req.sanitize('fecha').escape().trim(),
-            monto: req.sanitize('monto').escape().trim(),
-            exentas: req.sanitize('exentas').escape().trim(),
-            iva_10: req.sanitize('iva_10').escape().trim(),
-            iva_5: req.sanitize('iva_5').escape().trim(),
-            gasto_real: req.sanitize('gasto_real').escape().trim(),
-            concepto: req.sanitize('concepto').escape().trim(),
-            tipo_fact: req.sanitize('tipo_fact').escape().trim(),
-            proveedor: req.sanitize('proveedor').escape().trim(),
-            detalle: req.sanitize('detalle').escape().trim(),
-            encargado: req.sanitize('encargado').escape().trim(),
-            codigo: req.sanitize('codigo').escape().trim(),
-            cliente: req.sanitize('cliente').escape().trim(),
-            imputado_a: req.sanitize('imputado_a').escape().trim(),
-            imputado_a_2: req.sanitize('imputado_a_2').escape().trim()
+            fecha: req.sanitize('fecha').trim(),
+            monto: req.sanitize('monto').trim(),
+            exentas: req.sanitize('exentas').trim(),
+            iva_10: req.sanitize('iva_10').trim(),
+            iva_5: req.sanitize('iva_5').trim(),
+            gasto_real: req.sanitize('gasto_real').trim(),
+            concepto: req.sanitize('concepto').trim(),
+            tipo_fact: req.sanitize('tipo_fact').trim(),
+            proveedor: req.sanitize('proveedor').trim(),
+            detalle: req.sanitize('detalle').trim(),
+            encargado: req.sanitize('encargado').trim(),
+            codigo: req.sanitize('codigo').trim(),
+            cliente: req.sanitize('cliente').trim(),
+            imputado_a: req.sanitize('imputado_a').trim(),
+            imputado_a_2: req.sanitize('imputado_a_2').trim()
         }
         
         req.getConnection(function(error, conn) {

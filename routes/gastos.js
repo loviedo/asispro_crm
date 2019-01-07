@@ -220,14 +220,14 @@ app.post('/add', function(req, res, next){
             iva_10: iva10,
             iva_5: iva5,
             gasto_real: gasreal,
-            concepto: req.sanitize('concepto').escape().trim(),
-            fact_condicion: req.sanitize('fact_condicion').escape().trim(),
-            proveedor: req.sanitize('proveedor').escape().trim(),
-            fact_nro: req.sanitize('fact_nro').escape().trim(),
-            encargado: req.sanitize('encargado').escape().trim(),
+            concepto: req.sanitize('concepto').trim(),
+            fact_condicion: req.sanitize('fact_condicion').trim(),
+            proveedor: req.sanitize('proveedor').trim(),
+            fact_nro: req.sanitize('fact_nro').trim(),
+            encargado: req.sanitize('encargado').trim(),
             codigo: cod,
             nro_ot: ot,
-            imputado: req.sanitize('imputado').escape().trim(),
+            imputado: req.sanitize('imputado').trim(),
             usuario_insert: user
             //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
         }   
