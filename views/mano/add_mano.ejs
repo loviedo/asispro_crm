@@ -83,14 +83,15 @@ body .modal-dialog { /* Width */
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
         <h3>Carga de Plan Laboral / Mano de Obra </h3>
-        <form action="/mano/add_listar" method="post" name="form1">
-            <div class="form-control col-md-1.5">
-                <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">FECHA: </button>
-                <input type="date" class="form-control" name="fecha1" id="fecha1" value="01/01/2019" placeholder="Fecha Planificacion" >
-            </div>
-        </form>
     </div>
 </nav>
+<form action="/mano/add_listar" method="post" name="form1">
+    <div class="form-row col-md-2">
+        <input type="date" class="form-control" name="fecha1" id="fecha1" value="01/01/2019" placeholder="Fecha Planificacion" >
+        <button type="submit" name="Submit" value="Insertar" class="btn btn-small">Buscar</button>
+    </div>
+</form>
+
 
 <!-- NAV TABLITA CABECERA CON CARGADO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
