@@ -83,12 +83,57 @@ body .modal-dialog { /* Width */
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
         <h3>Carga de Plan Laboral / Mano de Obra </h3>
+        <form action="/mano/add_listar" method="post" name="form1">
+            <div class="form-control col-md-1.5">
+                <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">FECHA: </button>
+                <input type="date" class="form-control" name="fecha1" id="fecha1" value="01/01/2019" placeholder="Fecha Planificacion" >
+            </div>
+        </form>
     </div>
 </nav>
 
+<!-- NAV TABLITA CABECERA CON CARGADO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">   
+        <div class="container-fluid" width="100%">
+            <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                        <tr>
+                            <th>FECHA</th>
+                            <th>EMPLEADO</th>
+                            <th>CLIENTE PLANIFICADO M</th>
+                            <th>OBRA PLANIFICADA M</th>
+                            <th>CLIENTE PLANIFICADO T</th>
+                            <th>OBRA PLANIFICADA T</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                <% if(data) { %>
+                <% data.forEach(function(mano){ %>
+                    <tr>
+                        <td><%= formatear_fecha(mano.fecha) %></td>
+                        <td><%= mano.empleado %></td>
+                        <td><%= mano.cliente_plan_m %></td>
+                        <td><%= mano.obra_plan_m %></td>
+                        <td><%= mano.cliente_plan_t %></td>
+                        <td><%= mano.obra_plan_t %></td>
+                    </tr>
+                    <% }) %>
+                    <% } %>
+                </tbody>
+        
+            </table>
+        </div>
+    </div>
+</nav>
+
+
+
+<!-- NAV FORM CARGA PLANIFICACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
-        <form action="/mano/add" method="post" name="form1">
+        <form action="/mano/add_mano" method="post" name="form1">
             <div class="form-row">
 
                 <!-- 
@@ -96,10 +141,8 @@ body .modal-dialog { /* Width */
                 -->
                 <input type="hidden" class="form-control" name="ot_plan_m" id="ot_plan_m" value="<%= ot_plan_m %>">
                 <input type="hidden" class="form-control" name="ot_plan_t" id="ot_plan_t" value="<%= ot_plan_t %>">
-                <input type="hidden" class="form-control" name="ot_real_m" id="ot_real_m" value="<%= ot_real_m %>">
-                <input type="hidden" class="form-control" name="ot_real_t" id="ot_real_t" value="<%= ot_real_t %>">
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-1.5">
                     <label for="fecha">FECHA</label>
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" >
                 </div>
@@ -109,99 +152,30 @@ body .modal-dialog { /* Width */
                     </label>
                     <input type="text" class="form-control" id="nro_ot" name="nro_ot">
                 </div>-->
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                     <!--<label for="empleado">PERSONAL ASISPRO</label>-->
                     <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_rrhh">PERSONAL</button>
                     <input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>">
                 </div>
-                <input type="hidden" class="form-control" name="monto" id="monto" value="<%= monto %>">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                     <!--<label for="cliente_plan_m">CLIENTE PLANIFICADO MAÑANA</label>-->   
                     <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_1">OTs</button>
                     <input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>" placeholder="CLIENTE PLANIFICADO MAÑANA">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                     <label for="obra_plan_m">OBRA PLANIFICADA MAÑANA</label>
                     <input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                     <!--<label for="cliente_plan_t">CLIENTE PLANIFICADO TARDE</label>--> 
                     <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2">OTs</button>
                     <input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>" placeholder="CLIENTE PLANIFICADO TARDE">
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-2">
                     <label for="obra_plan_t">OBRA PLANIFICADA TARDE</label>
                     <input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>">
                 </div>
-                <div class="form-group col-md-3">
-                    <label for="cliente_real_m">CLIENTE REAL MAÑANA</label>
-                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_3">OTs</button>
-                    <input type="text" class="form-control" name="cliente_real_m" id="cliente_real_m" value="<%= cliente_real_m %>">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="obra_real_m">OBRA REAL MAÑANA</label>
-                    <input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="cliente_real_t">CLIENTE REAL TARDE</label>
-                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_4">OTs</button>
-                    <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="obra_real_t">OBRA REAL TARDE</label>
-                    <input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="encargado">ENCARGADO</label>
-                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="trato_cliente">TRATO C/ EL CLIENTE</label>
-                    <input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="h_entrada">Hs. ENTRADA</label>
-                    <input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>">
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="h_salida">Hs. SALIDA</label>
-                    <input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>">
-                </div>-->
-                <!-- LOS MONTOS POR HORA -->
-                
-                <div class="form-group col-md-6">
-                    <label for="monto">MONTO</label>
-                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto...">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="subtotal">SUBTOTAL</label>
-                    <input type="text" class="form-control" name="subtotal" id="subtotal" value="<%= subtotal %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="hora_50">HORA 50</label>
-                    <input type="text" class="form-control" name="hora_50" id="hora_50" value="<%= hora_50 %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="hora_100">HORA 100</label>
-                    <input type="text" class="form-control" name="hora_100" id="hora_100" value="<%= hora_100 %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="hora_normal">HORA NORMAL</label>
-                    <input type="text" class="form-control" name="hora_normal" id="hora_normal" value="<%= hora_normal %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="hora_neg">HORA NEGATIVA</label>
-                    <input type="text" class="form-control" name="hora_neg" id="hora_neg" value="<%= hora_neg %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="jornal">JORNAL</label>
-                    <input type="text" class="form-control" name="jornal" id="jornal" value="<%= jornal %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="otros">OTROS</label>
-                    <input type="text" class="form-control" name="otros" id="otros" value="<%= otros %>">
-                </div>
-                
+
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
         </form>
@@ -303,8 +277,8 @@ body .modal-dialog { /* Width */
                         </tr>
                     </thead>
                 <tbody>
-                <% if (data) { %>
-                    <% data.forEach(function(ot){ %>
+                <% if (data_ot) { %>
+                    <% data_ot.forEach(function(ot){ %>
                     <tr>
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>
@@ -363,8 +337,8 @@ body .modal-dialog { /* Width */
                         </tr>
                     </thead>
                 <tbody>
-                <% if (data) { %>
-                    <% data.forEach(function(ot){ %>
+                <% if (data_ot) { %>
+                    <% data_ot.forEach(function(ot){ %>
                     <tr>
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>
@@ -423,8 +397,8 @@ body .modal-dialog { /* Width */
                         </tr>
                     </thead>
                 <tbody>
-                <% if (data) { %>
-                    <% data.forEach(function(ot){ %>
+                <% if (data_ot) { %>
+                    <% data_ot.forEach(function(ot){ %>
                     <tr id="<%= ot.ot_nro %>">
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>
@@ -483,8 +457,8 @@ body .modal-dialog { /* Width */
                         </tr>
                     </thead>
                 <tbody>
-                <% if (data) { %>
-                    <% data.forEach(function(ot){ %>
+                <% if (data_ot) { %>
+                    <% data_ot.forEach(function(ot){ %>
                     <tr id="<%= ot.ot_nro %>">
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>

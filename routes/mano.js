@@ -6,6 +6,7 @@ var app = express();
 var path = require('path');
 var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
+var fechita = '';//global para traer la fecha
 var userId = '';//global para userid
 
 function formatear_fecha_yyyymmdd(date) {
@@ -162,7 +163,7 @@ app.get('/', function(req, res, next) {
     }
 })
 
-//RESPONSE PARA CARGA DE TRABAJOS / OBRAS ELABORADAS -- FORMULARIWO 
+//RESPONSE PARA CARGA DE TRABAJOS / OBRAS ELABORADAS -- FORMULARIO NORMAL -- NO MOSTRAMOS 
 app.get('/add', function(req, res, next){
    
     if(req.session.user)
@@ -196,7 +197,8 @@ app.get('/add', function(req, res, next){
                                 datos_rrhh.push(row);
                             });
                             console.log(datos_rrhh);//debug de datos de RRHH
-                                        //dibujamos la tabla con los datos que consultamos
+                            //dibujamos la tabla con los datos que consultamos
+
                             res.render('mano/add', {
                             title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                             obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
@@ -214,7 +216,272 @@ app.get('/add', function(req, res, next){
     }
 })
 
-//NUEVO PROGRAMACOIN DE OBRA - POST DE INSERT
+//RESPONSE PARA CARGA DE TRABAJOS / OBRAS ELABORADAS -- FORMULARIO SIMPLIFICADO - CARGA CRISTINA 
+app.get('/add_mano', function(req, res, next){
+   
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+        req.getConnection(function(error, conn) {
+            //traemos las planificaciones para mostrar en la tablita frente
+            datos = [];//datos de planificacion
+            datos_ot = [];
+            conn.query('SELECT * FROM ot order by id desc',function(err, rows) {
+                if (err) {console.log(err);}
+                else{
+                    rows.forEach(function(row) {    
+                        datos_ot.push(row);
+                    });
+                    //console.log(datos_ot);//debug de datos de MANO OBRA
+
+                    conn.query('SELECT * FROM mano_obra order by fecha desc',function(err, rows) {
+                        if (err){console.log(err);}
+                        else{
+                            rows.forEach(function(row) {    
+                                datos.push(row);
+                            });
+                            //console.log(datos);//debug de datos de MANO OBRA
+                            //traemos los personales para mostrar en el modal
+                            datos_rrhh = [];
+                            conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
+                                if (err) {console.log(err);}
+                                else{
+                                    rows.forEach(function(row) {    
+                                        datos_rrhh.push(row);
+                                    });
+                                    //console.log(datos_rrhh);//debug de datos de RRHH
+                                    //dibujamos la tabla con los datos que consultamos
+
+                                    res.render('mano/add_mano', {
+                                    title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_plan_t: '',
+                                    obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',
+                                    usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
+                                }              
+                            })
+                        }             
+                    })
+                }
+            })
+        })
+    }
+    else {
+        // render to views/index.ejs template file
+        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
+    }
+})
+
+//aqui solamente listamos los datos segun la fecha cargada
+app.post('/add_listar', function(req, res, next){
+   
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos la fecha para consultar y listar
+        fechita = formatear_fecha_yyyymmdd(req.sanitize('fecha1').trim());
+
+        req.getConnection(function(error, conn) {
+            //traemos las planificaciones para mostrar en la tablita frente
+            datos = [];//datos de planificacion
+            datos_ot = [];
+            conn.query('SELECT * FROM ot order by id desc',function(err, rows) {
+                if (err) {console.log(err);}
+                else{
+                    rows.forEach(function(row) {    
+                        datos_ot.push(row);
+                    });
+                    //console.log(datos_ot);//debug de datos de MANO OBRA
+
+                    conn.query("SELECT * FROM mano_obra where fecha = '"+fechita+"'",function(err, rows) {
+                        if (err) {console.log(err);}
+                        else{
+                            rows.forEach(function(row) {    
+                                datos.push(row);
+                            });
+                            //console.log(datos);//debug de datos de MANO OBRA
+                            //traemos los personales para mostrar en el modal
+                            datos_rrhh = [];
+                            conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
+                                if (err) {console.log(err);}
+                                else{
+                                    rows.forEach(function(row) {    
+                                        datos_rrhh.push(row);
+                                    });
+                                    //console.log(datos_rrhh);//debug de datos de RRHH
+                                    //dibujamos la tabla con los datos que consultamos
+
+                                    res.render('mano/add_mano', {
+                                    title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_plan_t: '',
+                                    obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',
+                                    usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
+                                }              
+                            })
+                        }             
+                    })
+                }
+            })
+        })
+    }
+    else {
+        // render to views/index.ejs template file
+        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
+    }
+})
+
+//NUEVO PROGRAMACION DE OBRA - POST DE INSERT SIMPLIFICADO
+app.post('/add_mano', function(req, res, next){   
+    
+    /*req.assert('name', 'Nombre es requerido').notEmpty()           //Validar nombre
+    req.assert('age', 'Edad es requerida').notEmpty()             //Validar edad
+    req.assert('email', 'SE requiere un email valido').isEmail()  //Validar email
+ */
+    var errors = req.validationErrors();
+    
+    if(!errors) {//Si no hay errores, entonces conitnuamos
+
+        /*var fact_nro = Number(req.sanitize('fact_nro').trim());
+        var recibo_nro = Number(req.sanitize('recibo_nro').trim());
+        var remision_nro = Number(req.sanitize('remision_nro').trim());*/
+
+        var mano_plan = {
+            fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+            //nro_ot: req.sanitize('nro_ot').trim(),
+            empleado: req.sanitize('empleado').trim(),
+            cliente_plan_m: req.sanitize('cliente_plan_m').trim(),
+            cliente_plan_t: req.sanitize('cliente_plan_t').trim(),
+            obra_plan_m: req.sanitize('obra_plan_m').trim(),
+            obra_plan_t: req.sanitize('obra_plan_t').trim(),
+            ot_plan_m: req.sanitize('ot_plan_m').trim(),
+            ot_plan_t: req.sanitize('ot_plan_t').trim(),
+            usuario_insert: user
+        }   
+        
+        //conectamos a la base de datos
+        req.getConnection(function(error, conn) {
+            conn.query('INSERT INTO mano_obra SET ?', mano_plan, function(err, result) {
+                //if(err) throw err
+                if (err) {
+                    req.flash('error', err)
+                    
+                    // render to views/factura/add.ejs
+                    res.render('mano/add_mano', {
+                        title: 'Agregar Nuevo Plan Laboral',
+                        fecha: mano_plan.fecha,
+                        //nro_ot: mano_plan.nro_ot,
+                        empleado: mano_plan.empleado,
+                        cliente_plan_m: mano_plan.cliente_plan_m,
+                        //cliente_real_m: mano_plan.cliente_real_m,
+                        cliente_plan_t: mano_plan.cliente_plan_t,
+                        //cliente_real_t: mano_plan.cliente_real_t,
+                        obra_plan_m: mano_plan.obra_plan_m,
+                        //obra_real_m: mano_plan.obra_real_m,
+                        obra_plan_t: mano_plan.obra_plan_t,
+                        //obra_real_t: mano_plan.obra_real_t,
+                        //encargado: mano_plan.encargado,
+                        //trato_cliente: mano_plan.trato_cliente,
+                        //h_entrada: mano_plan.h_entrada,
+                        //h_salida: mano_plan.h_salida,
+                        //monto: mano_plan.monto,
+                        //subtotal: mano_plan.subtotal,
+                        //hora_50: mano_plan.hora_50,
+                        //hora_100: mano_plan.hora_100,
+                        //hora_normal: mano_plan.hora_normal,
+                        //hora_neg: mano_plan.hora_neg,
+                        ot_plan_m: mano_plan.ot_plan_m,
+                        //ot_real_m: mano_plan.ot_real_m,
+                        ot_plan_t: mano_plan.ot_plan_t,
+                        //ot_real_t: mano_plan.ot_real_t,
+                        //otros: mano_plan.otros,
+                        //jornal: mano_plan.jornal,
+                        usuario: user
+                    })
+                } else {                
+                    req.flash('success', 'Datos agregados correctamente!')
+                    
+                    // render to views/mano/add.ejs
+                    req.getConnection(function(error, conn) {
+                        //traemos las planificaciones para mostrar en la tablita frente
+                        datos = [];//datos de planificacion
+                        datos_ot = [];
+                        conn.query('SELECT * FROM ot order by id desc',function(err, rows) {
+                            if (err) {console.log(err);}
+                            else{
+                                rows.forEach(function(row) {    
+                                    datos_ot.push(row);
+                                });
+                                //console.log(datos_ot);//debug de datos de MANO OBRA
+            
+                                conn.query('SELECT * FROM mano_obra order by fecha desc',function(err, rows) {
+                                    if (err) {console.log(err);}
+                                    else{
+                                        rows.forEach(function(row) {    
+                                            datos.push(row);
+                                        });
+                                        //console.log(datos);//debug de datos de MANO OBRA
+                                        //traemos los personales para mostrar en el modal
+                                        datos_rrhh = [];
+                                        conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
+                                            if (err) {console.log(err);}
+                                            else{
+                                                rows.forEach(function(row) {    
+                                                    datos_rrhh.push(row);
+                                                });
+                                                //console.log(datos_rrhh);//debug de datos de RRHH
+                                                //dibujamos la tabla con los datos que consultamos
+            
+                                                res.render('mano/add_mano', {
+                                                title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_plan_t: '',
+                                                obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',
+                                                usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
+                                            }              
+                                        })
+                                    }             
+                                })
+                            }
+                        })
+                    })
+                }
+            })
+        })
+    }
+    //tuvimos errores
+    else {//Mostrar errores
+        var error_msg = ''
+        errors.forEach(function(error) {
+            error_msg += error.msg + '<br>'
+        })                
+        req.flash('error', error_msg)        
+        
+        /**
+         * Using req.body.name 
+         * because req.param('name') is deprecated
+         */ 
+        res.render('mano/add_mano', { 
+            title: 'Agregar Nuevo Plan Laboral',
+            fecha: mano_plan.fecha,
+            //nro_ot: mano_plan.nro_ot,
+            empleado: mano_plan.empleado,
+            cliente_plan_m: mano_plan.cliente_plan_m,
+            cliente_plan_t: mano_plan.cliente_plan_t,
+            obra_plan_m: mano_plan.obra_plan_m,
+            obra_plan_t: mano_plan.obra_plan_t,
+            ot_plan_m: mano_plan.ot_plan_m,
+            ot_plan_t: mano_plan.ot_plan_t,
+            usuario: user
+        })
+    }
+})
+
+
+
+
+
+//NUEVO PROGRAMACION DE OBRA - POST DE INSERT NORMAL
 app.post('/add', function(req, res, next){   
     
     /*req.assert('name', 'Nombre es requerido').notEmpty()           //Validar nombre
