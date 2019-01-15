@@ -67,7 +67,7 @@ body .modal-dialog { /* Width */
 
     function asignar_ot(){
         //recuperamos el valor de la busqueda del filtro del datatable y asignamos al valor del OT
-        document.getElementById("ot_plan_m").value = document.querySelector('.dataTables_filter input').value;
+        //document.getElementById("ot_plan_m").value = document.querySelector('.dataTables_filter input').value;
         //alert(valor); //debug
     }
 
@@ -107,6 +107,12 @@ body .modal-dialog { /* Width */
                             <th>OBRA PLANIFICADA M</th>
                             <th>CLIENTE PLANIFICADO T</th>
                             <th>OBRA PLANIFICADA T</th>
+                            <th>CLIENTE REAL M</th>
+                            <th>OBRA REAL M</th>
+                            <th>CLIENTE REAL T</th>
+                            <th>OBRA REAL T</th>
+                            <th>ENCARGADO</th>
+                            <th>TRATO CLIENTE</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -119,6 +125,12 @@ body .modal-dialog { /* Width */
                         <td><%= mano.obra_plan_m %></td>
                         <td><%= mano.cliente_plan_t %></td>
                         <td><%= mano.obra_plan_t %></td>
+                        <td><%= mano.cliente_real_m %></td>
+                        <td><%= mano.obra_real_m %></td>
+                        <td><%= mano.cliente_real_t %></td>
+                        <td><%= mano.obra_real_t %></td>
+                        <td><%= mano.encargado %></td>
+                        <td><%= mano.trato_cliente %></td>
                     </tr>
                     <% }) %>
                     <% } %>
@@ -142,6 +154,8 @@ body .modal-dialog { /* Width */
                 -->
                 <input type="hidden" class="form-control" name="ot_plan_m" id="ot_plan_m" value="<%= ot_plan_m %>">
                 <input type="hidden" class="form-control" name="ot_plan_t" id="ot_plan_t" value="<%= ot_plan_t %>">
+                <input type="hidden" class="form-control" name="ot_real_m" id="ot_real_m" value="<%= ot_real_m %>">
+                <input type="hidden" class="form-control" name="ot_real_t" id="ot_real_t" value="<%= ot_real_t %>">
 
                 <div class="form-group col-md-1.5">
                     <label for="fecha">FECHA</label>
@@ -176,7 +190,32 @@ body .modal-dialog { /* Width */
                     <label for="obra_plan_t">OBRA PLANIFICADA TARDE</label>
                     <input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>">
                 </div>
-
+                <div class="form-group col-md-2">
+                    <label for="cliente_real_m">CLIENTE REAL MAÑANA</label>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_3">OTs</button>
+                    <input type="text" class="form-control" name="cliente_real_m" id="cliente_real_m" value="<%= cliente_real_m %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="obra_real_m">OBRA REAL MAÑANA</label>
+                    <input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="cliente_real_t">CLIENTE REAL TARDE</label>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_4">OTs</button>
+                    <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="obra_real_t">OBRA REAL TARDE</label>
+                    <input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="encargado">ENCARGADO</label>
+                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="trato_cliente">TRATO C/ EL CLIENTE</label>
+                    <input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>">
+                </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
         </form>

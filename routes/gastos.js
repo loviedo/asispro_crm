@@ -129,7 +129,7 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query("SELECT * FROM gastos WHERE usuario_insert = '"+user+"' ORDER BY id DESC",function(err, rows) {
+            conn.query("SELECT * FROM gastos WHERE usuario_insert = '"+user+"' ORDER BY fecha DESC",function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)

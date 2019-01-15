@@ -257,7 +257,8 @@ app.get('/add_mano', function(req, res, next){
 
                                     res.render('mano/add_mano', {
                                     title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_plan_t: '',
-                                    obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',
+                                    obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',cliente_real_m: '',cliente_real_t: '',
+                                    obra_real_m:'', obra_real_t:'', ot_real_m:'', ot_real_t:'', encargado :'', trato_cliente:'',
                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
                                 }              
                             })
@@ -316,9 +317,10 @@ app.post('/add_listar', function(req, res, next){
                                     //dibujamos la tabla con los datos que consultamos
 
                                     res.render('mano/add_mano', {
-                                    title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_plan_t: '',
-                                    obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',
-                                    usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
+                                        title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_plan_t: '',
+                                        obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',cliente_real_m: '',cliente_real_t: '',
+                                        obra_real_m:'', obra_real_t:'', ot_real_m:'', ot_real_t:'', encargado:'', trato_client:'',
+                                        usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
                                 }              
                             })
                         }             
@@ -358,6 +360,14 @@ app.post('/add_mano', function(req, res, next){
             obra_plan_t: req.sanitize('obra_plan_t').trim(),
             ot_plan_m: req.sanitize('ot_plan_m').trim(),
             ot_plan_t: req.sanitize('ot_plan_t').trim(),
+            cliente_real_m: req.sanitize('cliente_real_m').trim(),
+            cliente_real_t: req.sanitize('cliente_real_t').trim(),
+            obra_real_m: req.sanitize('obra_real_m').trim(),
+            obra_real_t: req.sanitize('obra_real_t').trim(),
+            ot_real_m: req.sanitize('ot_real_m').trim(),
+            ot_real_t: req.sanitize('ot_real_t').trim(),
+            encargado: req.sanitize('encargado').trim(),
+            trato_cliente: req.sanitize('trato_cliente').trim(),
             usuario_insert: user
         }   
         
@@ -435,9 +445,10 @@ app.post('/add_mano', function(req, res, next){
                                                 //dibujamos la tabla con los datos que consultamos
             
                                                 res.render('mano/add_mano', {
-                                                title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_plan_t: '',
-                                                obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',
-                                                usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
+                                                    title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_plan_t: '',
+                                                    obra_plan_m:'', obra_plan_t:'', ot_plan_m:'', ot_plan_t:'',cliente_real_m: '',cliente_real_t: '',
+                                                    obra_real_m:'', obra_real_t:'', ot_real_m:'', ot_real_t:'', encargado :'', trato_cliente:'',
+                                                    usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
                                             }              
                                         })
                                     }             
@@ -472,13 +483,18 @@ app.post('/add_mano', function(req, res, next){
             obra_plan_t: mano_plan.obra_plan_t,
             ot_plan_m: mano_plan.ot_plan_m,
             ot_plan_t: mano_plan.ot_plan_t,
+            cliente_real_m: mano_plan.cliente_real_m,
+            cliente_real_t: mano_plan.cliente_real_t,
+            obra_real_m: mano_plan.obra_real_m,
+            obra_real_t: mano_plan.obra_real_t,
+            ot_real_m: mano_plan.ot_real_m,
+            ot_real_t: mano_plan.ot_real_t,
+            encargado: mano_plan.encargado,
+            trato_cliente: mano_obra.trato_cliente,
             usuario: user
         })
     }
 })
-
-
-
 
 
 //NUEVO PROGRAMACION DE OBRA - POST DE INSERT NORMAL
