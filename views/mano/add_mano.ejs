@@ -156,6 +156,7 @@ body .modal-dialog { /* Width */
                 <input type="hidden" class="form-control" name="ot_plan_t" id="ot_plan_t" value="<%= ot_plan_t %>">
                 <input type="hidden" class="form-control" name="ot_real_m" id="ot_real_m" value="<%= ot_real_m %>">
                 <input type="hidden" class="form-control" name="ot_real_t" id="ot_real_t" value="<%= ot_real_t %>">
+                <input type="hidden" class="form-control" name="ot_real_n" id="ot_real_n" value="<%= ot_real_n %>">
 
                 <div class="form-group col-md-1.5">
                     <label for="fecha">FECHA</label>
@@ -173,7 +174,7 @@ body .modal-dialog { /* Width */
                     <input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>">
                 </div>
                 <div class="form-group col-md-2">
-                    <!--<label for="cliente_plan_m">CLIENTE PLANIFICADO MAÑANA</label>-->   
+                    <label for="cliente_plan_m">CLIENTE PLANIFICADO MAÑANA</label>-  
                     <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_1">OTs</button>
                     <input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>" placeholder="CLIENTE PLANIFICADO MAÑANA">
                 </div>
@@ -182,13 +183,29 @@ body .modal-dialog { /* Width */
                     <input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>">
                 </div>
                 <div class="form-group col-md-2">
-                    <!--<label for="cliente_plan_t">CLIENTE PLANIFICADO TARDE</label>--> 
+                    <label for="h_entrada_m">HORARIO ENTRADA MAÑANA</label>
+                    <input type="text" class="form-control" name="cliente_plan_m" id="h_entrada_m" value="<%= h_entrada_m %>" placeholder="HORARIO ENTRADA MAÑANA">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_salida_m">HORARIO SALIDA MAÑANA</label>
+                    <input type="text" class="form-control" name="h_salida_m" id="h_salida_m" value="<%= h_salida_m %>" placeholder="HORARIO SALIDA MAÑANA">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="cliente_plan_t">CLIENTE PLANIFICADO TARDE</label>
                     <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2">OTs</button>
                     <input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>" placeholder="CLIENTE PLANIFICADO TARDE">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="obra_plan_t">OBRA PLANIFICADA TARDE</label>
                     <input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_entrada_m">HORARIO ENTRADA TARDE</label>
+                    <input type="text" class="form-control" name="cliente_plan_m" id="h_entrada_m" value="<%= h_entrada_m %>" placeholder="HORARIO ENTRADA MAÑANA">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_salida_m">HORARIO SALIDA TARDE</label>
+                    <input type="text" class="form-control" name="h_salida_m" id="h_salida_m" value="<%= h_salida_m %>" placeholder="HORARIO SALIDA MAÑANA">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cliente_real_m">CLIENTE REAL MAÑANA</label>
@@ -200,6 +217,14 @@ body .modal-dialog { /* Width */
                     <input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>">
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="encargado">ENCARGADO M</label>
+                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="trato_cliente">TRATO C/ EL CLIENTE M</label>
+                    <input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>">
+                </div>
+                <div class="form-group col-md-2">
                     <label for="cliente_real_t">CLIENTE REAL TARDE</label>
                     <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_4">OTs</button>
                     <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
@@ -209,12 +234,21 @@ body .modal-dialog { /* Width */
                     <input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>">
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="encargado">ENCARGADO</label>
+                    <label for="encargado2">ENCARGADO T</label>
                     <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="trato_cliente">TRATO C/ EL CLIENTE</label>
+                    <label for="trato_cliente2">TRATO C/ EL CLIENTE T</label>
                     <input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="cliente_real_n">CLIENTE REAL NOCHE</label>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_4">OTs</button>
+                    <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="obra_real_n">OBRA REAL NOCHE</label>
+                    <input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>">
                 </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
@@ -314,6 +348,7 @@ body .modal-dialog { /* Width */
                             <th>CLIENTE</th>
                             <th>OBRA</th>
                             <th>DESCRIPCION</th>
+                            <th>ENCARGADO</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -332,6 +367,7 @@ body .modal-dialog { /* Width */
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -374,6 +410,7 @@ body .modal-dialog { /* Width */
                             <th>CLIENTE</th>
                             <th>OBRA</th>
                             <th>DESCRIPCION</th>
+                            <th>ENCARGADO</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -392,6 +429,7 @@ body .modal-dialog { /* Width */
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -434,6 +472,7 @@ body .modal-dialog { /* Width */
                             <th>CLIENTE</th>
                             <th>OBRA</th>
                             <th>DESCRIPCION</th>
+                            <th>ENCARGADO</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -452,6 +491,7 @@ body .modal-dialog { /* Width */
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -494,6 +534,7 @@ body .modal-dialog { /* Width */
                             <th>CLIENTE</th>
                             <th>OBRA</th>
                             <th>DESCRIPCION</th>
+                            <th>ENCARGADO</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -512,6 +553,7 @@ body .modal-dialog { /* Width */
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
                     </tr>
                     <% }) %>
                 <% } %>
