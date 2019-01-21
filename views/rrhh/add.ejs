@@ -52,56 +52,158 @@ input {
     <div class="container-fluid">
         <form action="/rrhh/add" method="post" name="form1">
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <label for="codigo">CODIGO</label>
                     <input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="Codigo Empleado">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="nombre">NOMBRE</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" value="<%= nombre %>" placeholder="Nombre Empleado">
+                <div class="form-group col-md-2">
+                    <label for="fecha_ingreso">FECHA INGRESO</label>
+                    <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso" value="<%= fecha_ingreso %>">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="telefono">TELEFONO</label>
-                    <input type="text" class="form-control" name="telefono" id="telefono" value="<%= telefono %>" placeholder="Telefono Empleado">
+                <div class="form-group col-md-3">
+                    <label for="nombres">NOMBRES</label>
+                    <input type="text" class="form-control" name="nombres" id="nombres" value="<%= nombres %>" placeholder="Nombres Empleado">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="ocupacion">OCUPACION</label>
-                    <input type="text" class="form-control" name="ocupacion" id="ocupacion" value="<%= ocupacion %>" placeholder="Ocupacion Empleado">
+                <div class="form-group col-md-3">
+                    <label for="apellidos">APELLIDOS</label>
+                    <input type="text" class="form-control" name="apellidos" id="apellidos" value="<%= apellidos %>" placeholder="Apellidos Empleado">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="fecha_inicio">ANTIGUEDAD</label>
-                    <input type="date" class="form-control" name="fecha_inicio" id="fecha_inicio" value="<%= fecha_inicio %>">
+                <div class="form-group col-md-2">
+                    <label for="sexo">SEXO</label>
+                    <select class="form-control" name="sexo" id="sexo" value="<%= sexo %>">
+                        <option value="M">MASCULINO</option>
+                        <option value="F">FEMENINO</option>
+                    </select>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="motivo_salida">MOTIVO</label>
-                    <input type="text" class="form-control" name="motivo_salida" id="motivo_salida" value="<%= motivo_salida %>" placeholder="Motivo Salida">
+                <div class="form-group col-md-2">
+                    <label for="ci">C IDENTIDAD</label>
+                    <input type="text" class="form-control" name="ci" id="ci" value="<%= ci %>" placeholder="Documento Empleado">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <label for="fecha_nac">FECHA NACIMIENTO</label>
                     <input type="date" class="form-control" name="fecha_nac" id="fecha_nac" value="<%= fecha_nac %>" placeholder="Fecha Nacimiento" >
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="direccion">DIRECCION</label>
-                    <input type="text" class="form-control" name="direccion" id="direccion" value="<%= direccion %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="hijos">HIJOS</label>
-                    <input type="text" class="form-control" name="hijos" id="hijos" value="<%= hijos %>">
-                </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-1">
                     <label for="edad">EDAD</label>
                     <input type="text" class="form-control" name="edad" id="edad" value="<%= edad %>">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
+                    <label for="nacionalidad">NACIONALIDAD</label>
+                    <input type="text" class="form-control" name="nacionalidad" id="nacionalidad" value="<%= nacionalidad %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="mano_diestra">MANO HÁBIL</label>
+                    <select class="form-control" name="mano_diestra" id="mano_diestra" value="<%= mano_diestra %>">
+                        <option value="ZURDO">ZURDO</option>
+                        <option value="DERECHO">DERECHO</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="estado_civil">ESTADO CIVIL</label>
+                    <select class="form-control" name="estado_civil" id="estado_civil" value="<%= estado_civil %>">
+                        <option value="CASADO">CASADO</option>
+                        <option value="SOLTERO">SOLTERO</option>
+                        <option value="VIUDO">VIUDO</option>
+                        <option value="DIVORCIADO">DIVORCIADO</option>
+                        <option value="OTRO">OTRO</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="ocupacion">OCUPACION</label>
+                    <input type="text" class="form-control" name="ocupacion" id="ocupacion" value="<%= ocupacion %>" placeholder="Ocupacion Empleado">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="n_hijos">HIJOS</label>
+                    <input type="text" class="form-control" name="n_hijos" id="n_hijos" value="<%= n_hijos %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="email">EMAIL</label>
+                    <input type="text" class="form-control" name="email" id="email" value="<%= email %>" placeholder="Email Empleado">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="cargo">CARGO</label>
+                    <input type="text" class="form-control" name="cargo" id="cargo" value="<%= cargo %>" placeholder="Cargo Empleado">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="calzado">TALLA CALZADO</label>
+                    <input type="text" class="form-control" name="calzado" id="calzado" value="<%= calzado %>" placeholder="Calzado Empleado">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="pantalon">TALLA PANTALÓN</label>
+                    <input type="text" class="form-control" name="pantalon" id="pantalon" value="<%= pantalon %>" placeholder="Pantalón Empleado">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="camisa">TALLA CAMISA</label>
+                    <input type="text" class="form-control" name="camisa" id="camisa" value="<%= camisa %>" placeholder="Camisa Empleado">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="nivel_educativo">NIVEL EDUCATIVO</label>
+                    <select class="form-control" name="nivel_educativo" id="v" value="<%= nivel_educativo %>">
+                        <option value="ANALFABETA">ANALFABETA</option>
+                        <option value="PRIMARIA">PRIMARIA</option>
+                        <option value="SECUNDARIA">SECUNDARIA</option>
+                        <option value="TECNICA">TECNICA</option>
+                        <option value="SUPERIOR">SUPERIOR</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="g_a_aprobado">GRADO / AÑO APROBADO</label>
+                    <input type="text" class="form-control" name="g_a_aprobado" id="g_a_aprobado" value="<%= g_a_aprobado %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="ant_ano">ANTIGUEDAD AÑO</label>
+                    <input type="text" class="form-control" name="ant_ano" id="ant_ano" value="<%= ant_ano %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="ant_mes">ANTIGUEDAD MES</label>
+                    <input type="text" class="form-control" name="ant_mes" id="ant_mes" value="<%= ant_mes %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="horario_e">HORARIO ENTRADA</label>
+                    <input type="text" class="form-control" name="horario_e" id="horario_e" value="<%= horario_e %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="horario_s">HORARIO SALIDA</label>
+                    <input type="text" class="form-control" name="horario_s" id="horario_s" value="<%= horario_s %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="dep_trabajo">DEPT TRABAJO</label>
+                    <input type="text" class="form-control" name="dep_trabajo" id="dep_trabajo" value="<%= dep_trabajo %>">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="direccion">DIRECCION</label>
+                    <input type="text" class="form-control" name="direccion" id="direccion" value="<%= direccion %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="ciudad">CIUDAD</label>
+                    <input type="text" class="form-control" name="ciudad" id="ciudad" value="<%= ciudad %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="barrio">BARRIO</label>
+                    <input type="text" class="form-control" name="barrio" id="barrio" value="<%= barrio %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="tel_movil">TEL MÓVIL</label>
+                    <input type="text" class="form-control" name="tel_movil" id="tel_movil" value="<%= tel_movil %>" placeholder="Móvil Empleado">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="tel_emergencia">TEL EMERGENCIA</label>
+                    <input type="text" class="form-control" name="tel_emergencia" id="tel_emergencia" value="<%= tel_emergencia %>">
+                </div>
+                <div class="form-group col-md-2">
                     <label for="tipo_empleado">TIPO</label>
                     <select class="form-control" name="tipo_empleado" id="tipo_empleado" value="<%= tipo_empleado %>">
                         <option value="FIJO">FIJO</option>
                         <option value="TERCERIZADO">TERCERIZADO</option>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="edad">JORNAL</label>
+                <div class="form-group col-md-2">
+                    <label for="jornal">JORNAL</label>
                     <input type="text" class="form-control" name="jornal" id="jornal" value="<%= jornal %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="motivo_salida">MOTIVO SALIDA</label>
+                    <input type="text" class="form-control" name="motivo_salida" id="motivo_salida" value="<%= motivo_salida %>">
                 </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>

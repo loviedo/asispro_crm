@@ -74,11 +74,12 @@ color: #ffffff;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>
                     <th>CODIGO</th>
-                    <th>NOMBRE</th>
-                    <th>TELEFONO</th>
+                    <th>NOMBRES</th>
+                    <th>APELLIDOS</th>
+                    <th>TEL MOVIL</th>
                     <th>OCUPACION</th>
-                    <th>ANTIGUEDAD</th>
-                    <th>MOTIVO</th>
+                    <th>FECHA INGRESO</th>
+                    <th>MOTIVO SALIDA</th>
                     <th>FECHA NAC</th>
                     <th>DIRECCION</th>
                     <th>HIJOS</th>
@@ -93,14 +94,15 @@ color: #ffffff;
         <% data.forEach(function(emple){ %>
             <tr>
                 <td><%= emple.codigo %></td>
-                <td><%= emple.nombre %></td>
-                <td><%= emple.telefono %></td>
+                <td><%= emple.nombres %></td>
+                <td><%= emple.apellidos %></td>
+                <td><%= emple.tel_movil %></td>
                 <td><%= emple.ocupacion %></td>
-                <td><%= formatear_fecha(emple.fecha_inicio) %></td>
+                <td><%= formatear_fecha(emple.fecha_ingreso) %></td>
                 <td><%= emple.motivo_salida %></td>
                 <td><%= formatear_fecha(emple.fecha_nac) %></td>
                 <td><%= emple.direccion %></td>
-                <td><%= emple.hijos %></td>
+                <td><%= emple.n_hijos %></td>
                 <td><%= emple.edad %></td>
                 <td><%= emple.tipo_empleado %></td>
                 <td><%= emple.jornal %></td>
