@@ -93,7 +93,7 @@ function asignar_ot(){
                 <input type="hidden" class="form-control" name="ot_real_t" id="ot_real_t" value="<%= ot_real_t %>">
                 <input type="hidden" class="form-control" name="ot_real_n" id="ot_real_n" value="<%= ot_real_n %>">
 
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-1.5">
                     <label for="fecha">FECHA</label>
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" >
                 </div>
@@ -103,96 +103,99 @@ function asignar_ot(){
                     </label>
                     <input type="text" class="form-control" id="nro_ot" name="nro_ot">
                 </div>-->
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <!--<label for="empleado">PERSONAL ASISPRO</label>-->
-                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_rrhh">PERSONAL</button>
+                    <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_rrhh">PERSONAL</button>
                     <input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>">
                 </div>
-                <input type="hidden" class="form-control" name="monto" id="monto" value="<%= monto %>">
-                <div class="form-group col-md-6">
-                    <label for="cliente_plan_m">CLIENTE PLANIFICADO MAÑANA</label>
-                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_1">OTs</button>
-                    <input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>">
+                <div class="form-group col-md-2">
+                    <label for="codigo">CODIGO</label>
+                    <input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
+                    <label for="cliente_plan_m">CLIENTE PLANIFICADO MAÑANA</label>-  
+                    <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_1">OTs</button>
+                    <input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>" placeholder="CLIENTE PLANIFICADO MAÑANA">
+                </div>
+                <div class="form-group col-md-2">
                     <label for="obra_plan_m">OBRA PLANIFICADA MAÑANA</label>
                     <input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <label for="cliente_plan_t">CLIENTE PLANIFICADO TARDE</label>
-                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_2">OTs</button>
-                    <input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>">
+                    <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2">OTs</button>
+                    <input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>" placeholder="CLIENTE PLANIFICADO TARDE">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <label for="obra_plan_t">OBRA PLANIFICADA TARDE</label>
                     <input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <label for="cliente_real_m">CLIENTE REAL MAÑANA</label>
                     <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_3">OTs</button>
                     <input type="text" class="form-control" name="cliente_real_m" id="cliente_real_m" value="<%= cliente_real_m %>">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <label for="obra_real_m">OBRA REAL MAÑANA</label>
                     <input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
+                    <label for="h_entrada_m">HORARIO ENTRADA MAÑANA</label>
+                    <input type="text" class="form-control" name="h_entrada_m" id="h_entrada_m" value="<%= h_entrada_m %>" placeholder="HORARIO ENTRADA MAÑANA">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_salida_m">HORARIO SALIDA MAÑANA</label>
+                    <input type="text" class="form-control" name="h_salida_m" id="h_salida_m" value="<%= h_salida_m %>" placeholder="HORARIO SALIDA MAÑANA">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="encargado">ENCARGADO MAÑANA</label>
+                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="trato_cliente">TRATO C/ EL CLIENTE MAÑANA</label>
+                    <input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>">
+                </div>
+                <div class="form-group col-md-2">
                     <label for="cliente_real_t">CLIENTE REAL TARDE</label>
                     <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_4">OTs</button>
                     <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
                     <label for="obra_real_t">OBRA REAL TARDE</label>
                     <input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="encargado">ENCARGADO</label>
-                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
+                <div class="form-group col-md-2">
+                    <label for="h_entrada_m">HORARIO ENTRADA TARDE</label>
+                    <input type="text" class="form-control" name="h_entrada_m" id="h_entrada_m" value="<%= h_entrada_m %>" placeholder="HORARIO ENTRADA MAÑANA">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="trato_cliente">TRATO C/ EL CLIENTE</label>
-                    <input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>">
+                <div class="form-group col-md-2">
+                    <label for="h_salida_m">HORARIO SALIDA TARDE</label>
+                    <input type="text" class="form-control" name="h_salida_m" id="h_salida_m" value="<%= h_salida_m %>" placeholder="HORARIO SALIDA MAÑANA">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="h_entrada">Hs. ENTRADA</label>
-                    <input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>">
+                <div class="form-group col-md-2">
+                    <label for="encargado2">ENCARGADO T</label>
+                    <input type="text" class="form-control" name="encargado2" id="encargado2" value="<%= encargado2 %>">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="h_salida">Hs. SALIDA</label>
-                    <input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>">
+                <div class="form-group col-md-2">
+                    <label for="trato_cliente2">TRATO C/ EL CLIENTE T</label>
+                    <input type="text" class="form-control" name="trato_cliente2" id="trato_cliente2" value="<%= trato_cliente2 %>">
                 </div>
-                <!-- LOS MONTOS POR HORA -->
-                <div class="form-group col-md-6">
-                    <label for="monto">MONTO</label>
-                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto...">
+                <div class="form-group col-md-2">
+                    <label for="cliente_real_n">CLIENTE REAL NOCHE</label>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_4">OTs</button>
+                    <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="subtotal">SUBTOTAL</label>
-                    <input type="text" class="form-control" name="subtotal" id="subtotal" value="<%= subtotal %>">
+                <div class="form-group col-md-2">
+                    <label for="obra_real_n">OBRA REAL NOCHE</label>
+                    <input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="hora_50">HORA 50</label>
-                    <input type="text" class="form-control" name="hora_50" id="hora_50" value="<%= hora_50 %>">
+                <div class="form-group col-md-2">
+                    <label for="h_entrada_n">HORARIO ENTRADA NOCHE</label>
+                    <input type="text" class="form-control" name="h_entrada_n" id="h_entrada_n" value="<%= h_entrada_n %>" placeholder="HORARIO ENTRADA NOCHE">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="hora_100">HORA 100</label>
-                    <input type="text" class="form-control" name="hora_100" id="hora_100" value="<%= hora_100 %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="hora_normal">HORA NORMAL</label>
-                    <input type="text" class="form-control" name="hora_normal" id="hora_normal" value="<%= hora_normal %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="hora_neg">HORA NEGATIVA</label>
-                    <input type="text" class="form-control" name="hora_neg" id="hora_neg" value="<%= hora_neg %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="jornal">JORNAL</label>
-                    <input type="text" class="form-control" name="jornal" id="jornal" value="<%= jornal %>">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="otros">OTROS</label>
-                    <input type="text" class="form-control" name="otros" id="otros" value="<%= otros %>">
+                <div class="form-group col-md-2">
+                    <label for="h_salida_n">HORARIO SALIDA NOCHE</label>
+                    <input type="text" class="form-control" name="h_salida_n" id="h_salida_n" value="<%= h_salida_n %>" placeholder="HORARIO SALIDA NOCHE">
                 </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
