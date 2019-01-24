@@ -201,7 +201,7 @@ app.get('/add', function(req, res, next){
                             title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                             obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                             monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
-                            cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',
+                            cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',h_entrada_n: '', h_salida_n: '',
                             usuario_insert: user, usuario: user, data: datos, data_rrhh: datos_rrhh});
                         }              
                     })
@@ -258,7 +258,7 @@ app.get('/add_mano', function(req, res, next){
                                     title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
-                                    cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',
+                                    cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',h_entrada_n: '', h_salida_n: '',
                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
                                 }              
                             })
@@ -379,6 +379,8 @@ app.post('/add_mano', function(req, res, next){
             ot_real_n: req.sanitize('ot_real_n').trim(),
             encargado2: req.sanitize('encargado2').trim(),
             trato_cliente2: req.sanitize('trato_cliente2').trim(),
+            h_entrada_n: req.sanitize('h_entrada_n').trim(),
+            h_salida_n: req.sanitize('h_salida_n').trim(),
             usuario_insert: user
         }   
         
@@ -459,7 +461,7 @@ app.post('/add_mano', function(req, res, next){
                                                     title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
-                                                    cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '',
+                                                    cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '',h_entrada_n: '', h_salida_n: '',
                                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
                                             }              
                                         })
@@ -553,6 +555,8 @@ app.post('/add', function(req, res, next){
             ot_real_t: req.sanitize('ot_real_t').trim(),
             otros: Number(req.sanitize('otros').trim()),
             jornal: Number(req.sanitize('jornal').trim()),
+            h_entrada_n: req.sanitize('h_entrada_n').trim(),
+            h_salida_n: req.sanitize('h_salida_n').trim(),
             usuario_insert: user
         }   
         
@@ -737,6 +741,8 @@ app.get('/editar/:id', function(req, res, next){
                     h_salida_m: rows[0].h_salida_m,
                     h_entrada_t: rows[0].h_entrada_t,
                     h_salida_t: rows[0].h_salida_t,
+                    h_entrada_n: rows[0].h_entrada_n,
+                    h_salida_n: rows[0].h_salida_n,
                     monto: rows[0].monto,
                     subtotal: rows[0].subtotal,
                     hora_50: rows[0].hora_50,
@@ -786,8 +792,12 @@ app.post('/editar/:id', function(req, res, next) {
             obra_real_n: req.sanitize('obra_real_n').trim(),
             encargado: req.sanitize('encargado').trim(),
             trato_cliente: req.sanitize('trato_cliente').trim(),
-            h_entrada: req.sanitize('h_entrada').trim(),
-            h_salida: req.sanitize('h_salida').trim(),
+            h_entrada_m: req.sanitize('h_entrada_m').trim(),
+            h_salida_m: req.sanitize('h_salida_m').trim(),
+            h_entrada_t: req.sanitize('h_entrada_t').trim(),
+            h_salida_t: req.sanitize('h_salida_t').trim(),
+            h_entrada_n: req.sanitize('h_entrada_n').trim(),
+            h_salida_n: req.sanitize('h_salida_n').trim(),
             monto: Number(req.sanitize('monto').trim()),
             subtotal: Number(req.sanitize('subtotal').trim()),
             hora_50: Number(req.sanitize('hora_50').trim()),
@@ -820,14 +830,20 @@ app.post('/editar/:id', function(req, res, next) {
                         cliente_real_m: mano_plan.cliente_real_m,
                         cliente_plan_t: mano_plan.cliente_plan_t,
                         cliente_real_t: mano_plan.cliente_real_t,
+                        cliente_real_n: mano_plan.cliente_real_n,
                         obra_plan_m: mano_plan.obra_plan_m,
                         obra_real_m: mano_plan.obra_real_m,
                         obra_plan_t: mano_plan.obra_plan_t,
                         obra_real_t: mano_plan.obra_real_t,
+                        obra_real_n: mano_plan.obra_real_n,
                         encargado: mano_plan.encargado,
                         trato_cliente: mano_plan.trato_cliente,
-                        h_entrada: mano_plan.h_entrada,
-                        h_salida: mano_plan.h_salida,
+                        h_entrada_m: mano_plan.h_entrada_m,
+                        h_salida_m: mano_plan.h_salida_m,
+                        h_entrada_t: mano_plan.h_entrada_t,
+                        h_salida_t: mano_plan.h_salida_t,
+                        h_entrada_n: mano_plan.h_entrada_n,
+                        h_salida_n: mano_plan.h_salida_n,
                         monto: mano_plan.monto,
                         subtotal: mano_plan.subtotal,
                         hora_50: mano_plan.hora_50,
@@ -838,6 +854,7 @@ app.post('/editar/:id', function(req, res, next) {
                         ot_real_m: mano_plan.ot_real_m,
                         ot_plan_t: mano_plan.ot_plan_t,
                         ot_real_t: mano_plan.ot_real_t,
+                        ot_real_n: mano_plan.ot_real_n,
                         otros: mano_plan.otros,
                         jornal: mano_plan.jornal,
                         usuario: user
@@ -856,14 +873,21 @@ app.post('/editar/:id', function(req, res, next) {
                         cliente_real_m: req.body.cliente_real_m,
                         cliente_plan_t: req.body.cliente_plan_t,
                         cliente_real_t: req.body.cliente_real_t,
+                        cliente_real_n: req.body.cliente_real_n,
                         obra_plan_m: req.body.obra_plan_m,
                         obra_real_m: req.body.obra_real_m,
                         obra_plan_t: req.body.obra_plan_t,
                         obra_real_t: req.body.obrareal_t,
                         encargado: req.body.encargado,
                         trato_cliente: req.body.trato_cliente,
-                        h_entrada: req.body.h_entrada,
-                        h_salida: req.body.h_salida,
+                        encargado2: req.body.encargado2,
+                        trato_cliente2: req.body.trato_cliente2,
+                        h_entrada_m: req.body.h_entrada_m,
+                        h_salida_m: req.body.h_salida_m,
+                        h_entrada_t: req.body.h_entrada_t,
+                        h_salidat_t: req.body.h_salida_t,
+                        h_entrada_n: req.body.h_entrada_n,
+                        h_salidat_n: req.body.h_salida_n,
                         monto: req.body.monto,
                         subtotal: req.body.subtotal,
                         hora_50: req.body.hora_50,
@@ -874,6 +898,7 @@ app.post('/editar/:id', function(req, res, next) {
                         ot_real_m: req.body.ot_real_m,
                         ot_plan_t: req.body.ot_plan_t,
                         ot_real_t: req.body.ot_real_t,
+                        ot_real_n: req.body.ot_real_n,
                         otros: req.body.otros,
                         jornal: req.body.jornal,
                         usuario_insert: user,
