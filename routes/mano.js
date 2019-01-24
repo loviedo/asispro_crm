@@ -255,7 +255,7 @@ app.get('/add_mano', function(req, res, next){
                                     //dibujamos la tabla con los datos que consultamos
 
                                     res.render('mano/add_mano', {
-                                    title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                                    title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
                                     cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',
@@ -317,7 +317,7 @@ app.post('/add_listar', function(req, res, next){
                                     //dibujamos la tabla con los datos que consultamos
 
                                     res.render('mano/add_mano', {
-                                    title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                                    title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
                                     cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',
@@ -354,6 +354,7 @@ app.post('/add_mano', function(req, res, next){
         var mano_plan = {
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
             //nro_ot: req.sanitize('nro_ot').trim(),
+            codigo: req.sanitize('codigo').trim(),
             empleado: req.sanitize('empleado').trim(),
             cliente_plan_m: req.sanitize('cliente_plan_m').trim(),
             cliente_plan_t: req.sanitize('cliente_plan_t').trim(),
@@ -455,7 +456,7 @@ app.post('/add_mano', function(req, res, next){
                                                 //dibujamos la tabla con los datos que consultamos
             
                                                 res.render('mano/add_mano', {
-                                                    title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                                                    title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
                                                     cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '',
@@ -487,6 +488,7 @@ app.post('/add_mano', function(req, res, next){
             title: 'Agregar Nuevo Plan Laboral',
             fecha: mano_plan.fecha,
             //nro_ot: mano_plan.nro_ot,
+            codigo: mano_plan.codigo,
             empleado: mano_plan.empleado,
             cliente_plan_m: mano_plan.cliente_plan_m,
             cliente_plan_t: mano_plan.cliente_plan_t,
@@ -525,7 +527,7 @@ app.post('/add', function(req, res, next){
 
         var mano_plan = {
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
-            //nro_ot: req.sanitize('nro_ot').trim(),
+            codigo: req.sanitize('codigo').trim(),
             empleado: req.sanitize('empleado').trim(),
             cliente_plan_m: req.sanitize('cliente_plan_m').trim(),
             cliente_real_m: req.sanitize('cliente_real_m').trim(),
@@ -565,7 +567,7 @@ app.post('/add', function(req, res, next){
                     res.render('mano/add', {
                         title: 'Agregar Nuevo Plan Laboral',
                         fecha: mano_plan.fecha,
-                        //nro_ot: mano_plan.nro_ot,
+                        codigo: mano_plan.codigo,
                         empleado: mano_plan.empleado,
                         cliente_plan_m: mano_plan.cliente_plan_m,
                         cliente_real_m: mano_plan.cliente_real_m,
@@ -630,7 +632,7 @@ app.post('/add', function(req, res, next){
                                         console.log(datos_rrhh);//debug de datos de RRHH
                                                     //dibujamos la tabla con los datos que consultamos
                                         res.render('mano/add', {
-                                        title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                                        title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                         obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                                         monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
                                         h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',cliente_real_n: '', obra_real_n:'', ot_real_n:'',
@@ -660,7 +662,7 @@ app.post('/add', function(req, res, next){
         res.render('mano/add', { 
             title: 'Agregar Nuevo Plan Laboral',
             fecha: mano_plan.fecha,
-            //nro_ot: mano_plan.nro_ot,
+            codigo: mano_plan.codigo,
             empleado: mano_plan.empleado,
             cliente_plan_m: mano_plan.cliente_plan_m,
             cliente_real_m: mano_plan.cliente_real_m,
@@ -717,7 +719,7 @@ app.get('/editar/:id', function(req, res, next){
                     //data: rows[0],
                     id: rows[0].id,
                     fecha: formatear_fecha_yyyymmdd(date1),
-                    //nro_ot: rows[0].nro_ot,
+                    codigo: rows[0].codigo,
                     empleado: rows[0].empleado,
                     cliente_plan_m: rows[0].cliente_plan_m,
                     cliente_real_m: rows[0].cliente_real_m,
@@ -770,7 +772,7 @@ app.post('/editar/:id', function(req, res, next) {
 
        var mano_plan = {
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
-            //nro_ot: req.sanitize('nro_ot').trim(),
+            codigo: req.sanitize('codigo').trim(),
             empleado: req.sanitize('empleado').trim(),
             cliente_plan_m: req.sanitize('cliente_plan_m').trim(),
             cliente_real_m: req.sanitize('cliente_real_m').trim(),
@@ -812,7 +814,7 @@ app.post('/editar/:id', function(req, res, next) {
                     res.render('mano/editar', {
                         title: 'Agregar Nuevo Plan Laboral',
                         fecha: mano_plan.fecha,
-                        //nro_ot: mano_plan.nro_ot,
+                        codigo: mano_plan.codigo,
                         empleado: mano_plan.empleado,
                         cliente_plan_m: mano_plan.cliente_plan_m,
                         cliente_real_m: mano_plan.cliente_real_m,
@@ -848,7 +850,7 @@ app.post('/editar/:id', function(req, res, next) {
                         title: 'Editar Plan Laboral',
                         id: req.params.id,
                         fecha: req.body.fecha,
-                        //nro_ot: req.body.nro_ot,
+                        codigo: req.body.codigo,
                         empleado: req.body.empleado,
                         cliente_plan_m: req.body.cliente_plan_m,
                         cliente_real_m: req.body.cliente_real_m,
@@ -895,7 +897,7 @@ app.post('/editar/:id', function(req, res, next) {
             title: 'Editar Plan Laboral',
             id: req.params.id,
             fecha: req.body.fecha,
-            //nro_ot: req.body.nro_ot,
+            codigo: req.body.codigo,
             empleado: req.body.empleado,
             cliente_plan_m: req.body.cliente_plan_m,
             cliente_real_m: req.body.cliente_real_m,

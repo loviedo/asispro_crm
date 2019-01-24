@@ -43,6 +43,54 @@ including header content which is common for all pages
     }
 </style>
 
+<script>
+    function edad(fecha) {
+        var today = new Date();
+        var age = today.getFullYear() - fecha.getFullYear();
+        var m = today.getMonth() - fecha.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < fecha.getDate())) {
+            age--;
+        }
+        return age;
+    }
+    function meses(fecha) {
+        var today = new Date();
+        today.setDate(today.getDate() + 1);
+        fecha.setDate(fecha.getDate() + 1);
+
+        var age = today.getFullYear() - fecha.getFullYear();
+        var m = today.getMonth() - fecha.getMonth();
+        alert(fecha +' '+ today.getMonth() + ' ' + fecha.getMonth() + ' y el resultado es: ' + m);
+        if (m < 0 || (m === 0 && today.getDate() < fecha.getDate())) {
+            age--;
+        }
+        if (m < 0) {
+            m = 12 + m;
+        }
+        return m;
+    }
+
+    function asigna_edad(){
+        //calculamos la edad y asignamos
+        var fecha = new Date(document.getElementById('fecha_nac').value);
+        document.getElementById("edad").value = edad(fecha);
+        //alert(edad(fecha)); //debug
+    }
+    function asigna_anho(){
+        //calculamos la edad y asignamos
+        var ant_anho = new Date(document.getElementById('fecha_ingreso').value);
+        document.getElementById("ant_ano").value = edad(ant_anho);//usamos la funcion edad ya que calcula el anho entre fechas
+        //alert(edad(fecha)); //debug
+    }
+    function asigna_mes(){
+        //calculamos la edad y asignamos
+        var ant_mes = new Date(document.getElementById('fecha_ingreso').value);
+        document.getElementById("ant_mes").value = meses(ant_mes);
+        //alert(edad(fecha)); //debug
+    }
+</script>
+
+
 
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
@@ -88,7 +136,7 @@ including header content which is common for all pages
                 </div>
                 <div class="form-group col-md-1">
                     <label for="edad">EDAD</label>
-                    <input type="text" class="form-control" name="edad" id="edad" value="<%= edad %>">
+                    <input type="text" class="form-control" name="edad" id="edad" value="<%= edad %>" onclick="asigna_edad()">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="nacionalidad">NACIONALIDAD</label>
@@ -155,11 +203,11 @@ including header content which is common for all pages
                 </div>
                 <div class="form-group col-md-2">
                     <label for="ant_ano">ANTIGUEDAD AÑO</label>
-                    <input type="text" class="form-control" name="ant_ano" id="ant_ano" value="<%= ant_ano %>">
+                    <input type="text" class="form-control" name="ant_ano" id="ant_ano" value="<%= ant_ano %>" onclick="asigna_anho()">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="ant_mes">ANTIGUEDAD MES</label>
-                    <input type="text" class="form-control" name="ant_mes" id="ant_mes" value="<%= ant_mes %>">
+                    <input type="text" class="form-control" name="ant_mes" id="ant_mes" value="<%= ant_mes %>" onclick="asigna_mes()">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="horario_e">HORARIO ENTRADA</label>
