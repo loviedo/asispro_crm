@@ -169,7 +169,7 @@ app.get('/add', function(req, res, next){
                     console.log(datos);//debug
                     // render to views/user/add.ejs
                     res.render('gastos/add', {
-                        title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', 
+                        title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
                         fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'', usuario_insert: user, usuario: user, data: datos});
                 }
             })
@@ -449,27 +449,28 @@ app.post('/editar/:id', function(req, res, next) {
                 } else {                
                     req.flash('success', 'Datos actualizados correctamente!')
                     
-                    // render to views/ot/add.ejs
-                    res.render('gastos/editar', {
-                        title: 'Editar GASTO',
-                        id: req.params.id,
-                        fecha: req.body.fecha,
-                        monto: req.body.monto,
-                        exentas: req.body.exentas,
-                        iva_10: req.body.iva_10,
-                        iva_5: req.body.iva_5,
-                        gasto_real: req.body.gasto_real,
-                        concepto: req.body.concepto,
-                        fact_condicion: req.body.fact_condicion,
-                        proveedor: req.body.proveedor,
-                        fact_nro: req.body.fact_nro,
-                        encargado: req.body.encargado,
-                        codigo: req.body.codigo,
-                        nro_ot: req.body.nro_ot,
-                        imputado: req.body.imputado,
-                        usuario_insert: user,
-                        usuario: user               
+                    req.getConnection(function(error, conn) {
+                        conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else{
+                                datos = [];
+                                rows.forEach(function(row) {    
+                                    datos.push(row);
+                                });
+                                console.log(datos);//debug
+                                // render to views/user/add.ejs
+                                // render to views/ot/add.ejs
+                                res.render('gastos/editar', { title: 'Editar GASTO', id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: req.body.exentas,
+                                    iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,
+                                    proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot,
+                                    imputado: req.body.imputado, usuario_insert: user, usuario: user, data: datos})
+                            }
+                        })
                     })
+
+
                 }
             })
         })
