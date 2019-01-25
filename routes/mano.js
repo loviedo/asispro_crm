@@ -320,7 +320,7 @@ app.post('/add_listar', function(req, res, next){
                                     title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
-                                    cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',
+                                    cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',h_entrada_n: '', h_salida_n: '',
                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
                                 }              
                             })
@@ -639,7 +639,7 @@ app.post('/add', function(req, res, next){
                                         title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                         obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada_m: '', h_salida_m: '',
                                         monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
-                                        h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',cliente_real_n: '', obra_real_n:'', ot_real_n:'',
+                                        h_entrada_t: '', h_salida_t: '', encargado2: '', trato_cliente2: '',cliente_real_n: '', obra_real_n:'', ot_real_n:'',h_entrada_n: '', h_salida_n: '',
                                         usuario_insert: user, usuario: user,  data: datos, data_rrhh: datos_rrhh});
                                     }      
                                 })

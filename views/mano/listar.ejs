@@ -84,10 +84,14 @@ color: #ffffff;
 
 
 <!-- FORMA VIEJA -->
-<div class="container-fluid" width="100%">
-    <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
-            <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
-            border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">   
+        <div class="container-fluid" width="100%">
+            <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>
                     <th>FECHA</th>
                     <th>NRO OT</th>
@@ -104,14 +108,6 @@ color: #ffffff;
                     <th>TRATO C/ CLIENTE</th>
                     <th>HS ENTRADA</th>
                     <th>HS SALIDA</th>
-                    <th>MONTO</th> 
-                    <th>SUBTOTAL</th> 
-                    <th>HORA 50%</th> 
-                    <th>HORA 100%</th> 
-                    <th>HORA NORMAL</th> 
-                    <th>HORA NEGATIVA</th>
-                    <th>JORNAL</th>
-                    <th>OTROS</th>
                 </tr>
             </thead>
         <tbody>
@@ -133,14 +129,6 @@ color: #ffffff;
                 <td><%= mano.trato_cliente %></td>
                 <td><%= mano.h_entrada %></td>
                 <td><%= mano.h_salida %></td>
-                <td><%= mano.monto %></td>
-                <td><%= mano.subtotal %></td>
-                <td><%= mano.hora_50 %></td>
-                <td><%= mano.hora_100 %></td>
-                <td><%= mano.hora_normal %></td>
-                <td><%= mano.hora_neg %></td>
-                <td><%= mano.jornal %></td>
-                <td><%= mano.otros %></td>
                 <td>
                     <div>
                         <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp;                            
@@ -154,9 +142,10 @@ color: #ffffff;
             <% }) %>
             <% } %>
         </tbody>
-
     </table>
 </div>
+</div>
+</nav>
 <!---->
 
 <!-- BOTONES DE EXPORTACION -->
