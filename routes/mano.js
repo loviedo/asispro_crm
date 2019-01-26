@@ -255,7 +255,7 @@ app.get('/add_mano', function(req, res, next){
                                     //dibujamos la tabla con los datos que consultamos
 
                                     res.render('mano/add_mano', {
-                                    title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                                    title: 'Cargar nuevo Plan Laboral', fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
                                     cliente_real_n: '', obra_real_n:'', ot_real_n:'', encargado2: '', trato_cliente2: '',
@@ -353,7 +353,6 @@ app.post('/add_mano', function(req, res, next){
 
         var mano_plan = {
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
-            //nro_ot: req.sanitize('nro_ot').trim(),
             codigo: req.sanitize('codigo').trim(),
             empleado: req.sanitize('empleado').trim(),
             cliente_plan_m: req.sanitize('cliente_plan_m').trim(),
@@ -372,7 +371,7 @@ app.post('/add_mano', function(req, res, next){
             ot_real_t: req.sanitize('ot_real_t').trim(),
             encargado: req.sanitize('encargado').trim(),
             trato_cliente: req.sanitize('trato_cliente').trim(),
-            cliente_plan_n: req.sanitize('cliente_plan_n').trim(),
+            cliente_real_n: req.sanitize('cliente_real_n').trim(),
             obra_real_n: req.sanitize('obra_real_n').trim(),
             ot_real_n: req.sanitize('ot_real_n').trim(),
             encargado2: req.sanitize('encargado2').trim(),
@@ -457,7 +456,7 @@ app.post('/add_mano', function(req, res, next){
                                                     title: 'Cargar nuevo Plan Laboral',fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
                                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', 
-                                                    ot_real_t:'',otros:'',jornal:'', cliente_real_n: '', obra_real_n:'', ot_real_n:'',
+                                                    ot_real_t:'',otros:'',jornal:'', cliente_real_n: '', obra_real_n:'', ot_real_n:'',encargado2: '', trato_cliente2: '',
                                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
                                             }              
                                         })

@@ -174,7 +174,7 @@ function asignar_ot(){
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cliente_real_n">CLIENTE REAL NOCHE</label>
-                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_4">OTs</button>
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_5">OTs</button>
                     <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
                 </div>
                 <div class="form-group col-md-2">
@@ -475,6 +475,68 @@ function asignar_ot(){
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
+        </div>
+        </div>
+    </div>
+</div><!---->
+<div class="modal fade" id="modal_ot_5" tabindex="-1" role="dialog" aria-labelledby="modal_ot_5Label" aria-hidden="true">
+    <div class="modal-dialog" width="100%" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_ot_5Label">Listado de OTs</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body">
+
+        <div class="container-fluid" width="100%">
+            <table id="table_ot_real_n_mano" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                        <tr>
+                            <th>Nro OT</th>
+                            <th>FECHA EMISION</th>
+                            <th>F INI EJECUCION</th>
+                            <th>F FIN EJECUCION</th>
+                            <th>Nro FACTURA</th>
+                            <th>Est FACTURA</th>
+                            <th>Nro RECIBO</th>
+                            <th>Nro REMISION</th>
+                            <th>TIPO FACTURA</th>       
+                            <th>CLIENTE</th>
+                            <th>OBRA</th>
+                            <th>DESCRIPCION</th>
+                            <th>ENCARGADO</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                <% if (data_ot) { %>
+                    <% data_ot.forEach(function(ot){ %>
+                    <tr id="<%= ot.ot_nro %>">
+                        <td><%= ot.ot_nro %></td>
+                        <td><%= formatear_fecha(ot.fec_emision) %></td>
+                        <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
+                        <td><%= ot.fact_nro %></td>
+                        <td><%= ot.fact_estado %></td>
+                        <td><%= ot.recibo_nro %></td>
+                        <td><%= ot.remision_nro %></td>
+                        <td><%= ot.fact_tipo %></td>
+                        <td><%= ot.cliente %></td>
+                        <td><%= ot.obra %></td>
+                        <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
+                    </tr>
+                    <% }) %>
+                <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
         </div>
         </div>
     </div>

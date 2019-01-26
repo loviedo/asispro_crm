@@ -197,6 +197,35 @@
                             }
                         }}
                     );
+                    var OT_DATOS_5 = $('#table_ot_real_n_mano').DataTable(//
+                        {
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
 
 
                     /*JQUERY PARA ASIGNAR EL NOMBRE DEL EMPLEADO EN EL FORM https://stackoverflow.com/questions/36550092/how-to-get-selected-values-from-datatable?rq=1*/
@@ -233,7 +262,7 @@
                         $('#cliente_plan_t').val(row[9]);
                         $('#obra_plan_t').val(row[10]);
                         $('#ot_plan_t').val(row[0]);
-                        $('#encargado').val(row[12]);
+                        $('#encargado2').val(row[12]);
                     } );
                     /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA REAL MANANA*/
                     $('#table_ot_real_m_mano tbody').on( 'click', 'tr', function () {
@@ -257,8 +286,19 @@
                         $('#cliente_real_t').val(row[9]);
                         $('#obra_real_t').val(row[10]);
                         $('#ot_real_t').val(row[0]);
-                        $('#encargado').val(row[12]);
+                        $('#encargado2').val(row[12]);
                     } );
+                    $('#table_ot_real_n_mano tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = OT_DATOS_5.row(this).index();
+                        var row = OT_DATOS_5.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //aca tenemos que asignar el valor
+                        $('#cliente_real_n').val(row[9]);
+                        $('#obra_real_n').val(row[10]);
+                        $('#ot_real_n').val(row[0]);
+                    } );
+
                 });
             </script>
         </div>
