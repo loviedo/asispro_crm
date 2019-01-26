@@ -200,14 +200,15 @@
 
 
                     /*JQUERY PARA ASIGNAR EL NOMBRE DEL EMPLEADO EN EL FORM https://stackoverflow.com/questions/36550092/how-to-get-selected-values-from-datatable?rq=1*/
-                    $('#table_rrhh_mano tbody').on( 'click', 'tr', function () {
+                    $('#table_rrhh_mano tbody').on('click', 'tr', function () {
                         //$(this).toggleClass('selected');
                         var pos = RRHH_DATOS.row(this).index();
                         var row = RRHH_DATOS.row(pos).data();
-                        //console.log(row);//debug en la consola del navegador
+                        console.log(row);//debug en la consola del navegador
                         //aca tenemos que asignar el valor
+                        $('#codigo').val(row[0]);
                         $('#empleado').val(row[1]);
-                        $('#jornal').val(row[11]);
+                        $('#jornal').val(row[5]);
                     } );
 
                     /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA PLAN MANANA*/

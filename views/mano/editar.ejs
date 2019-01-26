@@ -140,12 +140,12 @@ function asignar_ot(){
                     <input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>">
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="h_entrada_m">HORARIO ENTRADA MAÑANA</label>
-                    <input type="text" class="form-control" name="h_entrada_m" id="h_entrada_m" value="<%= h_entrada_m %>" placeholder="HORARIO ENTRADA MAÑANA">
+                    <label for="h_entrada">HORARIO ENTRADA</label>
+                    <input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>" placeholder="HORARIO ENTRADA">
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="h_salida_m">HORARIO SALIDA MAÑANA</label>
-                    <input type="text" class="form-control" name="h_salida_m" id="h_salida_m" value="<%= h_salida_m %>" placeholder="HORARIO SALIDA MAÑANA">
+                    <label for="h_salida">HORARIO SALIDA</label>
+                    <input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="encargado">ENCARGADO MAÑANA</label>
@@ -165,14 +165,6 @@ function asignar_ot(){
                     <input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>">
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="h_entrada_m">HORARIO ENTRADA TARDE</label>
-                    <input type="text" class="form-control" name="h_entrada_m" id="h_entrada_m" value="<%= h_entrada_m %>" placeholder="HORARIO ENTRADA MAÑANA">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="h_salida_m">HORARIO SALIDA TARDE</label>
-                    <input type="text" class="form-control" name="h_salida_m" id="h_salida_m" value="<%= h_salida_m %>" placeholder="HORARIO SALIDA MAÑANA">
-                </div>
-                <div class="form-group col-md-2">
                     <label for="encargado2">ENCARGADO TARDE</label>
                     <input type="text" class="form-control" name="encargado2" id="encargado2" value="<%= encargado2 %>">
                 </div>
@@ -188,14 +180,6 @@ function asignar_ot(){
                 <div class="form-group col-md-2">
                     <label for="obra_real_n">OBRA REAL NOCHE</label>
                     <input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="h_entrada_n">HORARIO ENTRADA NOCHE</label>
-                    <input type="text" class="form-control" name="h_entrada_n" id="h_entrada_n" value="<%= h_entrada_n %>" placeholder="HORARIO ENTRADA NOCHE">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="h_salida_n">HORARIO SALIDA NOCHE</label>
-                    <input type="text" class="form-control" name="h_salida_n" id="h_salida_n" value="<%= h_salida_n %>" placeholder="HORARIO SALIDA NOCHE">
                 </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
@@ -222,17 +206,11 @@ function asignar_ot(){
                             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                                 <tr>
                                     <th>CODIGO</th>
-                                    <th>NOMBRE</th>
-                                    <th>TELEFONO</th>
+                                    <th>NOMBRES</th>
+                                    <th>TELEFONO MOVIL</th>
                                     <th>OCUPACION</th>
-                                    <th>ANTIGUEDAD</th>
-                                    <th>MOTIVO</th>
-                                    <th>FECHA NAC</th>
-                                    <th>DIRECCION</th>
-                                    <th>HIJOS</th>
-                                    <th>EDAD</th>
-                                    <th>TIPO</th>        
-                                    <th>JORNAL</th>     
+                                    <th>TIPO EMPLEADO</th>
+                                    <th>JORNAL</th>   
                                 </tr>
                             </thead>
                         <tbody>
@@ -240,15 +218,9 @@ function asignar_ot(){
                             <% data_rrhh.forEach(function(emple){ %>
                             <tr>
                                 <td><%= emple.codigo %></td>
-                                <td><%= emple.nombre %></td>
-                                <td><%= emple.telefono %></td>
+                                <td><%= emple.nombres + ' ' + emple.apellidos %></td>
+                                <td><%= emple.tel_movil %></td>
                                 <td><%= emple.ocupacion %></td>
-                                <td><%= formatear_fecha(emple.fecha_inicio) %></td>
-                                <td><%= emple.motivo_salida %></td>
-                                <td><%= formatear_fecha(emple.fecha_nac) %></td>
-                                <td><%= emple.direccion %></td>
-                                <td><%= emple.hijos %></td>
-                                <td><%= emple.edad %></td>
                                 <td><%= emple.tipo_empleado %></td>
                                 <td><%= emple.jornal %></td>
                             </tr>
