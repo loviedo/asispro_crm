@@ -425,7 +425,7 @@ app.post('/editar/:id', function(req, res, next) {
 
         var emple = {
             codigo: req.sanitize('codigo').trim(),
-            fec_ingreso: formatear_fecha_yyyymmdd(req.sanitize('fec_ingreso').trim()),
+            fecha_ingreso: formatear_fecha_yyyymmdd(req.sanitize('fecha_ingreso').trim()),
             nombres: req.sanitize('nombres').trim(),
             apellidos: req.sanitize('apellidos').trim(),
             sexo: req.sanitize('sexo').trim(),
