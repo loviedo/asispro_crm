@@ -135,13 +135,14 @@ function changeText() {
        // document.getElementById("exentas").value = 0; 
         //document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
         //document.getElementById("iva_5").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
-        document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
-        document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
         
         //calculo de gasto real.
         document.getElementById("gasto_real").value = ((parseInt(document.getElementById("monto").value) || 0) + (parseInt(document.getElementById("exentas").value) || 0));
         document.getElementById("gasto_real1").value = ((parseInt(document.getElementById("monto").value) || 0) + (parseInt(document.getElementById("exentas").value) || 0));
         document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
+
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
     }
 
     //document.getElementById('gasto_real').value = parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value);
