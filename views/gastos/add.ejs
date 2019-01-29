@@ -193,7 +193,7 @@ function asignar_ot(){
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="fact_condicion">CONDICION FACTURA</label>
-                    <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" placeholder="condicion Factura" onkeypress="changeText()">
+                    <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" placeholder="condicion Factura" onclick="changeText()">
                         <option value="CONTADO">CONTADO</option>
                         <option value="CREDITO">CREDITO</option>
                         <option value="COMP_INGRESO">COMPROBANTE DE INGRESO</option>
@@ -210,12 +210,12 @@ function asignar_ot(){
                 </div>
                 <div class="form-group col-md-6">
                     <label for="monto1">MONTO</label>
-                    <input type="text" class="form-control" name="monto1" id="monto1" value="<%= monto %>" placeholder="Monto" onkeypress="changeText()">
+                    <input type="text" class="form-control" name="monto1" id="monto1" value="<%= monto %>" placeholder="Monto" onclick="changeText()">
                     <input type="hidden" class="form-control" name="monto" id="monto" value="<%= monto %>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="exentas1">EXENTAS</label>
-                    <input type="text" class="form-control" name="exentas1" id="exentas1" value="<%= exentas %>" placeholder="Exentas" onkeypress="changeText()">
+                    <input type="text" class="form-control" name="exentas1" id="exentas1" value="<%= exentas %>" placeholder="Exentas" onclick="changeText()">
                     <input type="hidden" class="form-control" name="exentas" id="exentas" value="<%= exentas %>">
                 </div>
                 <div class="form-group col-md-6">
@@ -232,7 +232,7 @@ function asignar_ot(){
                 </div>
                 <div class="form-group col-md-6">
                     <label for="gasto_real1">GASTO REAL</label>
-                    <input type="text" class="form-control" name="gasto_real1" id="gasto_real1" value="<%= gasto_real %>" placeholder="GASTO REAL" onkeypress="changeText()">
+                    <input type="text" class="form-control" name="gasto_real1" id="gasto_real1" value="<%= gasto_real %>" placeholder="GASTO REAL" onclick="changeText()">
                     <input type="hidden" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>">
                 </div>
                 <div class="form-group col-md-6">
