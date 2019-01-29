@@ -123,8 +123,6 @@ body .modal-dialog { /* Width */
     </div>
 </nav>
 
-
-
 <!-- NAV FORM CARGA PLANIFICACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
@@ -169,6 +167,10 @@ body .modal-dialog { /* Width */
                     <input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>">
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="encargado">ENCARGADO MAÑANA</label>
+                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
+                </div>
+                <div class="form-group col-md-2">
                     <label for="cliente_plan_t">CLIENTE PLANIFICADO TARDE</label>
                     <button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2">OTs</button>
                     <input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>" placeholder="CLIENTE PLANIFICADO TARDE">
@@ -193,10 +195,6 @@ body .modal-dialog { /* Width */
                 <div class="form-group col-md-2">
                     <label for="h_salida">HORARIO SALIDA</label>
                     <input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="encargado">ENCARGADO MAÑANA</label>
-                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="trato_cliente">TRATO C/ EL CLIENTE MAÑANA</label>
@@ -227,6 +225,26 @@ body .modal-dialog { /* Width */
                 <div class="form-group col-md-2">
                     <label for="obra_real_n">OBRA REAL NOCHE</label>
                     <input type="text" class="form-control" name="obra_real_n" id="obra_real_n" value="<%= obra_real_n %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="hora_normal">HORA NORMAL</label>
+                    <input type="text" class="form-control" name="hora_normal" id="hora_normal" value="<%= hora_normal %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="hora_50">HORA 50</label>
+                    <input type="text" class="form-control" name="hora_50" id="hora_50" value="<%= hora_50 %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="hora_100">HORA 100</label>
+                    <input type="text" class="form-control" name="hora_100" id="hora_100" value="<%= hora_100 %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="hora_neg">HORA NEGATIVA</label>
+                    <input type="text" class="form-control" name="hora_neg" id="hora_neg" value="<%= hora_neg %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="pasaje">PASAJE</label>
+                    <input type="text" class="form-control" name="pasaje" id="pasaje" value="<%= pasaje %>">
                 </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
