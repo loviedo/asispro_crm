@@ -64,28 +64,48 @@ function generar_excel_plan_laboral(rows){
     //Add Worksheets to the workbook
     var worksheet = workbook.addWorksheet('PLAN LABORAL');
     // Create a reusable style
-    var style = workbook.createStyle({
+    const style = workbook.createStyle({
     font: {
         color: '#000000',
         size: 12
     },
     numberFormat: '#,##0.00; (#,##0.00); -'
     });
-    var style1 = workbook.createStyle({
+
+    const style1 = workbook.createStyle({
         font: {
             color: '#000000',
+            fgColor:'#EF820D',
             size: 12
         },
         numberFormat: '#,##0; (#,##0); -'
     });
 
+    const bgStyle = workbook.createStyle({
+        fill: {
+          type: 'pattern',
+          patternType: 'solid',
+          //bgColor: '#EF820D',
+          //fgColor: '#EF820D', //forecolor es el color de fondo de la celda.
+        }
+      });
+
     //dibujamos el excel
     //primero la cabecera
     worksheet.cell(1,1).string('FECHA').style(style);
-    //worksheet.cell(1,2).string('NRO OT').style(style);
     worksheet.cell(1,2).string('EMPLEADO').style(style);
-    worksheet.cell(1,3).string('CLIENTE PLAN MAÑANA').style(style);
-    worksheet.cell(1,4).string('OBRA PLAN MAÑANA').style(style);
+    worksheet.cell(1,3).string('CLIENTE PLAN MAÑANA').style(bgStyle);
+    worksheet.cell(1,4).string('OBRA PLAN MAÑANA').style(bgStyle);
+    worksheet.cell(1,5).string('ENCARGADO').style(bgStyle);
+    worksheet.cell(1,6).string('TRATO CLIENTE').style(bgStyle);
+    worksheet.cell(1,7).string('CLIENTE PLAN TARDE').style(style);
+    worksheet.cell(1,8).string('OBRA PLAN TARDE').style(style);
+    worksheet.cell(1,9).string('ENCARGADO').style(style);
+    worksheet.cell(1,10).string('TRATO CLIENTE').style(style);
+
+    //worksheet.cell(1,2).string('NRO OT').style(style);
+    /*worksheet.cell(1,2).string('EMPLEADO').style(style);
+
     worksheet.cell(1,5).string('OT PLAN MAÑANA').style(style);
     worksheet.cell(1,6).string('CLIENTE REAL MAÑANA').style(style);
     worksheet.cell(1,7).string('CLIENTE PLAN TARDE').style(style);
@@ -96,10 +116,9 @@ function generar_excel_plan_laboral(rows){
     worksheet.cell(1,12).string('CLIENTE REAL TARDE').style(style);
     worksheet.cell(1,13).string('OBRA REAL TARDE').style(style);
     worksheet.cell(1,14).string('OT REAL TARDE').style(style);
-    worksheet.cell(1,15).string('ENCARGADO').style(style);
-    worksheet.cell(1,16).string('TRATO CLIENTE').style(style);
+
     worksheet.cell(1,17).string('HS ENTRADA').style(style);
-    worksheet.cell(1,18).string('HS SALIDA').style(style);
+    worksheet.cell(1,18).string('HS SALIDA').style(style);*/
     //worksheet.cell(1,16).string('IMPUTACION 1').style(style);
     //worksheet.cell(1,17).string('IMPUTACION 2').style(style);
 
@@ -107,10 +126,20 @@ function generar_excel_plan_laboral(rows){
     var i = 1;
     rows.forEach(function(row) {
         worksheet.cell(i+1,1).string(String(formatear_fecha(row.fecha))).style(style);
-        //worksheet.cell(i+1,2).string(String(row.nro_ot)).style(style);
         worksheet.cell(i+1,2).string(String(row.empleado)).style(style);
         worksheet.cell(i+1,3).string(String(row.cliente_plan_m)).style(style);
         worksheet.cell(i+1,4).string(String(row.obra_plan_m)).style(style);
+        worksheet.cell(i+1,5).string(String(row.encargado)).style(style);
+        worksheet.cell(i+1,6).string(String(row.trato_cliente)).style(style);
+        worksheet.cell(i+1,7).string(String(row.cliente_plan_t)).style(style);
+        worksheet.cell(i+1,8).string(String(row.obra_plan_t)).style(style);
+        worksheet.cell(i+1,9).string(String(row.encargado2)).style(style);
+        worksheet.cell(i+1,10).string(String(row.trato_cliente2)).style(style);
+
+
+        //worksheet.cell(i+1,2).string(String(row.nro_ot)).style(style);
+        /*worksheet.cell(i+1,2).string(String(row.empleado)).style(style);
+
         worksheet.cell(i+1,5).string(String(row.ot_plan_m)).style(style);
         worksheet.cell(i+1,6).string(String(row.cliente_plan_t)).style(style);
         worksheet.cell(i+1,7).string(String(row.obra_plan_t)).style(style);
@@ -121,10 +150,9 @@ function generar_excel_plan_laboral(rows){
         worksheet.cell(i+1,12).string(String(row.cliente_real_t)).style(style);
         worksheet.cell(i+1,13).string(String(row.obra_real_t)).style(style);
         worksheet.cell(i+1,14).string(String(row.ot_real_t)).style(style);
-        worksheet.cell(i+1,15).string(String(row.encargado)).style(style);
-        worksheet.cell(i+1,16).string(String(row.trato_cliente)).style(style);
+
         worksheet.cell(i+1,17).string(String(row.h_entrada)).style(style);
-        worksheet.cell(i+1,18).string(String(row.h_salida)).style(style);
+        worksheet.cell(i+1,18).string(String(row.h_salida)).style(style);*/
         //worksheet.cell(i+1,16).string(String(row.imputacion_1)).style(style1);
         //worksheet.cell(i+1,17).string(String(row.imputacion_2)).style(style1);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
@@ -145,7 +173,7 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM mano_obra ORDER BY id DESC',function(err, rows) {
+            conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
