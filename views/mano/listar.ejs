@@ -94,20 +94,15 @@ color: #ffffff;
                     border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>
                     <th>FECHA</th>
-                    <th>NRO OT</th>
                     <th>EMPLEADO</th>
-                    <th>CLIENTE PLANIFICADO M</th>
-                    <th>OBRA PLANIFICADA M</th>
-                    <th>CLIENTE PLANIFICADO T</th>
-                    <th>OBRA PLANIFICADA T</th>
-                    <th>CLIENTE REAL M</th>
-                    <th>OBRA REAL M</th>
-                    <th>CLIENTE REAL T</th>
-                    <th>OBRA REAL T</th>
-                    <th>ENCARGADO</th>
-                    <th>TRATO C/ CLIENTE</th>
-                    <th>HS ENTRADA</th>
-                    <th>HS SALIDA</th>
+                    <th>CLIENTE REAL MAÑANA</th>
+                    <th>OBRA REAL MAÑANA</th>
+                    <th>ENCARGADO MAÑANA</th>
+                    <th>TRATO CLIENTE MAÑANA</th>
+                    <th>CLIENTE REAL TARDE</th>
+                    <th>OBRA REAL TARDE</th>
+                    <th>ENCARGADO TARDE</th>
+                    <th>TRATO CLIENTE TARDE</th>
                 </tr>
             </thead>
         <tbody>
@@ -115,20 +110,15 @@ color: #ffffff;
         <% data.forEach(function(mano){ %>
             <tr>
                 <td><%= formatear_fecha(mano.fecha) %></td>
-                <td><%= mano.nro_ot %></td>
                 <td><%= mano.empleado %></td>
-                <td><%= mano.cliente_plan_m %></td>
-                <td><%= mano.obra_plan_m %></td>
-                <td><%= mano.cliente_plan_t %></td>
-                <td><%= mano.obra_plan_t %></td>
                 <td><%= mano.cliente_real_m %></td>
                 <td><%= mano.obra_real_m %></td>
-                <td><%= mano.cliente_real_t %></td>
-                <td><%= mano.obra_real_t %></td>
                 <td><%= mano.encargado %></td>
                 <td><%= mano.trato_cliente %></td>
-                <td><%= mano.h_entrada %></td>
-                <td><%= mano.h_salida %></td>
+                <td><%= mano.cliente_real_t %></td>
+                <td><%= mano.obra_real_t %></td>
+                <td><%= mano.encargado2 %></td>
+                <td><%= mano.trato_cliente2 %></td>
                 <td>
                     <div>
                         <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp;                            
