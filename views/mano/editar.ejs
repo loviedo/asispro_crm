@@ -63,13 +63,28 @@ body .modal-dialog { /* Width */
 
 <script type="text/javascript"> 
 
+//NO USAMOS MAS PERO QUEDA COMO EJEMPLO DE ASIGNACION DEL CAMPO FILTRO DEL DATO
 function asignar_ot(){
     //recuperamos el valor de la busqueda del filtro del datatable y asignamos al valor del OT
     document.getElementById("nro_ot").value = document.querySelector('.dataTables_filter input').value;
     //alert(valor); //debug
 }
-
 </script>
+
+<script type="text/javascript"> 
+    function dup_h_neg(){
+        //var val = String(document.getElementById("hora_neg").value);
+        document.getElementById("hora_neg").value = (document.getElementById('hora_neg').value *2); //duplicamos el item
+    }
+    function dup_h_50(){
+        //var val = String(document.getElementById("hora_neg").value);
+        document.getElementById("hora_50").value = (document.getElementById('hora_50').value *(1.5)); //duplicamos el item
+    }
+    function dup_h_100(){
+        //var val = String(document.getElementById("hora_neg").value);
+        document.getElementById("hora_100").value = (document.getElementById('hora_100').value *2); //duplicamos el item
+    }
+    </script>
 
 
 <!-- NAV PARA TITULO -->
@@ -187,15 +202,15 @@ function asignar_ot(){
                 </div>
                 <div class="form-group col-md-2">
                     <label for="hora_50">HORA 50</label>
-                    <input type="text" class="form-control" name="hora_50" id="hora_50" value="<%= hora_50 %>">
+                    <input type="text" class="form-control" name="hora_50" id="hora_50" value="<%= hora_50 %>" onclick="dup_h_50()">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="hora_100">HORA 100</label>
-                    <input type="text" class="form-control" name="hora_100" id="hora_100" value="<%= hora_100 %>">
+                    <input type="text" class="form-control" name="hora_100" id="hora_100" value="<%= hora_100 %>" onclick="dup_h_100()">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="hora_neg">HORA NEGATIVA</label>
-                    <input type="text" class="form-control" name="hora_neg" id="hora_neg" value="<%= hora_neg %>">
+                    <input type="text" class="form-control" name="hora_neg" id="hora_neg" value="<%= hora_neg %>" onclick="dup_h_neg()">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="pasaje">PASAJE</label>
@@ -312,7 +327,7 @@ function asignar_ot(){
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
         </div>
         </div>
     </div>
@@ -372,7 +387,7 @@ function asignar_ot(){
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
         </div>
         </div>
     </div>
@@ -432,7 +447,7 @@ function asignar_ot(){
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
         </div>
         </div>
     </div>
@@ -492,7 +507,7 @@ function asignar_ot(){
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
         </div>
         </div>
     </div>
