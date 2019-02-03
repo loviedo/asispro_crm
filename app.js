@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var path = require('path');//para las direcciones locales
 var mysql = require('mysql');//instaciamos mysql
+
+
  
 /**
  * middleware que provee API consistente para conns mysql mientras hacemos el ciclo request/response 

@@ -21,6 +21,7 @@
     "express-validator": "^5.2.0",
     "method-override": "^2.3.10",
     "mysql": "^2.15.0",
+    "pdfkit": "^0.9.0",
     "req-flash": "0.0.3"
   }
 }
