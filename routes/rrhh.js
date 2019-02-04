@@ -705,7 +705,7 @@ app.delete('/eliminar/(:id)', function(req, res, next) {
 
 //GET DE EDICION DE ESTUDIO 
 //OBTENCION DE DATOS Y MUESTRA
-app.get('/descargar/(:id)', function(req,res,next){
+app.get('/pdf/(:id)', function(req,res,next){
 	req.getConnection(function(err,connection){
 		var query = connection.query('SELECT * FROM empleado where id = ' + req.params.id,function(err,rows)
 		//var query = connection.query('SELECT id,cod,ci,nombre,apellido,fec_estudio,tel FROM estudio',function(err,rows) // debug: traer todos.
