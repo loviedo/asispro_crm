@@ -70,7 +70,7 @@ function asignar_ot(){
     //alert(valor); //debug
 }
 </script>
-
+    
 <script type="text/javascript"> 
     function dup_h_neg(){
         var h1 = Number((document.getElementById('hora_neg').value.replace(",",".")));
@@ -250,8 +250,8 @@ function asignar_ot(){
                                     <th>NOMBRES</th>
                                     <th>TELEFONO MOVIL</th>
                                     <th>OCUPACION</th>
-                                    <th>TIPO EMPLEADO</th>
-                                    <th>JORNAL</th>   
+                                    <!--<th>TIPO EMPLEADO</th>
+                                    <th>JORNAL</th>   -->
                                 </tr>
                             </thead>
                         <tbody>
@@ -262,8 +262,8 @@ function asignar_ot(){
                                 <td><%= emple.nombres + ' ' + emple.apellidos %></td>
                                 <td><%= emple.tel_movil %></td>
                                 <td><%= emple.ocupacion %></td>
-                                <td><%= emple.tipo_empleado %></td>
-                                <td><%= emple.jornal %></td>
+                                <!--<td><%= emple.tipo_empleado %></td>
+                                <td><%= emple.jornal %></td>-->
                             </tr>
                             <% }) %>
                         <% } %>
