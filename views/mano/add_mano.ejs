@@ -28,18 +28,24 @@ function formatear_fecha(date) {
 %>
 
 <script type="text/javascript"> 
-function dup_h_neg(){
-    //var val = String(document.getElementById("hora_neg").value);
-    document.getElementById("hora_neg").value = (document.getElementById('hora_neg').value *2); //duplicamos el item
-}
-function dup_h_50(){
-    //var val = String(document.getElementById("hora_neg").value);
-    document.getElementById("hora_50").value = (document.getElementById('hora_50').value *(1.5)); //duplicamos el item
-}
-function dup_h_100(){
-    //var val = String(document.getElementById("hora_neg").value);
-    document.getElementById("hora_100").value = (document.getElementById('hora_100').value *2); //duplicamos el item
-}
+    function dup_h_neg(){
+        var h1 = Number((document.getElementById('hora_neg').value.replace(",",".")));
+        h1 = h1 * (1.5);
+        //alert(h1); //debug
+        document.getElementById("hora_neg").value = h1.toString().replace(".",","); //duplicamos el item
+    }
+    function dup_h_50(){
+        var h2 = Number((document.getElementById('hora_50').value.replace(",",".")));
+        h2 = h2 *(2);
+        //alert(h2); //debug
+        document.getElementById("hora_50").value = h2.toString().replace(".",","); //duplicamos el item
+    }
+    function dup_h_100(){
+        var h3 = Number((document.getElementById('hora_100').value.replace(",",".")));
+        h3 =(h3 * 2);
+        //alert(h3); //debug
+        document.getElementById("hora_100").value = h3.toString().replace(".",","); //duplicamos el item
+    }
 </script>
 
 
