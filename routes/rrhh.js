@@ -4,6 +4,8 @@ var path = require('path');
 var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
+PDFDocument = require('pdfkit');//para generar el pdf.
+
 
 function formatear_fecha_yyyymmdd(date) {
     var d;
@@ -700,5 +702,60 @@ app.delete('/eliminar/(:id)', function(req, res, next) {
         })
     })
 })
+
+//GET DE EDICION DE ESTUDIO 
+//OBTENCION DE DATOS Y MUESTRA
+app.get('/descargar/(:id)', function(req,res,next){
+	req.getConnection(function(err,connection){
+		var query = connection.query('SELECT * FROM empleado where id = ' + req.params.id,function(err,rows)
+		//var query = connection.query('SELECT id,cod,ci,nombre,apellido,fec_estudio,tel FROM estudio',function(err,rows) // debug: traer todos.
+		{
+		  if(err)
+		  {	req.flash('error', errors_detail); 
+			//res.redirect('/consultas',{title:"Consultar"}); 
+		  }else
+		  {
+			if(rows.length <=0)
+			{ req.flash('error', "No se encuentra estudio!"); 
+			  //res.redirect('/consultas',{title:"Consultar"});
+			}
+			else
+			{	
+				/* PRUEBA GENERAMOS PDF Y MOSTRAMOS EN EL BROWSER */
+				/* MOSTRAMOS EL PDF CON LA INFO GENERADA TENDREMOS QUE REDIRIGIR A PAGINA DE ESTUDIO AGREGADO*/
+				/* AL ESCRIBIR NO CIERRA EL ARCHIVO HASTA QUE TERMINE EL REQ!!!!!! */
+
+				//para escribir PDF -- ESTE CODIGO NO USAMOS AQUI
+				//var text = 'ESCRIBIMOS LA INFO de los datos';
+				//doc = new PDFDocument();//creating a new PDF object
+				//doc.pipe(fs.createWriteStream('./files/test4.pdf'));  //creating a write stream to write the content on the file system
+				//doc.text(text, 100, 100);//agregando el texto a escribirse
+				//doc.end(); //finalizamos la escritura del archivo
+				/* EL CODIGO ANTERIOR NO USAMOS AQUI */
+
+				console.log(rows[0].nomfile);
+				//descargar solamente si ya tenemos generado el archivo.
+				var file = path.resolve("./files/"+rows[0].nomfile);
+				res.contentType('Content-Type',"application/pdf");
+				res.download(file, function (err) {
+				if (err) {
+					console.log("ERROR AL ENVIAR EL ARCHIVO:");
+					console.log(err);
+				} else {
+					console.log("ARCHIVO ENVIADO");
+				}
+			  });
+	  
+	  
+			  console.log(rows);
+			  nombre_archivo=rows[0].nomfile;//asignar nombre archivo del primer reg retornado (se supone el unico)
+			  //res.render('consultas/listar',{title:"Editar",data:rows});//mostramos la pagina listar
+			}
+		  }
+		});
+	});
+});
+
+
 
 module.exports = app;

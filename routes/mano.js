@@ -1,6 +1,4 @@
-/*
-routing de mano de obra. igual que todos.
-*/
+/* routing de mano de obra. igual que todos. */
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -8,6 +6,8 @@ var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var fechita = '';//global para traer la fecha
 var userId = '';//global para userid
+
+
 
 function formatear_fecha_yyyymmdd(date) {
     var d;
