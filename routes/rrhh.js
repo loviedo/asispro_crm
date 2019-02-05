@@ -5,6 +5,7 @@ var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
 PDFDocument = require('pdfkit');//para generar el pdf.
+var fs = require('fs');
 
 
 function formatear_fecha_yyyymmdd(date) {
@@ -412,6 +413,71 @@ app.get('/editar/:id', function(req, res, next){
             }
             else { // Si existe el empleado
 
+				/* GENERAMOS PDF Y MOSTRAMOS EN EL BROWSER */
+				/* MOSTRAMOS EL PDF CON LA INFO GENERADA TENDREMOS QUE REDIRIGIR A PAGINA DE ESTUDIO AGREGADO*/
+				/* AL ESCRIBIR NO CIERRA EL ARCHIVO HASTA QUE TERMINE EL REQ!!!!!! */
+
+				//para escribir PDF -- ESTE CODIGO NO USAMOS AQUI
+				doc = new PDFDocument();//creating a new PDF object
+				doc.pipe(fs.createWriteStream('./ficha_cliente.pdf'));//creating a write stream to write the content on the file system
+                doc.text("FICHA DEL TRABAJADOR", 230, 50);//TITULO
+                doc.text("FECHA INGRESO: " + formatear_fecha(rows[0].fecha_ingreso), 370, 120);//fecha ingreso
+                doc.text("DATOS PERSONALES", 235, 150);//
+                doc.text("NOMBRES: " + rows[0].nombres , 30, 180);//NOMBRES
+                doc.text("APELLIDOS: " + rows[0].apellidos , 300, 180);//APELLIDOS
+                doc.text("CEDULA DE IDENTIDAD: " + rows[0].ci , 30, 210);//
+                doc.text("SEXO: " + rows[0].sexo , 260, 210);//
+                doc.text("FECHA NACIMIENTO: " + formatear_fecha(rows[0].fecha_nac), 350, 210);//
+                doc.text("EDAD: " + rows[0].edad , 30, 240);//
+                doc.text("NACIONALIDAD: " + rows[0].nacionalidad , 170, 240);//
+                doc.text("MANO HABIL: " + rows[0].mano_diestra, 370, 240);//
+                doc.text("ESTADO CIVIL: " + rows[0].estado_civil , 30, 270);//
+                doc.text("CATEGORIA OCUPACION: " + rows[0].ocupacion, 260, 270);//
+                doc.text("HIJOS: " + rows[0].n_hijos , 30, 300);//
+                doc.text("CORREO ELECT.: " + rows[0].email, 260, 300);//
+                doc.text("CARGO: " + rows[0].cargo , 30, 330);//
+                doc.text("TALLAS: Calzado: " + rows[0].calzado + "   Pantalon: " + rows[0].pantalon + "   Camisa: " + rows[0].camisa, 260, 330);//
+                doc.text("NIVEL EDUCATIVO: " + rows[0].nivel_educativo, 30, 360);//
+                doc.text("GRADO/AÑO APROBADO: " + rows[0].g_a_aprobado, 260, 360);//
+                doc.text("ANTIGUEDAD EMPRESA:    años:" + rows[0].ant_ano + "      meses: " + rows[0].ant_mes, 30, 390);//
+                doc.text("HORARIO LABORAL:   " + rows[0].horario_e + "  A  " + rows[0].horario_s , 30, 420);//
+                doc.text("DEPARTAMENTO LABORAL: " + rows[0].dep_trabajo, 30, 450);//
+                doc.text("CIUDAD/POBLACION: " + rows[0].ciudad , 30, 480);//
+                doc.text("BARRIO: " + rows[0].barrio , 310, 480);//
+                doc.text("TELEFONO MOVIL: " + rows[0].tel_movil , 30, 510);//
+                doc.text("TEL/CONTACTO EMERGENCIA: " + rows[0].tel_emergencia , 270, 510);//
+                doc.text("FIRMA", 430, 650);//
+
+                //LINEAS VERTICALES
+                doc.moveTo(290, 175).lineTo(290, 200).stroke();
+                doc.moveTo(250, 200).lineTo(250, 230).stroke();
+                doc.moveTo(340, 200).lineTo(340, 230).stroke();
+                doc.moveTo(160, 230).lineTo(160, 260).stroke();
+                doc.moveTo(360, 230).lineTo(360, 260).stroke();
+                doc.moveTo(300, 470).lineTo(300, 500).stroke();//barrio
+                doc.moveTo(260, 500).lineTo(260, 530).stroke();//telefono
+                
+
+                doc.moveTo(250, 260).lineTo(250, 350).stroke();
+
+                //CUADRO
+                doc.rect(20, 175, 565, 355).stroke();
+                //LINEAS HORIZONTALES
+                doc.moveTo(20, 200).lineTo(585, 200).stroke();
+                doc.moveTo(20, 230).lineTo(585, 230).stroke();
+                doc.moveTo(20, 260).lineTo(585, 260).stroke();
+                doc.moveTo(20, 290).lineTo(585, 290).stroke();
+                doc.moveTo(20, 320).lineTo(585, 320).stroke();
+                doc.moveTo(20, 350).lineTo(585, 350).stroke();
+                doc.moveTo(20, 410).lineTo(585, 410).stroke();
+                doc.moveTo(20, 440).lineTo(585, 440).stroke();
+                doc.moveTo(20, 470).lineTo(585, 470).stroke();
+                doc.moveTo(20, 500).lineTo(585, 500).stroke();
+
+
+				doc.end(); //finalizamos la escritura del archivo
+				/* EL CODIGO ANTERIOR NO USAMOS AQUI */
+
                 res.render('rrhh/editar', {
                     title: 'Editar EMPLEADO', 
                     id: rows[0].id,
@@ -707,7 +773,7 @@ app.delete('/eliminar/(:id)', function(req, res, next) {
 //OBTENCION DE DATOS Y MUESTRA
 app.get('/pdf/(:id)', function(req,res,next){
 	req.getConnection(function(err,connection){
-		var query = connection.query('SELECT * FROM empleado where id = ' + req.params.id,function(err,rows)
+		var query = connection.query('SELECT * FROM empleados where id = ' + req.params.id,function(err,rows)
 		//var query = connection.query('SELECT id,cod,ci,nombre,apellido,fec_estudio,tel FROM estudio',function(err,rows) // debug: traer todos.
 		{
 		  if(err)
@@ -716,7 +782,7 @@ app.get('/pdf/(:id)', function(req,res,next){
 		  }else
 		  {
 			if(rows.length <=0)
-			{ req.flash('error', "No se encuentra estudio!"); 
+			{ req.flash('error', "No se encuentra Empleado!"); 
 			  //res.redirect('/consultas',{title:"Consultar"});
 			}
 			else
@@ -726,16 +792,17 @@ app.get('/pdf/(:id)', function(req,res,next){
 				/* AL ESCRIBIR NO CIERRA EL ARCHIVO HASTA QUE TERMINE EL REQ!!!!!! */
 
 				//para escribir PDF -- ESTE CODIGO NO USAMOS AQUI
-				//var text = 'ESCRIBIMOS LA INFO de los datos';
+				//var text = 'ESCRIBIMOS LA INFO DE LOS DATOS';
 				//doc = new PDFDocument();//creating a new PDF object
-				//doc.pipe(fs.createWriteStream('./files/test4.pdf'));  //creating a write stream to write the content on the file system
+				//doc.pipe(fs.createWriteStream('./test4.pdf'));  //creating a write stream to write the content on the file system
 				//doc.text(text, 100, 100);//agregando el texto a escribirse
 				//doc.end(); //finalizamos la escritura del archivo
 				/* EL CODIGO ANTERIOR NO USAMOS AQUI */
 
 				console.log(rows[0].nomfile);
 				//descargar solamente si ya tenemos generado el archivo.
-				var file = path.resolve("./files/"+rows[0].nomfile);
+                //var file = path.resolve("./"+rows[0].nomfile);
+                var file = path.resolve('./ficha_cliente.pdf');
 				res.contentType('Content-Type',"application/pdf");
 				res.download(file, function (err) {
 				if (err) {
