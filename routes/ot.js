@@ -486,7 +486,6 @@ app.post('/editar/:id', function(req, res, next) {
     }
 })
  
-
 /* GENERAMOS Y ENVIAMOS EXCEL OT */
 app.post('/descargar', function(req, res, next) {
     //primero traemos los datos de la tabla
