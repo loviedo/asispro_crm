@@ -90,6 +90,7 @@ function generar_excel_ot(rows){
     worksheet.cell(1,11).string('OBRA').style(style);
     worksheet.cell(1,12).string('DESCRIPCION').style(style);
     worksheet.cell(1,13).string('ENCARGADO').style(style);
+    worksheet.cell(1,13).string('TRATO C/ CLIENTE').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
@@ -112,13 +113,13 @@ function generar_excel_ot(rows){
         worksheet.cell(i+1,11).string(String(row.obra)).style(style);
         worksheet.cell(i+1,12).string(String(row.descripcion)).style(style);
         worksheet.cell(i+1,13).string(String(row.encargado)).style(style);
+        worksheet.cell(i+1,14).string(String(row.trato_cliente)).style(style);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
     });
     workbook.write('Listado_OT.xlsx');
 }
-
 
 // MOSTRAR LISTA DE FACTURAS
 app.get('/', function(req, res, next) {
@@ -161,7 +162,7 @@ app.get('/add', function(req, res, next){
         // render to views/user/add.ejs
         res.render('ot/add', {
             title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '',remision_nro: '', 
-            fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '',encargado: '', usuario_insert: user, usuario: user})
+            fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', usuario_insert: user, usuario: user})
     }
     else {
         // render to views/index.ejs template file
@@ -211,6 +212,7 @@ app.post('/add', function(req, res, next){
             obra: req.sanitize('obra').trim(),
             descripcion: req.sanitize('descripcion').trim(),
             encargado: req.sanitize('encargado').trim(),
+            trato_cliente: req.sanitize('trato_cliente').trim(),
             usuario_insert: user
             //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
         }   
@@ -238,6 +240,7 @@ app.post('/add', function(req, res, next){
                         obra: ot.obra,
                         descripcion: ot.descripcion,
                         encargado: ot.encargado,
+                        trato_cliente: ot.trato_cliente,
                         usuario: user
                     })
                 } else {                
@@ -259,6 +262,7 @@ app.post('/add', function(req, res, next){
                         obra: '',
                         descripcion: '',
                         encargado: '',
+                        trato_cliente: '',
                         usuario: user                 
                     })
                 }
@@ -293,6 +297,7 @@ app.post('/add', function(req, res, next){
             obra: req.body.obra,
             descripcion: req.body.descripcion,
             encargado: req.body.encargado,
+            trato_cliente: req.body.trato_cliente,
             usuario_insert: user
         })
     }
@@ -333,6 +338,7 @@ app.get('/editar/:id', function(req, res, next){
                     obra: rows[0].obra,
                     descripcion: rows[0].descripcion,
                     encargado: rows[0].encargado,
+                    trato_cliente: rows[0].trato_cliente,
                     usuario_insert: user,
                     usuario: user
                 })
@@ -386,6 +392,7 @@ app.post('/editar/:id', function(req, res, next) {
             obra: req.sanitize('obra').trim(),
             descripcion: req.sanitize('descripcion').trim(),
             encargado: req.sanitize('encargado').trim(),
+            trato_cliente: req.sanitize('trato_cliente').trim(),
             usuario_insert: user
             //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
         }
@@ -413,6 +420,7 @@ app.post('/editar/:id', function(req, res, next) {
                         obra: req.body.obra,
                         descripcion: req.body.descripcion,
                         encargado: req.body.encargado,
+                        trato_cliente: req.body.trato_cliente,
                         usuario_insert: user,
                         usuario: user
                     })
@@ -436,6 +444,7 @@ app.post('/editar/:id', function(req, res, next) {
                         obra: req.body.obra,
                         descripcion:req.body.descripcion,
                         encargado:req.body.encargado,
+                        trato_cliente:req.body.trato_cliente,
                         usuario_insert: user,
                         usuario: user
                     })
@@ -470,6 +479,7 @@ app.post('/editar/:id', function(req, res, next) {
             obra: req.body.obra,
             descripcion: req.body.descripcion,
             encargado: req.body.encargado,
+            trato_cliente: req.body.trato_cliente,
             usuario_insert: user,
             usuario: user
         })
