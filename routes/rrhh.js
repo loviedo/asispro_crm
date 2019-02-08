@@ -419,7 +419,7 @@ app.get('/editar/:id', function(req, res, next){
 
 				//para escribir PDF -- ESTE CODIGO NO USAMOS AQUI
 				doc = new PDFDocument();//creating a new PDF object
-				doc.pipe(fs.createWriteStream('./ficha_cliente.pdf'));//creating a write stream to write the content on the file system
+				doc.pipe(fs.createWriteStream('./ficha_empleado.pdf'));//creating a write stream to write the content on the file system
                 doc.text("FICHA DEL TRABAJADOR", 230, 50);//TITULO
                 doc.text("FECHA INGRESO: " + formatear_fecha(rows[0].fecha_ingreso), 370, 120);//fecha ingreso
                 doc.text("DATOS PERSONALES", 235, 150);//
@@ -802,7 +802,7 @@ app.get('/pdf/(:id)', function(req,res,next){
 				console.log(rows[0].nomfile);
 				//descargar solamente si ya tenemos generado el archivo.
                 //var file = path.resolve("./"+rows[0].nomfile);
-                var file = path.resolve('./ficha_cliente.pdf');
+                var file = path.resolve('./ficha_empleado.pdf');
 				res.contentType('Content-Type',"application/pdf");
 				res.download(file, function (err) {
 				if (err) {
