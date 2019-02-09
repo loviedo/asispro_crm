@@ -127,15 +127,24 @@ app.get('/', function(req, res, next) {
 
     //controlamos quien se loga.
 	if(user.length >0){
-        //vemos los datos en la base
+        //si el usuario es cristina entonces solo ve lo de ella, si no, se ve todo
+        var sql_con ="";
+        if(user == "cibanez")
+        {
+            sql_con = "SELECT * FROM gastos WHERE usuario_insert = '"+user+"' ORDER BY fecha ASC";
+        }
+        else
+        {
+            sql_con = "SELECT * FROM gastos ORDER BY fecha ASC";
+        }
         req.getConnection(function(error, conn) {
-            conn.query("SELECT * FROM gastos WHERE usuario_insert = '"+user+"' ORDER BY fecha ASC",function(err, rows) {
+            conn.query(sql_con,function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
                     res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
                 } else {
-                    generar_excel_gastos(rows);//generamos excel gastos
+                    generar_excel_gastos(rows);//generamos excel gastos segun el usuario que sea claro
                     res.render('gastos/listar', {title: 'Listado de GASTOS', usuario: user, data: rows})
                 }
             })
@@ -191,6 +200,7 @@ app.post('/add', function(req, res, next){
     var errors = req.validationErrors();
     
     if(!errors) {//Si no hay errores, entonces conitnuamos
+
 
         //mysql acepta solos YYYY-MM-DD
         var date1 = req.sanitize('fecha').escape().trim();

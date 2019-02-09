@@ -162,6 +162,17 @@ function generar_excel_plan_laboral(rows){
     workbook.write('Listado_PLANLABORAL.xlsx');
 }
 
+function hoy()
+{   var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) { dd = '0' + dd; } 
+    if (mm < 10) { mm = '0' + mm; } 
+    var today = yyyy + '-' + mm + '-' + dd;
+    return today;
+}
 // MOSTRAR LISTADO DE Trabajos / mano de obra programada
 app.get('/', function(req, res, next) {
     if(req.session.user)
@@ -224,9 +235,9 @@ app.get('/add', function(req, res, next){
                             });
                             //console.log(datos_rrhh);//debug de datos de RRHH
                             //dibujamos la tabla con los datos que consultamos
-
+                            var fec = hoy();
                             res.render('mano/add_mano', {
-                            title: 'Cargar nuevo Plan Laboral',fecha: '', /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                            title: 'Cargar nuevo Plan Laboral',fecha: fec, /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                             obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
                             monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
                             cliente_real_n: '', obra_real_n:'', ot_real_n:'', encargado2: '', trato_cliente2: '',
@@ -281,9 +292,9 @@ app.get('/add_mano', function(req, res, next){
                                     });
                                     //console.log(datos_rrhh);//debug de datos de RRHH
                                     //dibujamos la tabla con los datos que consultamos
-
+                                    var fec = hoy();
                                     res.render('mano/add_mano', {
-                                    title: 'Cargar nuevo Plan Laboral', fecha: '', codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                                    title: 'Cargar nuevo Plan Laboral', fecha: fec, codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
                                     cliente_real_n: '', obra_real_n:'', ot_real_n:'', encargado2: '', trato_cliente2: '', hora_normal:'',hora_50:'',hora_100:'',hora_neg:'',pasaje:'',
@@ -379,6 +390,10 @@ app.post('/add_mano', function(req, res, next){
         var recibo_nro = Number(req.sanitize('recibo_nro').trim());
         var remision_nro = Number(req.sanitize('remision_nro').trim());*/
 
+
+        
+        //AL AGREGAR DATOS, SE CARGA LO PLANIFICADO A LO REAL, NO SE LEE EL INPUT / POR ESO ASIGNAMOS LO PLAN A LO REAL
+
         var mano_plan = {
             fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
             codigo: req.sanitize('codigo').trim(),
@@ -391,12 +406,12 @@ app.post('/add_mano', function(req, res, next){
             ot_plan_t: req.sanitize('ot_plan_t').trim(),
             h_entrada: req.sanitize('h_entrada').trim(),
             h_salida: req.sanitize('h_salida').trim(),
-            cliente_real_m: req.sanitize('cliente_real_m').trim(),
-            cliente_real_t: req.sanitize('cliente_real_t').trim(),
-            obra_real_m: req.sanitize('obra_real_m').trim(),
-            obra_real_t: req.sanitize('obra_real_t').trim(),
-            ot_real_m: req.sanitize('ot_real_m').trim(),
-            ot_real_t: req.sanitize('ot_real_t').trim(),
+            cliente_real_m: req.sanitize('cliente_plan_m').trim(),//PLAN -> REAL
+            cliente_real_t: req.sanitize('cliente_plan_t').trim(),//PLAN -> REAL
+            obra_real_m: req.sanitize('obra_plan_m').trim(),//PLAN -> REAL
+            obra_real_t: req.sanitize('obra_plan_t').trim(),//PLAN -> REAL
+            ot_real_m: req.sanitize('ot_plan_m').trim(),//PLAN -> REAL
+            ot_real_t: req.sanitize('ot_plan_t').trim(),//PLAN -> REAL
             encargado: req.sanitize('encargado').trim(),
             trato_cliente: req.sanitize('trato_cliente').trim(),
             cliente_real_n: req.sanitize('cliente_real_n').trim(),
@@ -779,8 +794,20 @@ app.get('/editar/:id', function(req, res, next){
                                     });
                                     //console.log(datos_rrhh);//debug de datos de RRHH
                                     //dibujamos la tabla con los datos que consultamos
-                                    var date1 = rows[0].fecha;
-
+                                    var date1 = new Date(formatear_fecha_yyyymmdd(rows[0].fecha));//traemos la fecha de carga de la planificacion.
+                                    var date2 = new Date(hoy());//traemos la fecha de carga de la planificacion.
+                                    //antes de pasar la info, tenemos que ver que usuario/rol y que fecha es para restringir
+                                    
+                                    var rol=0; //si el usuario/rol es restringido entonces mostramos la pagina restringida
+                                    if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
+                                    {   //vemos cuantos dias pasaron para ver la restriccion
+                                        var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
+                                        if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
+                                        {rol = 1;}//es el dia siguiente 
+                                        if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia
+                                        {rol = 2;}//es +2 o mas dias 
+                                    }
+                                    
                                     res.render('mano/editar', {
                                         title: 'Editar Plan Laboral', 
                                         //data: rows[0],
@@ -821,6 +848,7 @@ app.get('/editar/:id', function(req, res, next){
                                         //jornal: rows[0].jornal,
                                         encargado2: rows[0].encargado2,
                                         trato_cliente2: rows[0].trato_cliente2,
+                                        restri: rol,
                                         data_ot:datos_ot,//datos de ot
                                         data_rrhh:datos_rrhh, //datos de rrhh
                                         usuario: user
