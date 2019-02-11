@@ -89,11 +89,7 @@ app.get('/', function(req, res, next) {
                 }
             })
         })
-    }
-    else {
-        // render to views/index.ejs template file
-        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
-    }
+    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
 //RESPONSE PARA CARGA DE CLIENTES -- FORMULARIO 
@@ -108,11 +104,7 @@ app.get('/add', function(req, res, next){
         // render to views/user/add.ejs
         res.render('clientes/add', {
             title: 'Cargar nuevo CLIENTE', nombre: '', ruc: '', usuario_insert: user, usuario: user});
-    }
-    else {
-        // render to views/index.ejs template file
-        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
-    }
+    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
 //NUEVO CLIENTE - POST DE INSERT
