@@ -123,16 +123,16 @@ body .modal-dialog { /* Width */
                         <tr>
                             <th>FECHA</th>
                             <th>EMPLEADO</th>
+                            <th>OT PLAN MAÑANA</th>
                             <th>CLIENTE PLAN MAÑANA</th>
                             <th>OBRA PLAN MAÑANA</th>
+                            <th>ENCARGADO MAÑANA</th>
+                            <th>TRATO CLIENTE MAÑANA</th>
+                            <th>OT PLAN TARDE</th>
                             <th>CLIENTE PLAN TARDE</th>
                             <th>OBRA PLAN TARDE</th>
-                            <th>CLIENTE PLAN MAÑANA</th>
-                            <th>OBRA PLAN MAÑANA</th>
-                            <th>CLIENTE PLAN TARDE</th>
-                            <th>OBRA PLAN TARDE</th>
-                            <th>ENCARGADO</th>
-                            <th>TRATO CLIENTE</th>
+                            <th>ENCARGADO TARDE</th>
+                            <th>TRATO CLIENT TARDE</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -141,16 +141,16 @@ body .modal-dialog { /* Width */
                     <tr>
                         <td><%= formatear_fecha(mano.fecha) %></td>
                         <td><%= mano.empleado %></td>
+                        <td><%= mano.ot_plan_m %></td>
                         <td><%= mano.cliente_plan_m %></td>
                         <td><%= mano.obra_plan_m %></td>
-                        <td><%= mano.cliente_plan_t %></td>
-                        <td><%= mano.obra_plan_t %></td>
-                        <td><%= mano.cliente_plan_m %></td>
-                        <td><%= mano.obra_plan_m %></td>
-                        <td><%= mano.cliente_plan_t %></td>
-                        <td><%= mano.obra_plan_t %></td>
                         <td><%= mano.encargado %></td>
                         <td><%= mano.trato_cliente %></td>
+                        <td><%= mano.ot_plan_t %></td>
+                        <td><%= mano.cliente_plan_t %></td>
+                        <td><%= mano.obra_plan_t %></td>
+                        <td><%= mano.encargado2 %></td>
+                        <td><%= mano.trato_cliente2 %></td>
                     </tr>
                     <% }) %>
                     <% } %>
