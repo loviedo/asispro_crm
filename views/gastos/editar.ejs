@@ -118,82 +118,86 @@ function formatear_fecha(date) {
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                        <label for="fecha">FECHA</label>
-                        <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="monto">MONTO</label>
-                        <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="exentas">EXENTAS</label>
-                        <input type="text" class="form-control" name="exentas" id="exentas" value="<%= exentas %>" placeholder="Exentas">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="calcu_iva">PORCENTAJE IVA</label>
-                        <select class="form-control" name="calcu_iva" id="calcu_iva" onclick="cal_iva()">
-                            <option value="IVA_10">IVA 10%</option>
-                            <option value="IVA_5">IVA 5%</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="iva_10">MONTO IVA</label>
-                        <input type="text" class="form-control" name="iva_10" id="iva_10" value="<%= iva_10 %>" placeholder="IVA...">
-                        <input type="text" class="form-control" name="iva_5" id="iva_5" value="<%= iva_5 %>" placeholder="IVA..." >
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="gasto_real">GASTO REAL</label>
-                        <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="concepto">CONCEPTO</label>
-                        <input type="text" class="form-control" name="concepto" id="concepto" value="<%= concepto %>" placeholder="CONCEPTO">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="proveedor">PROVEEDOR</label>
-                        <input type="text" class="form-control" name="proveedor" id="proveedor" value="<%= proveedor %>" placeholder="PROVEEDOR">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="fact_nro">FACTURA NRO</label>
-                        <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="encargado">ENCARGADO</label>
-                        <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" placeholder="ENCARGADO GASTO">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="codigo">CODIGO</label>
-                        <!--<input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">-->
-                            <select class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">
-                                ver OTs</button>
-                        </label>
-                        <input type="text" class="form-control" id="nro_ot" name="nro_ot">
-                        <!--<input type="text" class="form-control" list="lista_ot" id="nro_ot" name="nro_ot">-->
-                        <!--<datalist id="lista_ot">
-                            <% /*if (data) { %>
-                                <% data.forEach(function(fila_ot){ %>
-                                    <option value="<%= fila_ot.ot_nro %>"><%= fila_ot.ot_nro %></option>
-                                <% }) %>
-                            <% } */%>
-                        </datalist> -->
-                    </div> 
-                    <div class="form-group col-md-6">
-                        <label for="imputado">IMPUTADO A</label>
-                        <input type="text" class="form-control" name="imputado" id="imputado" value="<%= imputado %>" placeholder="Imputado a...">
-                    </div>
+                    <label for="fecha">FECHA</label>
+                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="monto">MONTO</label>
+                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="exentas">EXENTAS</label>
+                    <input type="text" class="form-control" name="exentas" id="exentas" value="<%= exentas %>" placeholder="Exentas">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="calcu_iva">PORCENTAJE IVA</label>
+                    <select class="form-control" name="calcu_iva" id="calcu_iva" onclick="cal_iva()">
+                        <option value="IVA_10">IVA 10%</option>
+                        <option value="IVA_5">IVA 5%</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="iva_10">MONTO IVA</label>
+                    <input type="text" class="form-control" name="iva_10" id="iva_10" value="<%= iva_10 %>" placeholder="IVA...">
+                    <input type="text" class="form-control" name="iva_5" id="iva_5" value="<%= iva_5 %>" placeholder="IVA..." >
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="gasto_real">GASTO REAL</label>
+                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="concepto">CONCEPTO</label>
+                    <input type="text" class="form-control" name="concepto" id="concepto" value="<%= concepto %>" placeholder="CONCEPTO">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="proveedor">PROVEEDOR</label>
+                    <input type="text" class="form-control" name="proveedor" id="proveedor" value="<%= proveedor %>" placeholder="PROVEEDOR">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fact_nro">FACTURA NRO</label>
+                    <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="encargado">ENCARGADO</label>
+                    <input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" placeholder="ENCARGADO GASTO">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="codigo">CODIGO</label>
+                    <!--<input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">-->
+                        <select class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">
+                            ver OTs</button>
+                    </label>
+                    <input type="text" class="form-control" id="nro_ot" name="nro_ot">
+                    <!--<input type="text" class="form-control" list="lista_ot" id="nro_ot" name="nro_ot">-->
+                    <!--<datalist id="lista_ot">
+                        <% /*if (data) { %>
+                            <% data.forEach(function(fila_ot){ %>
+                                <option value="<%= fila_ot.ot_nro %>"><%= fila_ot.ot_nro %></option>
+                            <% }) %>
+                        <% } */%>
+                    </datalist> -->
+                </div> 
+                <div class="form-group col-md-6">
+                    <label for="imputado">IMPUTADO A</label>
+                    <input type="text" class="form-control" name="imputado" id="imputado" value="<%= imputado %>" placeholder="Imputado a...">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="origen_pago">ORIGEN PAGO</label>
+                    <input type="text" class="form-control" name="origen_pago" id="origen_pago" value="<%= origen_pago %>" placeholder="origen pago">
+                </div>
             </div>
             <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>
             <!-- <input type="hidden" name="_method" value="POST" />  no se por que esta aca-->

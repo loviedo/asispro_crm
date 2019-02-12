@@ -78,39 +78,43 @@ function generar_excel_gastos(rows){
 
     //dibujamos el excel
     //primero la cabecera
-    worksheet.cell(1,1).string('FECHA').style(style);
-    worksheet.cell(1,2).string('MONTO').style(style);
-    worksheet.cell(1,3).string('EXENTAS').style(style);
-    worksheet.cell(1,4).string('IVA 10%').style(style);
-    worksheet.cell(1,5).string('IVA 5%').style(style);
-    worksheet.cell(1,6).string('GASTO REAL').style(style);
-    worksheet.cell(1,7).string('CONCEPTO').style(style);
-    worksheet.cell(1,8).string('CONDICION FACTURA').style(style);
-    worksheet.cell(1,9).string('PROVEEDOR').style(style);
-    worksheet.cell(1,10).string('NRO FACTURA').style(style);
-    worksheet.cell(1,11).string('ENCARGADO').style(style);
-    worksheet.cell(1,12).string('CODIGO').style(style);
-    worksheet.cell(1,13).string('OT NRO').style(style);
-    worksheet.cell(1,14).string('IMPUTADO').style(style);
+    worksheet.cell(1,1).string('ITEM').style(style);
+    worksheet.cell(1,2).string('FECHA').style(style);
+    worksheet.cell(1,3).string('MONTO').style(style);
+    worksheet.cell(1,4).string('EXENTAS').style(style);
+    worksheet.cell(1,5).string('IVA 10%').style(style);
+    worksheet.cell(1,6).string('IVA 5%').style(style);
+    worksheet.cell(1,7).string('GASTO REAL').style(style);
+    worksheet.cell(1,8).string('CONCEPTO').style(style);
+    worksheet.cell(1,9).string('CONDICION FACTURA').style(style);
+    worksheet.cell(1,10).string('PROVEEDOR').style(style);
+    worksheet.cell(1,11).string('NRO FACTURA').style(style);
+    worksheet.cell(1,12).string('ENCARGADO').style(style);
+    worksheet.cell(1,13).string('CODIGO').style(style);
+    worksheet.cell(1,14).string('OT NRO').style(style);
+    worksheet.cell(1,15).string('IMPUTADO').style(style);
+    worksheet.cell(1,16).string('ORIGEN PAGO').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).string(String(formatear_fecha(row.fecha))).style(style);
-        worksheet.cell(i+1,2).number(Number(row.monto)).style(style);
-        worksheet.cell(i+1,3).number(Number(row.exentas)).style(style);
-        worksheet.cell(i+1,4).number(Number(row.iva_10)).style(style);
-        worksheet.cell(i+1,5).number(Number(row.iva_5)).style(style);
-        worksheet.cell(i+1,6).number(Number(row.gasto_real)).style(style);
-        worksheet.cell(i+1,7).string(String(row.concepto)).style(style);
-        worksheet.cell(i+1,8).string(String(row.fact_condicion)).style(style);
-        worksheet.cell(i+1,9).string(String(row.proveedor)).style(style);
-        worksheet.cell(i+1,10).string(String(row.fact_nro)).style(style);
-        worksheet.cell(i+1,11).string(String(row.encargado)).style(style);
-        worksheet.cell(i+1,12).number(Number(row.codigo)).style(style1);
-        worksheet.cell(i+1,13).number(Number(row.nro_ot)).style(style1);
-        worksheet.cell(i+1,14).string(String(row.imputado)).style(style);
+        worksheet.cell(i+1,1).string(String(i)).style(style);
+        worksheet.cell(i+1,2).string(String(formatear_fecha(row.fecha))).style(style);
+        worksheet.cell(i+1,3).number(Number(row.monto)).style(style);
+        worksheet.cell(i+1,4).number(Number(row.exentas)).style(style);
+        worksheet.cell(i+1,5).number(Number(row.iva_10)).style(style);
+        worksheet.cell(i+1,6).number(Number(row.iva_5)).style(style);
+        worksheet.cell(i+1,7).number(Number(row.gasto_real)).style(style);
+        worksheet.cell(i+1,8).string(String(row.concepto)).style(style);
+        worksheet.cell(i+1,9).string(String(row.fact_condicion)).style(style);
+        worksheet.cell(i+1,10).string(String(row.proveedor)).style(style);
+        worksheet.cell(i+1,11).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,12).string(String(row.encargado)).style(style);
+        worksheet.cell(i+1,13).number(Number(row.codigo)).style(style1);
+        worksheet.cell(i+1,14).number(Number(row.nro_ot)).style(style1);
+        worksheet.cell(i+1,15).string(String(row.imputado)).style(style);
+        worksheet.cell(i+1,16).string(String(row.origen_pago)).style(style);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -175,7 +179,7 @@ app.get('/add', function(req, res, next){
                     // render to views/user/add.ejs
                     res.render('gastos/add', {
                         title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'', usuario_insert: user, usuario: user, data: datos});
+                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'', origen_pago:'', usuario_insert: user, usuario: user, data: datos});
                 }
             })
         })
@@ -214,6 +218,7 @@ app.post('/add', function(req, res, next){
             var gasreal = Number(req.sanitize('gasto_real').escape().trim());
             var cod = Number(req.sanitize('codigo').escape().trim());
             var ot = Number(req.sanitize('nro_ot').escape().trim());
+            var origen_pago = req.sanitize('origen_pago').escape().trim();
 
             /*var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
             var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
@@ -233,6 +238,7 @@ app.post('/add', function(req, res, next){
                 encargado: req.sanitize('encargado').trim(),
                 codigo: cod,
                 nro_ot: ot,
+                origen_pago:origen_pago,
                 imputado: req.sanitize('imputado').trim(),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
@@ -262,6 +268,7 @@ app.post('/add', function(req, res, next){
                             codigo: gasto.codigo,
                             nro_ot: gasto.nro_ot,
                             imputado: gasto.imputado,
+                            origen_pago: gasto.origen_pago,
                             usuario: user,
                             data: datos
                         })
@@ -282,7 +289,7 @@ app.post('/add', function(req, res, next){
                                 // render to views/user/add.ejs
                                 res.render('gastos/add', {
                                     title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', 
-                                    fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'', usuario_insert: user, usuario: user, data: datos});
+                                    fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'',origen_pago:'', usuario_insert: user, usuario: user, data: datos});
                             }
                         })
                     }
@@ -317,6 +324,7 @@ app.post('/add', function(req, res, next){
                 codigo: req.body.codigo,
                 nro_ot: req.body.nro_ot,
                 imputado: req.body.imputado,
+                origen_pago: req.body.origen_pago,
                 usuario_insert: user
             })
         }
@@ -373,6 +381,7 @@ app.get('/editar/:id', function(req, res, next){
                                     codigo: rows[0].codigo,
                                     nro_ot: rows[0].nro_ot,
                                     imputado: rows[0].imputado,
+                                    origen_pago: rows[0].origen_pago,
                                     usuario: user, data: datos
                                 })
                             }
@@ -435,6 +444,7 @@ app.post('/editar/:id', function(req, res, next) {
                 codigo: cod,
                 nro_ot: ot,
                 imputado: req.sanitize('imputado').escape().trim(),
+                origen_pago = req.sanitize('origen_pago').escape().trim(),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
             }  
@@ -463,6 +473,7 @@ app.post('/editar/:id', function(req, res, next) {
                             codigo: req.body.codigo,
                             nro_ot: req.body.nro_ot,
                             imputado: req.body.imputado,
+                            origen_pago: req.body.origen_pago,
                             usuario_insert: user,
                             usuario: user
                         })
@@ -485,7 +496,7 @@ app.post('/editar/:id', function(req, res, next) {
                                     res.render('gastos/editar', { title: 'Editar GASTO', id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: req.body.exentas,
                                         iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,
                                         proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot,
-                                        imputado: req.body.imputado, usuario_insert: user, usuario: user, data: datos})
+                                        imputado: req.body.imputado, origen_pago: req.body.origen_pago, usuario_insert: user, usuario: user, data: datos})
                                 }
                             })
                         })
@@ -522,6 +533,7 @@ app.post('/editar/:id', function(req, res, next) {
                 codigo: req.body.codigo,
                 nro_ot: req.body.nro_ot,
                 imputado: req.body.imputado,
+                origen_pago: req.body.origen_pago,
                 usuario_insert: user
             })
         }
