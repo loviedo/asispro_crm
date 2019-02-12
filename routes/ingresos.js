@@ -136,11 +136,7 @@ app.get('/', function(req, res, next) {
                 }
             })
         })
-    }
-    else {
-        // render to views/index.ejs template file
-        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
-    }
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
 //RESPONSE PARA CARGA DE INGRESOS -- FORMULARIO 
@@ -164,231 +160,251 @@ app.get('/add', function(req, res, next){
 
 //NUEVO GASTO - POST DE INSERT
 app.post('/add', function(req, res, next){   
-    
-    /*req.assert('name', 'Nombre es requerido').notEmpty()           //Validar nombre
-    req.assert('age', 'Edad es requerida').notEmpty()             //Validar edad
-    req.assert('email', 'SE requiere un email valido').isEmail()  //Validar email
- */
-    var errors = req.validationErrors();
-    
-    if(!errors) {//Si no hay errores, entonces conitnuamos
-
-        /*var fact_nro = Number(req.sanitize('fact_nro').trim());
-        var recibo_nro = Number(req.sanitize('recibo_nro').trim());
-        var remision_nro = Number(req.sanitize('remision_nro').trim());*/
-
-        var ingreso = {
-            fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
-            cliente: req.sanitize('cliente').trim(),
-            obra: req.sanitize('obra').trim(),
-            fact_nro: req.sanitize('fact_nro').trim(),
-            fact_condicion: req.sanitize('fact_condicion').trim(),
-            monto: Number(req.sanitize('monto').trim()),
-            iva: Number(req.sanitize('iva').trim()),
-            retencion: Number(req.sanitize('retencion').trim()),
-            porcentaje: Number(req.sanitize('porcentaje').trim()),
-            total_facturado: Number(req.sanitize('total_facturado').trim()),
-            usuario_insert: user
-            //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
-        }   
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+        //controlamos quien se loga.
+	if(user.length >0){
+        /*req.assert('name', 'Nombre es requerido').notEmpty()           //Validar nombre
+        req.assert('age', 'Edad es requerida').notEmpty()             //Validar edad
+        req.assert('email', 'SE requiere un email valido').isEmail()  //Validar email*/
+        var errors = req.validationErrors();
         
-        //conectamos a la base de datos
-        req.getConnection(function(error, conn) {
-            conn.query('INSERT INTO ingresos SET ?', ingreso, function(err, result) {
-                //if(err) throw err
-                if (err) {
-                    req.flash('error', err)
-                    
-                    // render to views/factura/add.ejs
-                    res.render('ingresos/add', {
-                        title: 'Agregar Nuevo INGRESO',
-                        fecha: ingreso.fecha,
-                        cliente: ingreso.cliente,
-                        obra: ingreso.obra,
-                        fact_nro: ingreso.fact_nro,
-                        fact_condicion: ingreso.fact_condicion,
-                        monto: ingreso.monto,
-                        iva: ingreso.iva,
-                        retencion: ingreso.retencion,
-                        porcentaje: ingreso.porcentaje,
-                        total_facturado: ingreso.total_facturado,
-                        usuario: user
-                    })
-                } else {                
-                    req.flash('success', 'Datos agregados correctamente!')
-                    
-                    // render to views/ot/add.ejs
-                    //console.log(datos);//debug
-                    // render to views/user/add.ejs
-                    res.render('ingresos/add', {
-                        title: 'Cargar nuevo INGRESO', fecha: '',cliente: '', obra: '',fact_nro: '',fact_condicion: '',monto: '0',
-                        iva: '',retencion: '',porcentaje: '', total_facturado: '', usuario_insert: user, usuario: user});
-                }
+        if(!errors) {//Si no hay errores, entonces conitnuamos
+
+            /*var fact_nro = Number(req.sanitize('fact_nro').trim());
+            var recibo_nro = Number(req.sanitize('recibo_nro').trim());
+            var remision_nro = Number(req.sanitize('remision_nro').trim());*/
+
+            var ingreso = {
+                fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+                cliente: req.sanitize('cliente').trim(),
+                obra: req.sanitize('obra').trim(),
+                fact_nro: req.sanitize('fact_nro').trim(),
+                fact_condicion: req.sanitize('fact_condicion').trim(),
+                monto: Number(req.sanitize('monto').trim()),
+                iva: Number(req.sanitize('iva').trim()),
+                retencion: Number(req.sanitize('retencion').trim()),
+                porcentaje: Number(req.sanitize('porcentaje').trim()),
+                total_facturado: Number(req.sanitize('total_facturado').trim()),
+                usuario_insert: user
+                //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
+            }   
+            
+            //conectamos a la base de datos
+            req.getConnection(function(error, conn) {
+                conn.query('INSERT INTO ingresos SET ?', ingreso, function(err, result) {
+                    //if(err) throw err
+                    if (err) {
+                        req.flash('error', err)
+                        
+                        // render to views/factura/add.ejs
+                        res.render('ingresos/add', {
+                            title: 'Agregar Nuevo INGRESO',
+                            fecha: ingreso.fecha,
+                            cliente: ingreso.cliente,
+                            obra: ingreso.obra,
+                            fact_nro: ingreso.fact_nro,
+                            fact_condicion: ingreso.fact_condicion,
+                            monto: ingreso.monto,
+                            iva: ingreso.iva,
+                            retencion: ingreso.retencion,
+                            porcentaje: ingreso.porcentaje,
+                            total_facturado: ingreso.total_facturado,
+                            usuario: user
+                        })
+                    } else {                
+                        req.flash('success', 'Datos agregados correctamente!')
+                        
+                        // render to views/ot/add.ejs
+                        //console.log(datos);//debug
+                        // render to views/user/add.ejs
+                        res.render('ingresos/add', {
+                            title: 'Cargar nuevo INGRESO', fecha: '',cliente: '', obra: '',fact_nro: '',fact_condicion: '',monto: '0',
+                            iva: '',retencion: '',porcentaje: '', total_facturado: '', usuario_insert: user, usuario: user});
+                    }
+                })
             })
-        })
-    }
-    //tuvimos errores
-    else {//Mostrar errores
-        var error_msg = ''
-        errors.forEach(function(error) {
-            error_msg += error.msg + '<br>'
-        })                
-        req.flash('error', error_msg)        
-        
-        /**
-         * Using req.body.name 
-         * because req.param('name') is deprecated
-         */ 
-        res.render('ingresos/add', { 
-            title: 'Agregar Nuevo INGRESO',
-            fech: ingreso.fecha,
-            cliente: ingreso.cliente,
-            obra: ingreso.obra,
-            fact_nro: ingreso.fact_nro,
-            fact_condicion: ingreso.fact_condicion,
-            monto: ingreso.monto,
-            iva: ingreso.iva,
-            retencion: ingreso.retencion,
-            porcentaje: ingreso.porcentaje,
-            total_facturado: ingreso.total_facturado,
-            usuario: user
-        })
-    }
+        }
+        //tuvimos errores
+        else {//Mostrar errores
+            var error_msg = ''
+            errors.forEach(function(error) {
+                error_msg += error.msg + '<br>'
+            })                
+            req.flash('error', error_msg)        
+            
+            /**
+             * Using req.body.name 
+             * because req.param('name') is deprecated
+             */ 
+            res.render('ingresos/add', { 
+                title: 'Agregar Nuevo INGRESO',
+                fech: ingreso.fecha,
+                cliente: ingreso.cliente,
+                obra: ingreso.obra,
+                fact_nro: ingreso.fact_nro,
+                fact_condicion: ingreso.fact_condicion,
+                monto: ingreso.monto,
+                iva: ingreso.iva,
+                retencion: ingreso.retencion,
+                porcentaje: ingreso.porcentaje,
+                total_facturado: ingreso.total_facturado,
+                usuario: user
+            })
+        }
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
 //FORMULARIO DE EDICION DE DATOS
 app.get('/editar/:id', function(req, res, next){
-    req.getConnection(function(error, conn) {
-        conn.query('SELECT * FROM ingresos WHERE id = ' + req.params.id, function(err, rows, fields) {
-            if(err) throw err
-            
-            // if user not found
-            if (rows.length <= 0) {
-                req.flash('error', 'INGRESO con id = ' + req.params.id + ' no encontrado')
-                res.redirect('/ingresos')
-            }
-            else { // Si existe la factura
-                // render to views/factura/edit.ejs template file
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+        //controlamos quien se loga.
+	if(user.length >0){
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT * FROM ingresos WHERE id = ' + req.params.id, function(err, rows, fields) {
+                if(err) throw err
+                
+                // if user not found
+                if (rows.length <= 0) {
+                    req.flash('error', 'INGRESO con id = ' + req.params.id + ' no encontrado')
+                    res.redirect('/ingresos')
+                }
+                else { // Si existe la factura
+                    // render to views/factura/edit.ejs template file
 
-                var date1 = rows[0].fecha;
+                    var date1 = rows[0].fecha;
 
-                res.render('ingresos/editar', {
-                    title: 'Editar INGRESO', 
-                    //data: rows[0],
-                    id: rows[0].id,
-                    fecha: formatear_fecha_yyyymmdd(date1),
-                    cliente: rows[0].cliente,
-                    obra: rows[0].obra,
-                    fact_nro: rows[0].fact_nro,
-                    fact_condicion: rows[0].fact_condicion,
-                    monto: rows[0].monto,
-                    iva: rows[0].iva,
-                    retencion: rows[0].retencion,
-                    porcentaje: rows[0].porcentaje,
-                    total_facturado: rows[0].total_facturado,
-                    usuario: user
-                })
-            }            
+                    res.render('ingresos/editar', {
+                        title: 'Editar INGRESO', 
+                        //data: rows[0],
+                        id: rows[0].id,
+                        fecha: formatear_fecha_yyyymmdd(date1),
+                        cliente: rows[0].cliente,
+                        obra: rows[0].obra,
+                        fact_nro: rows[0].fact_nro,
+                        fact_condicion: rows[0].fact_condicion,
+                        monto: rows[0].monto,
+                        iva: rows[0].iva,
+                        retencion: rows[0].retencion,
+                        porcentaje: rows[0].porcentaje,
+                        total_facturado: rows[0].total_facturado,
+                        usuario: user
+                    })
+                }            
+            })
         })
-    })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
 app.post('/editar/:id', function(req, res, next) {
-    /*  -- VALIDACIONES ESPERAMOS
-    req.assert('name', 'Name is required').notEmpty()           //Validate name
-    req.assert('age', 'Age is required').notEmpty()             //Validate age
-    req.assert('email', 'A valid email is required').isEmail()  //Validate email
-    */
-    var errors = req.validationErrors()
-    
-    if( !errors ) {   //No errors were found.  Passed Validation!
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
 
-
-       var ingreso = {
-            fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
-            cliente: req.sanitize('cliente').trim(),
-            obra: req.sanitize('obra').trim(),
-            fact_nro: req.sanitize('fact_nro').trim(),
-            fact_condicion: req.sanitize('fact_condicion').trim(),
-            monto: Number(req.sanitize('monto').trim()),
-            iva: Number(req.sanitize('iva').trim()),
-            retencion: Number(req.sanitize('retencion').trim()),
-            porcentaje: Number(req.sanitize('porcentaje').trim()),
-            total_facturado: Number(req.sanitize('total_facturado').trim()),
-            usuario_insert: user
-            //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
-        } 
+    //controlamos quien se loga.
+	if(user.length >0){
+        /*  -- VALIDACIONES ESPERAMOS
+        req.assert('name', 'Name is required').notEmpty()           //Validate name
+        req.assert('age', 'Age is required').notEmpty()             //Validate age
+        req.assert('email', 'A valid email is required').isEmail()  //Validate email
+        */
+        var errors = req.validationErrors()
         
-        req.getConnection(function(error, conn) {
-            conn.query('UPDATE ingresos SET ? WHERE id = ' + req.params.id, ingreso, function(err, result) {
-                //if(err) throw err
-                if (err) {
-                    req.flash('error', err)
-                    
-                    // render to views/gastos/add.ejs
-                    res.render('ingresos/editar', {
-                        title: 'Agregar Nuevo INGRESO',
-                        fecha: ingreso.fecha,
-                        cliente: ingreso.cliente,
-                        obra: ingreso.obra,
-                        fact_nro: ingreso.fact_nro,
-                        fact_condicion: ingreso.fact_condicion,
-                        monto: ingreso.monto,
-                        iva: ingreso.iva,
-                        retencion: ingreso.retencion,
-                        porcentaje: ingreso.porcentaje,
-                        total_facturado: ingreso.total_facturado,
-                        usuario: user
-                    })
-                } else {                
-                    req.flash('success', 'Datos actualizados correctamente!')
-                    
-                    // render to views/ot/add.ejs
-                    res.render('ingresos/editar', {
-                        title: 'Editar INGRESO',
-                        id: req.params.id,
-                        fecha: req.body.fecha,
-                        cliente: req.body.cliente,
-                        obra: req.body.obra,
-                        fact_nro: req.body.fact_nro,
-                        fact_condicion: req.body.fact_condicion,
-                        monto: req.body.monto,
-                        iva: req.body.iva,
-                        retencion: req.body.retencion,
-                        porcentaje: req.body.porcentaje,
-                        total_facturado: req.body.total_facturado,
-                        usuario_insert: user,
-                        usuario: user               
-                    })
-                }
+        if( !errors ) {   //No errors were found.  Passed Validation!
+
+
+        var ingreso = {
+                fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+                cliente: req.sanitize('cliente').trim(),
+                obra: req.sanitize('obra').trim(),
+                fact_nro: req.sanitize('fact_nro').trim(),
+                fact_condicion: req.sanitize('fact_condicion').trim(),
+                monto: Number(req.sanitize('monto').trim()),
+                iva: Number(req.sanitize('iva').trim()),
+                retencion: Number(req.sanitize('retencion').trim()),
+                porcentaje: Number(req.sanitize('porcentaje').trim()),
+                total_facturado: Number(req.sanitize('total_facturado').trim()),
+                usuario_insert: user
+                //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
+            } 
+            
+            req.getConnection(function(error, conn) {
+                conn.query('UPDATE ingresos SET ? WHERE id = ' + req.params.id, ingreso, function(err, result) {
+                    //if(err) throw err
+                    if (err) {
+                        req.flash('error', err)
+                        
+                        // render to views/gastos/add.ejs
+                        res.render('ingresos/editar', {
+                            title: 'Agregar Nuevo INGRESO',
+                            fecha: ingreso.fecha,
+                            cliente: ingreso.cliente,
+                            obra: ingreso.obra,
+                            fact_nro: ingreso.fact_nro,
+                            fact_condicion: ingreso.fact_condicion,
+                            monto: ingreso.monto,
+                            iva: ingreso.iva,
+                            retencion: ingreso.retencion,
+                            porcentaje: ingreso.porcentaje,
+                            total_facturado: ingreso.total_facturado,
+                            usuario: user
+                        })
+                    } else {                
+                        req.flash('success', 'Datos actualizados correctamente!')
+                        
+                        // render to views/ot/add.ejs
+                        res.render('ingresos/editar', {
+                            title: 'Editar INGRESO',
+                            id: req.params.id,
+                            fecha: req.body.fecha,
+                            cliente: req.body.cliente,
+                            obra: req.body.obra,
+                            fact_nro: req.body.fact_nro,
+                            fact_condicion: req.body.fact_condicion,
+                            monto: req.body.monto,
+                            iva: req.body.iva,
+                            retencion: req.body.retencion,
+                            porcentaje: req.body.porcentaje,
+                            total_facturado: req.body.total_facturado,
+                            usuario_insert: user,
+                            usuario: user               
+                        })
+                    }
+                })
             })
-        })
-    }
-    else {   //Display errors to user
-        var error_msg = ''
-        errors.forEach(function(error) {
-            error_msg += error.msg + '<br>'
-        })
-        req.flash('error', error_msg)
-        
-        /*** Using req.body.name 
-         * because req.param('name') is deprecated
-         */ 
-        res.render('ingresos/editar', { 
-            title: 'Editar INGRESO',
-            fecha: req.body.fecha,
-            cliente: req.body.cliente,
-            obra: req.body.obra,
-            fact_nro: req.body.fact_nro,
-            fact_condicion: req.body.fact_condicion,
-            monto: req.body.monto,
-            iva: req.body.iva,
-            retencion: req.body.retencion,
-            porcentaje: req.body.porcentaje,
-            total_facturado: req.body.total_facturado,
-            usuario_insert: user
-        })
-    }
+        }
+        else {   //Display errors to user
+            var error_msg = ''
+            errors.forEach(function(error) {
+                error_msg += error.msg + '<br>'
+            })
+            req.flash('error', error_msg)
+            
+            /*** Using req.body.name 
+             * because req.param('name') is deprecated
+             */ 
+            res.render('ingresos/editar', { 
+                title: 'Editar INGRESO',
+                fecha: req.body.fecha,
+                cliente: req.body.cliente,
+                obra: req.body.obra,
+                fact_nro: req.body.fact_nro,
+                fact_condicion: req.body.fact_condicion,
+                monto: req.body.monto,
+                iva: req.body.iva,
+                retencion: req.body.retencion,
+                porcentaje: req.body.porcentaje,
+                total_facturado: req.body.total_facturado,
+                usuario_insert: user
+            })
+        }
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
 /* GENERAMOS Y ENVIAMOS EXCEL */
@@ -413,33 +429,38 @@ app.post('/descargar', function(req, res, next) {
                 console.log("ARCHIVO ENVIADO!");
             }
         });
-    }
-    else {
-        // render to views/index.ejs template file
-        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});
-    }
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 });
 
 // DELETE USER
 app.delete('/eliminar/(:id)', function(req, res, next) {
-    var ingreso = { id: req.params.id }
-    
-    req.getConnection(function(error, conn) {
-        conn.query('DELETE FROM ingresos WHERE id = ' + req.params.id, ingreso, function(err, result) {
-            //if(err) throw err
-            if (err) {
-                req.flash('error', err)
-                //redireccionar al listado de ingresos
-                res.redirect('/ingresos')
-            } else {
-                req.flash('success', 'INGRESO eliminado exitosamente! ID = ' + req.params.id)
-                //redireccionar al listado de ingresos
-                res.redirect('/ingresos')
+    //primero traemos los datos de la tabla
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
 
-                //insertar log de uso de sistema en caso de suceso de insercion
-            }
+    //controlamos quien se loga.
+    if(user.length >0){
+        var ingreso = { id: req.params.id }
+        
+        req.getConnection(function(error, conn) {
+            conn.query('DELETE FROM ingresos WHERE id = ' + req.params.id, ingreso, function(err, result) {
+                //if(err) throw err
+                if (err) {
+                    req.flash('error', err)
+                    //redireccionar al listado de ingresos
+                    res.redirect('/ingresos')
+                } else {
+                    req.flash('success', 'INGRESO eliminado exitosamente! ID = ' + req.params.id)
+                    //redireccionar al listado de ingresos
+                    res.redirect('/ingresos')
+
+                    //insertar log de uso de sistema en caso de suceso de insercion
+                }
+            })
         })
-    })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
 module.exports = app;

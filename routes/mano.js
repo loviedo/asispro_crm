@@ -191,7 +191,6 @@ app.get('/', function(req, res, next) {
     {   user =  req.session.user;
         userId = req.session.userId;
     }
-
     //controlamos quien se loga.
 	if(user.length >0){
         //vemos los datos en la base

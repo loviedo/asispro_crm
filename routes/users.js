@@ -18,6 +18,7 @@ exports.signup = function(req, res){
        res.render('signup');
     }
  };
+ 
 /** 
  * We assign app object to module.exports
  * 
