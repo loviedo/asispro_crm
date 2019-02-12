@@ -267,7 +267,7 @@ function asignar_ot(){
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#exampleModal">
+                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_gastos">
                             ver OTs</button>
                     </label>
                     <input type="text" class="form-control" id="nro_ot" name="nro_ot">
@@ -296,18 +296,18 @@ function asignar_ot(){
 
 
 <!-- MODAL de OTs -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_ot_gastos" tabindex="-1" role="dialog" aria-labelledby="modal_ot_gastosLabel" aria-hidden="true">
     <div class="modal-dialog" width="100%" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Listado de OTs</h5>
+            <h5 class="modal-title" id="modal_ot_gastosLabel">Listado de OTs</h5>
         </div>
         <div class="modal-body">
             <!-- ACA PONEMOS LA TABLA QUE DEBE SER COMO /LISTAR -->
 
 <div class="container-fluid" width="100%">
 
-        <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <table id="table_modal_ot_gastos" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
                 <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
                 border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                     <tr>
@@ -350,7 +350,7 @@ function asignar_ot(){
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="asignar_ot()">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
             <!--<button type="button" class="btn btn-primary">Save changes</button>-->
         </div>
         </div>

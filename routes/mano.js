@@ -808,6 +808,8 @@ app.get('/editar/:id', function(req, res, next){
                                         //dibujamos la tabla con los datos que consultamos
                                         var date1 = new Date(formatear_fecha_yyyymmdd(rows[0].fecha));//traemos la fecha de carga de la planificacion.
                                         var date2 = new Date(hoy());//de hoy
+                                        date1.setDate(date1.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
+                                        date2.setDate(date2.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
                                         //antes de pasar la info, tenemos que ver que usuario/rol y que fecha es para restringir
                                         
                                         var rol=0; //si el usuario/rol es restringido entonces mostramos la pagina restringida
