@@ -104,12 +104,12 @@ function generar_excel_emples(rows){
     var i = 1;
     rows.forEach(function(row) {
         worksheet.cell(i+1,1).string(String(row.codigo)).style(style);
-        worksheet.cell(i+1,2).string(String(formatear_fecha(row.fecha_ingreso))).style(style);
+        worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha_ingreso));
         worksheet.cell(i+1,3).string(String(row.nombres)).style(style);
         worksheet.cell(i+1,4).string(String(row.apellidos)).style(style);
         worksheet.cell(i+1,5).string(String(row.sexo)).style(style);
         worksheet.cell(i+1,6).string(String(row.ci)).style(style);
-        worksheet.cell(i+1,7).string(String(formatear_fecha(row.fecha_nac))).style(style);
+        worksheet.cell(i+1,7).date(formatear_fecha_yyyymmdd(row.fecha_nac));
         worksheet.cell(i+1,8).number(Number(row.edad)).style(style);
         worksheet.cell(i+1,9).string(String(row.nacionalidad)).style(style);
         worksheet.cell(i+1,10).string(String(row.mano_diestra)).style(style);

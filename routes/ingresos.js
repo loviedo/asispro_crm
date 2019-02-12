@@ -95,7 +95,7 @@ function generar_excel_ingresos(rows){
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).string(String(formatear_fecha(row.fecha))).style(style);
+        worksheet.cell(i+1,1).date(formatear_fecha_yyyymmdd(row.fecha));
         worksheet.cell(i+1,2).string(String(row.cliente)).style(style);
         worksheet.cell(i+1,3).string(String(row.obra)).style(style);
         //worksheet.cell(i+1,4).string(String(row.pago)).style(style);

@@ -96,11 +96,10 @@ function generar_excel_ot(rows){
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-
         worksheet.cell(i+1,1).string(String(row.ot_nro)).style(style);
-        worksheet.cell(i+1,2).string(String(formatear_fecha(row.fec_emision))).style(style);
-        worksheet.cell(i+1,3).string(String(formatear_fecha(row.fec_ini_ejecucion))).style(style);
-        worksheet.cell(i+1,4).string(String(formatear_fecha(row.fec_fin_ejecucion))).style(style);
+        worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fec_emision));//ver formato fecha
+        worksheet.cell(i+1,3).date(formatear_fecha_yyyymmdd(row.fec_ini_ejecucion));
+        worksheet.cell(i+1,4).date(formatear_fecha_yyyymmdd(row.fec_fin_ejecucion));
         //worksheet.cell(i+1,2).date(Date(formatear_fecha(row.fec_emision))).style({numberFormat: 'dd/mm/yyyy'});
         //worksheet.cell(i+1,3).date(Date(formatear_fecha(row.fec_ini_ejecucion))).style({numberFormat: 'dd/mm/yyyy'});
         //worksheet.cell(i+1,4).date(Date(formatear_fecha(row.fec_fin_ejecucion))).style({numberFormat: 'dd/mm/yyyy'});

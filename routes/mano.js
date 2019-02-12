@@ -125,7 +125,7 @@ function generar_excel_plan_laboral(rows){
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).string(String(formatear_fecha(row.fecha))).style(style);
+        worksheet.cell(i+1,1).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
         worksheet.cell(i+1,2).string(String(row.empleado)).style(style);
         worksheet.cell(i+1,3).string(String(row.cliente_plan_m)).style(style);
         worksheet.cell(i+1,4).string(String(row.obra_plan_m)).style(style);

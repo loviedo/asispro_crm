@@ -57,7 +57,7 @@ function formatear_fecha(date) {
 }
 
 function generar_excel_gastos(rows){
-    var workbook = new excel.Workbook();
+    var workbook = new excel.Workbook({dateFormat: 'dd/mm/yyyy'});
     //Add Worksheets to the workbook
     var worksheet = workbook.addWorksheet('GASTOS');
     // Create a reusable style
@@ -75,12 +75,11 @@ function generar_excel_gastos(rows){
         },
         numberFormat: '#,##0; (#,##0); -'
         });
-
     //dibujamos el excel
     //primero la cabecera
     worksheet.cell(1,1).string('ITEM').style(style);
     worksheet.cell(1,2).string('FECHA').style(style);
-    worksheet.cell(1,3).string('MONTO').style(style);
+    worksheet.cell(1,3).string('MONTO').style({style});
     worksheet.cell(1,4).string('EXENTAS').style(style);
     worksheet.cell(1,5).string('IVA 10%').style(style);
     worksheet.cell(1,6).string('IVA 5%').style(style);
@@ -99,8 +98,8 @@ function generar_excel_gastos(rows){
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).string(String(i)).style(style);
-        worksheet.cell(i+1,2).string(String(formatear_fecha(row.fecha))).style(style);
+        worksheet.cell(i+1,1).string(String(i)).style(style);//numeracion
+        worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
         worksheet.cell(i+1,3).number(Number(row.monto)).style(style);
         worksheet.cell(i+1,4).number(Number(row.exentas)).style(style);
         worksheet.cell(i+1,5).number(Number(row.iva_10)).style(style);
@@ -134,13 +133,9 @@ app.get('/', function(req, res, next) {
         //si el usuario es cristina entonces solo ve lo de ella, si no, se ve todo
         var sql_con ="";
         if(user == "cibanez")
-        {
-            sql_con = "SELECT * FROM gastos WHERE usuario_insert = '"+user+"' ORDER BY fecha ASC";
-        }
+        {   sql_con = "SELECT * FROM gastos WHERE usuario_insert = '"+user+"' ORDER BY fecha ASC";}
         else
-        {
-            sql_con = "SELECT * FROM gastos ORDER BY fecha ASC";
-        }
+        {   sql_con = "SELECT * FROM gastos ORDER BY fecha ASC";}
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {
                 //if(err) throw err
@@ -444,7 +439,7 @@ app.post('/editar/:id', function(req, res, next) {
                 codigo: cod,
                 nro_ot: ot,
                 imputado: req.sanitize('imputado').escape().trim(),
-                origen_pago = req.sanitize('origen_pago').escape().trim(),
+                origen_pago: req.sanitize('origen_pago').escape().trim(),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
             }  
