@@ -6,6 +6,7 @@ var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var fechita = '';//global para traer la fecha
 var userId = '';//global para userid
+var rol=0; //si el usuario/rol es restringido entonces mostramos la pagina restringida
 
 
 
@@ -300,7 +301,7 @@ app.get('/add_mano', function(req, res, next){
                                     title: 'Cargar nuevo Plan Laboral', fecha: fec, codigo: '', empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
                                     obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
                                     monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
-                                    cliente_real_n: '', obra_real_n:'', ot_real_n:'', encargado2: '', trato_cliente2: '', hora_normal:'',hora_50:'',hora_100:'',hora_neg:'',pasaje:'',
+                                    cliente_real_n: '', obra_real_n:'', ot_real_n:'', encargado2: '', trato_cliente2: '', hora_normal:'0',hora_50:'0',hora_100:'0',hora_neg:'0',pasaje:'0',
                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh});
                                 }              
                             })
@@ -812,7 +813,7 @@ app.get('/editar/:id', function(req, res, next){
                                         date2.setDate(date2.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
                                         //antes de pasar la info, tenemos que ver que usuario/rol y que fecha es para restringir
                                         
-                                        var rol=0; //si el usuario/rol es restringido entonces mostramos la pagina restringida
+
                                         if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
                                         {   //vemos cuantos dias pasaron para ver la restriccion
                                             var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
@@ -1045,6 +1046,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                     ot_real_t: req.body.ot_real_t,
                                                     ot_real_n: req.body.ot_real_n,
                                                     pasaje: req.body.pasaje,
+                                                    restri: rol,
                                                     //jornal: req.body.jornal,
                                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh
                                                 })
@@ -1058,16 +1060,12 @@ app.post('/editar/:id', function(req, res, next) {
                 })
             })
         }
-        else {   //Display errors to user
+    else {//Display errors to user
             var error_msg = ''
-            errors.forEach(function(error) {
-                error_msg += error.msg + '<br>'
-            })
+            errors.forEach(function(error) { error_msg += error.msg + '<br>' })
             req.flash('error', error_msg)
             
-            /*** Using req.body.name 
-             * because req.param('name') is deprecated
-             */ 
+            /*** Using req.body.name * because req.param('name') is deprecated  */ 
             req.getConnection(function(error, conn) {
                 conn.query('UPDATE mano_obra SET ? WHERE id = ' + req.params.id, mano_plan, function(err, result) {
                     //if(err) throw err
@@ -1113,6 +1111,7 @@ app.post('/editar/:id', function(req, res, next) {
                             hora_100: mano_plan.hora_100,
                             hora_neg: mano_plan.hora_neg,
                             pasaje: mano_plan.pasaje,
+                            restri: rol,
                             //jornal: mano_plan.jornal,
                             usuario: user
                         })
@@ -1181,6 +1180,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                     ot_real_t: req.body.ot_real_t,
                                                     ot_real_n: req.body.ot_real_n,
                                                     pasaje: req.body.pasaje,
+                                                    restri: rol,
                                                     //jornal: req.body.jornal,
                                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh
                                                 })

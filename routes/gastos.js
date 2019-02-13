@@ -211,6 +211,9 @@ app.post('/add', function(req, res, next){
                 var iva5 = Number(req.sanitize('iva_5').escape().trim());
             }
             var gasreal = Number(req.sanitize('gasto_real').escape().trim());
+            if(gasreal == 0)
+            {   gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor
+
             var cod = Number(req.sanitize('codigo').escape().trim());
             var ot = Number(req.sanitize('nro_ot').escape().trim());
             var origen_pago = req.sanitize('origen_pago').escape().trim();
