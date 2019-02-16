@@ -202,6 +202,7 @@ app.post('/add', function(req, res, next){
             var mon = Number(req.sanitize('monto').escape().trim()); 
             var exe = Number(req.sanitize('exentas').escape().trim());
             var calcu_iva = req.sanitize('calcu_iva').escape().trim();
+            var fact_cond= req.sanitize('fact_condicion').trim();
             if(calcu_iva == "IVA_10"){
                 var iva10 = Number(req.sanitize('iva_10').escape().trim());
                 var iva5 = 0;
@@ -211,7 +212,7 @@ app.post('/add', function(req, res, next){
                 var iva5 = Number(req.sanitize('iva_5').escape().trim());
             }
             var gasreal = Number(req.sanitize('gasto_real').escape().trim());
-            if(gasreal == 0)
+            if(gasreal == 0 && fact_cond !== "CREDITO")
             {   gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor
 
             var cod = Number(req.sanitize('codigo').escape().trim());
