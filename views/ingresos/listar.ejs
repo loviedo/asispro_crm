@@ -84,6 +84,7 @@ color: #ffffff;
                 <tr>
                     <th>FECHA</th>
                     <th>CLIENTE</th>
+                    <th>NRO OT</th>
                     <th>OBRA</th>
                     <!--<th>PAGO</th>-->
                     <th>FACTURA NRO</th>
@@ -104,6 +105,7 @@ color: #ffffff;
                 <td><%= formatear_fecha(ingreso.fecha) %></td>
                 <td><%= ingreso.cliente %></td>
                 <td><%= ingreso.obra %></td>
+                <td><%= ingreso.nro_ot %></td>
                 <!--<td><%= ingreso.pago %></td>-->
                 <td><%= ingreso.fact_nro %></td>
                 <td><%= ingreso.fact_condicion %></td>

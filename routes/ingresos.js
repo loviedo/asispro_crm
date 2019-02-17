@@ -81,14 +81,15 @@ function generar_excel_ingresos(rows){
     worksheet.cell(1,1).string('FECHA').style(style);
     worksheet.cell(1,2).string('CLIENTE').style(style);
     worksheet.cell(1,3).string('OBRA').style(style);
+    worksheet.cell(1,4).string('NRO OT').style(style);
     //worksheet.cell(1,4).string('PAGO').style(style);
-    worksheet.cell(1,4).string('FACTURA NRO').style(style);
-    worksheet.cell(1,5).string('FACTURA CONDICION').style(style);
-    worksheet.cell(1,6).string('MONTO').style(style);
+    worksheet.cell(1,5).string('FACTURA NRO').style(style);
+    worksheet.cell(1,6).string('FACTURA CONDICION').style(style);
+    worksheet.cell(1,7).string('MONTO').style(style);
     //worksheet.cell(1,8).string('MONTO SIN IVA').style(style);
-    worksheet.cell(1,7).string('IVA').style(style);
-    worksheet.cell(1,8).string('RETENCION').style(style);
-    worksheet.cell(1,9).string('PORCENTAJE').style(style);
+    worksheet.cell(1,8).string('IVA').style(style);
+    worksheet.cell(1,9).string('RETENCION').style(style);
+    worksheet.cell(1,10).string('PORCENTAJE').style(style);
     worksheet.cell(1,11).string('TOTAL FACTURADO').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
@@ -98,15 +99,16 @@ function generar_excel_ingresos(rows){
         worksheet.cell(i+1,1).date(formatear_fecha_yyyymmdd(row.fecha));
         worksheet.cell(i+1,2).string(String(row.cliente)).style(style);
         worksheet.cell(i+1,3).string(String(row.obra)).style(style);
+        worksheet.cell(i+1,4).number(Number(row.nro_ot)).style(style);
         //worksheet.cell(i+1,4).string(String(row.pago)).style(style);
-        worksheet.cell(i+1,4).string(String(row.fact_nro)).style(style);
-        worksheet.cell(i+1,5).string(String(row.fact_condicion)).style(style);
-        worksheet.cell(i+1,6).number(Number(row.monto)).style(style);
+        worksheet.cell(i+1,5).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,6).string(String(row.fact_condicion)).style(style);
+        worksheet.cell(i+1,7).number(Number(row.monto)).style(style);
         //worksheet.cell(i+1,8).number(Number(row.monto_s_iva)).style(style);
-        worksheet.cell(i+1,7).number(Number(row.iva)).style(style);
-        worksheet.cell(i+1,8).number(Number(row.retencion)).style(style);
-        worksheet.cell(i+1,9).number(Number(row.porcentaje)).style(style);
-        worksheet.cell(i+1,10).number(Number(row.total_facturado)).style(style1);
+        worksheet.cell(i+1,8).number(Number(row.iva)).style(style);
+        worksheet.cell(i+1,9).number(Number(row.retencion)).style(style);
+        worksheet.cell(i+1,10).number(Number(row.porcentaje)).style(style);
+        worksheet.cell(i+1,11).number(Number(row.total_facturado)).style(style1);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -148,9 +150,23 @@ app.get('/add', function(req, res, next){
     }
     //controlamos quien se loga.
 	if(user.length >0){
-        res.render('ingresos/add', {
-            title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',fact_nro: '',fact_condicion: 'CONTADO',monto: '0', 
-            iva: '',retencion: '',porcentaje: '', total_facturado: '0', usuario_insert: user, usuario: user});
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                if (err) {
+                    console.log(err);
+                }
+                else{
+                    datos = [];
+                    rows.forEach(function(row) {    
+                        datos.push(row);
+                    });
+                    console.log(datos);//debug
+                    res.render('ingresos/add', {
+                        title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',fact_nro: '',fact_condicion: 'CONTADO',monto: '0', calcu_iva:'',
+                        iva: '',retencion: '',porcentaje: '', total_facturado: '0', nro_ot: '0',data: datos, usuario_insert: user, usuario: user});
+                }
+            })
+        })
     }
     else {
         // render to views/index.ejs template file
@@ -184,10 +200,12 @@ app.post('/add', function(req, res, next){
                 fact_nro: req.sanitize('fact_nro').trim(),
                 fact_condicion: req.sanitize('fact_condicion').trim(),
                 monto: Number(req.sanitize('monto').trim()),
+                calcu_iva: req.sanitize('calcu_iva').trim(),
                 iva: Number(req.sanitize('iva').trim()),
                 retencion: Number(req.sanitize('retencion').trim()),
                 porcentaje: Number(req.sanitize('porcentaje').trim()),
                 total_facturado: Number(req.sanitize('total_facturado').trim()),
+                nro_ot: Number(req.sanitize('nro_ot').trim()),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
             }   
@@ -208,21 +226,34 @@ app.post('/add', function(req, res, next){
                             fact_nro: ingreso.fact_nro,
                             fact_condicion: ingreso.fact_condicion,
                             monto: ingreso.monto,
+                            calcu_iva: ingreso.calcu_iva,
                             iva: ingreso.iva,
                             retencion: ingreso.retencion,
                             porcentaje: ingreso.porcentaje,
                             total_facturado: ingreso.total_facturado,
+                            nro_ot: ingreso.nro_ot,
                             usuario: user
                         })
                     } else {                
                         req.flash('success', 'Datos agregados correctamente!')
                         
-                        // render to views/ot/add.ejs
-                        //console.log(datos);//debug
-                        // render to views/user/add.ejs
-                        res.render('ingresos/add', {
-                            title: 'Cargar nuevo INGRESO', fecha: '',cliente: '', obra: '',fact_nro: '',fact_condicion: '',monto: '0',
-                            iva: '',retencion: '',porcentaje: '', total_facturado: '', usuario_insert: user, usuario: user});
+                        req.getConnection(function(error, conn) {
+                            conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else{
+                                    datos = [];
+                                    rows.forEach(function(row) {    
+                                        datos.push(row);
+                                    });
+                                    console.log(datos);//debug
+                                    res.render('ingresos/add', {
+                                        title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',fact_nro: '',fact_condicion: 'CONTADO',monto: '0', calcu_iva:'',
+                                        iva: '',retencion: '',porcentaje: '', total_facturado: '0', nro_ot: '0',data: datos, usuario_insert: user, usuario: user});
+                                }
+                            })
+                        })
                     }
                 })
             })
@@ -247,10 +278,12 @@ app.post('/add', function(req, res, next){
                 fact_nro: ingreso.fact_nro,
                 fact_condicion: ingreso.fact_condicion,
                 monto: ingreso.monto,
+                calcu_iva: ingreso.calcu_iva,
                 iva: ingreso.iva,
                 retencion: ingreso.retencion,
                 porcentaje: ingreso.porcentaje,
                 total_facturado: ingreso.total_facturado,
+                nro_ot: ingreso.nro_ot,
                 usuario: user
             })
         }
@@ -274,26 +307,40 @@ app.get('/editar/:id', function(req, res, next){
                     req.flash('error', 'INGRESO con id = ' + req.params.id + ' no encontrado')
                     res.redirect('/ingresos')
                 }
-                else { // Si existe la factura
-                    // render to views/factura/edit.ejs template file
-
+                else { // Si existe el ingreso
                     var date1 = rows[0].fecha;
-
-                    res.render('ingresos/editar', {
-                        title: 'Editar INGRESO', 
-                        //data: rows[0],
-                        id: rows[0].id,
-                        fecha: formatear_fecha_yyyymmdd(date1),
-                        cliente: rows[0].cliente,
-                        obra: rows[0].obra,
-                        fact_nro: rows[0].fact_nro,
-                        fact_condicion: rows[0].fact_condicion,
-                        monto: rows[0].monto,
-                        iva: rows[0].iva,
-                        retencion: rows[0].retencion,
-                        porcentaje: rows[0].porcentaje,
-                        total_facturado: rows[0].total_facturado,
-                        usuario: user
+                    req.getConnection(function(error, conn) {
+                        conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows1) {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else{
+                                datos = [];
+                                rows1.forEach(function(row) {    
+                                    datos.push(row);
+                                });
+                                console.log(datos);//debug
+                                res.render('ingresos/editar', {
+                                    title: 'Editar INGRESO', 
+                                    //data: rows[0],
+                                    id: rows[0].id,
+                                    fecha: formatear_fecha_yyyymmdd(date1),
+                                    cliente: rows[0].cliente,
+                                    obra: rows[0].obra,
+                                    fact_nro: rows[0].fact_nro,
+                                    fact_condicion: rows[0].fact_condicion,
+                                    monto: rows[0].monto,
+                                    calcu_iva: rows[0].calcu_iva,
+                                    iva: rows[0].iva,
+                                    retencion: rows[0].retencion,
+                                    porcentaje: rows[0].porcentaje,
+                                    total_facturado: rows[0].total_facturado,
+                                    nro_ot: rows[0].nro_ot,
+                                    data: datos,
+                                    usuario: user
+                                })
+                            }
+                        })
                     })
                 }            
             })
@@ -326,10 +373,12 @@ app.post('/editar/:id', function(req, res, next) {
                 fact_nro: req.sanitize('fact_nro').trim(),
                 fact_condicion: req.sanitize('fact_condicion').trim(),
                 monto: Number(req.sanitize('monto').trim()),
+                calcu_iva: req.sanitize('calcu_iva').trim(),
                 iva: Number(req.sanitize('iva').trim()),
                 retencion: Number(req.sanitize('retencion').trim()),
                 porcentaje: Number(req.sanitize('porcentaje').trim()),
                 total_facturado: Number(req.sanitize('total_facturado').trim()),
+                nro_ot: Number(req.sanitize('nro_ot').trim()),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
             } 
@@ -349,10 +398,12 @@ app.post('/editar/:id', function(req, res, next) {
                             fact_nro: ingreso.fact_nro,
                             fact_condicion: ingreso.fact_condicion,
                             monto: ingreso.monto,
+                            calcu_iva: ingreso.calcu_iva,
                             iva: ingreso.iva,
                             retencion: ingreso.retencion,
                             porcentaje: ingreso.porcentaje,
                             total_facturado: ingreso.total_facturado,
+                            nro_ot: ingreso.nro_ot,
                             usuario: user
                         })
                     } else {                
@@ -368,11 +419,13 @@ app.post('/editar/:id', function(req, res, next) {
                             fact_nro: req.body.fact_nro,
                             fact_condicion: req.body.fact_condicion,
                             monto: req.body.monto,
+                            calcu_iva: req.body.calcu_iva,
                             iva: req.body.iva,
                             retencion: req.body.retencion,
                             porcentaje: req.body.porcentaje,
                             total_facturado: req.body.total_facturado,
                             usuario_insert: user,
+                            nro_ot: nro_ot,
                             usuario: user               
                         })
                     }
@@ -397,10 +450,12 @@ app.post('/editar/:id', function(req, res, next) {
                 fact_nro: req.body.fact_nro,
                 fact_condicion: req.body.fact_condicion,
                 monto: req.body.monto,
+                calcu_iva: req.body.calcu_iva,
                 iva: req.body.iva,
                 retencion: req.body.retencion,
                 porcentaje: req.body.porcentaje,
                 total_facturado: req.body.total_facturado,
+                nro_ot: req.body.nro_ot,
                 usuario_insert: user
             })
         }

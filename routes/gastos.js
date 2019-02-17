@@ -174,7 +174,7 @@ app.get('/add', function(req, res, next){
                     // render to views/user/add.ejs
                     res.render('gastos/add', {
                         title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'', origen_pago:'', usuario_insert: user, usuario: user, data: datos});
+                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'', usuario_insert: user, usuario: user, data: datos});
                 }
             })
         })

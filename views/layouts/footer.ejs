@@ -21,8 +21,7 @@
                         //{"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"}}
                     );
 
-                    $('#tablex').DataTable(
-                        {
+                    $('#tablex').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -51,8 +50,7 @@
                         }}
                     );
 
-                    var RRHH_DATOS = $('#table_rrhh_mano').DataTable(
-                                            {
+                    var RRHH_DATOS = $('#table_rrhh_mano').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -81,8 +79,7 @@
                         }}
                     );
 
-                    var OT_DATOS_1 = $('#table_ot_plan_m_mano').DataTable(//
-                        {
+                    var OT_DATOS_1 = $('#table_ot_plan_m_mano').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -110,8 +107,7 @@
                             }
                         }}
                     );
-                    var OT_DATOS_2 = $('#table_ot_plan_t_mano').DataTable(//
-                        {
+                    var OT_DATOS_2 = $('#table_ot_plan_t_mano').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -139,8 +135,7 @@
                             }
                         }}
                     );
-                    var OT_DATOS_3 = $('#table_ot_real_m_mano').DataTable(//
-                        {
+                    var OT_DATOS_3 = $('#table_ot_real_m_mano').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -168,8 +163,7 @@
                             }
                         }}
                     );
-                    var OT_DATOS_4 = $('#table_ot_real_t_mano').DataTable(//
-                        {
+                    var OT_DATOS_4 = $('#table_ot_real_t_mano').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -197,8 +191,7 @@
                             }
                         }}
                     );
-                    var OT_DATOS_5 = $('#table_ot_real_n_mano').DataTable(//
-                        {
+                    var OT_DATOS_5 = $('#table_ot_real_n_mano').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -228,8 +221,37 @@
                     );
 
                     //tabla asignacion OT en gastos (add y editar)
-                    var OT_DATOS_GASTO = $('#table_modal_ot_gastos').DataTable(//
-                        {
+                    var OT_DATOS_GASTO = $('#table_modal_ot_gastos').DataTable({
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+
+                    //tabla asignacion OT en INGRESOS (add y editar)
+                    var OT_DATOS_INGRESOS = $('#table_modal_ot_ingresos').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -338,6 +360,15 @@
                         //$(this).toggleClass('selected');
                         var pos = OT_DATOS_GASTO.row(this).index();
                         var row = OT_DATOS_GASTO.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //asignamos el valor
+                        $('#nro_ot').val(row[0]);
+                    } );
+
+                    $('#table_modal_ot_ingresos tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = OT_DATOS_INGRESOS.row(this).index();
+                        var row = OT_DATOS_INGRESOS.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //asignamos el valor
                         $('#nro_ot').val(row[0]);
