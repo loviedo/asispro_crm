@@ -186,7 +186,7 @@ function hoy()
     return today;
 }
 
-// MOSTRAR LISTADO DE Trabajos / mano de obra programada
+// MOSTRAR LISTADO DE Trabajos / mano de obra plafinicada
 app.get('/', function(req, res, next) {
     if(req.session.user)
     {   user =  req.session.user;
@@ -204,6 +204,30 @@ app.get('/', function(req, res, next) {
                 } else {
                     generar_excel_plan_laboral(rows);//generamos excel PLAN LABORAL / MANO OBRA
                     res.render('mano/listar', {title: 'Listado de Trabajos', usuario: user, data: rows})
+                }
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+// MOSTRAR LISTADO DE TRABAJOS / mano de obra REAL
+app.get('/real', function(req, res, next) {
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows) {
+                //if(err) throw err
+                if (err) {
+                    req.flash('error', err)
+                    res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
+                } else {
+                    generar_excel_plan_laboral(rows);//generamos excel PLAN LABORAL / MANO OBRA
+                    res.render('mano/listar_real', {title: 'Listado de Trabajos', usuario: user, data: rows})
                 }
             })
         })
