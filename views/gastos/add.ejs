@@ -288,6 +288,15 @@ function asignar_ot(){
                     <label for="origen_pago">ORIGEN PAGO</label>
                     <input type="text" class="form-control" name="origen_pago" id="origen_pago" value="<%= origen_pago %>" placeholder="origen pago">
                 </div>
+            <% if (usuario == 'ksanabria' ||  usuario == 'josorio' ||  usuario == 'admin' ) { %>   
+                <div class="form-group col-md-6">
+                    <label for="tipo">CODIGO</label>
+                        <select class="form-control" name="tipo" id="tipo" value="<%= tipo %>" placeholder="tipo gasto">
+                        <option value="CONF">CONFIDENCIAL</option>
+                        <option value="NO_CONF">NO CONFIDENCIAL</option>
+                    </select>
+                </div>
+            <% } %>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
         </form>

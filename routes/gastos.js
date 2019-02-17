@@ -93,6 +93,8 @@ function generar_excel_gastos(rows){
     worksheet.cell(1,14).string('OT NRO').style(style);
     worksheet.cell(1,15).string('IMPUTADO').style(style);
     worksheet.cell(1,16).string('ORIGEN PAGO').style(style);
+    if(user == "admin" || user == "ksanabria" || user == "josorio")
+    {    worksheet.cell(1,17).string('TIPO').style(style);}
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
@@ -114,6 +116,8 @@ function generar_excel_gastos(rows){
         worksheet.cell(i+1,14).number(Number(row.nro_ot)).style(style1);
         worksheet.cell(i+1,15).string(String(row.imputado)).style(style);
         worksheet.cell(i+1,16).string(String(row.origen_pago)).style(style);
+        if(user == "admin" || user == "ksanabria" || user == "josorio")
+        {    worksheet.cell(i+1,17).string(String(row.tipo)).style(style);}
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -132,8 +136,8 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //si el usuario es cristina entonces solo ve lo de ella, si no, se ve todo
         var sql_con ="";
-        if(user == "cibanez")
-        {   sql_con = "SELECT * FROM gastos WHERE usuario_insert = '"+user+"' ORDER BY fecha ASC";}
+        if(user == "cibanez" || user == "prueba")
+        {   sql_con = "SELECT * FROM gastos WHERE usuario_insert = '"+ user +"' ORDER BY fecha ASC";}
         else
         {   sql_con = "SELECT * FROM gastos ORDER BY fecha ASC";}
         req.getConnection(function(error, conn) {
@@ -174,7 +178,7 @@ app.get('/add', function(req, res, next){
                     // render to views/user/add.ejs
                     res.render('gastos/add', {
                         title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'', usuario_insert: user, usuario: user, data: datos});
+                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', usuario_insert: user, usuario: user, data: datos});
                 }
             })
         })
@@ -215,6 +219,10 @@ app.post('/add', function(req, res, next){
             if(gasreal == 0 && fact_cond !== "CREDITO")
             {   gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor
 
+            var tipov = '';
+            if(user == "admin" || user == "ksanabria" || user == "josorio")
+            {   tipov = req.sanitize('tipo').escape().trim();}
+
             var cod = Number(req.sanitize('codigo').escape().trim());
             var ot = Number(req.sanitize('nro_ot').escape().trim());
             var origen_pago = req.sanitize('origen_pago').escape().trim();
@@ -239,6 +247,7 @@ app.post('/add', function(req, res, next){
                 nro_ot: ot,
                 origen_pago:origen_pago,
                 imputado: req.sanitize('imputado').trim(),
+                tipo: tipov,
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
             }   
@@ -268,6 +277,7 @@ app.post('/add', function(req, res, next){
                             nro_ot: gasto.nro_ot,
                             imputado: gasto.imputado,
                             origen_pago: gasto.origen_pago,
+                            tipo: gasto.tipo,//se carga si es admin/josorio/ksanabria, sino va vacio a la tabla
                             usuario: user,
                             data: datos
                         })
@@ -287,7 +297,7 @@ app.post('/add', function(req, res, next){
                                 console.log(datos);//debug
                                 // render to views/user/add.ejs
                                 res.render('gastos/add', {
-                                    title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', 
+                                    title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', tipo:'',
                                     fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'',origen_pago:'', usuario_insert: user, usuario: user, data: datos});
                             }
                         })
@@ -324,6 +334,7 @@ app.post('/add', function(req, res, next){
                 nro_ot: req.body.nro_ot,
                 imputado: req.body.imputado,
                 origen_pago: req.body.origen_pago,
+                tipo: req.body.tipo,
                 usuario_insert: user
             })
         }
@@ -381,6 +392,7 @@ app.get('/editar/:id', function(req, res, next){
                                     nro_ot: rows[0].nro_ot,
                                     imputado: rows[0].imputado,
                                     origen_pago: rows[0].origen_pago,
+                                    tipo: rows[0].tipo,
                                     usuario: user, data: datos
                                 })
                             }
@@ -428,6 +440,10 @@ app.post('/editar/:id', function(req, res, next) {
             var cod = Number(req.sanitize('codigo').escape().trim());
             var ot = Number(req.sanitize('nro_ot').escape().trim());
 
+            var tipov = '';
+            if(user == "admin" || user == "ksanabria" || user == "josorio")
+            {   tipov = req.sanitize('tipo').escape().trim();}
+
             var gasto = {
                 fecha: formatear_fecha_yyyymmdd(date1),
                 monto: mon,
@@ -444,6 +460,7 @@ app.post('/editar/:id', function(req, res, next) {
                 nro_ot: ot,
                 imputado: req.sanitize('imputado').escape().trim(),
                 origen_pago: req.sanitize('origen_pago').escape().trim(),
+                tipo: tipov,
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
             }  
@@ -473,6 +490,7 @@ app.post('/editar/:id', function(req, res, next) {
                             nro_ot: req.body.nro_ot,
                             imputado: req.body.imputado,
                             origen_pago: req.body.origen_pago,
+                            tipo: req.body.tipo,
                             usuario_insert: user,
                             usuario: user
                         })
@@ -495,7 +513,7 @@ app.post('/editar/:id', function(req, res, next) {
                                     res.render('gastos/editar', { title: 'Editar GASTO', id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: req.body.exentas,
                                         iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,
                                         proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot,
-                                        imputado: req.body.imputado, origen_pago: req.body.origen_pago, usuario_insert: user, usuario: user, data: datos})
+                                        imputado: req.body.imputado, origen_pago: req.body.origen_pago, tipo: req.body.tipo, usuario_insert: user, usuario: user, data: datos})
                                 }
                             })
                         })
@@ -533,6 +551,7 @@ app.post('/editar/:id', function(req, res, next) {
                 nro_ot: req.body.nro_ot,
                 imputado: req.body.imputado,
                 origen_pago: req.body.origen_pago,
+                tipo: req.body.tipo,
                 usuario_insert: user
             })
         }
