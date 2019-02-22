@@ -270,7 +270,7 @@ app.get('/add', function(req, res, next){
                             var fec = hoy();
                             res.render('mano/add_mano', {
                             title: 'Cargar nuevo Plan Laboral',fecha: fec, /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
-                            obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '7:30', h_salida: '16:30',
+                            obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
                             monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
                             cliente_real_n: '', obra_real_n:'', ot_real_n:'', encargado2: '', trato_cliente2: '',
                             usuario_insert: user, usuario: user, data: datos, data_rrhh: datos_rrhh});
@@ -866,8 +866,8 @@ app.get('/editar/:id', function(req, res, next){
                                             obra_real_n: rows[0].obra_real_n,//obra real nocturno
                                             encargado: rows[0].encargado,
                                             trato_cliente: rows[0].trato_cliente,
-                                            h_entrada: '7:30',
-                                            h_salida: '16:30',
+                                            h_entrada: rows[0].h_entrada,
+                                            h_salida: rows[0].h_salida,
                                             monto: rows[0].monto,
                                             subtotal: rows[0].subtotal,
                                             hora_50: rows[0].hora_50,
