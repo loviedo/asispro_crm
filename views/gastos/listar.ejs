@@ -29,22 +29,6 @@ function formatear_fecha(date) {
 }
 %>
 
-<script>
-$(document).ready( function() {
-    $('#dtBasicExample').DataTable( {
-        "scrollY":        "20px",
-        "scrollCollapse": true,
-        "paging":         false
-    } );
-    $('#tablex').DataTable( {
-        "scrollY":        "200px",
-        "scrollCollapse": true,
-        "paging":         false
-    } );
-});
-
-</script>
-
 <style>
 .table-fixed tbody {
 height: 400px;
@@ -85,7 +69,7 @@ color: #ffffff;
 
 <!-- FORMA VIEJA -->
 <div class="container-fluid" width="100%">
-    <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <table id="tablex_gastos" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>

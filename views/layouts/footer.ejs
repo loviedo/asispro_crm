@@ -1,16 +1,33 @@
 
-<!-- CIERRE DEL DIV WRAPPER y DEL DIV CONTENT-->
-
+<!-- CIERRE DEL DIV WRAPPER y DEL DIV CONTENT-->      
             <!-- jQuery CDN - Slim version (=without AJAX) -->
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
             <!-- Popper.JS -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
             <!-- Bootstrap JS -->
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+            
+
             <!-- Datatables -->
+            <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+            <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+            
+            <!-- CDN AGREGADOS PARA BOTONES-->
+            <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+            <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+            <!-- FIN CDN AGREGADOS PARA BOTONES-->
+
+
+
+
             <!--<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>-->
             <!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
-            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" defer></script>
+
             <script type="text/javascript">
                 $(document).ready(function () {
                     $('#sidebarCollapse').on('click', function () {
@@ -49,6 +66,60 @@
                             }
                         }}
                     );
+
+                    //tabla de gastos con botones
+                    $('#tablex_gastos').DataTable({
+                        "scrollY":        "600px",//tamanho standard de la tabla
+                        "scrollCollapse": true, //collapse de la tabla  
+                        "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
+                        dom: 'l<".margin" B>frtip',
+                        //instanciamos botones
+                        buttons: [{extend:'copyHtml5', text: 'Copiar', titleAttr: 'Copiar'}, {
+                            extend: 'excelHtml5',
+                            customize: function( xlsx ) {
+                                var _excelSpecials = [
+                                    { match: /^\-?\d+\.\d%$/,       style: 60, fmt: function (d) { return d/100; } }, // Precent with d.p.
+                                    { match: /^\-?\d+\.?\d*%$/,     style: 56, fmt: function (d) { return d/100; } }, // Percent
+                                    { match: /^\-?\$[\d,]+.?\d*$/,  style: 57 }, // Dollars
+                                    { match: /^\-?£[\d,]+.?\d*$/,   style: 58 }, // Pounds
+                                    { match: /^\-?€[\d,]+.?\d*$/,   style: 59 }, // Euros
+                                    { match: /^\-?\d+$/,            style: 65 }, // Numbers without thousand separators
+                                    { match: /^\-?\d+\.\d{2}$/,     style: 66 }, // Numbers 2 d.p. without thousands separators
+                                    { match: /^\([\d,]+\)$/,        style: 61, fmt: function (d) { return -1 * d.replace(/[\(\)]/g, ''); } },  // Negative numbers indicated by brackets
+                                    { match: /^\([\d,]+\.\d{2}\)$/, style: 62, fmt: function (d) { return -1 * d.replace(/[\(\)]/g, ''); } },  // Negative numbers indicated by brackets - 2d.p.
+                                    { match: /^\-?[\d,]+$/,         style: 63 }, // Numbers with thousand separators
+                                    { match: /^\-?[\d,]+\.\d{2}$/,  style: 64 },  // Numbers with 2 d.p. and thousands separators
+                                    { match: /^[\d]{4}\-[\d]{2}\-[\d]{2}$/, style: 67, fmt: function (d) {return Math.round(25569 + (Date.parse(d) / (86400 * 1000)));}}//Date yyyy-mm-dd
+                                ];
+                            }
+                        }, { extend: 'print', text: 'Imprimir'} ]
+                        
+                        //buttons: ['pageLength', 'copy', 'excel', 'print']
+                        //buttons: ['copy', 'excel', 'pdf', 'print']//debug
+                    });
 
                     var RRHH_DATOS = $('#table_rrhh_mano').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
@@ -376,6 +447,7 @@
 
                 });
             </script>
+
         </div>
     </div>
 
