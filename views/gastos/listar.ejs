@@ -134,11 +134,12 @@ color: #ffffff;
                 <% } %>
                 <td>
                     <div>
-                        <a href='/gastos/editar/<%= gasto.id %>'>Ver</a> &nbsp;                            
-                        <form method="post" action="/gastos/eliminar/<%= gasto.id %>" style="float:right">
+                        <a href='/gastos/editar/<%= gasto.id %>'>Ver</a> &nbsp; 
+                        <a href='/gastos/eliminar/<%= gasto.id %>'>Eliminar</a>                          
+                        <!--<form method="post" action="/gastos/eliminar/<%= gasto.id %>" style="float:right">
                             <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
                             <input type="hidden" name="_method" value="DELETE" />
-                        </form>
+                        </form>-->
                     </div>
                 </td>
             </tr>

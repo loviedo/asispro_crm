@@ -7,7 +7,7 @@ var user = '';//global para ver el usuario
 var fechita = '';//global para traer la fecha
 var userId = '';//global para userid
 var rol=0; //si el usuario/rol es restringido entonces mostramos la pagina restringida
-
+var plan_ultimo=''; //
 
 
 function formatear_fecha_yyyymmdd(date) {
@@ -186,7 +186,7 @@ function hoy()
     return today;
 }
 
-// MOSTRAR LISTADO DE Trabajos / mano de obra plafinicada
+// MOSTRAR LISTADO DE Trabajos / mano de PLANIFICADA
 app.get('/', function(req, res, next) {
     if(req.session.user)
     {   user =  req.session.user;
@@ -196,14 +196,23 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows) {
-                //if(err) throw err
+            conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows1) {
                 if (err) {
                     req.flash('error', err)
                     res.render('mano/listar', {title: 'Listado de Trabajos', data: '',usuario: user})
                 } else {
-                    generar_excel_plan_laboral(rows);//generamos excel PLAN LABORAL / MANO OBRA
-                    res.render('mano/listar', {title: 'Listado de Trabajos', usuario: user, data: rows})
+                    req.getConnection(function(error, conn) {
+                        conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows) {
+                            //if(err) throw err
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('mano/listar', {title: 'Listado de Trabajos', data: '',usuario: user})
+                            } else {
+                                generar_excel_plan_laboral(rows1);//generamos excel PLAN LABORAL / MANO OBRA
+                                res.render('mano/listar', {title: 'Listado de Trabajos', usuario: user, data: rows})
+                            }
+                        })
+                    })
                 }
             })
         })
@@ -220,14 +229,24 @@ app.get('/real', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows) {
+            conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows1) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
                     res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
                 } else {
-                    generar_excel_plan_laboral(rows);//generamos excel PLAN LABORAL / MANO OBRA
-                    res.render('mano/listar_real', {title: 'Listado de Trabajos', usuario: user, data: rows})
+                    req.getConnection(function(error, conn) {
+                        conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 2 DAY)',function(err, rows) {
+                            //if(err) throw err
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
+                            } else {
+                                generar_excel_plan_laboral(rows1);//generamos excel PLAN LABORAL / MANO OBRA
+                                res.render('mano/listar_real', {title: 'Listado de Trabajos', usuario: user, data: rows})
+                            }
+                        })
+                    })
                 }
             })
         })
@@ -267,13 +286,23 @@ app.get('/add', function(req, res, next){
                             });
                             //console.log(datos_rrhh);//debug de datos de RRHH
                             //dibujamos la tabla con los datos que consultamos
-                            var fec = hoy();
-                            res.render('mano/add_mano', {
-                            title: 'Cargar nuevo Plan Laboral',fecha: fec, /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
-                            obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
-                            monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
-                            cliente_real_n: '', obra_real_n:'', ot_real_n:'', encargado2: '', trato_cliente2: '',
-                            usuario_insert: user, usuario: user, data: datos, data_rrhh: datos_rrhh});
+                            req.getConnection(function(error, conn) {
+                                conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 2 DAY)',function(err, rows) {
+                                    //if(err) throw err
+                                    if (err) {
+                                        req.flash('error', err)
+                                        res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
+                                    } else {
+                                        var fec = hoy();
+                                        res.render('mano/add_mano', {
+                                        title: 'Cargar nuevo Plan Laboral',fecha: fec, /*nro_ot: '',*/ empleado: '',cliente_plan_m: '',cliente_real_m: '',cliente_plan_t: '',cliente_real_t: '', 
+                                        obra_plan_m:'', obra_real_m:'', obra_plan_t:'', obra_real_t:'', encargado: '', trato_cliente: '',h_entrada: '', h_salida: '',
+                                        monto:'',subtotal:'',hora_50:'',hora_100:'',hora_normal:'', hora_neg:'', ot_plan_m:'', ot_plan_t:'', ot_real_m:'', ot_real_t:'',otros:'',jornal:'',
+                                        cliente_real_n: '', obra_real_n:'', ot_real_n:'', encargado2: '', trato_cliente2: '',
+                                        usuario_insert: user, usuario: user, data: datos, data_rrhh: datos_rrhh});
+                                    }
+                                })
+                            })
                         }
                     })
                 }             
@@ -303,7 +332,7 @@ app.get('/add_mano', function(req, res, next){
                     });
                     //console.log(datos_ot);//debug de datos de MANO OBRA
 
-                    conn.query('SELECT * FROM mano_obra order by fecha desc',function(err, rows) {
+                    conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 2 DAY)',function(err, rows) {
                         if (err){console.log(err);}
                         else{
                             rows.forEach(function(row) {    

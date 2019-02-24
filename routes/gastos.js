@@ -137,7 +137,7 @@ app.get('/', function(req, res, next) {
         //si el usuario es cristina entonces solo ve lo de ella, si no, se ve todo
         var sql_con ="";
         if(user == "cibanez" || user == "prueba")
-        {   sql_con = "SELECT * FROM gastos WHERE usuario_insert = '"+ user +"' ORDER BY fecha ASC";}
+        {   sql_con = "SELECT * FROM gastos WHERE usuario_insert = '"+ user +"' or tipo = 'NO_CONF' ORDER BY fecha ASC";}
         else
         {   sql_con = "SELECT * FROM gastos ORDER BY fecha ASC";}
         req.getConnection(function(error, conn) {
