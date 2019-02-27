@@ -236,7 +236,7 @@ app.get('/real', function(req, res, next) {
                     res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
                 } else {
                     req.getConnection(function(error, conn) {
-                        conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 2 DAY)',function(err, rows) {
+                        conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 1 DAY)',function(err, rows) {
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
