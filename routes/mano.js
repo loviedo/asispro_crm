@@ -872,8 +872,8 @@ app.get('/editar/:id', function(req, res, next){
                                             var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
                                             if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
                                             {rol = 1;}//es el dia siguiente 
-                                            if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia
-                                            {rol = 2;}//es +2 o mas dias 
+                                            if(dias_dif >= 5)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 5 para darle 5 dias de tiempo
+                                            {rol = 2;}//es +5 o mas dias 
                                         }
                                         
                                         res.render('mano/editar', {
@@ -1276,7 +1276,7 @@ app.post('/descargar', function(req, res, next) {
 });
 
 // DELETE USER
-app.delete('/eliminar/(:id)', function(req, res, next) {
+app.get('/eliminar/(:id)', function(req, res, next) {
 
     if(req.session.user)
     {   user =  req.session.user;
@@ -1298,6 +1298,42 @@ app.delete('/eliminar/(:id)', function(req, res, next) {
                     req.flash('success', 'PLan Laboral eliminado exitosamente! ID = ' + req.params.id)
                     //redireccionar al listado de ingresos
                     res.redirect('/mano')
+
+                    //insertar log de uso de sistema en caso de suceso de insercion
+                }
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+app.get('/copiar_plan', function(req, res, next) {
+
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+
+    //controlamos quien se loga.
+	if(user.length >0){
+        //insertamos el valor 
+        req.getConnection(function(error, conn) {
+            var sql_str = "insert into mano_obra (fecha, mano_obra. empleado, codigo, cliente_plan_m, cliente_real_m, cliente_plan_t,cliente_real_t,obra_plan_m,obra_real_m,obra_plan_t,obra_real_t, " +
+                "encargado, trato_cliente, h_entrada,h_salida,monto,subtotal,hora_50,hora_100,hora_normal,hora_neg,pasaje, usuario_insert, ot_plan_m,ot_real_m,ot_plan_t, ot_real_t, " + 
+                "jornal, cliente_real_n, obra_real_n, ot_real_n, encargado2, trato_cliente2) " + 
+                "select DATE_ADD(fecha, INTERVAL 1 DAY), mano_obra. empleado, codigo, cliente_plan_m, cliente_real_m, cliente_plan_t,cliente_real_t,obra_plan_m,obra_real_m,obra_plan_t,obra_real_t, " + 
+                "encargado, trato_cliente, h_entrada,h_salida,monto,subtotal,hora_50,hora_100,hora_normal,hora_neg,pasaje, 'SYSTEM', ot_plan_m,ot_real_m,ot_plan_t, ot_real_t , " + 
+                "jornal, cliente_real_n, obra_real_n, ot_real_n, encargado2, trato_cliente2 " + 
+                "from mano_obra where fecha = (select max(fecha) from mano_obra)"
+            conn.query(sql_str, function(err, result) {
+                //if(err) throw err
+                if (err) {
+                    req.flash('error', err)
+                    //redireccionar al listado de ingresos
+                    res.redirect('/mano')
+                } else {
+                    req.flash('success', 'PLANIFICACION LABORAL COPIADA EXITOSAMENTE');
+                    //redireccionar al listado de ingresos
+                    res.redirect('/mano');
 
                     //insertar log de uso de sistema en caso de suceso de insercion
                 }

@@ -584,7 +584,7 @@ app.post('/descargar', function(req, res, next) {
 });
 
 // DELETE USER
-app.delete('/eliminar/(:id)', function(req, res, next) {
+app.get('/eliminar/(:id)', function(req, res, next) {
     //primero traemos los datos de la tabla
     if(req.session.user)
     {   user =  req.session.user;

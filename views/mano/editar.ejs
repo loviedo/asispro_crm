@@ -133,7 +133,7 @@ body .modal-dialog { /* Width */
                 <div class="form-group col-md-2">
                     <label for="codigo">CODIGO</label>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>"><% } %>
-                    <% if(restri >= 1){ %><input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>"><% } %>
+                    <% if(restri >= 1){ %><input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cliente_plan_m">CLIENTE PLANIFICADO MAÑANA</label>-  
@@ -179,7 +179,7 @@ body .modal-dialog { /* Width */
                 <div class="form-group col-md-2">
                     <label for="obra_real_m">OBRA REAL MAÑANA</label>
                     <% if(restri <= 1){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>"><% } %>
-                    <% if(restri > 1){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>"><% } %>
+                    <% if(restri > 1){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="encargado">ENCARGADO MAÑANA</label>
