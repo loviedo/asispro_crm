@@ -872,7 +872,7 @@ app.get('/editar/:id', function(req, res, next){
                                             var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
                                             if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
                                             {rol = 1;}//es el dia siguiente 
-                                            if(dias_dif >= 5)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 5 para darle 5 dias de tiempo
+                                            if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 5 para darle 5 dias de tiempo
                                             {rol = 2;}//es +5 o mas dias 
                                         }
                                         

@@ -62,8 +62,6 @@ function formatear_fecha(date) {
 
 </script>
 
-
-
 <!-- ESTILO PARA DATEPICKER -->
 <style>
 [type="date"] {
@@ -105,12 +103,12 @@ body .modal-dialog { /* Width */
         <h3>Carga de Plan Laboral / Mano de Obra </h3>
     </div>
 </nav>
-<form action="/mano/add_listar" method="post" name="form1">
+<<!--form action="/mano/add_listar" method="post" name="form1">
     <div class="form-row col-md-2">
         <input type="date" class="form-control" name="fecha1" id="fecha1" placeholder="Fecha Planificacion" >
         <button type="submit" name="Submit" value="Insertar" class="btn btn-small">Buscar</button>
     </div>
-</form>
+</form>-->
 
 
 <!-- NAV TABLITA CABECERA CON CARGADO -->
@@ -133,6 +131,7 @@ body .modal-dialog { /* Width */
                             <th>OBRA PLAN TARDE</th>
                             <th>ENCARGADO TARDE</th>
                             <th>TRATO CLIENT TARDE</th>
+                            <th>ACCIONES</th>
                         </tr>
                     </thead>
                 <tbody>
@@ -151,6 +150,16 @@ body .modal-dialog { /* Width */
                         <td><%= mano.obra_plan_t %></td>
                         <td><%= mano.encargado2 %></td>
                         <td><%= mano.trato_cliente2 %></td>
+                        <td>
+                            <div>
+                                <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp; 
+                                <% if (usuario != 'cibanez' && usuario != 'prueba' ) { %><a href='/mano/eliminar/<%= mano.id %>'>Eliminar</a><% } %>                          
+                                <!--<form method="post" action="/mano/eliminar/<%= mano.id %>" style="float:right">
+                                    <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
+                                    <input type="hidden" name="_method" value="DELETE" />
+                                </form>-->
+                            </div>
+                        </td>
                     </tr>
                     <% }) %>
                     <% } %>
