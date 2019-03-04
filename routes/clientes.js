@@ -304,7 +304,7 @@ app.post('/descargar', function(req, res, next) {
     //controlamos quien se loga.
 	if(user.length >0){
         //vemos los datos en la base
-        //DESCARGAR PDF CON DATOS DEL ESTUDIO
+        //DESCARGAR PDF
         var file = path.resolve("Listado_CLIENTES.xlsx");
         res.contentType('Content-Type',"application/pdf");
         res.download(file, function (err) {
