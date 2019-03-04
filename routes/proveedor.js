@@ -47,9 +47,9 @@ function generar_excel_provedores(rows){
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,2).number(Number(row.id)).style(style);
-        worksheet.cell(i+1,7).string(String(row.nombre)).style(style);
-        worksheet.cell(i+1,8).string(String(row.ruc)).style(style);
+        worksheet.cell(i+1,1).number(Number(row.id)).style(style);
+        worksheet.cell(i+1,2).string(String(row.nombre)).style(style);
+        worksheet.cell(i+1,3).string(String(row.ruc)).style(style);
         /*worksheet.cell(i+1,3).number(Number(row.exentas)).style(style);
         worksheet.cell(i+1,4).number(Number(row.iva_10)).style(style);
         worksheet.cell(i+1,5).number(Number(row.iva_5)).style(style);
@@ -65,7 +65,7 @@ function generar_excel_provedores(rows){
         i=i+1;
         //console.log(row.descripcion);//debug
     });
-    workbook.write('Listado_PROVEEDORES.xlsx');
+    workbook.write('Listado_PROVEEDOR.xlsx');
 }
 
 // MOSTRAR LISTADO DE PROVEEDORES
