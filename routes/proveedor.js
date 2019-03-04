@@ -7,7 +7,66 @@ var userId = '';//global para userid
 var datos = []; //listado de datos para select dinamico
 
 
+function generar_excel_provedores(rows){
+    var workbook = new excel.Workbook();
+    //Add Worksheets to the workbook
+    var worksheet = workbook.addWorksheet('PROVEEDORES');
+    // Create a reusable style
+    var style = workbook.createStyle({
+    font: {
+        color: '#000000',
+        size: 12
+    },
+    numberFormat: '#,##0.00; (#,##0.00); -'
+    });
+    var style1 = workbook.createStyle({
+        font: {
+            color: '#000000',
+            size: 12
+        },
+        numberFormat: '#,##0; (#,##0); -'
+        });
 
+    //dibujamos el excel
+    //primero la cabecera
+    worksheet.cell(1,1).string('ID').style(style);
+    worksheet.cell(1,2).string('NOMBRE').style(style);
+    worksheet.cell(1,3).string('RUC').style(style);
+    /*worksheet.cell(1,4).string('IVA 10%').style(style);
+    worksheet.cell(1,5).string('IVA 5%').style(style);
+    worksheet.cell(1,6).string('GASTO REAL').style(style);
+    worksheet.cell(1,7).string('CONCEPTO').style(style);
+    worksheet.cell(1,8).string('CONDICION FACTURA').style(style);
+    worksheet.cell(1,9).string('PROVEEDOR').style(style);
+    worksheet.cell(1,10).string('NRO FACTURA').style(style);
+    worksheet.cell(1,11).string('ENCARGADO').style(style);
+    worksheet.cell(1,12).string('CODIGO').style(style);
+    worksheet.cell(1,13).string('OT NRO').style(style);*/
+    //worksheet.cell(1,1).string('').style(style);
+
+    //luego los datos
+    var i = 1;
+    rows.forEach(function(row) {
+        worksheet.cell(i+1,2).number(Number(row.id)).style(style);
+        worksheet.cell(i+1,7).string(String(row.nombre)).style(style);
+        worksheet.cell(i+1,8).string(String(row.ruc)).style(style);
+        /*worksheet.cell(i+1,3).number(Number(row.exentas)).style(style);
+        worksheet.cell(i+1,4).number(Number(row.iva_10)).style(style);
+        worksheet.cell(i+1,5).number(Number(row.iva_5)).style(style);
+        worksheet.cell(i+1,6).number(Number(row.gasto_real)).style(style);
+        worksheet.cell(i+1,7).string(String(row.concepto)).style(style);
+        worksheet.cell(i+1,8).string(String(row.fact_condicion)).style(style);
+        worksheet.cell(i+1,9).string(String(row.proveedor)).style(style);
+        worksheet.cell(i+1,10).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,11).string(String(row.encargado)).style(style);
+        worksheet.cell(i+1,12).number(Number(row.codigo)).style(style1);
+        worksheet.cell(i+1,13).number(Number(row.nro_ot)).style(style1);*/
+        //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
+        i=i+1;
+        //console.log(row.descripcion);//debug
+    });
+    workbook.write('Listado_PROVEEDORES.xlsx');
+}
 
 // MOSTRAR LISTADO DE PROVEEDORES
 app.get('/', function(req, res, next) {
@@ -20,14 +79,14 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM proveedores ORDER BY id DESC',function(err, rows) {
+            conn.query('SELECT * FROM proveedor ORDER BY id DESC',function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
-                    res.render('proveedores/listar', {title: 'Listado de Proveedores', data: '',usuario: user})
+                    res.render('proveedor/listar', {title: 'Listado de Proveedores', data: '',usuario: user})
                 } else {
-                    generar_excel_clientes(rows);//generamos excel CLIENTES
-                    res.render('proveedores/listar', {title: 'Listado de Proveedores', usuario: user, data: rows})
+                    generar_excel_provedores(rows);//generamos excel CLIENTES
+                    res.render('proveedor/listar', {title: 'Listado de Proveedores', usuario: user, data: rows})
                 }
             })
         })
@@ -43,7 +102,7 @@ app.get('/add', function(req, res, next){
     }
     //controlamos quien se loga.
 	if(user.length >0){
-        res.render('proveedores/add', { title: 'Cargar nuevo PROVEEDOR', nombre: '', ruc: '', usuario_insert: user, usuario: user});
+        res.render('proveedor/add', { title: 'Cargar nuevo PROVEEDOR', nombre: '', ruc: '', usuario_insert: user, usuario: user});
     }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
@@ -71,7 +130,7 @@ app.post('/add', function(req, res, next){
                         req.flash('error', err)
                         
                         // render to views/factura/add.ejs
-                        res.render('proveedores/add', {
+                        res.render('proveedor/add', {
                             title: 'Agregar Nuevo PROVEEDOR',
                             nombre: gasto.nombre,
                             ruc: gasto.ruc
@@ -81,7 +140,7 @@ app.post('/add', function(req, res, next){
                         
                         //console.log(datos);//debug
                         // render to views/user/add.ejs
-                        res.render('proveedores/add', {title: 'Cargar nuevo PROVEEDOR', nombre: '',ruc: '', usuario_insert: user, usuario: user});
+                        res.render('proveedor/add', {title: 'Cargar nuevo PROVEEDOR', nombre: '',ruc: '', usuario_insert: user, usuario: user});
                     }
                 })
             })
@@ -94,7 +153,7 @@ app.post('/add', function(req, res, next){
             })                
             req.flash('error', error_msg)        
             
-            res.render('proveedores/add', {title: 'Agregar Nuevo PROVEEDOR', nombre: gasto.nombre, ruc: gasto.ruc, usuario_insert: user })
+            res.render('proveedor/add', {title: 'Agregar Nuevo PROVEEDOR', nombre: gasto.nombre, ruc: gasto.ruc, usuario_insert: user })
         }
     }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
@@ -107,17 +166,17 @@ app.get('/editar/:id', function(req, res, next){
     }
     if(user.length >0){
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM proveedores WHERE id = ' + req.params.id, function(err, rows, fields) {
+            conn.query('SELECT * FROM proveedor WHERE id = ' + req.params.id, function(err, rows, fields) {
                 if(err) throw err
                 
                 // if user not found
                 if (rows.length <= 0) {
                     req.flash('error', 'PROVEEDOR con id = ' + req.params.id + ' no encontrado')
-                    res.redirect('/proveedores')
+                    res.redirect('/proveedor')
                 }
                 else { // Si existe la factura
                     // render to views/factura/edit.ejs template file
-                    res.render('proveedores/editar', {title: 'Editar PROVEEDOR', id: rows[0].id, nombre: rows[0].nombre, ruc: rows[0].ruc, usuario: user })
+                    res.render('proveedor/editar', {title: 'Editar PROVEEDOR', id: rows[0].id, nombre: rows[0].nombre, ruc: rows[0].ruc, usuario: user })
                 }            
             })
         })
@@ -143,7 +202,7 @@ app.post('/editar/:id', function(req, res, next) {
                         req.flash('error', err)
                         
                         // render to views/clientes/add.ejs
-                        res.render('proveedores/editar', {
+                        res.render('proveedor/editar', {
                             title: 'Editar PROVEEDOR',
                             id: req.params.id,
                             nombre: req.body.nombre,
@@ -155,7 +214,7 @@ app.post('/editar/:id', function(req, res, next) {
                         req.flash('success', 'Datos actualizados correctamente!')
                         
                         // render to views/ot/add.ejs
-                        res.render('proveedores/editar', {
+                        res.render('proveedor/editar', {
                             title: 'Editar PROVEEDOR',
                             id: req.params.id,
                             nombre: req.body.nombre,
@@ -173,7 +232,7 @@ app.post('/editar/:id', function(req, res, next) {
                 error_msg += error.msg + '<br>'
             })
             req.flash('error', error_msg)
-            res.render('proveedores/editar', { 
+            res.render('proveedor/editar', { 
                 title: 'Editar PROVEEDOR',
                 nombre: req.body.nombre,
                 ruc: req.body.ruc,
@@ -222,11 +281,11 @@ app.delete('/eliminar/(:id)', function(req, res, next) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
-                    res.redirect('/proveedores')
+                    res.redirect('/proveedor')
                 } else {
                     req.flash('success', 'PROVEEDOR eliminado / ID = ' + req.params.id)
                     //redireccionar al listado de GASTO
-                    res.redirect('/proveedores')
+                    res.redirect('/proveedor')
 
                     //insertar log de uso de sistema en caso de suceso de insercion
                 }

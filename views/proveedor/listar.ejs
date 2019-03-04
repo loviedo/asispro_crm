@@ -8,6 +8,23 @@
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
 
+<!-- funcion para arreglar el formato de las fechas -->
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+%>
 
 <script>
     $(document).ready( function() {
@@ -72,13 +89,13 @@
         <% if (data) { %>
         <% data.forEach(function(proveedor){ %>
             <tr>
-                <td><%= formatear_fecha(proveedor.fecha) %></td>
+                <td><%= proveedor.id %></td>
                 <td><%= proveedor.nombre %></td>
                 <td><%= proveedor.ruc %></td>
                 <td>
                     <div>
-                        <a href='/proveedores/editar/<%= proveedor.id %>'>Ver</a> &nbsp;                            
-                        <form method="post" action="/proveedores/eliminar/<%= proveedor.id %>" style="float:right">
+                        <a href='/proveedor/editar/<%= proveedor.id %>'>Ver</a> &nbsp;                            
+                        <form method="post" action="/proveedor/eliminar/<%= proveedor.id %>" style="float:right">
                             <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar el registro de proveedor?')" />
                             <input type="hidden" name="_method" value="DELETE" />
                         </form>

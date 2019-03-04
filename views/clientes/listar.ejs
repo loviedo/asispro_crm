@@ -8,6 +8,23 @@
     <p style="color:green"><%- messages.success %></p>
 <% } %>    
 
+<!-- funcion para arreglar el formato de las fechas -->
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+%>
 
 <script>
     $(document).ready( function() {
@@ -72,7 +89,7 @@
         <% if (data) { %>
         <% data.forEach(function(cliente){ %>
             <tr>
-                <td><%= formatear_fecha(cliente.fecha) %></td>
+                <td><%= cliente.id %></td>
                 <td><%= cliente.nombre %></td>
                 <td><%= cliente.ruc %></td>
                 <td>
