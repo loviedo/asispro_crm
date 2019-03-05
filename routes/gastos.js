@@ -5,6 +5,7 @@ var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
 var datos = []; 
+var datos_pro = []; //datos de proveedores
 
 function formatear_fecha_yyyymmdd(date) {
     var d;
@@ -166,19 +167,29 @@ app.get('/add', function(req, res, next){
 	if(user.length >0){
         req.getConnection(function(error, conn) {
             conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
-                if (err) {
-                    console.log(err);
-                }
+                if (err) {console.log(err);}
                 else{
                     datos = [];
                     rows.forEach(function(row) {    
                         datos.push(row);
                     });
-                    console.log(datos);//debug
-                    // render to views/user/add.ejs
-                    res.render('gastos/add', {
-                        title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                        fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', usuario_insert: user, usuario: user, data: datos});
+                    //console.log(datos);//debug
+                    req.getConnection(function(error, conn) {
+                        conn.query('SELECT * FROM proveedor ORDER BY id ASC',function(err, rows2) {
+                            if (err) {console.log(err); }
+                            else{
+                                datos_pro = [];
+                                rows2.forEach(function(row) {    
+                                    datos_pro.push(row);
+                                });
+                                //console.log(datos_pro);//debug
+                                res.render('gastos/add', {
+                                title: 'Cargar nuevo GASTO', id_proveedor: '0' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
+                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', 
+                                usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro});
+                            }
+                        })
+                    })
                 }
             })
         })
@@ -248,6 +259,7 @@ app.post('/add', function(req, res, next){
                 origen_pago:origen_pago,
                 imputado: req.sanitize('imputado').trim(),
                 tipo: tipov,
+                id_proveedor: req.sanitize('id_proveedor').trim(),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
             }   
@@ -278,8 +290,9 @@ app.post('/add', function(req, res, next){
                             imputado: gasto.imputado,
                             origen_pago: gasto.origen_pago,
                             tipo: gasto.tipo,//se carga si es admin/josorio/ksanabria, sino va vacio a la tabla
+                            id_proveedor: gasto.id_proveedor,
                             usuario: user,
-                            data: datos
+                            data: datos, data_pro: datos_pro
                         })
                     } else {                
                         req.flash('success', 'Datos agregados correctamente!')
@@ -297,8 +310,9 @@ app.post('/add', function(req, res, next){
                                 console.log(datos);//debug
                                 // render to views/user/add.ejs
                                 res.render('gastos/add', {
-                                    title: 'Cargar nuevo GASTO', fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', tipo:'',
-                                    fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'',origen_pago:'', usuario_insert: user, usuario: user, data: datos});
+                                    title: 'Cargar nuevo GASTO', id_proveedor: '',  fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',concepto: '', tipo:'',
+                                    fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'',imputado:'',origen_pago:'', usuario_insert: user, 
+                                    usuario: user, data: datos, data_pro: datos_pro});
                             }
                         })
                     }
@@ -335,6 +349,7 @@ app.post('/add', function(req, res, next){
                 imputado: req.body.imputado,
                 origen_pago: req.body.origen_pago,
                 tipo: req.body.tipo,
+                id_proveeedor: req.body.id_proveeedor,
                 usuario_insert: user
             })
         }
@@ -359,7 +374,6 @@ app.get('/editar/:id', function(req, res, next){
                     res.redirect('/gastos')
                 }
                 else { // Si existe la factura
-                    // render to views/factura/edit.ejs template file
                     req.getConnection(function(error, conn) {
                         conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows2) {
                             if (err) {
@@ -371,29 +385,26 @@ app.get('/editar/:id', function(req, res, next){
                                     datos.push(row);
                                 });
                                 //console.log(datos);//debug
-                                var date1 = rows[0].fecha;
 
-                                res.render('gastos/editar', {
-                                    title: 'Editar GASTO', 
-                                    //data: rows[0],
-                                    id: rows[0].id,
-                                    fecha: formatear_fecha_yyyymmdd(date1),
-                                    monto: rows[0].monto,
-                                    exentas: rows[0].exentas,
-                                    iva_10: rows[0].iva_10,
-                                    iva_5: rows[0].iva_5,
-                                    gasto_real: rows[0].gasto_real,
-                                    concepto: rows[0].concepto,
-                                    fact_condicion: rows[0].fact_condicion,
-                                    proveedor: rows[0].proveedor,
-                                    fact_nro: rows[0].fact_nro,
-                                    encargado: rows[0].encargado,
-                                    codigo: rows[0].codigo,
-                                    nro_ot: rows[0].nro_ot,
-                                    imputado: rows[0].imputado,
-                                    origen_pago: rows[0].origen_pago,
-                                    tipo: rows[0].tipo,
-                                    usuario: user, data: datos
+                                req.getConnection(function(error, conn) {
+                                    conn.query('SELECT * FROM proveedor ORDER BY id ASC',function(err, rows3) {
+                                        if (err) {
+                                            console.log(err);
+                                        }
+                                        else{
+                                            datos_pro = [];
+                                            rows3.forEach(function(row) {    
+                                                datos_pro.push(row);
+                                            });
+                                            //console.log(datos_pro);//debug
+
+                                            var date1 = rows[0].fecha;
+                                            res.render('gastos/editar', {title: 'Editar GASTO', id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), monto: rows[0].monto, exentas: rows[0].exentas,
+                                            iva_10: rows[0].iva_10, iva_5: rows[0].iva_5, gasto_real: rows[0].gasto_real, concepto: rows[0].concepto, fact_condicion: rows[0].fact_condicion,
+                                            proveedor: rows[0].proveedor, fact_nro: rows[0].fact_nro, encargado: rows[0].encargado, codigo: rows[0].codigo, nro_ot: rows[0].nro_ot, id_proveedor: rows[0].id_proveedor,
+                                            imputado: rows[0].imputado, origen_pago: rows[0].origen_pago, tipo: rows[0].tipo, usuario: user, data: datos, data_pro: datos_pro })
+                                        }
+                                    })
                                 })
                             }
                         })
@@ -461,6 +472,7 @@ app.post('/editar/:id', function(req, res, next) {
                 imputado: req.sanitize('imputado').escape().trim(),
                 origen_pago: req.sanitize('origen_pago').escape().trim(),
                 tipo: tipov,
+                id_proveedor: Number(req.sanitize('id_proveedor').escape().trim()),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
             }  
@@ -491,6 +503,7 @@ app.post('/editar/:id', function(req, res, next) {
                             imputado: req.body.imputado,
                             origen_pago: req.body.origen_pago,
                             tipo: req.body.tipo,
+                            id_proveedor: req.body.id_proveedor,
                             usuario_insert: user,
                             usuario: user
                         })
@@ -512,8 +525,8 @@ app.post('/editar/:id', function(req, res, next) {
                                     // render to views/ot/add.ejs
                                     res.render('gastos/editar', { title: 'Editar GASTO', id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: req.body.exentas,
                                         iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,
-                                        proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot,
-                                        imputado: req.body.imputado, origen_pago: req.body.origen_pago, tipo: req.body.tipo, usuario_insert: user, usuario: user, data: datos})
+                                        proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot, id_proveedor: req.body.id_proveedor, 
+                                        imputado: req.body.imputado, origen_pago: req.body.origen_pago, tipo: req.body.tipo, usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro})
                                 }
                             })
                         })
@@ -552,6 +565,7 @@ app.post('/editar/:id', function(req, res, next) {
                 imputado: req.body.imputado,
                 origen_pago: req.body.origen_pago,
                 tipo: req.body.tipo,
+                id_proveedor: req.body.id_proveedor,
                 usuario_insert: user
             })
         }

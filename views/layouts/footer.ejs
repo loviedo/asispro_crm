@@ -33,10 +33,6 @@
                     $('#sidebarCollapse').on('click', function () {
                         $('#sidebar').toggleClass('active');
                     });
-                    //debug
-                    $('#dtBasicExample').DataTable(
-                        //{"language": {"url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/German.json"}}
-                    );
 
                     $('#tablex').DataTable({
                             "scrollY":        "1000px",//tamanho de la tabla // agrandamos para mostrar lo de planificacion
@@ -291,8 +287,39 @@
                         }}
                     );
 
-                    //tabla asignacion OT en gastos (add y editar)
+                    //tabla asignacion OT en GASTOS (add y editar)
                     var OT_DATOS_GASTO = $('#table_modal_ot_gastos').DataTable({
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+
+
+                    //tabla asignacion PROVEEDORES en GASTOS (add y editar)
+                    var PROV_DATOS_GASTO = $('#table_modal_pro_gastos').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
                             "language": {
@@ -444,6 +471,26 @@
                         //asignamos el valor
                         $('#nro_ot').val(row[0]);
                     } );
+
+                    $('#table_modal_ot_ingresos tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = OT_DATOS_INGRESOS.row(this).index();
+                        var row = OT_DATOS_INGRESOS.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //asignamos el valor
+                        $('#nro_ot').val(row[0]);
+                    } );
+
+                    $('#table_modal_pro_gastos tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = PROV_DATOS_GASTO.row(this).index();
+                        var row = PROV_DATOS_GASTO.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //asignamos el valor
+                        $('#proveedor').val(row[1]);
+                        $('#id_proveedor').val(row[0]);///capturamos tambien el id proveedor para insertar en el gasto, el campo esta oculto
+                    } );
+
 
                 });
             </script>
