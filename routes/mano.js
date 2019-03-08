@@ -229,6 +229,7 @@ app.get('/real', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
+            //este conjunto de datos es para el excel
             conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows1) {
                 //if(err) throw err
                 if (err) {
@@ -236,7 +237,9 @@ app.get('/real', function(req, res, next) {
                     res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
                 } else {
                     req.getConnection(function(error, conn) {
-                        conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 1 DAY)',function(err, rows) {
+                        //datos para visualizar
+                        //conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 1 DAY)',function(err, rows) {
+                        conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows) {
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
