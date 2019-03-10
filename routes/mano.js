@@ -239,7 +239,7 @@ app.get('/real', function(req, res, next) {
                     req.getConnection(function(error, conn) {
                         //datos para visualizar
                         //conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 1 DAY)',function(err, rows) {
-                        conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows) {
+                        conn.query('SELECT * FROM mano_obra WHERE fecha < curdate() ORDER BY fecha DESC',function(err, rows) {
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
@@ -335,7 +335,7 @@ app.get('/add_mano', function(req, res, next){
                     });
                     //console.log(datos_ot);//debug de datos de MANO OBRA
 
-                    conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 2 DAY)',function(err, rows) {
+                    conn.query('select * from mano_obra where fecha >= curdate()',function(err, rows) {
                         if (err){console.log(err);}
                         else{
                             rows.forEach(function(row) {    
