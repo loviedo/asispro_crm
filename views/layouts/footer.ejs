@@ -22,17 +22,34 @@
             <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
             <!-- FIN CDN AGREGADOS PARA BOTONES-->
 
+            <!-- PARAEL PROBLEMA DEL SORT DE FECHAS-->
+            <script type="text/javascript" src="https://momentjs.com/downloads/moment.min.js"></script>
 
 
 
             <!--<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>-->
             <!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
-
             <script type="text/javascript">
                 $(document).ready(function () {
                     $('#sidebarCollapse').on('click', function () {
                         $('#sidebar').toggleClass('active');
                     });
+
+                    sortDatePlugin();//resolver el asunto del sort en los datatables.
+                    function sortDatePlugin(){
+                        $.fn.dataTable.moment = function (format,locale){
+                            var types = $.fn.dataTable.ext.type;
+                            // Add type detection
+                            types.detect.unshift( function ( d ) {
+                                return moment( d, format, locale, true ).isValid() ? 'moment-'+ format : null;
+                            });
+                            // Add sorting method - use an integer for the sorting
+                            types.order[ 'moment-'+format+'-pre' ] = function ( d ) {
+                                return moment( d, format, locale, true ).unix();
+                            };
+                        };		
+                        $.fn.dataTable.moment('DD/MM/YYYY');
+                    }
 
                     $('#tablex').DataTable({
                             "scrollY":        "1000px",//tamanho de la tabla // agrandamos para mostrar lo de planificacion
