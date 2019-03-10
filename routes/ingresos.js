@@ -127,7 +127,7 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM ingresos ORDER BY id DESC',function(err, rows) {
+            conn.query('SELECT * FROM ingresos ORDER BY fecha DESC',function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
@@ -152,9 +152,7 @@ app.get('/add', function(req, res, next){
 	if(user.length >0){
         req.getConnection(function(error, conn) {
             conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
-                if (err) {
-                    console.log(err);
-                }
+                if (err) {console.log(err);}
                 else{
                     datos = [];
                     rows.forEach(function(row) {    
@@ -162,8 +160,8 @@ app.get('/add', function(req, res, next){
                     });
                     console.log(datos);//debug
                     res.render('ingresos/add', {
-                        title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',fact_nro: '',fact_condicion: 'CONTADO',monto: '0', calcu_iva:'',
-                        iva: '',retencion: '',porcentaje: '', total_facturado: '0', nro_ot: '0',data: datos, usuario_insert: user, usuario: user});
+                        title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
+                        mon_s_iva:'0', iva: '',retencion: '',porcentaje: '', monto_ret:'0', total_facturado: '0',data: datos, usuario_insert: user, usuario: user});
                 }
             })
         })
@@ -206,6 +204,9 @@ app.post('/add', function(req, res, next){
                 porcentaje: Number(req.sanitize('porcentaje').trim()),
                 total_facturado: Number(req.sanitize('total_facturado').trim()),
                 nro_ot: Number(req.sanitize('nro_ot').trim()),
+                mon_s_iva: Number(req.sanitize('mon_s_iva').trim()),
+                monto_ret: Number(req.sanitize('monto_ret').trim()),
+                pago: req.sanitize('pago').trim(),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
             }   
@@ -223,15 +224,18 @@ app.post('/add', function(req, res, next){
                             fecha: ingreso.fecha,
                             cliente: ingreso.cliente,
                             obra: ingreso.obra,
+                            pago: pago,
                             fact_nro: ingreso.fact_nro,
                             fact_condicion: ingreso.fact_condicion,
                             monto: ingreso.monto,
                             calcu_iva: ingreso.calcu_iva,
+                            mon_s_iva: mon_s_iva,
                             iva: ingreso.iva,
                             retencion: ingreso.retencion,
                             porcentaje: ingreso.porcentaje,
                             total_facturado: ingreso.total_facturado,
                             nro_ot: ingreso.nro_ot,
+                            monto_ret: monto_ret,
                             usuario: user
                         })
                     } else {                
@@ -249,8 +253,8 @@ app.post('/add', function(req, res, next){
                                     });
                                     console.log(datos);//debug
                                     res.render('ingresos/add', {
-                                        title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '',fact_nro: '',fact_condicion: 'CONTADO',monto: '0', calcu_iva:'',
-                                        iva: '',retencion: '',porcentaje: '', total_facturado: '0', nro_ot: '0',data: datos, usuario_insert: user, usuario: user});
+                                        title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
+                                        mon_s_iva:'0', iva: '',retencion: '',porcentaje: '', monto_ret:'0', total_facturado: '0',data: datos, usuario_insert: user, usuario: user});
                                 }
                             })
                         })
@@ -283,6 +287,9 @@ app.post('/add', function(req, res, next){
                 retencion: ingreso.retencion,
                 porcentaje: ingreso.porcentaje,
                 total_facturado: ingreso.total_facturado,
+                pago: ingreso.pago,
+                monto_ret: ingreso.monto_ret,
+                mon_s_iva: ingreso.mon_s_iva,
                 nro_ot: ingreso.nro_ot,
                 usuario: user
             })
@@ -330,12 +337,15 @@ app.get('/editar/:id', function(req, res, next){
                                     fact_nro: rows[0].fact_nro,
                                     fact_condicion: rows[0].fact_condicion,
                                     monto: rows[0].monto,
+                                    pago: rows[0].pago,
                                     calcu_iva: rows[0].calcu_iva,
                                     iva: rows[0].iva,
                                     retencion: rows[0].retencion,
                                     porcentaje: rows[0].porcentaje,
                                     total_facturado: rows[0].total_facturado,
                                     nro_ot: rows[0].nro_ot,
+                                    monto_ret: rows[0].monto_ret,
+                                    mon_s_iva: rows[0].mon_s_iva,
                                     data: datos,
                                     usuario: user
                                 })
@@ -379,6 +389,9 @@ app.post('/editar/:id', function(req, res, next) {
                 porcentaje: Number(req.sanitize('porcentaje').trim()),
                 total_facturado: Number(req.sanitize('total_facturado').trim()),
                 nro_ot: Number(req.sanitize('nro_ot').trim()),
+                mon_s_iva: Number(req.sanitize('mon_s_iva').trim()),
+                monto_ret: Number(req.sanitize('monto_ret').trim()),
+                pago: req.sanitize('pago').trim(),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
             } 
@@ -395,6 +408,7 @@ app.post('/editar/:id', function(req, res, next) {
                             fecha: ingreso.fecha,
                             cliente: ingreso.cliente,
                             obra: ingreso.obra,
+                            pago: ingreso.pago,
                             fact_nro: ingreso.fact_nro,
                             fact_condicion: ingreso.fact_condicion,
                             monto: ingreso.monto,
@@ -404,6 +418,8 @@ app.post('/editar/:id', function(req, res, next) {
                             porcentaje: ingreso.porcentaje,
                             total_facturado: ingreso.total_facturado,
                             nro_ot: ingreso.nro_ot,
+                            monto_ret: ingreso.monto_ret,
+                            mon_s_iva: ingreso.mon_s_iva,
                             usuario: user
                         })
                     } else {                
@@ -416,6 +432,7 @@ app.post('/editar/:id', function(req, res, next) {
                             fecha: req.body.fecha,
                             cliente: req.body.cliente,
                             obra: req.body.obra,
+                            pago: req.body.pago,
                             fact_nro: req.body.fact_nro,
                             fact_condicion: req.body.fact_condicion,
                             monto: req.body.monto,
@@ -426,6 +443,8 @@ app.post('/editar/:id', function(req, res, next) {
                             total_facturado: req.body.total_facturado,
                             usuario_insert: user,
                             nro_ot: nro_ot,
+                            monto_ret: monto_ret,
+                            mon_s_iva: mon_s_iva,
                             usuario: user               
                         })
                     }
@@ -456,6 +475,9 @@ app.post('/editar/:id', function(req, res, next) {
                 porcentaje: req.body.porcentaje,
                 total_facturado: req.body.total_facturado,
                 nro_ot: req.body.nro_ot,
+                pago: req.body.pago,
+                monto_ret: req.body.monto_ret,
+                mon_s_iva: req.body.mon_s_iva,
                 usuario_insert: user
             })
         }

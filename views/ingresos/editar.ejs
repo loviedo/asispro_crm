@@ -116,11 +116,11 @@ function cal_monto(){
                     <label for="cliente">CLIENTE</label>
                     <input type="text" class="form-control" id="cliente" name="cliente" value="<%= cliente %>">
                     <!--<datalist id="lista_cli">
-                        <% if (data) { %>
+                        <% /*if (data) { %>
                             <% data.forEach(function(fila_cli){ %>
                                 <option value="<%= fila_cli %>"><%= fila_cli %></option>
                             <% }) %>
-                        <% } %>
+                        <% }*/ %>
                     </datalist> -->
                 </div>
                 <div class="form-group col-md-6">
@@ -128,12 +128,23 @@ function cal_monto(){
                     <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra Descripcion">
                 </div>
                 <div class="form-group col-md-6">
+                    <label for="pago">PAGO</label>
+                    <input type="text" class="form-control" name="pago" id="pago" value="<%= pago %>" placeholder="Pago">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
+                            ver OTs</button>
+                    </label>
+                    <input type="text" class="form-control" id="nro_ot" name="nro_ot">
+                </div>
+
+                <div class="form-group col-md-6">
                     <label for="fact_nro">FACTURA NRO</label>
                     <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="fact_condicion">CONDICION FACTURA</label>
-                    <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" placeholder="condicion Factura" onclick="cal_monto()">
+                    <label for="fact_condicion">FACTURA TIPO</label>
+                    <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" onclick="cal_monto()">
                         <option value="CONTADO">CONTADO</option>
                         <option value="CREDITO">CREDITO</option>
                         <option value="COMP_INGRESO">COMPROBANTE DE INGRESO</option>
@@ -143,10 +154,6 @@ function cal_monto(){
                         <option value="S_F">S/F</option>
                         <option value="ANULADA">ANULADA</option>
                     </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="total_facturado">TOTAL FACTURADO</label>
-                    <input type="text" class="form-control" name="total_facturado" id="total_facturado" value="<%= total_facturado %>" placeholder="Total Facturado" onclick="cal_monto()">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="monto">MONTO</label>
@@ -160,8 +167,12 @@ function cal_monto(){
                     </select>
                 </div>
                 <div class="form-group col-md-6">
+                    <label for="mon_s_iva">MONTO SIN IVA</label>
+                    <input type="text" class="form-control" name="mon_s_iva" id="mon_s_iva" value="<%= mon_s_iva %>" placeholder="Monto sin IVA" >
+                </div>
+                <div class="form-group col-md-6">
                     <label for="iva">IVA</label>
-                    <input type="text" class="form-control" name="iva" id="iva" value="<%= iva %>">
+                    <input type="text" class="form-control" name="iva" id="iva" value="<%= iva %>" placeholder="IVA...">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="calcu_ret">PORCENTAJE RETENCION</label>
@@ -180,10 +191,8 @@ function cal_monto(){
                     <input type="text" class="form-control" name="porcentaje" id="porcentaje" value="<%= porcentaje %>" placeholder="Porcentaje">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
-                            ver OTs</button>
-                    </label>
-                    <input type="text" class="form-control" id="nro_ot" name="nro_ot" value="<%= nro_ot %>">
+                    <label for="total_facturado">TOTAL FACTURADO</label>
+                    <input type="text" class="form-control" name="total_facturado" id="total_facturado" value="<%= total_facturado %>" onclick="cal_monto()">
                 </div>
             </div>
             <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>

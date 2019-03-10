@@ -84,13 +84,13 @@ color: #ffffff;
                 <tr>
                     <th>FECHA</th>
                     <th>CLIENTE</th>
-                    <th>NRO OT</th>
                     <th>OBRA</th>
-                    <!--<th>PAGO</th>-->
-                    <th>FACTURA NRO</th>
-                    <th>FACTURA CONDICION</th>
+                    <th>PAGO</th>
+                    <th>NRO OT</th>
                     <th>MONTO</th>
-                    <!--<th>MONTO S/IVA</th>-->
+                    <th>FACTURA NRO</th>
+                    <th>TIPO</th>
+                    <th>MONTO S/IVA</th>
                     <th>IVA</th>       
                     <th>RETENCION</th>
                     <th>PORCENTAJE</th>
@@ -105,12 +105,12 @@ color: #ffffff;
                 <td><%= formatear_fecha(ingreso.fecha) %></td>
                 <td><%= ingreso.cliente %></td>
                 <td><%= ingreso.obra %></td>
+                <td><%= ingreso.pago %></td>
                 <td><%= ingreso.nro_ot %></td>
-                <!--<td><%= ingreso.pago %></td>-->
-                <td><%= ingreso.fact_nro %></td>
-                <td><%= ingreso.fact_condicion %></td>
                 <td><%= ingreso.monto %></td>
-                <!--<td><%= ingreso.mon_s_iva %></td>-->
+                <td><%= ingreso.fact_nro %></td>
+                <td><%= ingreso.fact_condicion %></td><!--CORRESPONDE A TIPO-->
+                <td><%= ingreso.mon_s_iva %></td>
                 <td><%= ingreso.iva %></td>
                 <td><%= ingreso.retencion %></td>
                 <td><%= ingreso.porcentaje %></td>
@@ -136,11 +136,11 @@ color: #ffffff;
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">
     <div class="container-fluid">
-            <form action="/ingresos/descargar" method="POST" name="form">
-                <button type="submit" id="submit" class="btn btn-info">
-                    <i class="fas fa-share"></i>
-                </button>
-            </form>
+        <form action="/ingresos/descargar" method="POST" name="form">
+            <button type="submit" id="submit" class="btn btn-info">
+                <i class="fas fa-share"></i>
+            </button>
+        </form>
     </div>
 </nav>
 <!--

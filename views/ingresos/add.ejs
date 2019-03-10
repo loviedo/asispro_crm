@@ -134,13 +134,23 @@ function cal_monto(){
                     <label for="obra">OBRA</label>
                     <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra Descripcion">
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="pago">PAGO</label>
+                    <input type="text" class="form-control" name="pago" id="pago" value="<%= pago %>" placeholder="Pago">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
+                            ver OTs</button>
+                    </label>
+                    <input type="text" class="form-control" id="nro_ot" name="nro_ot">
+                </div>
 
                 <div class="form-group col-md-6">
                     <label for="fact_nro">FACTURA NRO</label>
                     <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="fact_condicion">CONDICION FACTURA</label>
+                    <label for="fact_condicion">FACTURA TIPO</label>
                     <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" onclick="cal_monto()">
                         <option value="CONTADO">CONTADO</option>
                         <option value="CREDITO">CREDITO</option>
@@ -153,10 +163,6 @@ function cal_monto(){
                     </select>
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="total_facturado">TOTAL FACTURADO</label>
-                    <input type="text" class="form-control" name="total_facturado" id="total_facturado" value="<%= total_facturado %>" onclick="cal_monto()">
-                </div>
-                <div class="form-group col-md-6">
                     <label for="monto">MONTO</label>
                     <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" >
                 </div>
@@ -166,6 +172,10 @@ function cal_monto(){
                         <option value="IVA_10">IVA 10%</option>
                         <option value="IVA_5">IVA 5%</option>
                     </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="mon_s_iva">MONTO SIN IVA</label>
+                    <input type="text" class="form-control" name="mon_s_iva" id="mon_s_iva" value="<%= mon_s_iva %>" placeholder="Monto sin IVA" >
                 </div>
                 <div class="form-group col-md-6">
                     <label for="iva">IVA</label>
@@ -188,10 +198,8 @@ function cal_monto(){
                     <input type="text" class="form-control" name="porcentaje" id="porcentaje" value="<%= porcentaje %>" placeholder="Porcentaje">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
-                            ver OTs</button>
-                    </label>
-                    <input type="text" class="form-control" id="nro_ot" name="nro_ot">
+                    <label for="total_facturado">TOTAL FACTURADO</label>
+                    <input type="text" class="form-control" name="total_facturado" id="total_facturado" value="<%= total_facturado %>" onclick="cal_monto()">
                 </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
@@ -261,7 +269,6 @@ function cal_monto(){
         </div>
     </div>
 </div>
-
 
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">
