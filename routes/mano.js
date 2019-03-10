@@ -450,7 +450,7 @@ app.post('/add_mano', function(req, res, next){
 
             
             //AL AGREGAR DATOS, SE CARGA LO PLANIFICADO A LO REAL, NO SE LEE EL INPUT / POR ESO ASIGNAMOS LO PLAN A LO REAL
-
+            //EDIT DEL COMENTARIO ANTERIOR: FINALMENTE SE CARGA VACÍO LO REAL
             var mano_plan = {
                 fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
                 codigo: req.sanitize('codigo').trim(),
@@ -463,12 +463,12 @@ app.post('/add_mano', function(req, res, next){
                 ot_plan_t: req.sanitize('ot_plan_t').trim(),
                 h_entrada: req.sanitize('h_entrada').trim(),
                 h_salida: req.sanitize('h_salida').trim(),
-                cliente_real_m: req.sanitize('cliente_plan_m').trim(),//PLAN -> REAL
-                cliente_real_t: req.sanitize('cliente_plan_t').trim(),//PLAN -> REAL
-                obra_real_m: req.sanitize('obra_plan_m').trim(),//PLAN -> REAL
-                obra_real_t: req.sanitize('obra_plan_t').trim(),//PLAN -> REAL
-                ot_real_m: req.sanitize('ot_plan_m').trim(),//PLAN -> REAL
-                ot_real_t: req.sanitize('ot_plan_t').trim(),//PLAN -> REAL
+                cliente_real_m: '',//req.sanitize('cliente_plan_m').trim(),//PLAN -> REAL
+                cliente_real_t: '',//req.sanitize('cliente_plan_t').trim(),//PLAN -> REAL
+                obra_real_m: '',//req.sanitize('obra_plan_m').trim(),//PLAN -> REAL
+                obra_real_t: '',//req.sanitize('obra_plan_t').trim(),//PLAN -> REAL
+                ot_real_m: '',//req.sanitize('ot_plan_m').trim(),//PLAN -> REAL
+                ot_real_t: '',//req.sanitize('ot_plan_t').trim(),//PLAN -> REAL
                 encargado: req.sanitize('encargado').trim(),
                 trato_cliente: req.sanitize('trato_cliente').trim(),
                 cliente_real_n: req.sanitize('cliente_real_n').trim(),
