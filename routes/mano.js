@@ -876,7 +876,7 @@ app.get('/editar/:id', function(req, res, next){
                                             if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
                                             {rol = 1;}//es el dia siguiente 
                                             if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 5 para darle 5 dias de tiempo
-                                            {rol = 5;}//es +5 o mas dias 
+                                            {rol = 2;}//es +5 o mas dias 
                                         }
                                         
                                         res.render('mano/editar', {
