@@ -393,7 +393,7 @@ app.post('/add_listar', function(req, res, next){
                     });
                     //console.log(datos_ot);//debug de datos de MANO OBRA
 
-                    conn.query("SELECT * FROM mano_obra where fecha = '"+fechita+"'",function(err, rows) {
+                    conn.query("SELECT * FROM mano_obra WHERE fecha < curdate() ORDER BY fecha DESC",function(err, rows) {
                         if (err) {console.log(err);}
                         else{
                             rows.forEach(function(row) {    
@@ -539,7 +539,7 @@ app.post('/add_mano', function(req, res, next){
                                     });
                                     //console.log(datos_ot);//debug de datos de MANO OBRA
                 
-                                    conn.query('SELECT * FROM mano_obra order by fecha desc',function(err, rows) {
+                                    conn.query('SELECT * FROM mano_obra WHERE fecha >= curdate() ORDER BY fecha DESC',function(err, rows) {
                                         if (err) {console.log(err);}
                                         else{
                                             rows.forEach(function(row) {    
@@ -871,11 +871,14 @@ app.get('/editar/:id', function(req, res, next){
                                         
 
                                         if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
-                                        {   //vemos cuantos dias pasaron para ver la restriccion
-                                            var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
-                                            if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
+                                        {   //vemos cuantos dias pasaron para ver la restriccion // la restriccion es para dias pasados y para dias futuros por eso el abs al comparar.
+                                            //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
+                                            var dias_dif = Math.ceil((date1.getTime()- date2.getTime())/ (1000 * 3600 * 24)); 
+                                            if(dias_dif == 0)//para el caso de planificado, si estoy viendo la planificacion para hoy
+                                            {rol = 1;}
+                                            if(Math.abs(dias_dif) == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
                                             {rol = 1;}//es el dia siguiente 
-                                            if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 5 para darle 5 dias de tiempo
+                                            if(Math.abs(dias_dif) >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 5 para darle 5 dias de tiempo
                                             {rol = 2;}//es +5 o mas dias 
                                         }
                                         
