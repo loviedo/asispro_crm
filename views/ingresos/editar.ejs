@@ -144,7 +144,7 @@ function formatear_fecha(date) {
                     <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
                             ver OTs</button>
                     </label>
-                    <input type="text" class="form-control" id="nro_ot" name="nro_ot">
+                    <input type="text" class="form-control" id="nro_ot" name="nro_ot" value="<%= nro_ot %>">
                 </div>
 
                 <div class="form-group col-md-6">
@@ -186,9 +186,9 @@ function formatear_fecha(date) {
                 <div class="form-group col-md-6">
                     <label for="calcu_ret">PORCENTAJE RETENCION</label>
                     <select class="form-control" name="calcu_ret" id="calcu_ret" onclick="cal_ret()">
-                        <option value="RET_30">RET 30%</option>
-                        <option value="RET_70">RET 70%</option>
-                        <option value="RET_100">RET 100%</option>
+                        <option value="30%">RET 30%</option>
+                        <option value="70%">RET 70%</option>
+                        <option value="100%">RET 100%</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">
