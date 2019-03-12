@@ -59,48 +59,48 @@ input {
 </style>
 
 <script>
-$(document).ready(function(){
-    $("input").click(function(){
-        $(this).next().show();
-        $(this).next().hide();
-    });
-});
+    function cal_iva(){
+        var val = String(document.getElementById("calcu_iva").value);
+        if(val == "IVA_10"){
+            document.getElementById("iva").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
+            document.getElementById("mon_s_iva").value = (Math.round(document.getElementById('monto').value) - Math.round((document.getElementById('monto').value /11)*100) /100);
+        }
+        if(val == "IVA_5"){
+            document.getElementById("iva").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
+            document.getElementById("mon_s_iva").value = (Math.round(document.getElementById('monto').value) - Math.round((document.getElementById('monto').value *5/105)*100) /100);
+        }
+    }
 
+    function cal_ret(){
+        var val = String(document.getElementById("calcu_ret").value);
+        if(val == "RET_30"){
+            document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *30/100)*100) /100; //ret 30% incluido
+        }
+        if(val == "RET_70"){
+            document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *70/100)*100) /100; //ret 70% incluido
+        }
+        if(val == "RET_100"){
+            document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *1)*100) /100; //ret 100% incluido
+        }
+    }
 
-
-function cal_iva(){
-    var val = String(document.getElementById("calcu_iva").value);
-    if(val == "IVA_10"){
-        document.getElementById("iva").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
+    function cal_monto(){
+        var tipo_fact = String(document.getElementById("fact_condicion").value);
+        //alert(tipo_fact);
+        if(tipo_fact == 'CONTADO'){
+            document.getElementById("total_facturado").value = document.getElementById("monto").value; //
+        }
+        if(tipo_fact == 'CREDITO'){
+            document.getElementById("monto").value = 0;
+            //document.getElementById('total_facturado').value; //directo a monto
+        }
+        if(tipo_fact == 'RECIBO'){
+            document.getElementById("mon_s_iva").value = 0;
+            document.getElementById("iva").value = 0
+            document.getElementById("total_facturado").value = 0;
+            //document.getElementById('total_facturado').value; //directo a monto
+        }
     }
-    if(val == "IVA_5"){
-        document.getElementById("iva").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
-    }
-}
-
-function cal_ret(){
-    var val = String(document.getElementById("calcu_ret").value);
-    if(val == "RET_30"){
-        document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *30/100)*100) /100; //ret 30% incluido
-    }
-    if(val == "RET_70"){
-        document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *70/100)*100) /100; //ret 70% incluido
-    }
-    if(val == "RET_100"){
-        document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *1)*100) /100; //ret 100% incluido
-    }
-}
-
-function cal_monto(){
-    var tipo_fact = String(document.getElementById("fact_condicion").value);
-    //alert(tipo_fact);
-    if(tipo_fact == 'CONTADO'){
-        document.getElementById("monto").value = document.getElementById('total_facturado').value; //directo a monto
-    }
-    if(tipo_fact == 'CREDITO'){
-        document.getElementById("monto").value = 0; //
-    }
-}
 </script>
 
 
@@ -154,12 +154,12 @@ function cal_monto(){
                     <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" onclick="cal_monto()">
                         <option value="CONTADO">CONTADO</option>
                         <option value="CREDITO">CREDITO</option>
-                        <option value="COMP_INGRESO">COMPROBANTE DE INGRESO</option>
                         <option value="RECIBO">RECIBO</option>
+                        <!--<option value="COMP_INGRESO">COMPROBANTE DE INGRESO</option>
                         <option value="RECIBO_COMUN">RECIBO COMUN</option>
                         <option value="BOLETA_PAGO">BOLETA DE PAGO</option>
                         <option value="S_F">S/F</option>
-                        <option value="ANULADA">ANULADA</option>
+                        <option value="ANULADA">ANULADA</option>-->
                     </select>
                 </div>
                 <div class="form-group col-md-6">
@@ -184,7 +184,7 @@ function cal_monto(){
                 <div class="form-group col-md-6">
                     <label for="calcu_ret">PORCENTAJE RETENCION</label>
                     <select class="form-control" name="calcu_ret" id="calcu_ret" onclick="cal_ret()">
-                        <option value="RET_30">RET 10%</option>
+                        <option value="RET_30">RET 30%</option>
                         <option value="RET_70">RET 70%</option>
                         <option value="RET_100">RET 100%</option>
                     </select>
@@ -192,10 +192,6 @@ function cal_monto(){
                 <div class="form-group col-md-6">
                     <label for="retencion">RETENCION</label>
                     <input type="text" class="form-control" name="retencion" id="retencion" value="<%= retencion %>" placeholder="Retencion">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="porcentaje">PORCENTAJE</label>
-                    <input type="text" class="form-control" name="porcentaje" id="porcentaje" value="<%= porcentaje %>" placeholder="Porcentaje">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="total_facturado">TOTAL FACTURADO</label>
