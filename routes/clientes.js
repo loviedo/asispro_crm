@@ -133,13 +133,14 @@ app.post('/add', function(req, res, next){
             var cli = {
                 nombre: nombre,
                 ruc: ruc,
+                usuario: user,
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
             }   
             
             //conectamos a la base de datos
             req.getConnection(function(error, conn) {
-                conn.query('INSERT INTO cliente SET ?', cli, function(err, result) {
+                conn.query('INSERT INTO clientes SET ?', cli, function(err, result) {
                     //if(err) throw err
                     if (err) {
                         req.flash('error', err)
@@ -148,6 +149,7 @@ app.post('/add', function(req, res, next){
                         res.render('clientes/add', {
                             title: 'Agregar Nuevo CLIENTE',
                             nombre: cli.nombre,
+                            usuario: user,
                             ruc: cli.ruc
                         })
                     } else {                
@@ -173,6 +175,7 @@ app.post('/add', function(req, res, next){
                 title: 'Agregar Nuevo CLIENTE',
                 nombre: cli.nombre,
                 ruc: cli.ruc,
+                usuario:cli.user,
                 usuario_insert: user
             })
         }
