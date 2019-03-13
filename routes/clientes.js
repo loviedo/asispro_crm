@@ -133,7 +133,6 @@ app.post('/add', function(req, res, next){
             var cli = {
                 nombre: nombre,
                 ruc: ruc,
-                usuario: user,
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
             }   
