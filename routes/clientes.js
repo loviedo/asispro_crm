@@ -147,8 +147,8 @@ app.post('/add', function(req, res, next){
                         // render to views/factura/add.ejs
                         res.render('clientes/add', {
                             title: 'Agregar Nuevo CLIENTE',
-                            nombre: gasto.nombre,
-                            ruc: gasto.ruc
+                            nombre: cli.nombre,
+                            ruc: cli.ruc
                         })
                     } else {                
                         req.flash('success', 'Datos agregados correctamente!')
@@ -171,8 +171,8 @@ app.post('/add', function(req, res, next){
             
             res.render('clientes/add', { 
                 title: 'Agregar Nuevo CLIENTE',
-                nombre: gasto.nombre,
-                ruc: gasto.ruc,
+                nombre: cli.nombre,
+                ruc: cli.ruc,
                 usuario_insert: user
             })
         }
