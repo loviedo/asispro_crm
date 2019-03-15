@@ -120,7 +120,7 @@ app.post('/add', function(req, res, next){
             var nombre = req.sanitize('nombre').trim();
             var ruc = req.sanitize('ruc').trim();
 
-            var pro = { nombre: nombre, ruc: ruc, usuario_insert: user}   
+            var pro = { nombre: nombre, ruc: ruc}   
             
             //conectamos a la base de datos
             req.getConnection(function(error, conn) {
@@ -133,6 +133,7 @@ app.post('/add', function(req, res, next){
                         res.render('proveedor/add', {
                             title: 'Agregar Nuevo PROVEEDOR',
                             nombre: pro.nombre,
+                            usuario: user,
                             ruc: pro.ruc
                         })
                     } else {                
@@ -193,7 +194,7 @@ app.post('/editar/:id', function(req, res, next) {
         var errors = req.validationErrors()
         
         if( !errors ) {
-            var pro = {nombre: req.sanitize('nombre').trim(), ruc: req.sanitize('ruc').trim(), usuario_insert: user}  
+            var pro = {nombre: req.sanitize('nombre').trim(), ruc: req.sanitize('ruc').trim()}  
             
             req.getConnection(function(error, conn) {
                 conn.query('UPDATE proveedor SET ? WHERE id = ' + req.params.id, pro, function(err, result) {
