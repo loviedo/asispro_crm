@@ -132,8 +132,8 @@ app.post('/add', function(req, res, next){
                         // render to views/factura/add.ejs
                         res.render('proveedor/add', {
                             title: 'Agregar Nuevo PROVEEDOR',
-                            nombre: gasto.nombre,
-                            ruc: gasto.ruc
+                            nombre: pro.nombre,
+                            ruc: pro.ruc
                         })
                     } else {                
                         req.flash('success', 'Datos agregados correctamente!')
@@ -153,7 +153,7 @@ app.post('/add', function(req, res, next){
             })                
             req.flash('error', error_msg)        
             
-            res.render('proveedor/add', {title: 'Agregar Nuevo PROVEEDOR', nombre: gasto.nombre, ruc: gasto.ruc, usuario_insert: user })
+            res.render('proveedor/add', {title: 'Agregar Nuevo PROVEEDOR', nombre: pro.nombre, ruc: pro.ruc, usuario_insert: user })
         }
     }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
