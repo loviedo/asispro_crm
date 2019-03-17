@@ -86,6 +86,8 @@ color: #ffffff;
                     <th>ENCARGADO</th>
                     <th>CODIGO</th>
                     <th>NRO OT</th> 
+                    <th>OBRA</th> 
+                    <th>CLIENTE</th> 
                     <th>IMPUTADO</th> 
                     <th>ORIGEN PAGO</th> 
                     <% if (usuario == 'ksanabria' ||  usuario == 'josorio' ||  usuario == 'admin' ) { %>     
@@ -111,6 +113,8 @@ color: #ffffff;
                 <td><%= gasto.encargado %></td>
                 <td><%= gasto.codigo %></td>
                 <td><%= gasto.nro_ot %></td>
+                <td><%= gasto.obra %></td>
+                <td><%= gasto.cliente %></td>
                 <td><%= gasto.imputado %></td>
                 <td><%= gasto.origen_pago %></td>
                 <% if (usuario == 'ksanabria' ||  usuario == 'josorio' ||  usuario == 'admin' ) { %>     

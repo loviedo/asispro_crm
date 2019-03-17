@@ -68,7 +68,15 @@ function formatear_fecha(date) {
     window.onload = function() {
       document.getElementById('iva_5').hidden = true;
     };
-    
+function calcu_concepto() 
+{   var cond = document.getElementById("codigo").value;
+    if(cond == "4")
+    {   //colocamos a 0 el gasto real
+        document.getElementById("gasto_real1").disabled = true;
+        document.getElementById("gasto_real1").value = 0; 
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
+    }
+}
     function cal_iva(){
         var val = String(document.getElementById("calcu_iva").value);
         if(val == "IVA_10"){
@@ -166,7 +174,7 @@ function formatear_fecha(date) {
                 <div class="form-group col-md-6">
                     <label for="codigo">CODIGO</label>
                     <!--<input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">-->
-                        <select class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO">
+                        <select class="form-control" name="codigo" id="codigo" value="<%= codigo %>" placeholder="CODIGO" onclick="calcu_concepto()">
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
