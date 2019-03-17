@@ -871,15 +871,17 @@ app.get('/editar/:id', function(req, res, next){
                                         
 
                                         if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
-                                        {   //vemos cuantos dias pasaron para ver la restriccion // la restriccion es para dias pasados y para dias futuros por eso el abs al comparar.
+                                        {   //vemos cuantos dias pasaron para ver la restriccion
                                             //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
                                             var dias_dif = Math.ceil((date1.getTime()- date2.getTime())/ (1000 * 3600 * 24)); 
-                                            if(dias_dif == 0)//para el caso de planificado, si estoy viendo la planificacion para hoy
-                                            {rol = 1;}
-                                            if(Math.abs(dias_dif) == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
+                                            if(dias_dif < 0)//para el caso de planificado, si estoy viendo lo real para ayer
+                                            {rol = 2;}
+                                            if(dias_dif == 0)//para el caso de planificado, si estoy viendo la planificacion para hoy NO DEBE PODER EDITARSE NADA
+                                            {rol = 2;}
+                                            if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
                                             {rol = 1;}//es el dia siguiente 
-                                            if(Math.abs(dias_dif) >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 5 para darle 5 dias de tiempo
-                                            {rol = 2;}//es +5 o mas dias 
+                                            if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 2 para darle 5 dias de tiempo
+                                            {rol = 2;}//es +2 o mas dias 
                                         }
                                         
                                         res.render('mano/editar', {
@@ -923,7 +925,7 @@ app.get('/editar/:id', function(req, res, next){
                                             encargado2: rows[0].encargado2,
                                             trato_cliente2: rows[0].trato_cliente2,
                                             restri: rol,
-                                            data_ot:datos_ot,//datos de ot
+                                            data_ot: datos_ot,//datos de ot
                                             data_rrhh:datos_rrhh, //datos de rrhh
                                             usuario: user
                                         })
