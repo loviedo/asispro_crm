@@ -78,7 +78,7 @@ function generar_excel_gastos(rows){
         });
     //dibujamos el excel
     //primero la cabecera
-    worksheet.cell(1,1).string('ITEM').style(style);
+    worksheet.cell(1,1).string('ID').style(style);
     worksheet.cell(1,2).string('FECHA').style(style);
     worksheet.cell(1,3).string('MONTO').style({style});
     worksheet.cell(1,4).string('EXENTAS').style(style);
@@ -92,16 +92,19 @@ function generar_excel_gastos(rows){
     worksheet.cell(1,12).string('ENCARGADO').style(style);
     worksheet.cell(1,13).string('CODIGO').style(style);
     worksheet.cell(1,14).string('OT NRO').style(style);
-    worksheet.cell(1,15).string('IMPUTADO').style(style);
-    worksheet.cell(1,16).string('ORIGEN PAGO').style(style);
+    worksheet.cell(1,15).string('OBRA').style(style);
+    worksheet.cell(1,16).string('CLIENTE').style(style);
+    worksheet.cell(1,17).string('IMPUTADO').style(style);
+    worksheet.cell(1,18).string('ORIGEN PAGO').style(style);
     if(user == "admin" || user == "ksanabria" || user == "josorio")
-    {    worksheet.cell(1,17).string('TIPO').style(style);}
+    {    worksheet.cell(1,19).string('TIPO').style(style);}
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).string(String(i)).style(style);//numeracion
+        //worksheet.cell(i+1,1).string(String(i)).style(style);//numeracion
+        worksheet.cell(i+1,1).number(Number(row.id)).style(style);//cambiamos por el ID de insercion
         worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
         worksheet.cell(i+1,3).number(Number(row.monto)).style(style);
         worksheet.cell(i+1,4).number(Number(row.exentas)).style(style);
@@ -115,10 +118,12 @@ function generar_excel_gastos(rows){
         worksheet.cell(i+1,12).string(String(row.encargado)).style(style);
         worksheet.cell(i+1,13).number(Number(row.codigo)).style(style1);
         worksheet.cell(i+1,14).number(Number(row.nro_ot)).style(style1);
-        worksheet.cell(i+1,15).string(String(row.imputado)).style(style);
-        worksheet.cell(i+1,16).string(String(row.origen_pago)).style(style);
+        worksheet.cell(i+1,15).string(String(row.obra)).style(style);
+        worksheet.cell(i+1,16).string(String(row.cliente)).style(style);
+        worksheet.cell(i+1,17).string(String(row.imputado)).style(style);
+        worksheet.cell(i+1,18).string(String(row.origen_pago)).style(style);
         if(user == "admin" || user == "ksanabria" || user == "josorio")
-        {    worksheet.cell(i+1,17).string(String(row.tipo)).style(style);}
+        {    worksheet.cell(i+1,19).string(String(row.tipo)).style(style);}
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -138,12 +143,13 @@ app.get('/', function(req, res, next) {
         //si el usuario es cristina entonces solo ve lo de ella, si no, se ve todo
         var sql_con ="";
         if(user == "cibanez" || user == "prueba")
-        {   sql_con = "SELECT * FROM gastos WHERE usuario_insert = '"+ user +"' or tipo = 'NO_CONF' ORDER BY fecha ASC";}
+        {   sql_con = "SELECT * FROM gastos WHERE usuario_insert in ('cibanez','prueba') or tipo = 'NO_CONF' ORDER BY fecha ASC";}
         else
-        {   sql_con = "SELECT * FROM gastos ORDER BY fecha ASC";}
+        //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto.
+        {   sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 inner join ot t2 on t2.ot_nro = t1.nro_ot order by t1.id desc";}
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {
-                //if(err) throw err
                 if (err) {
                     req.flash('error', err)
                     res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
