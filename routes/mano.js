@@ -870,6 +870,9 @@ app.get('/editar/:id', function(req, res, next){
                                         //antes de pasar la info, tenemos que ver que usuario/rol y que fecha es para restringir
                                         
 
+                                        //REGLAS
+                                        //PLANIFICACION DE HOY NO DEBE EDITARSE NADA (rol: 2)
+                                        //PLANIFICACION DE MANHANA PUEDE EDITARSE TODO (rol: 1)
                                         if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
                                         {   //vemos cuantos dias pasaron para ver la restriccion
                                             //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
@@ -878,10 +881,10 @@ app.get('/editar/:id', function(req, res, next){
                                             {rol = 2;}
                                             if(dias_dif == 0)//para el caso de planificado, si estoy viendo la planificacion para hoy NO DEBE PODER EDITARSE NADA
                                             {rol = 2;}
-                                            if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
-                                            {rol = 1;}//es el dia siguiente 
-                                            if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 2 para darle 5 dias de tiempo
-                                            {rol = 2;}//es +2 o mas dias 
+                                            //if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
+                                            //{rol = 1;}//es el dia siguiente 
+                                            if(dias_dif >= 1)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 2 para darle 5 dias de tiempo
+                                            {rol = 1;}//es +2 o mas dias 
                                         }
                                         
                                         res.render('mano/editar', {
@@ -989,7 +992,7 @@ app.post('/editar/:id', function(req, res, next) {
                 hora_50: req.sanitize('hora_50').trim(),
                 hora_100: req.sanitize('hora_100').trim(),
                 hora_neg: req.sanitize('hora_neg').trim(),
-                pasaje: req.sanitize('pasaje').trim(),
+                pasaje: Number(req.sanitize('pasaje').trim()),
                 //jornal: Number(req.sanitize('jornal').trim()),
                 usuario_insert: user
             } 
@@ -1048,7 +1051,7 @@ app.post('/editar/:id', function(req, res, next) {
                         //traemos las planificaciones para mostrar en la tablita frente
                         datos = [];//datos de planificacion
                         datos_ot = [];
-                        conn.query('SELECT * FROM ot order by id desc',function(err, rows) {
+                        conn.query('SELECT * FROM mano_obra WHERE id = ' + req.params.id, function(err, rows) {
                             if (err) {console.log(err);}
                             else{
                                 rows.forEach(function(row) {    
@@ -1072,7 +1075,30 @@ app.post('/editar/:id', function(req, res, next) {
                                                     datos_rrhh.push(row);
                                                 });
                                                 //console.log(datos_rrhh);//debug de datos de RRHH
+                                                //console.log(datos_rrhh);//debug de datos de RRHH
                                                 //dibujamos la tabla con los datos que consultamos
+                                                var date1 = new Date(formatear_fecha_yyyymmdd(rows[0].fecha));//traemos la fecha de carga de la planificacion.
+                                                var date2 = new Date(hoy());//de hoy
+                                                date1.setDate(date1.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
+                                                date2.setDate(date2.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
+                                                //antes de pasar la info, tenemos que ver que usuario/rol y que fecha es para restringir
+                                                
+
+                                                if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
+                                                {   //vemos cuantos dias pasaron para ver la restriccion
+                                                    //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
+                                                    var dias_dif = Math.ceil((date1.getTime()- date2.getTime())/ (1000 * 3600 * 24)); 
+                                                    if(dias_dif < 0)//para el caso de planificado, si estoy viendo lo real para ayer
+                                                    {rol = 2;}
+                                                    if(dias_dif == 0)//para el caso de planificado, si estoy viendo la planificacion para hoy NO DEBE PODER EDITARSE NADA
+                                                    {rol = 2;}
+                                                    if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
+                                                    {rol = 1;}//es el dia siguiente 
+                                                    if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 2 para darle 5 dias de tiempo
+                                                    {rol = 2;}//es +2 o mas dias 
+                                                }
+
+
                                                 res.render('mano/editar', {
                                                     title: 'Editar Plan Laboral',
                                                     id: req.params.id,
