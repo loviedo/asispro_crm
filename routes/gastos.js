@@ -145,8 +145,7 @@ app.get('/', function(req, res, next) {
         if(user == "cibanez" || user == "prueba")
         {   sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 inner join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "WHERE t1.usuario_insert in ('cibanez','prueba') or t1.tipo = 'NO_CONF'" +
-        " order by t1.id desc";}
+        "WHERE t1.usuario_insert in ('cibanez','prueba') or t1.tipo = 'NO_CONF' order by t1.id desc";}
         else
         //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto.
         {   sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
