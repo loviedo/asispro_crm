@@ -226,6 +226,8 @@ app.post('/add', function(req, res, next){
             var exe = Number(req.sanitize('exentas').escape().trim());
             var calcu_iva = req.sanitize('calcu_iva').escape().trim();
             var fact_cond= req.sanitize('fact_condicion').trim();
+            var cod = Number(req.sanitize('codigo').escape().trim());
+
             if(calcu_iva == "IVA_10"){
                 var iva10 = Number(req.sanitize('iva_10').escape().trim());
                 var iva5 = 0;
@@ -234,15 +236,25 @@ app.post('/add', function(req, res, next){
                 var iva10 = 0;
                 var iva5 = Number(req.sanitize('iva_5').escape().trim());
             }
+            /*if()
+            {}*/
             var gasreal = Number(req.sanitize('gasto_real').escape().trim());
-            if(gasreal == 0 && fact_cond !== "CREDITO")
-            {   gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor
+            //para el caso del codigo 4 y factura no son credito  y NO SON CODIGO 4
+            if(gasreal == 0 && fact_cond !== "CREDITO" && cod !== 4)
+            {   if(cod !== 4){gasreal = Number(req.sanitize('gasto_real').escape().trim());}
+                else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor}
+            }
 
             var tipov = '';
             if(user == "admin" || user == "ksanabria" || user == "josorio")
             {   tipov = req.sanitize('tipo').escape().trim();}
 
-            var cod = Number(req.sanitize('codigo').escape().trim());
+
+
+
+            if(gasreal == 0 && fact_cond !== "CREDITO" && cod == 4)
+            {   gasreal = Number(req.sanitize('gasto_real').escape().trim());}//el otro valor
+
             var ot = Number(req.sanitize('nro_ot').escape().trim());
             var origen_pago = req.sanitize('origen_pago').escape().trim();
 
