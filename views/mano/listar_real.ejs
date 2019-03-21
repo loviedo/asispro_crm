@@ -116,7 +116,7 @@ color: #ffffff;
                 <td><%= mano.trato_cliente2 %></td>
                 <td>
                     <div>
-                        <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp;  
+                        <a href='/mano/editar_real/<%= mano.id %>'>Ver</a> &nbsp;  
                         <% if (usuario != 'cibanez' && usuario != 'prueba' ) { %><a href='/mano/eliminar/<%= mano.id %>'>Eliminar</a><% } %>                          
                         <!--<form method="post" action="/mano/eliminar/<%= mano.id %>" style="float:right">
                             <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
