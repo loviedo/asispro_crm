@@ -184,6 +184,7 @@ body .modal-dialog { /* Width */
                     <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente2" id="trato_cliente2" value="<%= trato_cliente2 %>"><% } %>
                     <% if(restri > 1){ %><input type="text" class="form-control" name="trato_cliente2" id="trato_cliente2" value="<%= trato_cliente2 %>" readonly=true><% } %>
                 </div>
+                <!--
                 <div class="form-group col-md-2">
                     <label for="cliente_real_m">CLIENTE REAL MAÑANA</label>
                     <% if(restri < 1){ %><button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_3">OTs</button><% } %>
@@ -198,7 +199,7 @@ body .modal-dialog { /* Width */
                     <% if(restri < 1){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>"><% } %>
                     <% if(restri == 1){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>"><% } %>
                     <% if(restri > 1){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>" readonly=true><% } %>
-                </div>
+                </div>-->
                 <div class="form-group col-md-2">
                     <label for="encargado">ENCARGADO MAÑANA</label>
                     <% if(restri <= 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
@@ -211,6 +212,7 @@ body .modal-dialog { /* Width */
                     <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
                     <% if(restri > 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>" readonly=true><% } %>
                 </div>
+                <!--
                 <div class="form-group col-md-2">
                     <label for="h_entrada">HORARIO ENTRADA</label>
                     <% if(restri < 1){ %><input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>" placeholder="HORARIO ENTRADA"><% } %>
@@ -223,6 +225,7 @@ body .modal-dialog { /* Width */
                     <% if(restri == 1){ %><input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA"><% } %>
                     <% if(restri > 1){ %><input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA" readonly=true><% } %>
                 </div>
+
                 <div class="form-group col-md-2">
                     <label for="cliente_real_t">CLIENTE REAL TARDE</label>
                     <% if(restri < 1){ %><button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_4">OTs</button><% } %>
@@ -283,6 +286,7 @@ body .modal-dialog { /* Width */
                     <% if(restri == 1){ %><input type="text" class="form-control" name="pasaje" id="pasaje" value="<%= pasaje %>"><% } %>
                     <% if(restri >1){ %><input type="text" class="form-control" name="pasaje" id="pasaje" value="<%= pasaje %>" readonly=true><% } %>
                 </div>
+                -->
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">ACTUALIZAR</button>
         </form>
