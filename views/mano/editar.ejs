@@ -202,13 +202,13 @@ body .modal-dialog { /* Width */
                 </div>-->
                 <div class="form-group col-md-2">
                     <label for="encargado">ENCARGADO MAÑANA</label>
-                    <% if(restri <= 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
                     <% if(restri == 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
                     <% if(restri > 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="trato_cliente">TRATO C/ EL CLIENTE MAÑANA</label>
-                    <% if(restri < 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
                     <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
                     <% if(restri > 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>" readonly=true><% } %>
                 </div>
