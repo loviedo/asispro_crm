@@ -92,8 +92,8 @@ function generar_excel_gastos(rows){
     worksheet.cell(1,12).string('ENCARGADO').style(style);
     worksheet.cell(1,13).string('CODIGO').style(style);
     worksheet.cell(1,14).string('OT NRO').style(style);
-    worksheet.cell(1,15).string('OBRA').style(style);
-    worksheet.cell(1,16).string('CLIENTE').style(style);
+    worksheet.cell(1,15).string('CLIENTE').style(style);
+    worksheet.cell(1,16).string('OBRA').style(style);
     worksheet.cell(1,17).string('IMPUTADO').style(style);
     worksheet.cell(1,18).string('ORIGEN PAGO').style(style);
     if(user == "admin" || user == "ksanabria" || user == "josorio")
@@ -118,8 +118,8 @@ function generar_excel_gastos(rows){
         worksheet.cell(i+1,12).string(String(row.encargado)).style(style);
         worksheet.cell(i+1,13).number(Number(row.codigo)).style(style1);
         worksheet.cell(i+1,14).number(Number(row.nro_ot)).style(style1);
-        worksheet.cell(i+1,15).string(String(row.obra)).style(style);
-        worksheet.cell(i+1,16).string(String(row.cliente)).style(style);
+        worksheet.cell(i+1,15).string(String(row.cliente)).style(style);
+        worksheet.cell(i+1,16).string(String(row.obra)).style(style);
         worksheet.cell(i+1,17).string(String(row.imputado)).style(style);
         worksheet.cell(i+1,18).string(String(row.origen_pago)).style(style);
         if(user == "admin" || user == "ksanabria" || user == "josorio")
