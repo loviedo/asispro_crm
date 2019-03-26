@@ -73,6 +73,7 @@ color: #ffffff;
             <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>
+                    <th>ID</th>
                     <th>FECHA</th>
                     <th>MONTO</th>
                     <th>EXENTAS</th>
@@ -86,8 +87,8 @@ color: #ffffff;
                     <th>ENCARGADO</th>
                     <th>CODIGO</th>
                     <th>NRO OT</th> 
-                    <th>OBRA</th> 
                     <th>CLIENTE</th> 
+                    <th>OBRA</th> 
                     <th>IMPUTADO</th> 
                     <th>ORIGEN PAGO</th> 
                     <% if (usuario == 'ksanabria' ||  usuario == 'josorio' ||  usuario == 'admin' ) { %>     
@@ -100,6 +101,7 @@ color: #ffffff;
         <% if (data) { %>
         <% data.forEach(function(gasto){ %>
             <tr>
+                <td><%= gasto.id %></td>
                 <td><%= formatear_fecha(gasto.fecha) %></td>
                 <td><%= gasto.monto %></td>
                 <td><%= gasto.exentas %></td>
@@ -113,8 +115,8 @@ color: #ffffff;
                 <td><%= gasto.encargado %></td>
                 <td><%= gasto.codigo %></td>
                 <td><%= gasto.nro_ot %></td>
-                <td><%= gasto.obra %></td>
                 <td><%= gasto.cliente %></td>
+                <td><%= gasto.obra %></td>
                 <td><%= gasto.imputado %></td>
                 <td><%= gasto.origen_pago %></td>
                 <% if (usuario == 'ksanabria' ||  usuario == 'josorio' ||  usuario == 'admin' ) { %>     

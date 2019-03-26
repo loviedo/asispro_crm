@@ -238,7 +238,7 @@ app.post('/add', function(req, res, next){
             }
             /*if()
             {}*/
-            var gasreal = Number(req.sanitize('gasto_real').escape().trim());
+            var gasreal = Number(req.sanitize('gasto_real1').escape().trim());
             //para el caso del codigo 4 y factura no son credito  y NO SON CODIGO 4
             if(gasreal == 0 && fact_cond !== "CREDITO" && cod !== 4)
             {   if(cod !== 4){gasreal = Number(req.sanitize('gasto_real').escape().trim());}
