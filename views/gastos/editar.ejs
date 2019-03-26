@@ -69,6 +69,9 @@ function formatear_fecha(date) {
       document.getElementById('iva_5').hidden = true;
     };
 
+
+
+    
     function calcu_concepto() 
     {   var cond = document.getElementById("codigo").value;
         if(cond == "4")
@@ -155,8 +158,8 @@ function formatear_fecha(date) {
                 </div>
                 <div class="form-group col-md-6">
                     <label for="gasto_real">GASTO REAL</label>
-                    <input type="text" class="form-control" name="gasto_real1" id="gasto_real1" value="<%= gasto_real %>" placeholder="GASTO REAL">
-                    <input type="hidden" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>">
+                    <input type="text" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>" placeholder="GASTO REAL">
+                    <!--<input type="hidden" class="form-control" name="gasto_real" id="gasto_real" value="<%= gasto_real %>">-->
                 </div>
                 <div class="form-group col-md-6">
                     <label for="concepto">CONCEPTO</label>
