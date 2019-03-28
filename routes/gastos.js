@@ -238,7 +238,13 @@ app.post('/add', function(req, res, next){
             }
             /*if()
             {}*/
-            var gasreal = Number(req.sanitize('gasto_real1').escape().trim());
+            var gasreal = ''
+            //si el cod = 4 entonces tenemos que leer gasto_real, porque gesto_real esta anulado
+            if(cod == 4)
+            {gasreal = Number(req.sanitize('gasto_real').escape().trim());}
+            else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}
+
+            
             //para el caso del codigo 4 y factura no son credito  y NO SON CODIGO 4
             if(gasreal == 0 && fact_cond !== "CREDITO" && cod !== 4)
             {   if(cod !== 4){gasreal = Number(req.sanitize('gasto_real').escape().trim());}
@@ -249,11 +255,8 @@ app.post('/add', function(req, res, next){
             if(user == "admin" || user == "ksanabria" || user == "josorio")
             {   tipov = req.sanitize('tipo').escape().trim();}
 
-
-
-
-            if(gasreal == 0 && fact_cond !== "CREDITO" && cod == 4)
-            {   gasreal = Number(req.sanitize('gasto_real').escape().trim());}//el otro valor
+            /*if(gasreal == 0 && fact_cond !== "CREDITO" && cod == 4)
+            {   gasreal = 0;}*///el otro valor
 
             var ot = Number(req.sanitize('nro_ot').escape().trim());
             var origen_pago = req.sanitize('origen_pago').escape().trim();
