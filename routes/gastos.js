@@ -239,8 +239,8 @@ app.post('/add', function(req, res, next){
             /*if()
             {}*/
             var gasreal = ''
-            //si el cod = 4 entonces tenemos que leer gasto_real, porque gesto_real esta anulado
-            if(cod == 4)
+            if(cod == 4 || fact_cond == "CREDITO")
+            //si el cod = 4 O es credito entonces tenemos que leer gasto_real, porque gasto_real1 esta anulado
             {gasreal = Number(req.sanitize('gasto_real').escape().trim());}
             else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}
 
@@ -468,16 +468,68 @@ app.post('/editar/:id', function(req, res, next) {
             var date1 = req.sanitize('fecha').escape().trim();
             var mon = Number(req.sanitize('monto').escape().trim()); 
             var exe = Number(req.sanitize('exentas').escape().trim());
-            var iva10 = Number(req.sanitize('iva_10').escape().trim());
-            var iva5 = Number(req.sanitize('iva_5').escape().trim());
-            var gasreal = Number(req.sanitize('gasto_real').escape().trim());
+            var calcu_iva = req.sanitize('calcu_iva').escape().trim();
+            var fact_cond= req.sanitize('fact_condicion').trim();
             var cod = Number(req.sanitize('codigo').escape().trim());
-            var ot = Number(req.sanitize('nro_ot').escape().trim());
+
+            if(calcu_iva == "IVA_10"){
+                var iva10 = Number(req.sanitize('iva_10').escape().trim());
+                var iva5 = 0;
+            }
+            if(calcu_iva == "IVA_5"){
+                var iva10 = 0;
+                var iva5 = Number(req.sanitize('iva_5').escape().trim());
+            }
+            /*if()
+            {}*/
+            var gasreal = ''
+            if(cod == 4 || fact_cond == "CREDITO")
+            //si el cod = 4 O es credito entonces tenemos que leer gasto_real, porque gasto_real1 esta anulado
+            {gasreal = Number(req.sanitize('gasto_real').escape().trim());}
+            else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}
+
+            
+            //para el caso del codigo 4 y factura no son credito  y NO SON CODIGO 4
+            if(gasreal == 0 && fact_cond !== "CREDITO" && cod !== 4)
+            {   if(cod !== 4){gasreal = Number(req.sanitize('gasto_real').escape().trim());}
+                else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor}
+            }
 
             var tipov = '';
             if(user == "admin" || user == "ksanabria" || user == "josorio")
             {   tipov = req.sanitize('tipo').escape().trim();}
 
+            /*if(gasreal == 0 && fact_cond !== "CREDITO" && cod == 4)
+            {   gasreal = 0;}*///el otro valor
+
+            var ot = Number(req.sanitize('nro_ot').escape().trim());
+            var origen_pago = req.sanitize('origen_pago').escape().trim();
+
+            /*var fact_nro = Number(req.sanitize('fact_nro').escape().trim());
+            var recibo_nro = Number(req.sanitize('recibo_nro').escape().trim());
+            var remision_nro = Number(req.sanitize('remision_nro').escape().trim());*/
+
+            var gasto = {
+                fecha: formatear_fecha_yyyymmdd(date1),
+                monto: mon,
+                exentas: exe,
+                iva_10: iva10,
+                iva_5: iva5,
+                gasto_real: gasreal,
+                concepto: req.sanitize('concepto').trim(),
+                fact_condicion: req.sanitize('fact_condicion').trim(),
+                proveedor: req.sanitize('proveedor').trim(),
+                fact_nro: req.sanitize('fact_nro').trim(),
+                encargado: req.sanitize('encargado').trim(),
+                codigo: cod,
+                nro_ot: ot,
+                origen_pago:origen_pago,
+                imputado: req.sanitize('imputado').trim(),
+                tipo: tipov,
+                id_proveedor: req.sanitize('id_proveedor').trim(),
+                usuario_insert: user
+                //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
+            }  
             var gasto = {
                 fecha: formatear_fecha_yyyymmdd(date1),
                 monto: mon,

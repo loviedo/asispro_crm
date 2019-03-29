@@ -84,6 +84,8 @@ function calcu_concepto()
         document.getElementById("gasto_real1").value = 0; 
         document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
     }
+    else
+    {   document.getElementById("gasto_real1").disabled = false;}
 }
 
 function changeText() {
