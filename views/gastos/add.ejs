@@ -64,6 +64,7 @@ body .modal-dialog { /* Width */
 <script type="text/javascript"> 
 //al cargar la pagina ocultamos iva_5
 window.onload = function() {
+    document.getElementById('iva_5').hidden = true;
     document.getElementById("iva_10").value = 0; 
     document.getElementById("iva_5").value = 0;
     document.getElementById("exentas1").value = 0;
@@ -72,20 +73,29 @@ window.onload = function() {
     document.getElementById("monto").value = 0;
     document.getElementById("gasto_real1").value = 0;
     document.getElementById("gasto_real").value = 0;
-    document.getElementById('iva_5').hidden = true;
 };
 
 
 function calcu_concepto() 
 {   var cond = document.getElementById("codigo").value;
+    var cond1 = document.getElementById("fact_condicion").value;
     if(cond == "4")
     {   //colocamos a 0 el gasto real
         document.getElementById("gasto_real1").disabled = true;
         document.getElementById("gasto_real1").value = 0; 
         document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
     }
-    else
-    {   document.getElementById("gasto_real1").disabled = false;}
+    else//si no es condicion = 4, vemos si es credito o no, si si es entonces mantenemos disabled
+    {   if(cond1 == "BOLETA_PAGO" || cond1 == "COMP_INGRESO" || cond1 == "RECIBO" || cond1 == "S_F" || cond1 == "RECIBO_COMUN" || cond1 == "NOTA_CREDITO")
+        {   document.getElementById("gasto_real1").disabled = false;}
+        if(cond1 == "CREDITO")
+        {   document.getElementById("gasto_real1").disabled = true;
+            document.getElementById("gasto_real1").value = 0; 
+            document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
+        }
+        if(cond1 == "CONTADO")
+        {   document.getElementById("gasto_real1").disabled = false;}
+    }
 }
 
 function changeText() {
