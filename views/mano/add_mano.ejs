@@ -27,74 +27,106 @@ function formatear_fecha(date) {
 }
 %>
 
-
-
-
 <script type="text/javascript"> 
 
-    function dup_h_neg(){
-        var h1 = Number((document.getElementById('hora_neg').value.replace(",",".")));
-        h1 = h1 * (1.5);
-        //alert(h1); //debug
-        document.getElementById("hora_neg").value = h1.toString().replace(".",","); //duplicamos el item
+function check_ot_m(){
+    //verificamos si la OT es menor que 999900 entonces sea READONLY
+    var ot_num = Number(document.getElementById("ot_plan_m").value);
+    alert(ot_num);
+    if(ot_num >= 999900)
+    {   document.getElementById("cliente_plan_m").readOnly = false;
+        document.getElementById("obra_plan_m").readOnly = false;
+        document.getElementById("encargado").readOnly = false;
+        document.getElementById("trato_cliente").readOnly = false;
     }
-    function dup_h_50(){
-        var h2 = Number((document.getElementById('hora_50').value.replace(",",".")));
-        h2 = h2 *(1.5);
-        //alert(h2); //debug
-        document.getElementById("hora_50").value = h2.toString().replace(".",","); //duplicamos el item
+    else
+    {   document.getElementById("cliente_plan_m").readOnly = true;
+        document.getElementById("obra_plan_m").readOnly = true;
+        document.getElementById("encargado").readOnly = true;
+        document.getElementById("trato_cliente").readOnly = true;
     }
-    function dup_h_100(){
-        var h3 = Number((document.getElementById('hora_100').value.replace(",",".")));
-        h3 =(h3 * 2);
-        //alert(h3); //debug
-        document.getElementById("hora_100").value = h3.toString().replace(".",","); //duplicamos el item
+}
+function check_ot_t(){
+    //verificamos si la OT es menor que 999900 entonces sea READONLY
+    var ot_num = Number(document.getElementById("ot_plan_t").value);
+    alert(ot_num);
+    if(ot_num >= 999900)
+    {   document.getElementById("cliente_plan_t").readOnly = false;
+        document.getElementById("obra_plan_t").readOnly = false;
+        document.getElementById("encargado2").readOnly = false;
+        document.getElementById("trato_cliente2").readOnly = false;
     }
-    function hoy()
-    {   var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
+    else
+    {   document.getElementById("cliente_plan_t").readOnly = true;
+        document.getElementById("obra_plan_t").readOnly = true;
+        document.getElementById("encargado2").readOnly = true;
+        document.getElementById("trato_cliente2").readOnly = true;
+    }
+}
 
-        var yyyy = today.getFullYear();
-        if (dd < 10) { dd = '0' + dd; } 
-        if (mm < 10) { mm = '0' + mm; } 
-        var today = yyyy + '-' + mm + '-' + dd;
-        return today;
-    }
+function dup_h_neg(){
+    var h1 = Number((document.getElementById('hora_neg').value.replace(",",".")));
+    h1 = h1 * (1.5);
+    //alert(h1); //debug
+    document.getElementById("hora_neg").value = h1.toString().replace(".",","); //duplicamos el item
+}
+function dup_h_50(){
+    var h2 = Number((document.getElementById('hora_50').value.replace(",",".")));
+    h2 = h2 *(1.5);
+    //alert(h2); //debug
+    document.getElementById("hora_50").value = h2.toString().replace(".",","); //duplicamos el item
+}
+function dup_h_100(){
+    var h3 = Number((document.getElementById('hora_100').value.replace(",",".")));
+    h3 =(h3 * 2);
+    //alert(h3); //debug
+    document.getElementById("hora_100").value = h3.toString().replace(".",","); //duplicamos el item
+}
+function hoy()
+{   var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) { dd = '0' + dd; } 
+    if (mm < 10) { mm = '0' + mm; } 
+    var today = yyyy + '-' + mm + '-' + dd;
+    return today;
+}
 </script>
 
 <!-- ESTILO PARA DATEPICKER -->
 <style>
-[type="date"] {
-  background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
-}
-[type="date"]::-webkit-inner-spin-button {
-  display: none;
-}
-[type="date"]::-webkit-calendar-picker-indicator {
-  opacity: 0;
-}
-/* custom styles */
-body {
-  background: #e5e5e5;
-  font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
-}
-label {
-  display: block;
-}
-input {
-  border: 1px solid #c4c4c4;
-  border-radius: 5px;
-  background-color: #fff;
-  padding: 3px 5px;
-  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
-  width: 190px;
-}
+    [type="date"] {
+    background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+    }
+    [type="date"]::-webkit-inner-spin-button {
+    display: none;
+    }
+    [type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    }
+    /* custom styles */
+    body {
+    background: #e5e5e5;
+    font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+    }
+    label {
+    display: block;
+    }
+    input {
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 3px 5px;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+    width: 190px;
+    }
 
-body .modal-dialog { /* Width */
-    max-width: 80%;
-    width: auto !important;
-}
+    body .modal-dialog { /* Width */
+        max-width: 80%;
+        width: auto !important;
+    }
 </style>
 
 
@@ -104,7 +136,7 @@ body .modal-dialog { /* Width */
         <h3>Carga de Plan Laboral / Mano de Obra </h3>
     </div>
 </nav>
-<<!--form action="/mano/add_listar" method="post" name="form1">
+<!--form action="/mano/add_listar" method="post" name="form1">
     <div class="form-row col-md-2">
         <input type="date" class="form-control" name="fecha1" id="fecha1" placeholder="Fecha Planificacion" >
         <button type="submit" name="Submit" value="Insertar" class="btn btn-small">Buscar</button>
@@ -182,9 +214,9 @@ body .modal-dialog { /* Width */
                 -->
                 <input type="hidden" class="form-control" name="ot_plan_m" id="ot_plan_m" value="<%= ot_plan_m %>">
                 <input type="hidden" class="form-control" name="ot_plan_t" id="ot_plan_t" value="<%= ot_plan_t %>">
-                <input type="hidden" class="form-control" name="ot_real_m" id="ot_real_m" value="<%= ot_real_m %>">
-                <input type="hidden" class="form-control" name="ot_real_t" id="ot_real_t" value="<%= ot_real_t %>">
-                <input type="hidden" class="form-control" name="ot_real_n" id="ot_real_n" value="<%= ot_real_n %>">
+                <!--<input type="hidden" class="form-control" name="ot_real_m" id="ot_real_m" value="<%= ot_real_m %>">-->
+                <!--<input type="hidden" class="form-control" name="ot_real_t" id="ot_real_t" value="<%= ot_real_t %>">-->
+                <!--<input type="hidden" class="form-control" name="ot_real_n" id="ot_real_n" value="<%= ot_real_n %>">-->
 
                 <div class="form-group col-md-1.5">
                     <label for="fecha">FECHA</label>
@@ -238,7 +270,7 @@ body .modal-dialog { /* Width */
                 <div class="form-group col-md-2">
                     <label for="trato_cliente2">TRATO C/ EL CLIENTE TARDE</label>
                     <input type="text" class="form-control" name="trato_cliente2" id="trato_cliente2" value="<%= trato_cliente2 %>">
-                </div> -->
+                </div>
                 <!--<div class="form-group col-md-2">
                     <label for="cliente_real_m">CLIENTE REAL MAÑANA</label>
                     <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_3">OTs</button>
@@ -410,7 +442,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_m()">CERRAR</button>
         </div>
         </div>
     </div>
@@ -474,7 +506,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_t()">CERRAR</button>
         </div>
         </div>
     </div>
