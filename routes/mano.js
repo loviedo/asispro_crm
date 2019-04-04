@@ -964,35 +964,33 @@ app.post('/editar/:id', function(req, res, next) {
                 codigo: req.sanitize('codigo').trim(),
                 empleado: req.sanitize('empleado').trim(),
                 cliente_plan_m: req.sanitize('cliente_plan_m').trim(),
-                cliente_real_m: req.sanitize('cliente_real_m').trim(),
+                //cliente_real_m: req.sanitize('cliente_real_m').trim(),
                 cliente_plan_t: req.sanitize('cliente_plan_t').trim(),
-                cliente_real_t: req.sanitize('cliente_real_t').trim(),
-                cliente_real_n: req.sanitize('cliente_real_n').trim(),
+                //cliente_real_t: req.sanitize('cliente_real_t').trim(),
+                //cliente_real_n: req.sanitize('cliente_real_n').trim(),
                 obra_plan_m: req.sanitize('obra_plan_m').trim(),
-                obra_real_m: req.sanitize('obra_real_m').trim(),
+                //obra_real_m: req.sanitize('obra_real_m').trim(),
                 obra_plan_t: req.sanitize('obra_plan_t').trim(),
-                obra_real_t: req.sanitize('obra_real_t').trim(),
-                obra_real_n: req.sanitize('obra_real_n').trim(),
+                //obra_real_t: req.sanitize('obra_real_t').trim(),
+                //obra_real_n: req.sanitize('obra_real_n').trim(),
                 encargado: req.sanitize('encargado').trim(),
                 trato_cliente: req.sanitize('trato_cliente').trim(),
-                h_entrada: req.sanitize('h_entrada').trim(),
-                h_salida: req.sanitize('h_salida').trim(),
+                //h_entrada: req.sanitize('h_entrada').trim(),
+                //h_salida: req.sanitize('h_salida').trim(),
                 //monto: Number(req.sanitize('monto').trim()),
                 //subtotal: Number(req.sanitize('subtotal').trim()),
-                hora_50: req.sanitize('hora_50').trim(),
-                hora_100: req.sanitize('hora_100').trim(),
-                hora_normal: req.sanitize('hora_normal').trim(),
-                hora_neg: req.sanitize('hora_neg').trim(),
+                //hora_50: req.sanitize('hora_50').trim(),
+                //hora_100: req.sanitize('hora_100').trim(),
+                //hora_normal: req.sanitize('hora_normal').trim(),
+                //hora_neg: req.sanitize('hora_neg').trim(),
                 ot_plan_m: req.sanitize('ot_plan_m').trim(),
                 ot_real_m: req.sanitize('ot_real_m').trim(),
                 ot_plan_t: req.sanitize('ot_plan_t').trim(),
                 ot_real_t: req.sanitize('ot_real_t').trim(),
                 ot_real_n: req.sanitize('ot_real_n').trim(),
-                hora_normal: req.sanitize('hora_normal').trim(),
-                hora_50: req.sanitize('hora_50').trim(),
-                hora_100: req.sanitize('hora_100').trim(),
-                hora_neg: req.sanitize('hora_neg').trim(),
-                pasaje: Number(req.sanitize('pasaje').trim()),
+                //hora_neg: req.sanitize('hora_neg').trim(),
+                //pasaje: Number(req.sanitize('pasaje').trim()),//no actualizamos prque no existe en la pagina
+                //restri: Number(req.sanitize('restri').trim())
                 //jornal: Number(req.sanitize('jornal').trim()),
                 usuario_insert: user
             } 
@@ -1011,37 +1009,34 @@ app.post('/editar/:id', function(req, res, next) {
                             codigo: mano_plan.codigo,
                             empleado: mano_plan.empleado,
                             cliente_plan_m: mano_plan.cliente_plan_m,
-                            cliente_real_m: mano_plan.cliente_real_m,
+                            //cliente_real_m: mano_plan.cliente_real_m,
                             cliente_plan_t: mano_plan.cliente_plan_t,
-                            cliente_real_t: mano_plan.cliente_real_t,
-                            cliente_real_n: mano_plan.cliente_real_n,
+                            //cliente_real_t: mano_plan.cliente_real_t,
+                            //cliente_real_n: mano_plan.cliente_real_n,
                             obra_plan_m: mano_plan.obra_plan_m,
-                            obra_real_m: mano_plan.obra_real_m,
+                            //obra_real_m: mano_plan.obra_real_m,
                             obra_plan_t: mano_plan.obra_plan_t,
-                            obra_real_t: mano_plan.obra_real_t,
-                            obra_real_n: mano_plan.obra_real_n,
+                            //obra_real_t: mano_plan.obra_real_t,
+                            //obra_real_n: mano_plan.obra_real_n,
                             encargado: mano_plan.encargado,
                             trato_cliente: mano_plan.trato_cliente,
                             encargado2: req.body.encargado2,
                             trato_cliente2: req.body.trato_cliente2,
-                            h_entrada: mano_plan.h_entrada,
-                            h_salida: mano_plan.h_salida,
-                            monto: mano_plan.monto,
-                            subtotal: mano_plan.subtotal,
-                            hora_50: mano_plan.hora_50,
-                            hora_100: mano_plan.hora_100,
-                            hora_normal: mano_plan.hora_normal,
-                            hora_neg: mano_plan.hora_neg,
+                            //h_entrada: mano_plan.h_entrada,
+                            //h_salida: mano_plan.h_salida,
+                            //monto: mano_plan.monto,
+                            //subtotal: mano_plan.subtotal,
+                            //hora_50: mano_plan.hora_50,
+                            //hora_100: mano_plan.hora_100,
+                            //hora_normal: mano_plan.hora_normal,
+                            //hora_neg: mano_plan.hora_neg,
                             ot_plan_m: mano_plan.ot_plan_m,
-                            ot_real_m: mano_plan.ot_real_m,
+                            //ot_real_m: mano_plan.ot_real_m,
                             ot_plan_t: mano_plan.ot_plan_t,
-                            ot_real_t: mano_plan.ot_real_t,
-                            ot_real_n: mano_plan.ot_real_n,
-                            hora_normal: mano_plan.hora_normal,
-                            hora_50: mano_plan.hora_50,
-                            hora_100: mano_plan.hora_100,
-                            hora_neg: mano_plan.hora_neg,
-                            pasaje: mano_plan.pasaje,
+                            //ot_real_t: mano_plan.ot_real_t,
+                            //ot_real_n: mano_plan.ot_real_n,
+                            //pasaje: mano_plan.pasaje,
+                            restri: mano_plan.restri,//pasamos la restriccion guardada en el req
                             //jornal: mano_plan.jornal,
                             usuario: user
                         })
@@ -1068,11 +1063,11 @@ app.post('/editar/:id', function(req, res, next) {
                                         //console.log(datos);//debug de datos de MANO OBRA
                                         //traemos los personales para mostrar en el modal
                                         datos_rrhh = [];
-                                        conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
+                                        conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows1) {
                                             if (err) {console.log(err);}
                                             else{
-                                                rows.forEach(function(row) {    
-                                                    datos_rrhh.push(row);
+                                                rows1.forEach(function(row1) {    
+                                                    datos_rrhh.push(row1);
                                                 });
                                                 //console.log(datos_rrhh);//debug de datos de RRHH
                                                 //console.log(datos_rrhh);//debug de datos de RRHH
@@ -1094,7 +1089,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                     {rol = 2;}
                                                     if(dias_dif == 1)//si la fecha de carga igual a la fecha de hoy + 1 dia
                                                     {rol = 1;}//es el dia siguiente 
-                                                    if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 2 para darle 5 dias de tiempo
+                                                    if(dias_dif >= 2)//si la fecha de carga igual a la fecha de hoy + 1 dia //PARAM = 2 para darle 2 dias de tiempo
                                                     {rol = 2;}//es +2 o mas dias 
                                                 }
 
@@ -1134,7 +1129,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                     ot_real_n: req.body.ot_real_n,
                                                     pasaje: req.body.pasaje,
                                                     restri: rol,
-                                                    //jornal: req.body.jornal,
+                                                    jornal: req.body.jornal,
                                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh
                                                 })
                                             }              

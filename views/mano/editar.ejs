@@ -68,9 +68,42 @@ body .modal-dialog { /* Width */
         document.getElementById("nro_ot").value = document.querySelector('.dataTables_filter input').value;
         //alert(valor); //debug
     }
-</script>
-    
-<script type="text/javascript"> 
+
+    function check_ot_m(){
+        //verificamos si la OT es menor que 999900 entonces sea READONLY
+        var ot_num = Number(document.getElementById("ot_plan_m").value);
+        //alert(ot_num);
+        if(ot_num >= 999900)
+        {   document.getElementById("cliente_plan_m").readOnly = false;
+            document.getElementById("obra_plan_m").readOnly = false;
+            document.getElementById("encargado").readOnly = false;
+            document.getElementById("trato_cliente").readOnly = false;
+        }
+        else
+        {   document.getElementById("cliente_plan_m").readOnly = true;
+            document.getElementById("obra_plan_m").readOnly = true;
+            document.getElementById("encargado").readOnly = true;
+            document.getElementById("trato_cliente").readOnly = true;
+        }
+    }
+    function check_ot_t(){
+        //verificamos si la OT es menor que 999900 entonces sea READONLY
+        var ot_num = Number(document.getElementById("ot_plan_t").value);
+        //alert(ot_num);
+        if(ot_num >= 999900)
+        {   document.getElementById("cliente_plan_t").readOnly = false;
+            document.getElementById("obra_plan_t").readOnly = false;
+            document.getElementById("encargado2").readOnly = false;
+            document.getElementById("trato_cliente2").readOnly = false;
+        }
+        else
+        {   document.getElementById("cliente_plan_t").readOnly = true;
+            document.getElementById("obra_plan_t").readOnly = true;
+            document.getElementById("encargado2").readOnly = true;
+            document.getElementById("trato_cliente2").readOnly = true;
+        }
+    }
+
     function dup_h_neg(){
         var h1 = Number((document.getElementById('hora_neg').value.replace(",",".")));
         h1 = h1 * (1.5);
@@ -158,6 +191,18 @@ body .modal-dialog { /* Width */
                     <% if(restri > 1){ %><input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="encargado">ENCARGADO MAÑANA</label>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
+                    <% if(restri > 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" readonly=true><% } %>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="trato_cliente">TRATO C/ EL CLIENTE MAÑANA</label>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
+                    <% if(restri > 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>" readonly=true><% } %>
+                </div>
+                <div class="form-group col-md-2">
                     <label for="cliente_plan_t">CLIENTE PLANIFICADO TARDE</label>
                     <% if(restri == 0){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2">OTs</button><% } %>
                     <% if(restri == 1){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2">OTs</button><% } %>
@@ -200,18 +245,6 @@ body .modal-dialog { /* Width */
                     <% if(restri == 1){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>"><% } %>
                     <% if(restri > 1){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>" readonly=true><% } %>
                 </div>-->
-                <div class="form-group col-md-2">
-                    <label for="encargado">ENCARGADO MAÑANA</label>
-                    <% if(restri == 0){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
-                    <% if(restri > 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" readonly=true><% } %>
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="trato_cliente">TRATO C/ EL CLIENTE MAÑANA</label>
-                    <% if(restri == 0){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
-                    <% if(restri > 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>" readonly=true><% } %>
-                </div>
                 <!--
                 <div class="form-group col-md-2">
                     <label for="h_entrada">HORARIO ENTRADA</label>
@@ -398,7 +431,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onclick="check_ot_m()">CERRAR</button>
         </div>
         </div>
     </div>
@@ -458,7 +491,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onclick="check_ot_t()">CERRAR</button>
         </div>
         </div>
     </div>
@@ -518,7 +551,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_m()">CERRAR</button>
         </div>
         </div>
     </div>
@@ -578,7 +611,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_t()">CERRAR</button>
         </div>
         </div>
     </div>
