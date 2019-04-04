@@ -97,9 +97,9 @@ color: #ffffff;
                     <th>IMPUTADO</th> 
                     <th>ORIGEN PAGO</th> 
                     <% if (usuario == 'ksanabria' ||  usuario == 'josorio' ||  usuario == 'admin' ) { %>     
-                    <th> TIPO</th> 
-                    <th>ACCIONES</th> 
+                        <th> TIPO</th> 
                     <% } %>
+                    <th>ACCIONES</th> 
                 </tr>
             </thead>
         <tbody>
@@ -127,17 +127,17 @@ color: #ffffff;
                 <!-- MOSTRAMOS LO SIGUIENTE SOLAMENTE SI SON LOS USUARIOS -->
                 <% if (usuario == 'ksanabria' ||  usuario == 'josorio' ||  usuario == 'admin' ) { %>     
                     <td><%= gasto.tipo %></td>
-                    <td>
-                        <div>
-                            <a href='/gastos/editar/<%= gasto.id %>'>Ver</a> &nbsp; 
-                            <a href='/gastos/eliminar/<%= gasto.id %>'>Eliminar</a><!-- DEBE SER APP.GET en el servidor, NO APP.DELETE, eso en el caso del value DELETE, como vemos mas abajo-->                       
-                            <!--<form method="post" action="/gastos/eliminar/<%= gasto.id %>" style="float:right">
-                                <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
-                                <input type="hidden" name="_method" value="DELETE" />
-                            </form>-->
-                        </div>
-                    </td>
                 <% } %>
+                <td>
+                    <div>
+                        <a href='/gastos/editar/<%= gasto.id %>'>Ver</a> &nbsp; 
+                        <a href='/gastos/eliminar/<%= gasto.id %>'>Eliminar</a><!-- DEBE SER APP.GET en el servidor, NO APP.DELETE, eso en el caso del value DELETE, como vemos mas abajo-->                       
+                        <!--<form method="post" action="/gastos/eliminar/<%= gasto.id %>" style="float:right">
+                            <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
+                            <input type="hidden" name="_method" value="DELETE" />
+                        </form>-->
+                    </div>
+                </td>
             </tr>
             <% }) %>
             <% } %>
