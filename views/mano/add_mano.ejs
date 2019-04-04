@@ -32,7 +32,7 @@ function formatear_fecha(date) {
 function check_ot_m(){
     //verificamos si la OT es menor que 999900 entonces sea READONLY
     var ot_num = Number(document.getElementById("ot_plan_m").value);
-    alert(ot_num);
+    //alert(ot_num);
     if(ot_num >= 999900)
     {   document.getElementById("cliente_plan_m").readOnly = false;
         document.getElementById("obra_plan_m").readOnly = false;
@@ -49,7 +49,7 @@ function check_ot_m(){
 function check_ot_t(){
     //verificamos si la OT es menor que 999900 entonces sea READONLY
     var ot_num = Number(document.getElementById("ot_plan_t").value);
-    alert(ot_num);
+    //alert(ot_num);
     if(ot_num >= 999900)
     {   document.getElementById("cliente_plan_t").readOnly = false;
         document.getElementById("obra_plan_t").readOnly = false;
