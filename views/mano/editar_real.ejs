@@ -69,31 +69,31 @@ body .modal-dialog { /* Width */
         if(ot_num >= 999900)
         {   document.getElementById("cliente_real_m").readOnly = false;
             document.getElementById("obra_real_m").readOnly = false;
-            document.getElementById("encargado").readOnly = false;
-            document.getElementById("trato_cliente").readOnly = false;
+            document.getElementById("encargado_real").readOnly = false;
+            document.getElementById("trato_cliente_real").readOnly = false;
         }
         else
         {   document.getElementById("cliente_real_m").readOnly = true;
             document.getElementById("obra_real_m").readOnly = true;
-            document.getElementById("encargado2").readOnly = true;
-            document.getElementById("trato_cliente2").readOnly = true;
+            document.getElementById("encargado_real").readOnly = true;
+            document.getElementById("trato_cliente_real").readOnly = true;
         }
     }
     function check_ot_t(){
         //verificamos si la OT es menor que 999900 entonces sea READONLY
-        var ot_num = Number(document.getElementById("ot_plan_t").value);
+        var ot_num = Number(document.getElementById("ot_real_t").value);
         //alert(ot_num);
         if(ot_num >= 999900)
-        {   document.getElementById("cliente_plan_t").readOnly = false;
-            document.getElementById("obra_plan_t").readOnly = false;
-            document.getElementById("encargado2").readOnly = false;
-            document.getElementById("trato_cliente2").readOnly = false;
+        {   document.getElementById("cliente_real_t").readOnly = false;
+            document.getElementById("obra_real_t").readOnly = false;
+            document.getElementById("encargado_real2").readOnly = false;
+            document.getElementById("trato_cliente_real2").readOnly = false;
         }
         else
-        {   document.getElementById("cliente_plan_t").readOnly = true;
-            document.getElementById("obra_plan_t").readOnly = true;
-            document.getElementById("encargado2").readOnly = true;
-            document.getElementById("trato_cliente2").readOnly = true;
+        {   document.getElementById("cliente_real_t").readOnly = true;
+            document.getElementById("obra_real_t").readOnly = true;
+            document.getElementById("encargado_real2").readOnly = true;
+            document.getElementById("trato_cliente_real2").readOnly = true;
         }
     }
 
@@ -163,70 +163,70 @@ body .modal-dialog { /* Width */
                 <div class="form-group col-md-2">
                     <!--<label for="empleado">PERSONAL ASISPRO</label>-->
                     <% if(restri == 0){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_rrhh">PERSONAL</button><% } %>
-                    <% if(restri == 1){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_rrhh">PERSONAL</button><% } %>
+                    <% if(restri == 1){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_rrhh" disabled=true>PERSONAL</button><% } %>
                     <% if(restri == 2){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_rrhh" disabled=true>PERSONAL</button><% } %>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="codigo">CODIGO</label>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cliente_plan_m">CLIENTE PLANIFICADO MAÑANA</label>-  
                     <% if(restri == 0){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_1">OTs</button><% } %>
-                    <% if(restri == 1){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_1">OTs</button><% } %>
+                    <% if(restri == 1){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_1" disabled=true>OTs</button><% } %>
                     <% if(restri == 2){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_1" disabled=true>OTs</button><% } %>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>" ><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>" ><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="cliente_plan_m" id="cliente_plan_m" value="<%= cliente_plan_m %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="obra_plan_m">OBRA PLANIFICADA MAÑANA</label>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="obra_plan_m" id="obra_plan_m" value="<%= obra_plan_m %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="encargado">ENCARGADO MAÑANA</label>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="encargado" id="encargado" value="<%= encargado %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="trato_cliente">TRATO C/ EL CLIENTE MAÑANA</label>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="trato_cliente" id="trato_cliente" value="<%= trato_cliente %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cliente_plan_t">CLIENTE PLANIFICADO TARDE</label>
                     <% if(restri == 0){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2">OTs</button><% } %>
-                    <% if(restri == 1){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2">OTs</button><% } %>
+                    <% if(restri == 1){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2" disabled=true>OTs</button><% } %>
                     <% if(restri == 2){ %><button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_ot_2" disabled=true>OTs</button><% } %>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>" ><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>" ><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="cliente_plan_t" id="cliente_plan_t" value="<%= cliente_plan_t %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="obra_plan_t">OBRA PLANIFICADA TARDE</label>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="obra_plan_t" id="obra_plan_t" value="<%= obra_plan_t %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="encargado2">ENCARGADO TARDE</label>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="encargado2" id="encargado2" value="<%= encargado2 %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="encargado2" id="encargado2" value="<%= encargado2 %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="encargado2" id="encargado2" value="<%= encargado2 %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="encargado2" id="encargado2" value="<%= encargado2 %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="trato_cliente2">TRATO C/ EL CLIENTE TARDE</label>
                     <% if(restri == 0){ %><input type="text" class="form-control" name="trato_cliente2" id="trato_cliente2" value="<%= trato_cliente2 %>"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente2" id="trato_cliente2" value="<%= trato_cliente2 %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente2" id="trato_cliente2" value="<%= trato_cliente2 %>" readonly=true><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="trato_cliente2" id="trato_cliente2" value="<%= trato_cliente2 %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
@@ -245,16 +245,16 @@ body .modal-dialog { /* Width */
                     <% if(restri == 2){ %><input type="text" class="form-control" name="obra_real_m" id="obra_real_m" value="<%= obra_real_m %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="h_entrada">HORARIO ENTRADA</label>
-                    <% if(restri == 0){ %><input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>" placeholder="HORARIO ENTRADA"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>" placeholder="HORARIO ENTRADA"><% } %>
-                    <% if(restri == 2){ %><input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>" placeholder="HORARIO ENTRADA" readonly=true><% } %>
+                    <label for="encargado2">ENCARGADO REAL MAÑANA</label>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="encargado_real" id="encargado_real" value="<%= encargado_real %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="encargado_real" id="encargado_real" value="<%= encargado_real %>"><% } %>
+                    <% if(restri == 2){ %><input type="text" class="form-control" name="encargado_real" id="encargado_real" value="<%= encargado_real %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="h_salida">HORARIO SALIDA</label>
-                    <% if(restri == 0){ %><input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA"><% } %>
-                    <% if(restri == 1){ %><input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA"><% } %>
-                    <% if(restri == 2){ %><input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA" readonly=true><% } %>
+                    <label for="trato_cliente2">TRATO C/ EL CLIENTE REAL MAÑANA</label>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="trato_cliente_real" id="trato_cliente_real" value="<%= trato_cliente_real %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente_real" id="trato_cliente_real" value="<%= trato_cliente_real %>"><% } %>
+                    <% if(restri == 2){ %><input type="text" class="form-control" name="trato_cliente_real" id="trato_cliente_real" value="<%= trato_cliente_real %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="cliente_real_t">CLIENTE REAL TARDE</label>
@@ -272,6 +272,18 @@ body .modal-dialog { /* Width */
                     <% if(restri == 2){ %><input type="text" class="form-control" name="obra_real_t" id="obra_real_t" value="<%= obra_real_t %>" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
+                    <label for="encargado2">ENCARGADO REAL TARDE</label>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="encargado_real2" id="encargado_real2" value="<%= encargado_real2 %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="encargado_real2" id="encargado_real2" value="<%= encargado_real2 %>"><% } %>
+                    <% if(restri == 2){ %><input type="text" class="form-control" name="encargado_real2" id="encargado_real2" value="<%= encargado_real2 %>" readonly=true><% } %>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="trato_cliente2">TRATO C/ EL CLIENTE REAL TARDE</label>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="trato_cliente_real2" id="trato_cliente_real2" value="<%= trato_cliente_real2 %>"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="trato_cliente_real2" id="trato_cliente_real2" value="<%= trato_cliente_real2 %>"><% } %>
+                    <% if(restri == 2){ %><input type="text" class="form-control" name="trato_cliente_real2" id="trato_cliente_real2" value="<%= trato_cliente_real2 %>" readonly=true><% } %>
+                </div>
+                <div class="form-group col-md-2">
                     <label for="cliente_real_n">CLIENTE REAL NOCHE</label>
                     <% if(restri == 0){ %><button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_5">OTs</button><% } %>
                     <% if(restri == 1){ %><button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_5">OTs</button><% } %>
@@ -285,6 +297,18 @@ body .modal-dialog { /* Width */
                     <% if(restri == 0){ %><input type="text" class="form-control" name="obra_real_n" id="obra_real_n" value="<%= obra_real_n %>"><% } %>
                     <% if(restri == 1){ %><input type="text" class="form-control" name="obra_real_n" id="obra_real_n" value="<%= obra_real_n %>"><% } %>
                     <% if(restri == 2){ %><input type="text" class="form-control" name="obra_real_n" id="obra_real_n" value="<%= obra_real_n %>" readonly=true><% } %>         
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_entrada">HORARIO ENTRADA</label>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>" placeholder="HORARIO ENTRADA"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>" placeholder="HORARIO ENTRADA"><% } %>
+                    <% if(restri == 2){ %><input type="text" class="form-control" name="h_entrada" id="h_entrada" value="<%= h_entrada %>" placeholder="HORARIO ENTRADA" readonly=true><% } %>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_salida">HORARIO SALIDA</label>
+                    <% if(restri == 0){ %><input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA"><% } %>
+                    <% if(restri == 1){ %><input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA"><% } %>
+                    <% if(restri == 2){ %><input type="text" class="form-control" name="h_salida" id="h_salida" value="<%= h_salida %>" placeholder="HORARIO SALIDA" readonly=true><% } %>
                 </div>
                 <div class="form-group col-md-2">
                     <label for="hora_normal">HORA NORMAL</label>
@@ -385,39 +409,43 @@ body .modal-dialog { /* Width */
 
         <div class="container-fluid" width="100%">
             <table id="table_ot_plan_m_mano" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
-                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
-                        <tr>
-                            <th>Nro OT</th>
-                            <th>FECHA EMISION</th>
-                            <th>F INI EJECUCION</th>
-                            <th>F FIN EJECUCION</th>
-                            <th>Nro FACTURA</th>
-                            <th>Est FACTURA</th>
-                            <th>Nro RECIBO</th>
-                            <th>Nro REMISION</th>
-                            <th>TIPO FACTURA</th>       
-                            <th>CLIENTE</th>
-                            <th>OBRA</th>
-                            <th>DESCRIPCION</th>
-                        </tr>
-                    </thead>
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>Nro OT</th>
+                        <th>FECHA EMISION</th>
+                        <th>Nro FACTURA</th>
+                        <!--<th>F INI EJECUCION</th>
+                        <th>F FIN EJECUCION</th>
+                        <th>Est FACTURA</th>
+                        <th>Nro RECIBO</th>
+                        <th>Nro REMISION</th>
+                        <th>TIPO FACTURA</th> -->      
+                        <th>CLIENTE</th>
+                        <th>OBRA</th>
+                        <th>DESCRIPCION</th>
+                        <th>ENCARGADO</th>
+                        <th>TRATO CLIENTE</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <% if (data_ot) { %>
                     <% data_ot.forEach(function(ot){ %>
                     <tr id="<%= ot.ot_nro %>">
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>
-                        <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
-                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_nro %></td>
+                        <!--<td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_estado %></td>
                         <td><%= ot.recibo_nro %></td>
                         <td><%= ot.remision_nro %></td>
-                        <td><%= ot.fact_tipo %></td>
+                        <td><%= ot.fact_tipo %></td>-->
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
+                        <td><%= ot.trato_cliente %></td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -427,7 +455,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_m()">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
         </div>
         </div>
     </div>
@@ -445,39 +473,43 @@ body .modal-dialog { /* Width */
 
         <div class="container-fluid" width="100%">
             <table id="table_ot_plan_t_mano" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
-                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
-                        <tr>
-                            <th>Nro OT</th>
-                            <th>FECHA EMISION</th>
-                            <th>F INI EJECUCION</th>
-                            <th>F FIN EJECUCION</th>
-                            <th>Nro FACTURA</th>
-                            <th>Est FACTURA</th>
-                            <th>Nro RECIBO</th>
-                            <th>Nro REMISION</th>
-                            <th>TIPO FACTURA</th>       
-                            <th>CLIENTE</th>
-                            <th>OBRA</th>
-                            <th>DESCRIPCION</th>
-                        </tr>
-                    </thead>
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>Nro OT</th>
+                        <th>FECHA EMISION</th>
+                        <th>Nro FACTURA</th>
+                        <!--<th>F INI EJECUCION</th>
+                        <th>F FIN EJECUCION</th>
+                        <th>Est FACTURA</th>
+                        <th>Nro RECIBO</th>
+                        <th>Nro REMISION</th>
+                        <th>TIPO FACTURA</th> -->      
+                        <th>CLIENTE</th>
+                        <th>OBRA</th>
+                        <th>DESCRIPCION</th>
+                        <th>ENCARGADO</th>
+                        <th>TRATO CLIENTE</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <% if (data_ot) { %>
                     <% data_ot.forEach(function(ot){ %>
                     <tr id="<%= ot.ot_nro %>">
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>
-                        <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
-                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_nro %></td>
+                        <!--<td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_estado %></td>
                         <td><%= ot.recibo_nro %></td>
                         <td><%= ot.remision_nro %></td>
-                        <td><%= ot.fact_tipo %></td>
+                        <td><%= ot.fact_tipo %></td>-->
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
+                        <td><%= ot.trato_cliente %></td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -487,7 +519,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_t()">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" >CERRAR</button>
         </div>
         </div>
     </div>
@@ -505,39 +537,43 @@ body .modal-dialog { /* Width */
 
         <div class="container-fluid" width="100%">
             <table id="table_ot_real_m_mano" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
-                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
-                        <tr>
-                            <th>Nro OT</th>
-                            <th>FECHA EMISION</th>
-                            <th>F INI EJECUCION</th>
-                            <th>F FIN EJECUCION</th>
-                            <th>Nro FACTURA</th>
-                            <th>Est FACTURA</th>
-                            <th>Nro RECIBO</th>
-                            <th>Nro REMISION</th>
-                            <th>TIPO FACTURA</th>       
-                            <th>CLIENTE</th>
-                            <th>OBRA</th>
-                            <th>DESCRIPCION</th>
-                        </tr>
-                    </thead>
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>Nro OT</th>
+                        <th>FECHA EMISION</th>
+                        <th>Nro FACTURA</th>
+                        <!--<th>F INI EJECUCION</th>
+                        <th>F FIN EJECUCION</th>
+                        <th>Est FACTURA</th>
+                        <th>Nro RECIBO</th>
+                        <th>Nro REMISION</th>
+                        <th>TIPO FACTURA</th> -->      
+                        <th>CLIENTE</th>
+                        <th>OBRA</th>
+                        <th>DESCRIPCION</th>
+                        <th>ENCARGADO</th>
+                        <th>TRATO CLIENTE</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <% if (data_ot) { %>
                     <% data_ot.forEach(function(ot){ %>
                     <tr id="<%= ot.ot_nro %>">
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>
-                        <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
-                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_nro %></td>
+                        <!--<td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_estado %></td>
                         <td><%= ot.recibo_nro %></td>
                         <td><%= ot.remision_nro %></td>
-                        <td><%= ot.fact_tipo %></td>
+                        <td><%= ot.fact_tipo %></td>-->
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
+                        <td><%= ot.trato_cliente %></td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -547,7 +583,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_t()">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"  onclick="check_ot_m()">CERRAR</button>
         </div>
         </div>
     </div>
@@ -565,39 +601,43 @@ body .modal-dialog { /* Width */
 
         <div class="container-fluid" width="100%">
             <table id="table_ot_real_t_mano" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
-                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
-                        <tr>
-                            <th>Nro OT</th>
-                            <th>FECHA EMISION</th>
-                            <th>F INI EJECUCION</th>
-                            <th>F FIN EJECUCION</th>
-                            <th>Nro FACTURA</th>
-                            <th>Est FACTURA</th>
-                            <th>Nro RECIBO</th>
-                            <th>Nro REMISION</th>
-                            <th>TIPO FACTURA</th>       
-                            <th>CLIENTE</th>
-                            <th>OBRA</th>
-                            <th>DESCRIPCION</th>
-                        </tr>
-                    </thead>
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>Nro OT</th>
+                        <th>FECHA EMISION</th>
+                        <th>Nro FACTURA</th>
+                        <!--<th>F INI EJECUCION</th>
+                        <th>F FIN EJECUCION</th>
+                        <th>Est FACTURA</th>
+                        <th>Nro RECIBO</th>
+                        <th>Nro REMISION</th>
+                        <th>TIPO FACTURA</th> -->      
+                        <th>CLIENTE</th>
+                        <th>OBRA</th>
+                        <th>DESCRIPCION</th>
+                        <th>ENCARGADO</th>
+                        <th>TRATO CLIENTE</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <% if (data_ot) { %>
                     <% data_ot.forEach(function(ot){ %>
                     <tr id="<%= ot.ot_nro %>">
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>
-                        <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
-                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_nro %></td>
+                        <!--<td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_estado %></td>
                         <td><%= ot.recibo_nro %></td>
                         <td><%= ot.remision_nro %></td>
-                        <td><%= ot.fact_tipo %></td>
+                        <td><%= ot.fact_tipo %></td>-->
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
+                        <td><%= ot.encargado %></td>
+                        <td><%= ot.trato_cliente %></td>
                     </tr>
                     <% }) %>
                 <% } %>
@@ -625,41 +665,43 @@ body .modal-dialog { /* Width */
 
         <div class="container-fluid" width="100%">
             <table id="table_ot_real_n_mano" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
-                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
-                        <tr>
-                            <th>Nro OT</th>
-                            <th>FECHA EMISION</th>
-                            <th>F INI EJECUCION</th>
-                            <th>F FIN EJECUCION</th>
-                            <th>Nro FACTURA</th>
-                            <th>Est FACTURA</th>
-                            <th>Nro RECIBO</th>
-                            <th>Nro REMISION</th>
-                            <th>TIPO FACTURA</th>       
-                            <th>CLIENTE</th>
-                            <th>OBRA</th>
-                            <th>DESCRIPCION</th>
-                            <th>ENCARGADO</th>
-                        </tr>
-                    </thead>
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>Nro OT</th>
+                        <th>FECHA EMISION</th>
+                        <th>Nro FACTURA</th>
+                        <!--<th>F INI EJECUCION</th>
+                        <th>F FIN EJECUCION</th>
+                        <th>Est FACTURA</th>
+                        <th>Nro RECIBO</th>
+                        <th>Nro REMISION</th>
+                        <th>TIPO FACTURA</th> -->      
+                        <th>CLIENTE</th>
+                        <th>OBRA</th>
+                        <th>DESCRIPCION</th>
+                        <th>ENCARGADO</th>
+                        <th>TRATO CLIENTE</th>
+                    </tr>
+                </thead>
                 <tbody>
                 <% if (data_ot) { %>
                     <% data_ot.forEach(function(ot){ %>
                     <tr id="<%= ot.ot_nro %>">
                         <td><%= ot.ot_nro %></td>
                         <td><%= formatear_fecha(ot.fec_emision) %></td>
-                        <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
-                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_nro %></td>
+                        <!--<td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                        <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
                         <td><%= ot.fact_estado %></td>
                         <td><%= ot.recibo_nro %></td>
                         <td><%= ot.remision_nro %></td>
-                        <td><%= ot.fact_tipo %></td>
+                        <td><%= ot.fact_tipo %></td>-->
                         <td><%= ot.cliente %></td>
                         <td><%= ot.obra %></td>
                         <td><%= ot.descripcion %></td>
                         <td><%= ot.encargado %></td>
+                        <td><%= ot.trato_cliente %></td>
                     </tr>
                     <% }) %>
                 <% } %>

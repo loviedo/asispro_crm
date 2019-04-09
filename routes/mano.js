@@ -1378,6 +1378,10 @@ app.get('/editar_real/:id', function(req, res, next){
                                             //jornal: rows[0].jornal,
                                             encargado2: rows[0].encargado2,
                                             trato_cliente2: rows[0].trato_cliente2,
+                                            encargado_real: rows[0].encargado_real,//encargado real manhana
+                                            trato_cliente_real: rows[0].trato_cliente_real,//encargado real manhana
+                                            encargado_real2: rows[0].encargado_real2,//encargado real tarde
+                                            trato_cliente_real2: rows[0].trato_cliente_real2,//encargado real tarde
                                             restri: rol,
                                             data_ot: datos_ot,//datos de ot
                                             data_rrhh:datos_rrhh, //datos de rrhh
@@ -1426,6 +1430,12 @@ app.post('/editar_real/:id', function(req, res, next) {
                 obra_real_n: req.sanitize('obra_real_n').trim(),
                 encargado: req.sanitize('encargado').trim(),
                 trato_cliente: req.sanitize('trato_cliente').trim(),
+                encargado2: req.sanitize('encargado2').trim(),
+                trato_cliente2: req.sanitize('trato_cliente2').trim(),
+                encargado_real: req.sanitize('encargado_real').trim(),//real manhana
+                trato_cliente_real: req.sanitize('trato_cliente_real').trim(),//real manhana
+                encargado_real2: req.sanitize('encargado_real2').trim(),//real tarde
+                trato_cliente_real2: req.sanitize('trato_cliente_real2').trim(),//real tarde
                 h_entrada: req.sanitize('h_entrada').trim(),
                 h_salida: req.sanitize('h_salida').trim(),
                 //monto: Number(req.sanitize('monto').trim()),
@@ -1570,6 +1580,10 @@ app.post('/editar_real/:id', function(req, res, next) {
                                                     trato_cliente: req.body.trato_cliente,
                                                     encargado2: req.body.encargado2,
                                                     trato_cliente2: req.body.trato_cliente2,
+                                                    encargado_real: req.body.encargado_real,
+                                                    trato_cliente_real: req.body.trato_cliente_real,
+                                                    encargado_real2: req.body.encargadr_real2,
+                                                    trato_cliente_real2: req.body.trato_cliente_real2,
                                                     h_entrada: req.body.h_entrada,
                                                     h_salida: req.body.h_salida,
                                                     monto: req.body.monto,

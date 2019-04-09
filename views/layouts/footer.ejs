@@ -449,11 +449,11 @@
                         var row = OT_DATOS_1.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //aca tenemos que asignar el valor
-                        $('#cliente_plan_m').val(row[9]);
-                        $('#obra_plan_m').val(row[10]);
                         $('#ot_plan_m').val(row[0]);
-                        $('#encargado').val(row[12]);
-                        $('#trato_cliente').val(row[13]);
+                        $('#cliente_plan_m').val(row[3]);
+                        $('#obra_plan_m').val(row[4]);
+                        $('#encargado').val(row[6]);
+                        $('#trato_cliente').val(row[7]);
                     } );
                     /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA PLAN TARDE*/
                     $('#table_ot_plan_t_mano tbody').on( 'click', 'tr', function () {
@@ -462,11 +462,11 @@
                         var row = OT_DATOS_2.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //aca tenemos que asignar el valor
-                        $('#cliente_plan_t').val(row[9]);
-                        $('#obra_plan_t').val(row[10]);
                         $('#ot_plan_t').val(row[0]);
-                        $('#encargado2').val(row[12]);
-                        $('#trato_cliente2').val(row[13]);
+                        $('#cliente_plan_t').val(row[3]);
+                        $('#obra_plan_t').val(row[4]);
+                        $('#encargado2').val(row[6]);
+                        $('#trato_cliente2').val(row[7]);
                     } );
                     /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA REAL MANANA*/
                     $('#table_ot_real_m_mano tbody').on( 'click', 'tr', function () {
@@ -475,11 +475,11 @@
                         var row = OT_DATOS_3.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //aca tenemos que asignar el valor
-                        $('#cliente_real_m').val(row[9]);
-                        $('#obra_real_m').val(row[10]);
                         $('#ot_real_m').val(row[0]);
-                        $('#encargado').val(row[12]);
-                        $('#trato_cliente').val(row[13]);
+                        $('#cliente_real_m').val(row[3]);
+                        $('#obra_real_m').val(row[4]);
+                        $('#encargado_real').val(row[6]);
+                        $('#trato_cliente_real').val(row[7]);
                     } );
                     /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA REAL TARDE*/
                     $('#table_ot_real_t_mano tbody').on( 'click', 'tr', function () {
@@ -488,11 +488,11 @@
                         var row = OT_DATOS_4.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //aca tenemos que asignar el valor
-                        $('#cliente_real_t').val(row[9]);
-                        $('#obra_real_t').val(row[10]);
                         $('#ot_real_t').val(row[0]);
-                        $('#encargado2').val(row[12]);
-                        $('#trato_cliente2').val(row[13]);
+                        $('#cliente_real_t').val(row[3]);
+                        $('#obra_real_t').val(row[4]);
+                        $('#encargado_real2').val(row[6]);
+                        $('#trato_cliente_real2').val(row[7]);
                     } );
                     $('#table_ot_real_n_mano tbody').on( 'click', 'tr', function () {
                         //$(this).toggleClass('selected');
@@ -500,9 +500,9 @@
                         var row = OT_DATOS_5.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //aca tenemos que asignar el valor
-                        $('#cliente_real_n').val(row[9]);
-                        $('#obra_real_n').val(row[10]);
                         $('#ot_real_n').val(row[0]);
+                        $('#cliente_real_n').val(row[3]);
+                        $('#obra_real_n').val(row[4]);
                     } );
                     //modal de asignacion de ot en GASTOS
                     $('#table_modal_ot_gastos tbody').on( 'click', 'tr', function () {
