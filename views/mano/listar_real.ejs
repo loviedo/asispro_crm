@@ -85,14 +85,14 @@ color: #ffffff;
                 <tr>
                     <th>FECHA</th>
                     <th>EMPLEADO</th>
-                    <th>OT REAL MAÑANA</th>
-                    <th>CLIENTE REAL MAÑANA</th>
-                    <th>OBRA REAL MAÑANA</th>
+                    <th>OT MAÑANA</th>
+                    <th>CLIENTE MAÑANA</th>
+                    <th>OBRA MAÑANA</th>
                     <th>ENCARGADO MAÑANA</th>
                     <th>TRATO CLIENTE MAÑANA</th>
-                    <th>OT REAL TARDE</th>
-                    <th>CLIENTE REAL TARDE</th>
-                    <th>OBRA REAL TARDE</th>
+                    <th>OT TARDE</th>
+                    <th>CLIENTE TARDE</th>
+                    <th>OBRA TARDE</th>
                     <th>ENCARGADO TARDE</th>
                     <th>TRATO CLIENTE TARDE</th>
                     <th>ACCIONES</th>
@@ -107,13 +107,13 @@ color: #ffffff;
                 <td><%= mano.ot_real_m %></td>
                 <td><%= mano.cliente_real_m %></td>
                 <td><%= mano.obra_real_m %></td>
-                <td><%= mano.encargado %></td>
-                <td><%= mano.trato_cliente %></td>
+                <td><%= mano.encargado_real %></td>
+                <td><%= mano.trato_cliente_real %></td>
                 <td><%= mano.ot_real_t %></td>
                 <td><%= mano.cliente_real_t %></td>
                 <td><%= mano.obra_real_t %></td>
-                <td><%= mano.encargado2 %></td>
-                <td><%= mano.trato_cliente2 %></td>
+                <td><%= mano.encargado_real2 %></td>
+                <td><%= mano.trato_cliente_real2 %></td>
                 <td>
                     <div>
                         <a href='/mano/editar_real/<%= mano.id %>'>Ver</a> &nbsp;  
