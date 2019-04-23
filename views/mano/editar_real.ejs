@@ -97,6 +97,42 @@ body .modal-dialog { /* Width */
         }
     }
 
+    /*ESTAS DOS FUNCINOES SE USAN SOLAMENTE PARA MOTiVOS DE ARREGLAR LOS DATOS QUE NO SE CARGARON BIEN -- SE USAN EN CASOS ESPECIALES DE HABILITACION DE EDICION DE LA PAGINA*/
+    function check_ot_m_plan(){
+        //verificamos si la OT es menor que 999900 entonces sea READONLY
+        var ot_num = Number(document.getElementById("ot_plan_m").value);
+        //alert(ot_num);
+        if(ot_num >= 999900)
+        {   document.getElementById("cliente_plan_m").readOnly = false;
+            document.getElementById("obra_plan_m").readOnly = false;
+            document.getElementById("encargado").readOnly = false;
+            document.getElementById("trato_cliente").readOnly = false;
+        }
+        else
+        {   document.getElementById("cliente_plan_m").readOnly = true;
+            document.getElementById("obra_plan_m").readOnly = true;
+            document.getElementById("encargado").readOnly = true;
+            document.getElementById("trato_cliente").readOnly = true;
+        }
+    }
+    function check_ot_t_plan(){
+        //verificamos si la OT es menor que 999900 entonces sea READONLY
+        var ot_num = Number(document.getElementById("ot_plan_t").value);
+        //alert(ot_num);
+        if(ot_num >= 999900)
+        {   document.getElementById("cliente_plan_t").readOnly = false;
+            document.getElementById("obra_plan_t").readOnly = false;
+            document.getElementById("encargado2").readOnly = false;
+            document.getElementById("trato_cliente2").readOnly = false;
+        }
+        else
+        {   document.getElementById("cliente_plan_t").readOnly = true;
+            document.getElementById("obra_plan_t").readOnly = true;
+            document.getElementById("encargado2").readOnly = true;
+            document.getElementById("trato_cliente2").readOnly = true;
+        }
+    }
+
     //NO USAMOS MAS PERO QUEDA COMO EJEMPLO DE ASIGNACION DEL CAMPO FILTRO DEL DATO
     function asignar_ot(){
         //recuperamos el valor de la busqueda del filtro del datatable y asignamos al valor del OT
@@ -455,7 +491,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_m_plan()">CERRAR</button>
         </div>
         </div>
     </div>
@@ -519,7 +555,7 @@ body .modal-dialog { /* Width */
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" >CERRAR</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="check_ot_t_plan()" >CERRAR</button>
         </div>
         </div>
     </div>

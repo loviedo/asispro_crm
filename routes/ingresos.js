@@ -82,15 +82,15 @@ function generar_excel_ingresos(rows){
     worksheet.cell(1,2).string('CLIENTE').style(style);
     worksheet.cell(1,3).string('OBRA').style(style);
     worksheet.cell(1,4).string('NRO OT').style(style);
-    //worksheet.cell(1,4).string('PAGO').style(style);
-    worksheet.cell(1,5).string('FACTURA NRO').style(style);
-    worksheet.cell(1,6).string('FACTURA CONDICION').style(style);
-    worksheet.cell(1,7).string('MONTO').style(style);
-    //worksheet.cell(1,8).string('MONTO SIN IVA').style(style);
-    worksheet.cell(1,8).string('IVA').style(style);
-    worksheet.cell(1,9).string('RETENCION').style(style);
-    worksheet.cell(1,10).string('PORCENTAJE').style(style);
-    worksheet.cell(1,11).string('TOTAL FACTURADO').style(style);
+    worksheet.cell(1,5).string('PAGO').style(style);
+    worksheet.cell(1,6).string('FACTURA NRO').style(style);
+    worksheet.cell(1,7).string('FACTURA CONDICION').style(style);
+    worksheet.cell(1,8).string('MONTO').style(style);
+    worksheet.cell(1,9).string('MONTO SIN IVA').style(style);
+    worksheet.cell(1,10).string('IVA').style(style);
+    worksheet.cell(1,11).string('RETENCION').style(style);
+    worksheet.cell(1,12).string('PORCENTAJE').style(style);
+    worksheet.cell(1,13).string('TOTAL FACTURADO').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
@@ -100,15 +100,15 @@ function generar_excel_ingresos(rows){
         worksheet.cell(i+1,2).string(String(row.cliente)).style(style);
         worksheet.cell(i+1,3).string(String(row.obra)).style(style);
         worksheet.cell(i+1,4).number(Number(row.nro_ot)).style(style);
-        //worksheet.cell(i+1,4).string(String(row.pago)).style(style);
-        worksheet.cell(i+1,5).string(String(row.fact_nro)).style(style);
-        worksheet.cell(i+1,6).string(String(row.fact_condicion)).style(style);
-        worksheet.cell(i+1,7).number(Number(row.monto)).style(style);
-        //worksheet.cell(i+1,8).number(Number(row.monto_s_iva)).style(style);
-        worksheet.cell(i+1,8).number(Number(row.iva)).style(style);
-        worksheet.cell(i+1,9).number(Number(row.retencion)).style(style);
-        worksheet.cell(i+1,10).string(String(row.calcu_ret)).style(style);
-        worksheet.cell(i+1,11).number(Number(row.total_facturado)).style(style1);
+        worksheet.cell(i+1,5).string(String(row.pago)).style(style);
+        worksheet.cell(i+1,6).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,7).string(String(row.fact_condicion)).style(style);
+        worksheet.cell(i+1,8).number(Number(row.monto)).style(style);
+        worksheet.cell(i+1,9).number(Number(row.monto_s_iva)).style(style);
+        worksheet.cell(i+1,10).number(Number(row.iva)).style(style);
+        worksheet.cell(i+1,11).number(Number(row.retencion)).style(style);
+        worksheet.cell(i+1,12).string(String(row.calcu_ret)).style(style);
+        worksheet.cell(i+1,13).number(Number(row.total_facturado)).style(style1);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
