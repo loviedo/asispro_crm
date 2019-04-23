@@ -197,6 +197,35 @@
                         }}
                     );
 
+                    var CLIENTE_DATOS = $('#table_modal_clientes_ingresos').DataTable({
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+
                     var OT_DATOS_1 = $('#table_ot_plan_m_mano').DataTable({
                             "scrollY":        "600px",//tamanho de la tabla
                             "scrollCollapse": true, //collapse de la tabla  
@@ -442,6 +471,16 @@
                         $('#jornal').val(row[5]);
                     } );
 
+                    //para la pagina de ingresos, para seleccionar el cliente
+                    $('#table_modal_clientes_ingresos tbody').on('click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = CLIENTE_DATOS.row(this).index();
+                        var row = CLIENTE_DATOS.row(pos).data();
+                        console.log(row);//debug en la consola del navegador
+                        //asignamos el valor
+                        $('#cliente').val(row[1]);
+                    } );
+
                     /*JQUERY PARA ASIGNAR DATOS DE LA OT EN LOS CAMPOS DE CLIENTE Y OBRA PLAN MANANA*/
                     $('#table_ot_plan_m_mano tbody').on( 'click', 'tr', function () {
                         //$(this).toggleClass('selected');
@@ -520,7 +559,7 @@
                         var row = OT_DATOS_INGRESOS.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //asignamos el valor
-                        $('#nro_ot').val(row[0]);
+                        $('#nro_ot').val(row[1]);
                     } );
 
                     $('#table_modal_ot_ingresos tbody').on( 'click', 'tr', function () {

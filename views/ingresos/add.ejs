@@ -73,6 +73,9 @@ input {
 
     function cal_ret(){
         var val = String(document.getElementById("calcu_ret").value);
+        if(val == "SIN_RET"){
+            document.getElementById("retencion").value = 0; //ret 30% incluido
+        }
         if(val == "RET_30"){
             document.getElementById("retencion").value = Math.round((document.getElementById('iva').value *30/100)*100) /100; //ret 30% incluido
         }
@@ -91,6 +94,7 @@ input {
             document.getElementById("total_facturado").value = document.getElementById("monto").value; //
         }
         if(tipo_fact == 'CREDITO'){
+            cal_iva(); //primero calculamos el IVA y luego ceramos el MONTO -- segun las reglas.
             document.getElementById("monto").value = 0;
             //document.getElementById('total_facturado').value; //directo a monto
         }
@@ -120,7 +124,8 @@ input {
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha Ingreso" >
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="cliente">CLIENTE</label>
+                    <label for="cliente">CLIENTE <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_clientes_ingresos">
+                        ver CLIENTES</button>
                     <input type="text" class="form-control" id="cliente" name="cliente" value="<%= cliente %>">
                     <!--<datalist id="lista_cli">
                         <% /*if (data) { %>
@@ -131,6 +136,12 @@ input {
                     </datalist> -->
                 </div>
                 <div class="form-group col-md-6">
+                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
+                            ver OTs</button>
+                    </label>
+                    <input type="text" class="form-control" id="nro_ot" name="nro_ot" value="<%= nro_ot %>">
+                </div>
+                <div class="form-group col-md-6">
                     <label for="obra">OBRA</label>
                     <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra Descripcion">
                 </div>
@@ -139,15 +150,12 @@ input {
                     <input type="text" class="form-control" name="pago" id="pago" value="<%= pago %>" placeholder="Pago">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
-                            ver OTs</button>
-                    </label>
-                    <input type="text" class="form-control" id="nro_ot" name="nro_ot" value="<%= nro_ot %>">
-                </div>
-
-                <div class="form-group col-md-6">
                     <label for="fact_nro">FACTURA NRO</label>
                     <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="monto">MONTO</label>
+                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" >
                 </div>
                 <div class="form-group col-md-6">
                     <label for="fact_condicion">FACTURA TIPO</label>
@@ -161,10 +169,6 @@ input {
                         <option value="S_F">S/F</option>
                         <option value="ANULADA">ANULADA</option>-->
                     </select>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="monto">MONTO</label>
-                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" >
                 </div>
                 <div class="form-group col-md-6">
                     <label for="calcu_iva">PORCENTAJE IVA</label>
@@ -184,9 +188,10 @@ input {
                 <div class="form-group col-md-6">
                     <label for="calcu_ret">PORCENTAJE RETENCION</label>
                     <select class="form-control" name="calcu_ret" id="calcu_ret" onclick="cal_ret()">
-                        <option value="30%">RET 30%</option>
-                        <option value="70%">RET 70%</option>
-                        <option value="100%">RET 100%</option>
+                        <option value="SIN_RET">SIN RET</option>
+                        <option value="RET_30">RET 30%</option>
+                        <option value="RET_70">RET 70%</option>
+                        <option value="RET_100">RET 100%</option>
                     </select>
                 </div>
                 <div class="form-group col-md-6">
@@ -265,6 +270,50 @@ input {
         </div>
     </div>
 </div>
+
+<!-- MODAL de CLIENTES-->
+<div class="modal fade" id="modal_clientes_ingresos" tabindex="-1" role="dialog" aria-labelledby="modal_clientes_ingresosLabel" aria-hidden="true">
+    <div class="modal-dialog" width="100%" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_clientes_ingresosLabel">Listado de OTs</h5>
+        </div>
+        <div class="modal-body">
+            <!-- ACA PONEMOS LA TABLA QUE DEBE SER COMO /LISTAR -->
+
+            <div class="container-fluid" width="100%">
+                    <table id="table_modal_clientes_ingresos" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                            <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                            border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                                <tr>
+                                    <th>ID</th>  
+                                    <th>NOMBRE</th>
+                                    <th>RUC</th>          
+                                </tr>
+                            </thead>
+                        <tbody>
+                        <% if (data_clientes) { %>
+                            <% data_clientes.forEach(function(cli){ %>
+                            <tr>
+                                <td><%= cli.ot_nro %></td>
+                                <td><%= cli.nombre %></td>
+                                <td><%= cli.ruc %></td>
+                            </tr>
+                            <% }) %>
+                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+        </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">

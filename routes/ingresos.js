@@ -158,10 +158,19 @@ app.get('/add', function(req, res, next){
                     rows.forEach(function(row) {    
                         datos.push(row);
                     });
-                    //console.log(datos);//debug nros de ot
-                    res.render('ingresos/add', {
-                        title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
-                        mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0',data: datos, usuario_insert: user, usuario: user});
+                    conn.query('SELECT * FROM clientes ORDER BY id DESC',function(err, rows1) {
+                        if (err) {console.log(err);}
+                        else{
+                            datos_clientes = [];
+                            rows1.forEach(function(row) {    
+                                datos_clientes.push(row);
+                            });  
+                            //console.log(datos);//debug nros de ot
+                            res.render('ingresos/add', {
+                                title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
+                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0',data: datos, usuario_insert: user, usuario: user, data_clientes: datos_clientes});
+                        }
+                    })                                            
                 }
             })
         })
@@ -323,28 +332,22 @@ app.get('/editar/:id', function(req, res, next){
                                 rows1.forEach(function(row) {    
                                     datos.push(row);
                                 });
-                                console.log(datos);//debug
-                                res.render('ingresos/editar', {
-                                    title: 'Editar INGRESO', 
-                                    //data: rows[0],
-                                    id: rows[0].id,
-                                    fecha: formatear_fecha_yyyymmdd(date1),
-                                    cliente: rows[0].cliente,
-                                    obra: rows[0].obra,
-                                    fact_nro: rows[0].fact_nro,
-                                    fact_condicion: rows[0].fact_condicion,
-                                    monto: rows[0].monto,
-                                    pago: rows[0].pago,
-                                    calcu_iva: rows[0].calcu_iva,
-                                    iva: rows[0].iva,
-                                    retencion: rows[0].retencion,
-                                    calcu_ret: rows[0].calcu_ret,
-                                    total_facturado: rows[0].total_facturado,
-                                    nro_ot: rows[0].nro_ot,
-                                    mon_s_iva: rows[0].monto_s_iva,
-                                    data: datos,
-                                    usuario: user
-                                })
+                                //console.log(datos);//debug
+                                conn.query('SELECT * FROM clientes ORDER BY id DESC',function(err, rows1) {
+                                    if (err) {console.log(err);}
+                                    else{
+                                        datos_clientes = [];
+                                        rows1.forEach(function(row) {    
+                                            datos_clientes.push(row);
+                                        });  
+                                        //console.log(datos);//debug nros de ot
+                                        res.render('ingresos/editar', { title: 'Editar INGRESO', id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), cliente: rows[0].cliente, obra: rows[0].obra,
+                                            fact_nro: rows[0].fact_nro, fact_condicion: rows[0].fact_condicion, monto: rows[0].monto, pago: rows[0].pago, calcu_iva: rows[0].calcu_iva,
+                                            iva: rows[0].iva, retencion: rows[0].retencion, calcu_ret: rows[0].calcu_ret, total_facturado: rows[0].total_facturado, nro_ot: rows[0].nro_ot,
+                                            mon_s_iva: rows[0].monto_s_iva, data: datos, usuario: user, data_clientes: datos_clientes})
+                                    }
+                                })  
+
                             }
                         })
                     })

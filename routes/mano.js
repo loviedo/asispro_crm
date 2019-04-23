@@ -276,7 +276,7 @@ app.get('/add', function(req, res, next){
                     rows.forEach(function(row) {    
                         datos.push(row);
                     });
-                    console.log(datos);//debug de datos de OT
+                    //console.log(datos);//debug de datos de OT
                     //traemos los personales para mostrar en el modal
                     datos_rrhh = [];
                     conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
