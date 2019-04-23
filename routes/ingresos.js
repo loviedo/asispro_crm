@@ -259,9 +259,18 @@ app.post('/add', function(req, res, next){
                                         datos.push(row);
                                     });
                                     //console.log(datos);//debug
-                                    res.render('ingresos/add', {
-                                        title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
-                                        mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', data: datos, usuario_insert: user, usuario: user});
+                                    conn.query('SELECT * FROM clientes ORDER BY id DESC',function(err, rows1) {
+                                        if (err) {console.log(err);}
+                                        else{
+                                            datos_clientes = [];
+                                            rows1.forEach(function(row) {    
+                                                datos_clientes.push(row);
+                                            });  
+                                            res.render('ingresos/add', {
+                                                title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
+                                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', data: datos, usuario_insert: user, usuario: user,data_clientes: datos_clientes});
+                                        }
+                                    })
                                 }
                             })
                         })
@@ -433,26 +442,37 @@ app.post('/editar/:id', function(req, res, next) {
                                         datos.push(row);
                                     });
                                     //console.log(datos);//debug
-                                    res.render('ingresos/editar', {
-                                        title: 'Editar INGRESO',
-                                        id: req.params.id,
-                                        fecha: req.body.fecha,
-                                        cliente: req.body.cliente,
-                                        obra: req.body.obra,
-                                        pago: req.body.pago,
-                                        fact_nro: req.body.fact_nro,
-                                        fact_condicion: req.body.fact_condicion,
-                                        monto: req.body.monto,
-                                        calcu_iva: req.body.calcu_iva,
-                                        iva: req.body.iva,
-                                        retencion: req.body.retencion,
-                                        calcu_ret: req.body.calcu_ret,
-                                        total_facturado: req.body.total_facturado,
-                                        nro_ot: req.body.nro_ot,
-                                        mon_s_iva: req.body.mon_s_iva,
-                                        usuario_insert: user,
-                                        data: datos,
-                                        usuario: user               
+                                    conn.query('SELECT * FROM clientes ORDER BY id DESC',function(err, rows1) {
+                                        if (err) {console.log(err);}
+                                        else{
+                                            datos_clientes = [];
+                                            rows1.forEach(function(row) {    
+                                                datos_clientes.push(row);
+                                            });  
+                                            //console.log(datos);//debug nros de ot
+                                            res.render('ingresos/editar', {
+                                                title: 'Editar INGRESO',
+                                                id: req.params.id,
+                                                fecha: req.body.fecha,
+                                                cliente: req.body.cliente,
+                                                obra: req.body.obra,
+                                                pago: req.body.pago,
+                                                fact_nro: req.body.fact_nro,
+                                                fact_condicion: req.body.fact_condicion,
+                                                monto: req.body.monto,
+                                                calcu_iva: req.body.calcu_iva,
+                                                iva: req.body.iva,
+                                                retencion: req.body.retencion,
+                                                calcu_ret: req.body.calcu_ret,
+                                                total_facturado: req.body.total_facturado,
+                                                nro_ot: req.body.nro_ot,
+                                                mon_s_iva: req.body.mon_s_iva,
+                                                usuario_insert: user,
+                                                data: datos,
+                                                data_clientes: datos_clientes,
+                                                usuario: user               
+                                            })
+                                        }
                                     })
                                 }
                             })
