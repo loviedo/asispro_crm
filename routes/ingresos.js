@@ -78,37 +78,39 @@ function generar_excel_ingresos(rows){
 
     //dibujamos el excel
     //primero la cabecera
-    worksheet.cell(1,1).string('FECHA').style(style);
-    worksheet.cell(1,2).string('CLIENTE').style(style);
-    worksheet.cell(1,3).string('OBRA').style(style);
-    worksheet.cell(1,4).string('NRO OT').style(style);
-    worksheet.cell(1,5).string('PAGO').style(style);
-    worksheet.cell(1,6).string('FACTURA NRO').style(style);
-    worksheet.cell(1,7).string('FACTURA CONDICION').style(style);
-    worksheet.cell(1,8).string('MONTO').style(style);
-    worksheet.cell(1,9).string('MONTO SIN IVA').style(style);
-    worksheet.cell(1,10).string('IVA').style(style);
-    worksheet.cell(1,11).string('RETENCION').style(style);
-    worksheet.cell(1,12).string('PORCENTAJE').style(style);
-    worksheet.cell(1,13).string('TOTAL FACTURADO').style(style);
+    worksheet.cell(1,1).string('ID').style(style);
+    worksheet.cell(1,2).string('FECHA').style(style);
+    worksheet.cell(1,3).string('CLIENTE').style(style);
+    worksheet.cell(1,4).string('OBRA').style(style);
+    worksheet.cell(1,5).string('NRO OT').style(style);
+    worksheet.cell(1,6).string('PAGO').style(style);
+    worksheet.cell(1,7).string('FACTURA NRO').style(style);
+    worksheet.cell(1,8).string('FACTURA CONDICION').style(style);
+    worksheet.cell(1,9).string('MONTO').style(style);
+    worksheet.cell(1,10).string('MONTO SIN IVA').style(style);
+    worksheet.cell(1,11).string('IVA').style(style);
+    worksheet.cell(1,12).string('RETENCION').style(style);
+    worksheet.cell(1,13).string('PORCENTAJE').style(style);
+    worksheet.cell(1,14).string('TOTAL FACTURADO').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).date(formatear_fecha_yyyymmdd(row.fecha));
-        worksheet.cell(i+1,2).string(String(row.cliente)).style(style);
-        worksheet.cell(i+1,3).string(String(row.obra)).style(style);
-        worksheet.cell(i+1,4).number(Number(row.nro_ot)).style(style);
-        worksheet.cell(i+1,5).string(String(row.pago)).style(style);
-        worksheet.cell(i+1,6).string(String(row.fact_nro)).style(style);
-        worksheet.cell(i+1,7).string(String(row.fact_condicion)).style(style);
-        worksheet.cell(i+1,8).number(Number(row.monto)).style(style);
-        worksheet.cell(i+1,9).number(Number(row.monto_s_iva)).style(style);
-        worksheet.cell(i+1,10).number(Number(row.iva)).style(style);
-        worksheet.cell(i+1,11).number(Number(row.retencion)).style(style);
-        worksheet.cell(i+1,12).string(String(row.calcu_ret)).style(style);
-        worksheet.cell(i+1,13).number(Number(row.total_facturado)).style(style1);
+        worksheet.cell(i+1,1).number(Number(row.id)).style(style);
+        worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha));
+        worksheet.cell(i+1,3).string(String(row.cliente)).style(style);
+        worksheet.cell(i+1,4).string(String(row.obra)).style(style);
+        worksheet.cell(i+1,5).number(Number(row.nro_ot)).style(style);
+        worksheet.cell(i+1,6).string(String(row.pago)).style(style);
+        worksheet.cell(i+1,7).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,8).string(String(row.fact_condicion)).style(style);
+        worksheet.cell(i+1,9).number(Number(row.monto)).style(style);
+        worksheet.cell(i+1,10).number(Number(row.monto_s_iva)).style(style);
+        worksheet.cell(i+1,11).number(Number(row.iva)).style(style);
+        worksheet.cell(i+1,12).number(Number(row.retencion)).style(style);
+        worksheet.cell(i+1,13).string(String(row.calcu_ret)).style(style);
+        worksheet.cell(i+1,14).number(Number(row.total_facturado)).style(style1);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug

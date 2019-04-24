@@ -78,10 +78,11 @@ color: #ffffff;
 
 <!-- FORMA VIEJA -->
 <div class="container-fluid" width="100%">
-    <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+    <table id="tablex_ingresos" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>
+                    <th>ID</th>
                     <th>FECHA</th>
                     <th>CLIENTE</th>
                     <th>OBRA</th>
@@ -102,6 +103,7 @@ color: #ffffff;
         <% if (data) { %>
         <% data.forEach(function(ingreso){ %>
             <tr>
+                <td><%= ingreso.id %></td>
                 <td><%= formatear_fecha(ingreso.fecha) %></td>
                 <td><%= ingreso.cliente %></td>
                 <td><%= ingreso.obra %></td>
