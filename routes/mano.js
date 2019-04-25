@@ -1337,8 +1337,8 @@ app.get('/editar_real/:id', function(req, res, next){
                                             if(dias_dif == -1)//para el caso de real, si es la planificacion de ayer, se puede modificar todo menos la fecha
                                             {rol = 1;}
                                         }
-                                        if(user == "cibanez")
-                                        { rol=0}
+                                        /*if(user == "cibanez")
+                                        { rol=0}*/
                                         
                                         res.render('mano/editar_real', {
                                             title: 'Editar Plan Laboral', 
@@ -1560,8 +1560,8 @@ app.post('/editar_real/:id', function(req, res, next) {
                                                     if(dias_dif == -1)//para el caso de real, si es la planificacion de ayer, se puede modificar todo menos la fecha
                                                     {rol = 1;}
                                                 }
-                                                if(user == "cibanezssssssssssssssss")
-                                                { rol=0}
+                                                /*if(user == "cibanez")
+                                                { rol=0}*/
 
 
                                                 res.render('mano/editar_real', {
