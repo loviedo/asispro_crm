@@ -274,7 +274,7 @@ app.post('/add', function(req, res, next){
                 gasto_real: gasreal,
                 concepto: req.sanitize('concepto').trim(),
                 fact_condicion: req.sanitize('fact_condicion').trim(),
-                proveedor: req.sanitize('proveedor').trim(),
+                proveedor: req.sanitize('proveedor').trim(),//se sacó el escape()
                 fact_nro: req.sanitize('fact_nro').trim(),
                 encargado: req.sanitize('encargado').trim(),
                 codigo: cod,

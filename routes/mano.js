@@ -975,6 +975,8 @@ app.post('/editar/:id', function(req, res, next) {
                 //obra_real_n: req.sanitize('obra_real_n').trim(),
                 encargado: req.sanitize('encargado').trim(),
                 trato_cliente: req.sanitize('trato_cliente').trim(),
+                encargado2: req.sanitize('encargado2').trim(),//encargado tarde
+                trato_cliente2: req.sanitize('trato_cliente2').trim(),//trato cliente tarde
                 //h_entrada: req.sanitize('h_entrada').trim(),
                 //h_salida: req.sanitize('h_salida').trim(),
                 //monto: Number(req.sanitize('monto').trim()),
@@ -1020,8 +1022,8 @@ app.post('/editar/:id', function(req, res, next) {
                             //obra_real_n: mano_plan.obra_real_n,
                             encargado: mano_plan.encargado,
                             trato_cliente: mano_plan.trato_cliente,
-                            encargado2: req.body.encargado2,
-                            trato_cliente2: req.body.trato_cliente2,
+                            encargado2: mano_plan.encargado2,
+                            trato_cliente2: mano_plan.trato_cliente2,
                             //h_entrada: mano_plan.h_entrada,
                             //h_salida: mano_plan.h_salida,
                             //monto: mano_plan.monto,
