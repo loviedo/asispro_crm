@@ -46,7 +46,9 @@ var prov = require('./routes/proveedor');
 var rrhh = require('./routes/rrhh');
 var clientes = require('./routes/clientes');
 var ingresos = require('./routes/ingresos');
-var manoobra = require('./routes/mano');
+var planmano = require('./routes/mano');
+var manoobra = require('./routes/manoobra');
+var cajas = require('./routes/cajas');
  
 /**
  * Express Validator Middleware for Form Validation
@@ -113,7 +115,7 @@ app.use(session({
 }))
 app.use(flash())
 
-//cargamos los lugares en donde tenemos los archivos de logica del proyecto
+//cargamos los lugares en donde tenemos los archivos de vistas del proyecto
 app.use('/', index);//el home
 app.use('/users', users);//gestión de usuarios
 app.use('/facturas', facturas);//gestion de facturas
@@ -123,7 +125,9 @@ app.use('/proveedor', prov);//gestion de proveedores
 app.use('/rrhh', rrhh);//gestion de proveedores
 app.use('/clientes', clientes);//gestion de clientes
 app.use('/ingresos', ingresos);//gestion de ingresos
-app.use('/mano', manoobra);//gestion de ingresos
+app.use('/mano', planmano);//gestion de planificacion laboral
+app.use('/manoobra', manoobra);//gestion de mano de obra, pago de trabajos
+app.use('/cajas', cajas);//gestion de mano de obra, pago de trabajos
 
 /*
 app.get('/login', index);//pagina de login usuario

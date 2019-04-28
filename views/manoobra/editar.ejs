@@ -1,0 +1,224 @@
+<!-- including header content which is common for all pages  -->
+<%- include ../layouts/header.ejs %>   
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ 
+<!-- funcion para arreglar el formato de las fechas en este caso usamos para el listado de OTs -->
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+%>
+
+<script type="text/javascript"> 
+
+function check_ot_m(){
+    //verificamos si la OT es menor que 999900 entonces sea READONLY
+    var ot_num = Number(document.getElementById("ot_plan_m").value);
+    //alert(ot_num);
+    if(ot_num >= 999900)
+    {   document.getElementById("cliente_plan_m").readOnly = false;
+        document.getElementById("obra_plan_m").readOnly = false;
+        document.getElementById("encargado").readOnly = false;
+        document.getElementById("trato_cliente").readOnly = false;
+    }
+    else
+    {   document.getElementById("cliente_plan_m").readOnly = true;
+        document.getElementById("obra_plan_m").readOnly = true;
+        document.getElementById("encargado").readOnly = true;
+        document.getElementById("trato_cliente").readOnly = true;
+    }
+}
+function check_ot_t(){
+    //verificamos si la OT es menor que 999900 entonces sea READONLY
+    var ot_num = Number(document.getElementById("ot_plan_t").value);
+    //alert(ot_num);
+    if(ot_num >= 999900)
+    {   document.getElementById("cliente_plan_t").readOnly = false;
+        document.getElementById("obra_plan_t").readOnly = false;
+        document.getElementById("encargado2").readOnly = false;
+        document.getElementById("trato_cliente2").readOnly = false;
+    }
+    else
+    {   document.getElementById("cliente_plan_t").readOnly = true;
+        document.getElementById("obra_plan_t").readOnly = true;
+        document.getElementById("encargado2").readOnly = true;
+        document.getElementById("trato_cliente2").readOnly = true;
+    }
+}
+
+function dup_h_neg(){
+    var h1 = Number((document.getElementById('hora_neg').value.replace(",",".")));
+    h1 = h1 * (1.5);
+    //alert(h1); //debug
+    document.getElementById("hora_neg").value = h1.toString().replace(".",","); //duplicamos el item
+}
+function dup_h_50(){
+    var h2 = Number((document.getElementById('hora_50').value.replace(",",".")));
+    h2 = h2 *(1.5);
+    //alert(h2); //debug
+    document.getElementById("hora_50").value = h2.toString().replace(".",","); //duplicamos el item
+}
+function dup_h_100(){
+    var h3 = Number((document.getElementById('hora_100').value.replace(",",".")));
+    h3 =(h3 * 2);
+    //alert(h3); //debug
+    document.getElementById("hora_100").value = h3.toString().replace(".",","); //duplicamos el item
+}
+function hoy()
+{   var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) { dd = '0' + dd; } 
+    if (mm < 10) { mm = '0' + mm; } 
+    var today = yyyy + '-' + mm + '-' + dd;
+    return today;
+}
+</script>
+
+<!-- ESTILO PARA DATEPICKER -->
+<style>
+    [type="date"] {
+    background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+    }
+    [type="date"]::-webkit-inner-spin-button {
+    display: none;
+    }
+    [type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    }
+    /* custom styles */
+    body {
+    background: #e5e5e5;
+    font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+    }
+    label {
+    display: block;
+    }
+    input {
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 3px 5px;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+    width: 190px;
+    }
+
+    body .modal-dialog { /* Width */
+        max-width: 80%;
+        width: auto !important;
+    }
+</style>
+
+
+<!-- NAV PARA TITULO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <h3>MANO DE OBRA</h3>
+    </div>
+</nav>
+<!--form action="/mano/add_listar" method="post" name="form1">
+    <div class="form-row col-md-2">
+        <input type="date" class="form-control" name="fecha1" id="fecha1" placeholder="Fecha Planificacion" >
+        <button type="submit" name="Submit" value="Insertar" class="btn btn-small">Buscar</button>
+    </div>
+</form>-->
+
+
+<!-- NAV TABLITA CABECERA CON CARGADO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">   
+        <div class="container-fluid" width="100%">
+            <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                        <tr>
+                            <th>FECHA</th>
+                            <th>PERSONAL</th>
+                            <th>CLIENTE MAÑANA</th>
+                            <th>%</th>
+                            <th>CLIENTE TARDE</th>
+                            <th>%</th>
+                            <th>DIA</th>
+                            <th>MONTO</th>
+                            <th>SUBTOTAL</th>
+                            <th>PLUS</th>
+                            <th>HS 50%</th>
+                            <th>HS 100%</th>
+                            <th>HS NORMAL</th>
+                            <th>HS NEGATIVA</th>
+                            <th>PASAJE/OTROS</th>
+                            <th>JORNAL</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                <% if(data) { %>
+                <% data.forEach(function(mano){ %>
+                    <tr>
+                        <td><%= formatear_fecha(mano.fecha) %></td>
+                        <td><%= mano.empleado %></td>
+                        <td><%= mano.cliente_real_m %></td>
+                        <td><%= mano.por_m %></td>
+                        <td><%= mano.cliente_real_t %></td>
+                        <td><%= mano.por_t %></td>
+                        <td><%= mano.dia %></td>
+                        <td><%= mano.monto %></td>
+                        <td><%= mano.subtotal %></td>
+                        <td><%= mano.plus %></td>
+                        <td><%= mano.hora_50 %></td>
+                        <td><%= mano.hora_100 %></td>
+                        <td><%= mano.hora_normal %></td>
+                        <td><%= mano.hora_neg %></td>
+                        <td><%= mano.pasaje %></td>
+                        <td><%= mano.jornal %></td>
+                        <td>
+                            <div>
+                                <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp; 
+                                <% if (usuario != 'cibanez' && usuario != 'prueba' ) { %><a href='/mano/eliminar/<%= mano.id %>'>Eliminar</a><% } %>                          
+                                <!--<form method="post" action="/mano/eliminar/<%= mano.id %>" style="float:right">
+                                    <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
+                                    <input type="hidden" name="_method" value="DELETE" />
+                                </form>-->
+                            </div>
+                        </td>
+                    </tr>
+                    <% }) %>
+                    <% } %>
+                </tbody>
+        
+            </table>
+        </div>
+    </div>
+</nav>
+
+
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-strong">
+    <div class="container-fluid">
+
+    </div>
+</nav>
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

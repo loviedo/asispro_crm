@@ -618,7 +618,7 @@
                         var row = PROV_DATOS_GASTO.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //asignamos el valor
-                        $('#proveedor').val(row[1]);
+                        $('#proveedor').val(row[1].replace(/&amp;/g, '&'));//unescape para que detecte el &
                         $('#id_proveedor').val(row[0]);///capturamos tambien el id proveedor para insertar en el gasto, el campo esta oculto
                     } );
 
