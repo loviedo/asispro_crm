@@ -29,39 +29,31 @@ function formatear_fecha(date) {
 
 <script type="text/javascript"> 
 
-function check_ot_m(){
-    //verificamos si la OT es menor que 999900 entonces sea READONLY
-    var ot_num = Number(document.getElementById("ot_plan_m").value);
-    //alert(ot_num);
-    if(ot_num >= 999900)
-    {   document.getElementById("cliente_plan_m").readOnly = false;
-        document.getElementById("obra_plan_m").readOnly = false;
-        document.getElementById("encargado").readOnly = false;
-        document.getElementById("trato_cliente").readOnly = false;
-    }
-    else
-    {   document.getElementById("cliente_plan_m").readOnly = true;
-        document.getElementById("obra_plan_m").readOnly = true;
-        document.getElementById("encargado").readOnly = true;
-        document.getElementById("trato_cliente").readOnly = true;
-    }
+function cal_monto(){
+    var mon = Number((document.getElementById('jornal').value.replace(",",".")));
+    mon = mon * (8);
+    //alert(h1); //debug
+    document.getElementById("monto").value = mon.toString().replace(".",","); //duplicamos el item
 }
-function check_ot_t(){
-    //verificamos si la OT es menor que 999900 entonces sea READONLY
-    var ot_num = Number(document.getElementById("ot_plan_t").value);
-    //alert(ot_num);
-    if(ot_num >= 999900)
-    {   document.getElementById("cliente_plan_t").readOnly = false;
-        document.getElementById("obra_plan_t").readOnly = false;
-        document.getElementById("encargado2").readOnly = false;
-        document.getElementById("trato_cliente2").readOnly = false;
-    }
-    else
-    {   document.getElementById("cliente_plan_t").readOnly = true;
-        document.getElementById("obra_plan_t").readOnly = true;
-        document.getElementById("encargado2").readOnly = true;
-        document.getElementById("trato_cliente2").readOnly = true;
-    }
+
+function cal_subtotal(){
+    var monto = Number((document.getElementById('monto').value.replace(",",".")));
+    var val_dia = Number((document.getElementById('dia').value.replace(",",".")));
+    var subtot = monto * val_dia;
+    //alert(h1); //debug
+    document.getElementById("subtotal").value = subtot.toString().replace(".",","); //duplicamos el item
+}
+
+function cal_plus(){
+    var jornal = Number((document.getElementById('jornal').value.replace(",",".")));
+    var h_50 = Number((document.getElementById('hora_50').value.replace(",",".")));
+    var h_100 = Number((document.getElementById('hora_100').value.replace(",",".")));
+    var h_neg = Number((document.getElementById('hora_neg').value.replace(",",".")));
+    var h_normal = Number((document.getElementById('hora_normal').value.replace(",",".")));
+
+    var plus = ((jornal*h_normal) + (jornal*h_50*(1.5)) + (jornal*h_100*(2)) - (jornal*h_neg*(2)) );
+    //alert(h1); //debug
+    document.getElementById("plus").value = plus.toString().replace(".",","); //duplicamos el item
 }
 
 function dup_h_neg(){
@@ -136,78 +128,78 @@ function hoy()
         <h3>MANO DE OBRA</h3>
     </div>
 </nav>
-<!--form action="/mano/add_listar" method="post" name="form1">
-    <div class="form-row col-md-2">
-        <input type="date" class="form-control" name="fecha1" id="fecha1" placeholder="Fecha Planificacion" >
-        <button type="submit" name="Submit" value="Insertar" class="btn btn-small">Buscar</button>
-    </div>
-</form>-->
 
-
-<!-- NAV TABLITA CABECERA CON CARGADO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
-    <div class="container-fluid">   
-        <div class="container-fluid" width="100%">
-            <table id="tablex" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
-                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
-                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
-                        <tr>
-                            <th>FECHA</th>
-                            <th>PERSONAL</th>
-                            <th>CLIENTE MAÑANA</th>
-                            <th>%</th>
-                            <th>CLIENTE TARDE</th>
-                            <th>%</th>
-                            <th>DIA</th>
-                            <th>MONTO</th>
-                            <th>SUBTOTAL</th>
-                            <th>PLUS</th>
-                            <th>HS 50%</th>
-                            <th>HS 100%</th>
-                            <th>HS NORMAL</th>
-                            <th>HS NEGATIVA</th>
-                            <th>PASAJE/OTROS</th>
-                            <th>JORNAL</th>
-                            <th>ACCIONES</th>
-                        </tr>
-                    </thead>
-                <tbody>
-                <% if(data) { %>
-                <% data.forEach(function(mano){ %>
-                    <tr>
-                        <td><%= formatear_fecha(mano.fecha) %></td>
-                        <td><%= mano.empleado %></td>
-                        <td><%= mano.cliente_real_m %></td>
-                        <td><%= mano.por_m %></td>
-                        <td><%= mano.cliente_real_t %></td>
-                        <td><%= mano.por_t %></td>
-                        <td><%= mano.dia %></td>
-                        <td><%= mano.monto %></td>
-                        <td><%= mano.subtotal %></td>
-                        <td><%= mano.plus %></td>
-                        <td><%= mano.hora_50 %></td>
-                        <td><%= mano.hora_100 %></td>
-                        <td><%= mano.hora_normal %></td>
-                        <td><%= mano.hora_neg %></td>
-                        <td><%= mano.pasaje %></td>
-                        <td><%= mano.jornal %></td>
-                        <td>
-                            <div>
-                                <a href='/mano/editar/<%= mano.id %>'>Ver</a> &nbsp; 
-                                <% if (usuario != 'cibanez' && usuario != 'prueba' ) { %><a href='/mano/eliminar/<%= mano.id %>'>Eliminar</a><% } %>                          
-                                <!--<form method="post" action="/mano/eliminar/<%= mano.id %>" style="float:right">
-                                    <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
-                                    <input type="hidden" name="_method" value="DELETE" />
-                                </form>-->
-                            </div>
-                        </td>
-                    </tr>
-                    <% }) %>
-                    <% } %>
-                </tbody>
-        
-            </table>
-        </div>
+    <div class="container-fluid">
+        <form action="/manoobra/editar/<%= id %>" method="post" name="form1">
+            <div class="form-row">
+
+                <!-- 
+                    VALORES CALCULADOS desde consulta -- utilizamos para calcular luego n los campos
+                -->
+                <input type="hidden" class="form-control" name="por_m" id="por_m" value="<%= por_m %>">
+                <input type="hidden" class="form-control" name="por_t" id="por_t" value="<%= por_t %>">
+                <input type="hidden" class="form-control" name="dia" id="dia" value="<%= dia %>">
+
+                <div class="form-group col-md-1.5">
+                    <label for="fecha">FECHA</label>
+                    <!--<input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" onclick="ready()">-->
+                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto">
+                </div>
+                <div class="form-group col-md-2">
+                    <!--<label for="empleado">PERSONAL ASISPRO</label>-->
+                    <!--<button type="button" class="btn btn-xs" data-toggle="modal" data-target="#modal_rrhh">PERSONAL</button>-->
+                    <label for="codigo">PERSONAL</label>
+                    <input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="cliente_real_m">CLIENTE MAÑANA</label>
+                    <input type="text" class="form-control" name="cliente_real_m" id="cliente_real_m" value="<%= cliente_real_m %>">
+                </div>
+
+                <div class="form-group col-md-2">
+                    <label for="cliente_real_t">CLIENTE REAL TARDE</label>
+                    <input type="text" class="form-control" name="cliente_real_t" id="cliente_real_t" value="<%= cliente_real_t %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="monto">MONTO</label>
+                    <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" onclick="cal_monto()">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="monto">SUBTOTAL</label>
+                    <input type="text" class="form-control" name="subtotal" id="subtotal" value="<%= subtotal %>" onclick="cal_subtotal()">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="monto">PLUS</label>
+                    <input type="text" class="form-control" name="plus" id="plus" value="<%= plus %>" onclick="cal_plus()">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="hora_normal">HORA NORMAL</label>
+                    <input type="text" class="form-control" name="hora_normal" id="hora_normal" value="<%= hora_normal %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="hora_50">HORA 50</label>
+                    <input type="text" class="form-control" name="hora_50" id="hora_50" value="<%= hora_50 %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="hora_100">HORA 100</label>
+                    <input type="text" class="form-control" name="hora_100" id="hora_100" value="<%= hora_100 %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="hora_neg">HORA NEGATIVA</label>
+                    <input type="text" class="form-control" name="hora_neg" id="hora_neg" value="<%= hora_neg %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="pasaje">PASAJE</label>
+                    <input type="text" class="form-control" name="pasaje" id="pasaje" value="<%= pasaje %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="pasaje">JORNAL</label>
+                    <input type="text" class="form-control" name="jornal" id="jornal" value="<%= jornal %>">
+                </div>
+            </div>
+            <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">ACTUALIZAR</button>
+        </form>
     </div>
 </nav>
 
