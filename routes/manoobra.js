@@ -109,6 +109,9 @@ function generar_excel_mano_obra(rows){
     worksheet.cell(1,14).string('HS NEGATIVAS').style(style);
     worksheet.cell(1,15).string('PASAJE / OTROS').style(style);
     worksheet.cell(1,16).string('JORNAL').style(style);
+    worksheet.cell(1,17).string('IMPUTACION').style(style);
+    worksheet.cell(1,18).string('IMPUTACION').style(style);
+    worksheet.cell(1,19).string('OTs').style(style);
 
 
     //luego los datos
@@ -130,11 +133,15 @@ function generar_excel_mano_obra(rows){
         worksheet.cell(i+1,14).number(Number(row.hora_neg.toString().replace(",","."))).style(style);
         worksheet.cell(i+1,15).number(Number(row.pasaje.toString().replace(",","."))).style(style);
         worksheet.cell(i+1,16).number(Number(row.jornal.toString().replace(",","."))).style(style);
+        worksheet.cell(i+1,17).string(String(row.obra_real_m)).style(style);
+        worksheet.cell(i+1,18).string(String(row.obra_real_t)).style(style);
+        worksheet.cell(i+1,19).string(String(row.ot)).style(style);
 
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
     });
+    
     workbook.write('Listado_MANOOBRA.xlsx');
 }
 
@@ -178,10 +185,11 @@ app.get('/', function(req, res, next) {
                     res.render('mano/listar', {title: 'Listado de Trabajos', data: '',usuario: user})
                 } else {
                     req.getConnection(function(error, conn) {
-                        conn.query('select id,fecha, empleado, case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end as por_m, IFNULL(cliente_real_m, 0) as cliente_real_m, ' +
+                        conn.query('select id, fecha, empleado, case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end as por_m, IFNULL(cliente_real_m, 0) as cliente_real_m, ' +
                         'cliente_real_t, case when cast(ot_real_t as unsigned) >= 900000 then 0 else 0.5 end as por_t, ' +
                         'IFNULL(monto, 0) as monto, IFNULL(subtotal, 0) as subtotal, IFNULL(plus, 0) as plus, ((case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end)+(case when cast(ot_real_t as unsigned) >= 900000 then 0 else 0.5 end)) as dia, ' +
-                        'IFNULL(hora_50, 0) as hora_50, IFNULL(hora_100, 0) as hora_100, IFNULL(hora_normal, 0) as hora_normal, IFNULL(hora_neg, 0) as hora_neg, IFNULL(pasaje, 0) as pasaje, IFNULL(jornal, 0) as jornal from mano_obra order by fecha desc',function(err, rows) {
+                        'IFNULL(hora_50, 0) as hora_50, IFNULL(hora_100, 0) as hora_100, IFNULL(hora_normal, 0) as hora_normal, IFNULL(hora_neg, 0) as hora_neg, IFNULL(pasaje, 0) as pasaje, IFNULL(jornal, 0) as jornal, ' +
+                        'obra_real_m, obra_real_t, concat(ot_real_m,"/",ot_real_t) as ot from mano_obra order by fecha desc',function(err, rows) {
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
@@ -206,10 +214,10 @@ app.get('/editar/:id', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){ 
         req.getConnection(function(error, conn) {
-            conn.query('select id,fecha, empleado, ot_real_m, case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end as por_m, cliente_real_m, ' +
+            conn.query('select id, fecha, empleado, ot_real_m, case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end as por_m, cliente_real_m, ' +
             'cliente_real_t, case when cast(ot_real_t as unsigned) >= 900000 then 0 else 0.5 end as por_t, ' +
             'monto, subtotal, IFNULL(plus, 0) as plus, ((case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end)+(case when cast(ot_real_t as unsigned) >= 900000 then 0 else 0.5 end)) as dia, ' +
-            'hora_50, hora_100, hora_normal, hora_neg, pasaje, jornal from mano_obra WHERE id = ' + req.params.id, function(err, rows, fields) {
+            'hora_50, hora_100, hora_normal, hora_neg, pasaje, jornal, obra_real_m, obra_real_t, concat(ot_real_m,"/",ot_real_t) as ot from mano_obra WHERE id = ' + req.params.id, function(err, rows, fields) {
                 if(err) throw err
                 
                 //Si no se encuentra la planificacion laboral
