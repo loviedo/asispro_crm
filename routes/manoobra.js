@@ -60,7 +60,7 @@ function formatear_fecha(date) {
     {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
 }
 
-function generar_excel_mano_obra(rows){
+function generar_excel_emp_liq(rows){
     var workbook = new excel.Workbook();
     //Add Worksheets to the workbook
     var worksheet = workbook.addWorksheet('MANO OBRA');
@@ -349,6 +349,176 @@ app.post('/editar/:id', function(req, res, next) {
     }else {//SI NO ESTA LOGADO CHAU
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
+
+
+
+// MOSTRAR LISTADO ACUMULATIVO DE LIQUIDACIONES MES
+app.get('/liquidaciones', function(req, res, next) {
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT id,codigo,mes,anho,quincena,epp,anticipo,prestamo,ips,saldo_favor,debe,debo,pasaje,manoobra,saldo_pagar,otros, ' +
+            'empleados_liq.total,dias_t,h_50_total,h_100_total,h_neg_total,usuario_insert FROM empleados_liq ' +
+            'where mes = month(current_date()) and anho = year(current_date()) and quincena = 1 order by convert(codigo,unsigned integer) ',function(err, rows) {
+                if (err) {
+                    req.flash('error', err)
+                    res.render('manoobra/listar_liq', {title: 'Listado de Trabajos', data: '',usuario: user})
+                } else {
+                    generar_excel_emp_liq(rows);//generamos excel PLAN LABORAL / MANO OBRA
+                    res.render('manoobra/listar_liq', {title: 'Listado de Liquidaciones', usuario: user, data: rows})
+                }
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+app.get('/editar_liq/:id', function(req, res, next){
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){ 
+        req.getConnection(function(error, conn) {
+            conn.query('select * from empleados_liquidaciones where id =' + req.params.id, function(err, rows, fields) {
+                if(err) throw err
+                
+                //Si no se encuentra la planificacion laboral
+                if (rows.length <= 0) {
+                    req.flash('error', 'LIQUIDACION con id = ' + req.params.id + ' no encontrado')
+                    res.redirect('/liquidaciones')
+                }
+                else { // Si existe el plan
+                    //traemos los valores que preguntamos
+                    res.render('manoobra/editar_liq', {
+                        title: 'Editar Liquidacion', 
+                        id: rows[0].id,
+                        codigo: rows[0].codigo,//codigo empleado
+                        empleado: rows[0].empleado,//nombre empleado
+                        mes: rows[0].mes,
+                        anho: rows[0].anho,
+                        quincena: rows[0].quincena,
+                        epp: rows[0].epp,
+                        anticipo: rows[0].anticipo,
+                        prestamo: rows[0].prestamo,
+                        ips: rows[0].ips,
+                        saldo_pagar: rows[0].saldo_pagar,
+                        debe: rows[0].debe,
+                        debo: rows[0].debo,
+                        pasaje: rows[0].pasaje,
+                        manoobra: rows[0].manoobra,
+                        saldo_favor: rows[0].saldo_favor,
+                        otros: rows[0].otros,
+                        total: rows[0].total,
+                        dias_t: rows[0].dias_t,//cantidad de dias 
+                        h_50_total: rows[0].h_50_total, //total de horas 50%
+                        h_100_total: rows[0].h_100_total,//total de horas 100%
+                        h_neg_total: rows[0].h_neg_total,//total de horas negativas
+                        usuario: user
+                    })
+                }            
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+app.post('/editar_liq/:id', function(req, res, next) {
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+
+        /*  -- VALIDACIONES ESPERAMOS
+        req.assert('name', 'Name is required').notEmpty()           //Validate name
+        req.assert('age', 'Age is required').notEmpty()             //Validate age
+        req.assert('email', 'A valid email is required').isEmail()  //Validate email
+        */
+        var errors = req.validationErrors()
+        
+        if( !errors ) {//sin errores
+        var liqui = {
+                //codigo: req.sanitize('codigo').trim(),
+                //empleado: req.sanitize('empleado').trim(),
+                epp: req.sanitize('epp').trim(),
+                anticipo: req.sanitize('anticipo').trim(),
+                prestamo: Number(req.sanitize('prestamo').trim()),
+                prestamo: Number(req.sanitize('ips').trim()),
+                saldo_pagar: Number(req.sanitize('saldo_pagar').trim()),
+                debe: Number(req.sanitize('debe').trim()),
+                debo: Number(req.sanitize('debo').trim()),
+                saldo_pagar: Number(req.sanitize('saldo_pagar').trim()),
+                otros: Number(req.sanitize('otros').trim()),
+                total: Number(req.sanitize('total').trim()),
+                usuario_insert: user
+            } 
+            
+            req.getConnection(function(error, conn) {
+                conn.query('UPDATE empleado_liq SET ? WHERE id = ' + req.params.id, liqui, function(err, result) {
+                    //if(err) throw err
+                    if (err) {
+                        req.flash('error', err)
+                        
+                        //si hay error
+                        res.render('manoobra/editar', {
+                            title: 'Editar Mano de Obra',
+                            id: req.params.id,
+                            empleado: liqui.empleado,
+                            cliente_real_m: liqui.cliente_real_m,
+                            cliente_real_t: liqui.cliente_real_t,
+                            por_m: req.body.por_m,
+                            por_t: req.body.por_t,
+                            dia: req.body.dia,
+                            monto: liqui.monto,
+                            plus: liqui.plus,
+                            subtotal: liqui.subtotal,
+                            hora_50: liqui.hora_50,
+                            hora_100: liqui.hora_100,
+                            hora_normal: liqui.hora_normal,
+                            hora_neg: liqui.hora_neg,
+                            pasaje: liqui.pasaje,
+                            jornal: liqui.jornal,
+                            usuario: user
+                        })
+                    } else {                
+                        req.flash('success', 'Datos actualizados correctamente!')
+
+                        //traemos las planificaciones para mostrar en la tablita frente
+                        res.render('manoobra/editar', {
+                            title: 'Editar Mano de Obra',
+                            id: req.params.id,
+                            fecha: req.body.fecha,
+                            empleado: req.body.empleado,
+                            cliente_real_m: req.body.cliente_real_m,
+                            cliente_real_t: req.body.cliente_real_t,
+                            por_m: req.body.por_m,
+                            por_t: req.body.por_t,
+                            dia: req.body.dia,
+                            monto: req.body.monto,
+                            plus: req.body.plus,
+                            subtotal: req.body.subtotal,
+                            hora_50: req.body.hora_50,
+                            hora_100: req.body.hora_100,
+                            hora_normal: req.body.hora_normal,
+                            hora_neg: req.body.hora_neg,
+                            pasaje: req.body.pasaje,
+                            jornal: req.body.jornal,
+                            usuario_insert: user, usuario: user})
+                    }
+                })
+            })
+        }
+    }else {//SI NO ESTA LOGADO CHAU
+        res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+
 
 /* GENERACION EXCEL */
 app.post('/descargar', function(req, res, next) {

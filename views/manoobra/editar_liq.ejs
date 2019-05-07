@@ -1,0 +1,176 @@
+<!-- including header content which is common for all pages  -->
+<%- include ../layouts/header.ejs %>   
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ 
+<!-- funcion para arreglar el formato de las fechas en este caso usamos para el listado de OTs -->
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+%>
+
+<script type="text/javascript"> 
+function hoy()
+{   var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) { dd = '0' + dd; } 
+    if (mm < 10) { mm = '0' + mm; } 
+    var today = yyyy + '-' + mm + '-' + dd;
+    return today;
+}
+</script>
+
+<!-- ESTILO PARA DATEPICKER -->
+<style>
+    [type="date"] {
+    background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+    }
+    [type="date"]::-webkit-inner-spin-button {
+    display: none;
+    }
+    [type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    }
+    /* custom styles */
+    body {
+    background: #e5e5e5;
+    font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+    }
+    label {
+    display: block;
+    }
+    input {
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 3px 5px;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+    width: 190px;
+    }
+
+    body .modal-dialog { /* Width */
+        max-width: 80%;
+        width: auto !important;
+    }
+</style>
+
+
+<!-- NAV PARA TITULO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <h3>EDITAR LIQUIDACION</h3>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <form action="/manoobra/editar_liq/<%= id %>" method="post" name="form1">
+            <div class="form-row">
+
+                <!-- 
+                    VALORES CALCULADOS desde consulta -- utilizamos para calcular luego n los campos
+                
+                <input type="hidden" class="form-control" name="por_m" id="por_m" value="<%= por_m %>">
+                <input type="hidden" class="form-control" name="por_t" id="por_t" value="<%= por_t %>">-->
+                <input type="hidden" class="form-control" name="id" id="id" value="<%= id %>">
+
+                <div class="form-group col-md-1.5">
+                    <label for="codigo">CODIGO</label>
+                    <!--<input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" onclick="ready()">-->
+                    <input type="date" class="form-control" name="codigo" id="codigo" value="<%= codigo %>" readonly="true">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="empleado">PERSONAL</label>
+                    <input type="text" class="form-control" name="empleado" id="empleado" value="<%= empleado %>" readonly="true">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="epp">EPP</label>
+                    <input type="text" class="form-control" name="epp" id="epp" value="<%= epp %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="anticipo">ANTICIPO</label>
+                    <input type="text" class="form-control" name="anticipo" id="anticipo" value="<%= anticipo %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="prestamo">PRESTAMO</label>
+                    <input type="text" class="form-control" name="prestamo" id="prestamo" value="<%= prestamo %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="ips">ips</label>
+                    <input type="text" class="form-control" name="ips" id="ips" value="<%= ips %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="saldo_favor">SALDO A FAVOR</label>
+                    <input type="text" class="form-control" name="saldo_favor" id="saldo_favor" value="<%= saldo_favor %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="debe">DEBE</label>
+                    <input type="text" class="form-control" name="debe" id="debe" value="<%= debe %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="DEBO">DEBO</label>
+                    <input type="text" class="form-control" name="DEBO" id="DEBO" value="<%= DEBO %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="pasaje">PASAJE</label>
+                    <input type="text" class="form-control" name="pasaje" id="pasaje" value="<%= pasaje %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="manoobra">MO</label>
+                    <input type="text" class="form-control" name="manoobra" id="manoobra" value="<%= manoobra %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="saldo_pagar">SALDO A PAGAR</label>
+                    <input type="text" class="form-control" name="saldo_pagar" id="saldo_pagar" value="<%= saldo_pagar %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="otros">OTROS</label>
+                    <input type="text" class="form-control" name="otros" id="otros" value="<%= otros %>">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="total">TOTAL A PAGAR</label>
+                    <input type="text" class="form-control" name="total" id="total" value="<%= total %>">
+                </div>
+                <div class="form-group col-md-2"><label for="dias_t">DIAS TRABAJADOS</label><input type="text" class="form-control" name="dias_t" id="dias_t" value="<%= dias_t %>"></div>
+                <div class="form-group col-md-2"><label for="h_50_total">HS 50%</label><input type="text" class="form-control" name="h_50_total" id="h_50_total" value="<%= h_50_total %>"></div>
+                <div class="form-group col-md-2"><label for="h_100_total">HS 100%</label><input type="text" class="form-control" name="h_100_total" id="h_100_total" value="<%= h_100_total %>"></div>
+                <div class="form-group col-md-2"><label for="h_neg_total">HS NEGATIVAS</label><input type="text" class="form-control" name="h_neg_total" id="h_neg_total" value="<%= h_neg_total %>"></div>
+
+            </div>
+            <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">ACTUALIZAR</button>
+        </form>
+    </div>
+</nav>
+
+
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-strong">
+    <div class="container-fluid">
+
+    </div>
+</nav>
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>
