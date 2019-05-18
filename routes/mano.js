@@ -1079,7 +1079,6 @@ app.post('/editar/:id', function(req, res, next) {
                                                 date1.setDate(date1.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
                                                 date2.setDate(date2.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
                                                 //antes de pasar la info, tenemos que ver que usuario/rol y que fecha es para restringir
-                                                
 
                                                 if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
                                                 {   //vemos cuantos dias pasaron para ver la restriccion
