@@ -1378,7 +1378,7 @@ app.get('/editar_real/:id', function(req, res, next){
                                             hora_100: rows[0].hora_100,
                                             hora_neg: rows[0].hora_neg,
                                             pasaje: rows[0].pasaje,
-                                            //jornal: rows[0].jornal,
+                                            jornal: rows[0].jornal,
                                             encargado2: rows[0].encargado2,
                                             trato_cliente2: rows[0].trato_cliente2,
                                             encargado_real: rows[0].encargado_real,//encargado real manhana
@@ -1417,6 +1417,31 @@ app.post('/editar_real/:id', function(req, res, next) {
         var errors = req.validationErrors()
         
         if( !errors ) {//sin errores
+
+        //calculo de dia trabajado, monto y subtotal
+        var otrm = Number(req.sanitize('obra_real_m').trim());
+        var otrt = Number(req.sanitize('obra_real_m').trim());
+        var jornito = Number(req.sanitize('jornal').trim());
+        var val_dia = 0;
+        if(otrm >0 && otrm < 999900) //si existe ot real mannhana  y es menor a 999900 (no son OTs administativas)
+        {   val_dia = 0.5;}
+        if(otrt >0 && otrt < 999900) //si existe ot real tarde  y es menor a 999900 (no son OTs administativas)
+        {   val_dia = vald_dia + 0.5;}
+
+        //CALCULAMOS MONTO EN BASE AL JORNAL
+        var montito = (jornito * 8);
+        //CALCULAMOS SUBTOTAL EN BASE AL MONTO X DIA LABURADO (0.5+ 0.5 en el maximo valor de los casos)
+        var subtotito  = montito * val_dia;
+        //CALCULAMOS EL PLUS
+        var hnormal= Number(req.sanitize('hora_normal').trim());
+        var h50= Number(req.sanitize('hora_50').trim());
+        var h100= Number(req.sanitize('hora_100').trim());
+        var hneg= Number(req.sanitize('hora_neg').trim());
+        var plusito = ((jornito*hnormal) + (jornito*h50*(1.5)) + (jornito*h100*(2)) - (jornito*hneg*(2)));
+        //VEMOS EL PASAJE
+        var paje= Number(req.sanitize('pasaje').trim());
+
+        //objeto para actualizar campos
         var mano_plan = {
                 fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),//fecha se mantiene nomas ya
                 codigo: req.sanitize('codigo').trim(),
@@ -1441,12 +1466,6 @@ app.post('/editar_real/:id', function(req, res, next) {
                 trato_cliente_real2: req.sanitize('trato_cliente_real2').trim(),//real tarde
                 h_entrada: req.sanitize('h_entrada').trim(),
                 h_salida: req.sanitize('h_salida').trim(),
-                //monto: Number(req.sanitize('monto').trim()),
-                //subtotal: Number(req.sanitize('subtotal').trim()),
-                hora_50: req.sanitize('hora_50').trim(),
-                hora_100: req.sanitize('hora_100').trim(),
-                hora_normal: req.sanitize('hora_normal').trim(),
-                hora_neg: req.sanitize('hora_neg').trim(),
                 ot_plan_m: req.sanitize('ot_plan_m').trim(),
                 ot_real_m: req.sanitize('ot_real_m').trim(),
                 ot_plan_t: req.sanitize('ot_plan_t').trim(),
@@ -1456,9 +1475,14 @@ app.post('/editar_real/:id', function(req, res, next) {
                 hora_50: req.sanitize('hora_50').trim(),
                 hora_100: req.sanitize('hora_100').trim(),
                 hora_neg: req.sanitize('hora_neg').trim(),
-                pasaje: Number(req.sanitize('pasaje').trim()),
-                //jornal: Number(req.sanitize('jornal').trim()),
-                usuario_insert: user
+                //jornal: Number(req.sanitize('jornal').trim()), //recibimos del campo oculto. pero NO ACTUALIZAMOS
+                usuario_insert: user,
+
+                //VALORES CALCULADOS
+                monto: montito, //calculado previamente y actualizamos en la tabla
+                subtotal: subtotito, //calculamos previamente y actualizamos en la tabla
+                pasaje: paje,//asignamos el pasaje
+                plus: plusito,//asignamos el plus
             } 
             
             req.getConnection(function(error, conn) {
@@ -1492,10 +1516,6 @@ app.post('/editar_real/:id', function(req, res, next) {
                             h_salida: mano_plan.h_salida,
                             monto: mano_plan.monto,
                             subtotal: mano_plan.subtotal,
-                            hora_50: mano_plan.hora_50,
-                            hora_100: mano_plan.hora_100,
-                            hora_normal: mano_plan.hora_normal,
-                            hora_neg: mano_plan.hora_neg,
                             ot_plan_m: mano_plan.ot_plan_m,
                             ot_real_m: mano_plan.ot_real_m,
                             ot_plan_t: mano_plan.ot_plan_t,
@@ -1506,7 +1526,8 @@ app.post('/editar_real/:id', function(req, res, next) {
                             hora_100: mano_plan.hora_100,
                             hora_neg: mano_plan.hora_neg,
                             pasaje: mano_plan.pasaje,
-                            //jornal: mano_plan.jornal,
+                            //jornal: mano_plan.jornal, //no mostramos en esta pagina
+                            //plus: mano_plan.plus, //no mostramos en esta pagina
                             usuario: user
                         })
                     } else {                
@@ -1539,7 +1560,6 @@ app.post('/editar_real/:id', function(req, res, next) {
                                                     datos_rrhh.push(row);
                                                 });
                                                 //console.log(datos_rrhh);//debug de datos de RRHH
-                                                //console.log(datos_rrhh);//debug de datos de RRHH
                                                 //dibujamos la tabla con los datos que consultamos
                                                 var date1 = new Date(formatear_fecha_yyyymmdd(req.body.fecha));//traemos la fecha de carga de la planificacion.
                                                 var date2 = new Date(hoy());//de hoy
@@ -1563,6 +1583,9 @@ app.post('/editar_real/:id', function(req, res, next) {
                                                 }
                                                 /*if(user == "cibanez")
                                                 { rol=0}*/
+
+
+
 
 
                                                 res.render('mano/editar_real', {

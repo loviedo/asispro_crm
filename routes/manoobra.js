@@ -150,7 +150,6 @@ function generar_excel_emp_liq(){
 
 }
 
-
 function manhana()
 {   var today = new Date();
     var dd = today.getDate()+1;
@@ -523,8 +522,6 @@ app.post('/editar_liq/:id', function(req, res, next) {
     }else {//SI NO ESTA LOGADO CHAU
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
-
-
 
 /* GENERACION EXCEL */
 app.post('/descargar', function(req, res, next) {

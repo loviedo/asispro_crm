@@ -51,7 +51,7 @@ function cal_plus(){
     var h_neg = Number((document.getElementById('hora_neg').value.replace(",",".")));
     var h_normal = Number((document.getElementById('hora_normal').value.replace(",",".")));
 
-    var plus = ((jornal*h_normal) + (jornal*h_50*(1.5)) + (jornal*h_100*(2)) - (jornal*h_neg*(2)) );
+    var plus = ((jornal*h_normal) + (jornal*h_50*(1.5)) + (jornal*h_100*(2)) - (jornal*h_neg*(2)));
     //alert(h1); //debug
     document.getElementById("plus").value = plus.toString().replace(".",","); //duplicamos el item
 }
