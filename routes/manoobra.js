@@ -60,7 +60,7 @@ function formatear_fecha(date) {
     {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
 }
 
-function generar_excel_emp_liq(rows){
+function generar_excel_mano_obra(rows){
     var workbook = new excel.Workbook();
     //Add Worksheets to the workbook
     var worksheet = workbook.addWorksheet('MANO OBRA');
@@ -144,6 +144,12 @@ function generar_excel_emp_liq(rows){
     
     workbook.write('Listado_MANOOBRA.xlsx');
 }
+
+//completar funcion
+function generar_excel_emp_liq(){
+
+}
+
 
 function manhana()
 {   var today = new Date();
