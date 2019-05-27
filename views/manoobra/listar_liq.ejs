@@ -154,6 +154,9 @@ function hoy()
                         <tr>
                             <th>CODIGO</th>
                             <th>PERSONAL</th>
+                            <th>AÑO</th>
+                            <th>MES</th>
+                            <th>QUINCENA</th>
                             <th>EPP</th>
                             <th>ANTICIPO</th>
                             <th>PRÉSTAMO</th>
@@ -174,7 +177,10 @@ function hoy()
                 <% data.forEach(function(mano){ %>
                     <tr>
                         <td><%= mano.codigo %></td>
-                        <td><%= mano.empleado %></td>
+                        <td><%= mano.nombre %></td>
+                        <td><%= mano.anho %></td>
+                        <td><%= mano.mes %></td>
+                        <td><%= mano.quincena %></td>
                         <td><%= mano.epp %></td>
                         <td><%= mano.anticipo %></td>
                         <td><%= mano.prestamo %></td>

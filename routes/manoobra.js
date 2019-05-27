@@ -172,6 +172,9 @@ function generar_excel_emp_liq(rows){
     //primero la cabecera
     worksheet.cell(3,1).string('NRO').style(style);
     worksheet.cell(3,2).string('NOMBRE Y APELLIDO').style(style);
+    worksheet.cell(3,3).string('AÑO').style(style);
+    worksheet.cell(3,3).string('MES').style(style);
+    worksheet.cell(3,3).string('QUINCENA').style(style);
     worksheet.cell(3,3).string('EPP').style(style);
     worksheet.cell(3,4).string('ANTICIPO').style(style);
     worksheet.cell(3,5).string('PRESTAMO').style(style);
@@ -196,6 +199,9 @@ function generar_excel_emp_liq(rows){
     rows.forEach(function(row) {
         worksheet.cell(i+3,1).string(String(row.codigo)).style(style);//codigo del empleado
         worksheet.cell(i+3,2).string(String(row.nombre)).style(style); //nombre y apellido
+        worksheet.cell(i+3,3).string(String(row.anho)).style(style);
+        worksheet.cell(i+3,3).string(String(row.mes)).style(style);
+        worksheet.cell(i+3,3).string(String(row.quincena)).style(style);
         worksheet.cell(i+3,3).string(String(row.epp)).style(style);//equipos de proteccion personal
         worksheet.cell(i+3,4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
         worksheet.cell(i+3,5).string(String(row.prestamo)).style(style);
@@ -422,7 +428,7 @@ app.get('/liquidaciones', function(req, res, next) {
         */
         req.getConnection(function(error, conn) {
             conn.query('insert into empleados_liq (anho, mes, codigo, quincena, id, manoobra, usuario_insert) ' + 
-            'select t1.anho, t1.mes, t1.codigo, t1.quincena, round(rand(t1.codigo)*100000,0) as id, t1.manoobra, t1.usuario_insert from ' + 
+            'select t1.anho, t1.mes, t1.codigo, t1.quincena, round(rand(t1.codigo + t1.anho + t1.mes +t1.quincena)*100000,0) as id, t1.manoobra, t1.usuario_insert from ' + 
             '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' + 
             'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' + 
             'IFNULL(sum(subtotal), 0) as manoobra, "admin" as usuario_insert from mano_obra ' + 
