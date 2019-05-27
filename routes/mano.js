@@ -657,10 +657,6 @@ app.post('/add', function(req, res, next){
                 h_salida: req.sanitize('h_salida').trim(),
                 monto: Number(req.sanitize('monto').trim()),
                 subtotal: Number(req.sanitize('subtotal').trim()),
-                hora_50: Number(req.sanitize('hora_50').trim()),
-                hora_100: Number(req.sanitize('hora_100').trim()),
-                hora_normal: Number(req.sanitize('hora_normal').trim()),
-                hora_neg: Number(req.sanitize('hora_neg').trim()),
                 ot_plan_m: req.sanitize('ot_plan_m').trim(),
                 ot_real_m: req.sanitize('ot_real_m').trim(),
                 ot_plan_t: req.sanitize('ot_plan_t').trim(),
@@ -1584,10 +1580,6 @@ app.post('/editar_real/:id', function(req, res, next) {
                                                 /*if(user == "cibanez")
                                                 { rol=0}*/
 
-
-
-
-
                                                 res.render('mano/editar_real', {
                                                     title: 'Editar Plan Laboral',
                                                     id: req.params.id,
@@ -1627,7 +1619,7 @@ app.post('/editar_real/:id', function(req, res, next) {
                                                     ot_real_n: req.body.ot_real_n,
                                                     pasaje: req.body.pasaje,
                                                     restri: rol,
-                                                    //jornal: req.body.jornal,
+                                                    jornal: req.body.jornal,
                                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh
                                                 })
                                             }              

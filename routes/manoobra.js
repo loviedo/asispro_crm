@@ -146,8 +146,75 @@ function generar_excel_mano_obra(rows){
 }
 
 //completar funcion
-function generar_excel_emp_liq(){
+function generar_excel_emp_liq(rows){
+    var workbook = new excel.Workbook();
+    var worksheet = workbook.addWorksheet('LIQUIDACIONES');
+    //
+    const style = workbook.createStyle({
+    font: {color: '#000000',size: 12},
+    numberFormat: '#,##0.00; (#,##0.00); -'
+    });
 
+    //prueba estilo 2
+    const style1 = workbook.createStyle({
+        font: {color: '#000000',fgColor:'#EF820D',size: 12},
+        numberFormat: '#,##0; (#,##0); -'
+    });
+
+    const bgStyle = workbook.createStyle({
+        fill: {type: 'pattern',patternType: 'solid',
+          //bgColor: '#EF820D',
+          //fgColor: '#EF820D', //color fondo de la celda.
+        }
+    });
+
+    //dibujamos el excel
+    //primero la cabecera
+    worksheet.cell(3,1).string('NRO').style(style);
+    worksheet.cell(3,2).string('NOMBRE Y APELLIDO').style(style);
+    worksheet.cell(3,3).string('EPP').style(style);
+    worksheet.cell(3,4).string('ANTICIPO').style(style);
+    worksheet.cell(3,5).string('PRESTAMO').style(style);
+    worksheet.cell(3,6).string('IPS').style(style);
+    worksheet.cell(3,7).string('SALDO A FAVOR').style(style);
+    worksheet.cell(3,8).string('ME DEBE').style(style);
+    worksheet.cell(3,9).string('LO QUE DEBO').style(style);
+    worksheet.cell(3,10).string('PASAJE').style(style);
+    worksheet.cell(3,11).string('MO').style(style);
+    worksheet.cell(3,12).string('SALDO A PAGAR').style(style);
+    worksheet.cell(3,13).string('OTROS').style(style);
+    worksheet.cell(3,14).string('TOTAL A PAGAR').style(style);
+
+    /*SELECT el.codigo, concat(em.nombres,' ',em.apellidos) as nombre , el.mes, el.anho, el. quincena, el.epp, el.anticipo, el.prestamo, el.ips, el.saldo_favor, el.debe, el.debo, 
+    el.pasaje, el.manoobra, el.saldo_pagar, el.otros, 
+    el.total, el.dias_t, el.h_50_total, el.h_100_total, el.h_neg_total, el.usuario_insert FROM empleados_liq el
+    inner join empleados em on el.codigo = em.codigo
+    where el.mes = month(current_date()) and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer)*/
+
+    //luego los datos
+    var i = 1;
+    rows.forEach(function(row) {
+        worksheet.cell(i+3,1).string(String(row.codigo)).style(style);//codigo del empleado
+        worksheet.cell(i+3,2).string(String(row.nombre)).style(style); //nombre y apellido
+        worksheet.cell(i+3,3).string(String(row.epp)).style(style);//equipos de proteccion personal
+        worksheet.cell(i+3,4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,5).string(String(row.prestamo)).style(style);
+        worksheet.cell(i+3,6).number(Number(row.ips.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,7).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,8).number(Number(row.debe.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,9).number(Number(row.debo.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,10).number(Number(row.pasaje.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,11).number(Number(row.manoobra.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,12).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,13).number(Number(row.otros.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);
+
+        //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
+        i=i+1;
+        //console.log(row.descripcion);//debug
+    });
+    
+    workbook.write('Listado_LIQUIDACION.xlsx');
 }
 
 function manhana()
@@ -219,7 +286,7 @@ app.get('/editar/:id', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){ 
         req.getConnection(function(error, conn) {
-            conn.query('select id, fecha, empleado, ot_real_m, case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end as por_m, cliente_real_m, ' +
+            conn.query('select id, fecha, empleado, ot_real_m, ot_real_t, case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end as por_m, cliente_real_m, ' +
             'cliente_real_t, case when cast(ot_real_t as unsigned) >= 900000 then 0 else 0.5 end as por_t, ' +
             'monto, subtotal, IFNULL(plus, 0) as plus, ((case when cast(ot_real_m as unsigned) >= 900000 then 0 else 0.5 end)+(case when cast(ot_real_t as unsigned) >= 900000 then 0 else 0.5 end)) as dia, ' +
             'hora_50, hora_100, hora_normal, hora_neg, pasaje, jornal, obra_real_m, obra_real_t, concat(ot_real_m,"/",ot_real_t) as ot from mano_obra WHERE id = ' + req.params.id, function(err, rows, fields) {
@@ -304,24 +371,9 @@ app.post('/editar/:id', function(req, res, next) {
                         //si hay error
                         res.render('manoobra/editar', {
                             title: 'Editar Mano de Obra',
-                            id: req.params.id,
-                            fecha: mano.fecha,
-                            empleado: mano.empleado,
-                            cliente_real_m: mano.cliente_real_m,
-                            cliente_real_t: mano.cliente_real_t,
-                            por_m: req.body.por_m,
-                            por_t: req.body.por_t,
-                            dia: req.body.dia,
-                            monto: mano.monto,
-                            plus: mano.plus,
-                            subtotal: mano.subtotal,
-                            hora_50: mano.hora_50,
-                            hora_100: mano.hora_100,
-                            hora_normal: mano.hora_normal,
-                            hora_neg: mano.hora_neg,
-                            pasaje: mano.pasaje,
-                            jornal: mano.jornal,
-                            usuario: user
+                            id: req.params.id, fecha: mano.fecha, empleado: mano.empleado, cliente_real_m: mano.cliente_real_m, cliente_real_t: mano.cliente_real_t, por_m: req.body.por_m,
+                            por_t: req.body.por_t, dia: req.body.dia, monto: mano.monto, plus: mano.plus, subtotal: mano.subtotal, hora_50: mano.hora_50, hora_100: mano.hora_100,
+                            hora_normal: mano.hora_normal, hora_neg: mano.hora_neg, pasaje: mano.pasaje, jornal: mano.jornal, usuario: user
                         })
                     } else {                
                         req.flash('success', 'Datos actualizados correctamente!')
@@ -356,7 +408,6 @@ app.post('/editar/:id', function(req, res, next) {
 })
 
 
-
 // MOSTRAR LISTADO ACUMULATIVO DE LIQUIDACIONES MES
 app.get('/liquidaciones', function(req, res, next) {
     if(req.session.user)
@@ -365,17 +416,46 @@ app.get('/liquidaciones', function(req, res, next) {
     }
     //controlamos quien se loga.
 	if(user.length >0){
-        //vemos los datos en la base
+
+        //actualizamos los valores, la consulta es:
+        /*
+        */
         req.getConnection(function(error, conn) {
-            conn.query('SELECT id,codigo,mes,anho,quincena,epp,anticipo,prestamo,ips,saldo_favor,debe,debo,pasaje,manoobra,saldo_pagar,otros, ' +
-            'empleados_liq.total,dias_t,h_50_total,h_100_total,h_neg_total,usuario_insert FROM empleados_liq ' +
-            'where mes = month(current_date()) and anho = year(current_date()) and quincena = 1 order by convert(codigo,unsigned integer) ',function(err, rows) {
+            conn.query('insert into empleados_liq (anho, mes, codigo, quincena, id, manoobra, usuario_insert) ' + 
+            'select t1.anho, t1.mes, t1.codigo, t1.quincena, round(rand(t1.codigo)*100000,0) as id, t1.manoobra, t1.usuario_insert from ' + 
+            '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' + 
+            'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' + 
+            'IFNULL(sum(subtotal), 0) as manoobra, "admin" as usuario_insert from mano_obra ' + 
+            'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' + 
+            'order by year(fecha) desc, month(fecha) desc, codigo asc) t1 ' + 
+            'on duplicate key update manoobra = ( select sum(t2.manoobra) as manoobra from ' + 
+            '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' + 
+            'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' + 
+            'IFNULL(sum(subtotal), 0) as manoobra from mano_obra ' + 
+            'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' + 
+            'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t2.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena)',function(err, rows) {
                 if (err) {
                     req.flash('error', err)
                     res.render('manoobra/listar_liq', {title: 'Listado de Trabajos', data: '',usuario: user})
                 } else {
-                    generar_excel_emp_liq(rows);//generamos excel PLAN LABORAL / MANO OBRA
-                    res.render('manoobra/listar_liq', {title: 'Listado de Liquidaciones', usuario: user, data: rows})
+
+                    //TRAEMOS DATOS DE LA BASE
+                    req.getConnection(function(error, conn) {
+                        conn.query('SELECT el.id, el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
+                        'IFNULL(el.debe,0) debe, IFNULL(el.debo,0) debo, IFNULL(el.pasaje,0) pasaje, IFNULL(el.manoobra,0) manoobra, IFNULL(el.saldo_pagar,0) saldo_pagar, IFNULL(el.otros,0) otros, IFNULL(el.total,0) total, IFNULL(el.dias_t,0) dias_t, IFNULL(el.h_50_total,0) h_50_total, IFNULL(el.h_100_total,0) h_100_total,  ' +
+                        'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.usuario_insert,0) usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
+                        'where el.mes = month(current_date()) and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer) ',function(err, rows) {
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('manoobra/listar_liq', {title: 'Listado de Trabajos', data: '',usuario: user})
+                            } else {
+
+                                generar_excel_emp_liq(rows);//generamos excel LIQUIDACIONES
+                                res.render('manoobra/listar_liq', {title: 'Listado de Liquidaciones', usuario: user, data: rows})
+                            }
+                        })
+                    })
+
                 }
             })
         })
@@ -390,7 +470,7 @@ app.get('/editar_liq/:id', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){ 
         req.getConnection(function(error, conn) {
-            conn.query('select * from empleados_liquidaciones where id =' + req.params.id, function(err, rows, fields) {
+            conn.query('select el.*, concat(em.nombres," ",em.apellidos) as nombre from empleados_liq el inner join empleados em on el.codigo = em.codigo  where el.id =' + req.params.id, function(err, rows, fields) {
                 if(err) throw err
                 
                 //Si no se encuentra la planificacion laboral
@@ -404,7 +484,7 @@ app.get('/editar_liq/:id', function(req, res, next){
                         title: 'Editar Liquidacion', 
                         id: rows[0].id,
                         codigo: rows[0].codigo,//codigo empleado
-                        empleado: rows[0].empleado,//nombre empleado
+                        nombre: rows[0].nombre,//nombre empleado
                         mes: rows[0].mes,
                         anho: rows[0].anho,
                         quincena: rows[0].quincena,
@@ -454,10 +534,12 @@ app.post('/editar_liq/:id', function(req, res, next) {
                 epp: req.sanitize('epp').trim(),
                 anticipo: req.sanitize('anticipo').trim(),
                 prestamo: Number(req.sanitize('prestamo').trim()),
-                prestamo: Number(req.sanitize('ips').trim()),
-                saldo_pagar: Number(req.sanitize('saldo_pagar').trim()),
+                ips: Number(req.sanitize('ips').trim()),
+                saldo_favor: Number(req.sanitize('saldo_favor').trim()),
                 debe: Number(req.sanitize('debe').trim()),
                 debo: Number(req.sanitize('debo').trim()),
+                pasaje: Number(req.sanitize('pasaje').trim()),
+                manoobra: Number(req.sanitize('manoobra').trim()),
                 saldo_pagar: Number(req.sanitize('saldo_pagar').trim()),
                 otros: Number(req.sanitize('otros').trim()),
                 total: Number(req.sanitize('total').trim()),
@@ -465,55 +547,52 @@ app.post('/editar_liq/:id', function(req, res, next) {
             } 
             
             req.getConnection(function(error, conn) {
-                conn.query('UPDATE empleado_liq SET ? WHERE id = ' + req.params.id, liqui, function(err, result) {
+                conn.query('UPDATE empleados_liq SET ? WHERE id = ' + req.params.id, liqui, function(err, result) {
                     //if(err) throw err
                     if (err) {
                         req.flash('error', err)
                         
                         //si hay error
-                        res.render('manoobra/editar', {
+                        res.render('manoobra/editar_liq', {
                             title: 'Editar Mano de Obra',
                             id: req.params.id,
-                            empleado: liqui.empleado,
-                            cliente_real_m: liqui.cliente_real_m,
-                            cliente_real_t: liqui.cliente_real_t,
-                            por_m: req.body.por_m,
-                            por_t: req.body.por_t,
-                            dia: req.body.dia,
-                            monto: liqui.monto,
-                            plus: liqui.plus,
-                            subtotal: liqui.subtotal,
-                            hora_50: liqui.hora_50,
-                            hora_100: liqui.hora_100,
-                            hora_normal: liqui.hora_normal,
-                            hora_neg: liqui.hora_neg,
+                            codigo: req.body.codigo,
+                            nombre: req.body.nombre,
+                            epp: liqui.epp,
+                            anticipo: liqui.anticipo,
+                            prestamo: liqui.prestamo,
+                            ips: liqui.ips,
+                            saldo_favor: liqui.saldo_favor,
+                            debe: liqui.debe,
+                            debo: liqui.debo,
                             pasaje: liqui.pasaje,
-                            jornal: liqui.jornal,
-                            usuario: user
+                            manoobra: liqui.manoobra,
+                            saldo_pagar: liqui.saldo_pagar,
+                            otros: liqui.otros,
+                            total: liqui.total,
+                            usuario_insert: user, usuario: user
                         })
                     } else {                
                         req.flash('success', 'Datos actualizados correctamente!')
 
                         //traemos las planificaciones para mostrar en la tablita frente
-                        res.render('manoobra/editar', {
+                        res.render('manoobra/editar_liq', {
                             title: 'Editar Mano de Obra',
                             id: req.params.id,
-                            fecha: req.body.fecha,
-                            empleado: req.body.empleado,
-                            cliente_real_m: req.body.cliente_real_m,
-                            cliente_real_t: req.body.cliente_real_t,
-                            por_m: req.body.por_m,
-                            por_t: req.body.por_t,
-                            dia: req.body.dia,
-                            monto: req.body.monto,
-                            plus: req.body.plus,
-                            subtotal: req.body.subtotal,
-                            hora_50: req.body.hora_50,
-                            hora_100: req.body.hora_100,
-                            hora_normal: req.body.hora_normal,
-                            hora_neg: req.body.hora_neg,
-                            pasaje: req.body.pasaje,
-                            jornal: req.body.jornal,
+                            codigo: req.body.codigo,
+                            nombre: req.body.nombre,
+                            epp: liqui.epp,
+                            anticipo: liqui.anticipo,
+                            prestamo: liqui.prestamo,
+                            ips: liqui.ips,
+                            saldo_favor: liqui.saldo_favor,
+                            debe: liqui.debe,
+                            debo: liqui.debo,
+                            pasaje: liqui.pasaje,
+                            manoobra: liqui.manoobra,
+                            saldo_pagar: liqui.saldo_pagar,
+                            otros: liqui.otros,
+                            total: liqui.total,
                             usuario_insert: user, usuario: user})
                     }
                 })
@@ -547,6 +626,32 @@ app.post('/descargar', function(req, res, next) {
         });
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 });
+
+/* EXCEL DE LIQUIDACIONES */
+app.post('/descargar_liq', function(req, res, next) {
+    //primero traemos los datos de la tabla
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        //DESCARGAR PDF CON DATOS DEL ESTUDIO
+        var file = path.resolve("Listado_LIQUIDACION.xlsx");
+        res.contentType('Content-Type',"application/pdf");
+        res.download(file, function (err) {
+            if (err) {
+                console.log("ERROR AL ENVIAR EL ARCHIVO:");
+                console.log(err);
+            } else {
+                console.log("ARCHIVO ENVIADO!");
+            }
+        });
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+});
+
 
 // DELETE USER --CREO QUE NO USAMOS AQUI
 app.get('/eliminar/(:id)', function(req, res, next) {
