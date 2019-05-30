@@ -424,22 +424,70 @@ app.get('/liquidaciones', function(req, res, next) {
 	if(user.length >0){
 
         //actualizamos los valores, la consulta es:
-        /*
-        */
+        /* */
+        var sql_densa = 'insert into empleados_liq (mes,anho, codigo, quincena, dias_t, manoobra,h_50_total,h_100_total, h_normal_total, h_neg_total, plus_total, usuario_insert) ' +
+        'select t1.anho, t1.mes, t1.codigo, t1.quincena, t1.dias_t, t1.manoobra, t1.h_50_total, t1.h_100_total, t1.h_normal_total, t1.h_neg_total, t1.plus, t1.usuario_insert from ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo,   ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, sum(if(ot_real_m < 9999000 or ot_real_t < 9999000, 1,0)) as dias_t, ' +
+        'IFNULL(sum(subtotal), 0) as manoobra, IFNULL(sum(hora_50), 0) as h_50_total, IFNULL(sum(hora_100), 0) as h_100_total,  ' +
+        'IFNULL(sum(hora_normal), 0) as h_normal_total, IFNULL(sum(hora_neg), 0) as h_neg_total, IFNULL(sum(plus), 0) as plus, "admin" as usuario_insert  ' +
+        'from mano_obra ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc ' +
+        ') t1 ' +
+        'on duplicate key update  ' +
+        'manoobra = ( ' +
+        'select sum(t2.manoobra) as manoobra from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(subtotal), 0) as manoobra from mano_obra ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'dias_t = ( ' +
+        'select dias_t from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'sum(if(ot_real_m < 9999000 or ot_real_t < 9999000, 1,0)) as dias_t from mano_obra ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'h_50_total = ( ' +
+        'select h_50_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(hora_50), 0) as h_50_total from mano_obra ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'h_100_total = ( ' +
+        'select h_100_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(hora_100), 0) as h_100_total from mano_obra ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'h_normal_total = ( ' +
+        'select h_normal_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(hora_normal), 0) as h_normal_total from mano_obra ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'h_neg_total = ( ' +
+        'select h_neg_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(hora_neg), 0) as h_neg_total from mano_obra ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'plus_total = ( ' +
+        'select plus_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(plus), 0) as plus_total from mano_obra ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena)'
+
         req.getConnection(function(error, conn) {
-            conn.query('insert into empleados_liq (anho, mes, codigo, quincena, id, manoobra, usuario_insert) ' + 
-            'select t1.anho, t1.mes, t1.codigo, t1.quincena, round(rand(t1.codigo + t1.anho + t1.mes +t1.quincena)*100000,0) as id, t1.manoobra, t1.usuario_insert from ' + 
-            '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' + 
-            'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' + 
-            'IFNULL(sum(subtotal), 0) as manoobra, "admin" as usuario_insert from mano_obra ' + 
-            'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' + 
-            'order by year(fecha) desc, month(fecha) desc, codigo asc) t1 ' + 
-            'on duplicate key update manoobra = ( select sum(t2.manoobra) as manoobra from ' + 
-            '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' + 
-            'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' + 
-            'IFNULL(sum(subtotal), 0) as manoobra from mano_obra ' + 
-            'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' + 
-            'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t2.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena)',function(err, rows) {
+            conn.query(sql_densa,function(err, rows) {
                 if (err) {
                     req.flash('error', err)
                     res.render('manoobra/listar_liq', {title: 'Listado de Trabajos', data: '',usuario: user})
@@ -447,7 +495,7 @@ app.get('/liquidaciones', function(req, res, next) {
 
                     //TRAEMOS DATOS DE LA BASE
                     req.getConnection(function(error, conn) {
-                        conn.query('SELECT el.id, el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
+                        conn.query('SELECT el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
                         'IFNULL(el.debe,0) debe, IFNULL(el.debo,0) debo, IFNULL(el.pasaje,0) pasaje, IFNULL(el.manoobra,0) manoobra, IFNULL(el.saldo_pagar,0) saldo_pagar, IFNULL(el.otros,0) otros, IFNULL(el.total,0) total, IFNULL(el.dias_t,0) dias_t, IFNULL(el.h_50_total,0) h_50_total, IFNULL(el.h_100_total,0) h_100_total,  ' +
                         'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.usuario_insert,0) usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
                         'where el.mes = month(current_date()) and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer) ',function(err, rows) {
@@ -468,7 +516,7 @@ app.get('/liquidaciones', function(req, res, next) {
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
-app.get('/editar_liq/:id', function(req, res, next){
+app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
     if(req.session.user)
     {   user =  req.session.user;
         userId = req.session.userId;
@@ -476,12 +524,14 @@ app.get('/editar_liq/:id', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){ 
         req.getConnection(function(error, conn) {
-            conn.query('select el.*, concat(em.nombres," ",em.apellidos) as nombre from empleados_liq el inner join empleados em on el.codigo = em.codigo  where el.id =' + req.params.id, function(err, rows, fields) {
+            conn.query('select el.*, concat(em.nombres," ",em.apellidos) as nombre from empleados_liq el ' +
+            'inner join empleados em on el.codigo = em.codigo where el.codigo = ' + req.params.codigo + ' and el.quincena =' + req.params.quincena +
+            ' and el.anho =' + req.params.anho + ' and el.mes =' + req.params.mes, function(err, rows, fields) {
                 if(err) throw err
                 
                 //Si no se encuentra la planificacion laboral
                 if (rows.length <= 0) {
-                    req.flash('error', 'LIQUIDACION con id = ' + req.params.id + ' no encontrado')
+                    req.flash('error', 'LIQUIDACION con codigo = ' + req.params.codigo + ' no encontrado')
                     res.redirect('/liquidaciones')
                 }
                 else { // Si existe el plan
@@ -549,6 +599,11 @@ app.post('/editar_liq/:id', function(req, res, next) {
                 saldo_pagar: Number(req.sanitize('saldo_pagar').trim()),
                 otros: Number(req.sanitize('otros').trim()),
                 total: Number(req.sanitize('total').trim()),
+                //total de horas laburadas en la quincena
+                dias_t: Number(req.sanitize('dias_t').trim()),
+                h_50_total: Number(req.sanitize('h_50_total').trim()),
+                h_100_total: Number(req.sanitize('h_100_total').trim()),
+                h_neg_total: Number(req.sanitize('h_neg_total').trim()),
                 usuario_insert: user
             } 
             
@@ -576,6 +631,10 @@ app.post('/editar_liq/:id', function(req, res, next) {
                             saldo_pagar: liqui.saldo_pagar,
                             otros: liqui.otros,
                             total: liqui.total,
+                            dias_t: liqui.dias_t,//cantidad de dias 
+                            h_50_total: liqui.h_50_total, //total de horas 50%
+                            h_100_total: liqui.h_100_total,//total de horas 100%
+                            h_neg_total: liqui.h_neg_total,//total de horas negativas
                             usuario_insert: user, usuario: user
                         })
                     } else {                
@@ -599,6 +658,10 @@ app.post('/editar_liq/:id', function(req, res, next) {
                             saldo_pagar: liqui.saldo_pagar,
                             otros: liqui.otros,
                             total: liqui.total,
+                            dias_t: liqui.dias_t,//
+                            h_50_total: liqui.h_50_total, //
+                            h_100_total: liqui.h_100_total,//
+                            h_neg_total: liqui.h_neg_total,//
                             usuario_insert: user, usuario: user})
                     }
                 })

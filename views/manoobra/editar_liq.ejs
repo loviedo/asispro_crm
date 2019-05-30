@@ -106,13 +106,15 @@ function formatear_fecha(date) {
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
-        <form action="/manoobra/editar_liq/<%= id %>" method="post" name="form1">
+        <form action="/manoobra/editar_liq/<%= codigo %>/<%= aho %>/<%= mes %>/<%= quincena %>" method="post" name="form1">
             <div class="form-row">
 
                 <!-- 
                     VALORES CALCULADOS desde consulta -- utilizamos para calcular luego n los campos
                  -->
-                <input type="hidden" class="form-control" name="id" id="id" value="<%= id %>">
+                <input type="hidden" class="form-control" name="anho" id="anho" value="<%= anho %>">
+                <input type="hidden" class="form-control" name="mes" id="mes" value="<%= mes %>">
+                <input type="hidden" class="form-control" name="quincena" id="quincena" value="<%= quincena %>">
 
                 <div class="form-group col-md-1.5">
                     <label for="codigo">CODIGO</label>
@@ -169,6 +171,22 @@ function formatear_fecha(date) {
                 <div class="form-group col-md-2">
                     <label for="total">TOTAL A PAGAR</label>
                     <input type="text" class="form-control" name="total" id="total" value="<%= total %>" onclick="cal_total()">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="dias_t">DIAS TRABAJADOS</label>
+                    <input type="text" class="form-control" name="dias_t" id="dias_t" value="<%= dias_t %>" >
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_50_total">Total Horas Ex. 50%</label>
+                    <input type="text" class="form-control" name="h_50_total" id="h_50_total" value="<%= h_50_total %>" >
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_100_total">Total Horas Ex. 100%</label>
+                    <input type="text" class="form-control" name="h_100_total" id="h_100_total" value="<%= h_100_total %>" >
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="h_neg_total">Total Horas Negativas</label>
+                    <input type="text" class="form-control" name="h_neg_total" id="h_neg_total" value="<%= h_neg_total %>" >
                 </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">ACTUALIZAR</button>
