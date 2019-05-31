@@ -568,7 +568,7 @@ app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
-app.post('/editar_liq/:id', function(req, res, next) {
+app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
     if(req.session.user)
     {   user =  req.session.user;
         userId = req.session.userId;
