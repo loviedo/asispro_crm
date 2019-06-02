@@ -606,9 +606,11 @@ app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
                 h_neg_total: Number(req.sanitize('h_neg_total').trim()),
                 usuario_insert: user
             } 
-            
+
+
             req.getConnection(function(error, conn) {
-                conn.query('UPDATE empleados_liq SET ? WHERE id = ' + req.params.id, liqui, function(err, result) {
+                conn.query('UPDATE empleados_liq el SET ? where el.codigo = ' + req.params.codigo + ' and el.quincena =' + req.params.quincena +
+                ' and el.anho =' + req.params.anho + ' and el.mes =' + req.params.mes, liqui, function(err, result) {
                     //if(err) throw err
                     if (err) {
                         req.flash('error', err)
@@ -643,8 +645,10 @@ app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
                         //traemos las planificaciones para mostrar en la tablita frente
                         res.render('manoobra/editar_liq', {
                             title: 'Editar Mano de Obra',
-                            id: req.params.id,
-                            codigo: req.body.codigo,
+                            codigo: req.params.codigo,
+                            anho: req.params.anho,
+                            mes: req.params.mes,
+                            quincena: req.params.quincena,
                             nombre: req.body.nombre,
                             epp: liqui.epp,
                             anticipo: liqui.anticipo,
@@ -697,7 +701,7 @@ app.post('/descargar', function(req, res, next) {
 });
 
 /* EXCEL DE LIQUIDACIONES */
-app.post('/descargar_liq', function(req, res, next) {
+app.post('/generar_liq', function(req, res, next) {
     //primero traemos los datos de la tabla
     if(req.session.user)
     {   user =  req.session.user;
@@ -708,7 +712,7 @@ app.post('/descargar_liq', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         //DESCARGAR PDF CON DATOS DEL ESTUDIO
-        var file = path.resolve("Listado_LIQUIDACION.xlsx");
+        var file = path.resolve("LIQUIDACION_.xlsx");
         res.contentType('Content-Type',"application/pdf");
         res.download(file, function (err) {
             if (err) {
