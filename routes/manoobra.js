@@ -425,7 +425,7 @@ app.get('/liquidaciones', function(req, res, next) {
 
         //actualizamos los valores, la consulta es:
         /* */
-        var sql_densa = 'insert into empleados_liq (mes,anho, codigo, quincena, dias_t, manoobra,h_50_total,h_100_total, h_normal_total, h_neg_total, plus_total, usuario_insert) ' +
+        var sql_densa = 'insert into empleados_liq (anho, mes, codigo, quincena, dias_t, manoobra,h_50_total,h_100_total, h_normal_total, h_neg_total, plus_total, usuario_insert) ' +
         'select t1.anho, t1.mes, t1.codigo, t1.quincena, t1.dias_t, t1.manoobra, t1.h_50_total, t1.h_100_total, t1.h_normal_total, t1.h_neg_total, t1.plus, t1.usuario_insert from ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo,   ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, sum(if(ot_real_m < 9999000 or ot_real_t < 9999000, 1,0)) as dias_t, ' +
