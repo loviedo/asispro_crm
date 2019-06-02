@@ -198,7 +198,7 @@ function formatear_fecha(date) {
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">
     <div class="container-fluid">
-        <form action="/manoobra/generar_liq" method="POST" name="form">
+        <form action="/manoobra/generar_liq/<%= codigo %>/<%= anho %>/<%= mes %>/<%= quincena %>"  method="POST" name="form">
             <button type="submit" id="submit" class="btn btn-info">
                 <i class="fas fa-share"></i>
             </button>

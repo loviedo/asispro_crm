@@ -145,10 +145,10 @@ function generar_excel_mano_obra(rows){
     workbook.write('Listado_MANOOBRA.xlsx');
 }
 
-//completar funcion
+//GENERAMOS CADA VEZ QUE ABRIMOS LA LIQ PARA EDITAR O PARA UPDATEAR.
 function generar_excel_emp_liq(rows){
     var workbook = new excel.Workbook();
-    var worksheet = workbook.addWorksheet('LIQUIDACIONES');
+    var worksheet = workbook.addWorksheet('LIQQUIDACION');
     //
     const style = workbook.createStyle({
     font: {color: '#000000',size: 12},
@@ -169,58 +169,90 @@ function generar_excel_emp_liq(rows){
     });
 
     //dibujamos el excel
-    //primero la cabecera
-    worksheet.cell(3,1).string('NRO').style(style);
-    worksheet.cell(3,2).string('NOMBRE Y APELLIDO').style(style);
-    worksheet.cell(3,3).string('AÑO').style(style);
-    worksheet.cell(3,3).string('MES').style(style);
-    worksheet.cell(3,3).string('QUINCENA').style(style);
-    worksheet.cell(3,3).string('EPP').style(style);
-    worksheet.cell(3,4).string('ANTICIPO').style(style);
-    worksheet.cell(3,5).string('PRESTAMO').style(style);
-    worksheet.cell(3,6).string('IPS').style(style);
-    worksheet.cell(3,7).string('SALDO A FAVOR').style(style);
-    worksheet.cell(3,8).string('ME DEBE').style(style);
-    worksheet.cell(3,9).string('LO QUE DEBO').style(style);
-    worksheet.cell(3,10).string('PASAJE').style(style);
-    worksheet.cell(3,11).string('MO').style(style);
-    worksheet.cell(3,12).string('SALDO A PAGAR').style(style);
-    worksheet.cell(3,13).string('OTROS').style(style);
-    worksheet.cell(3,14).string('TOTAL A PAGAR').style(style);
+    //primero la cabecera  
+    worksheet.cell(3,3).string('NOMBRE: ' + String(rows[0].nombre)).style(style);
+    worksheet.cell(4,3).string('AÑO: ' + String(rows[0].anho)).style(style);
+    worksheet.cell(5,3).string('MES: ' + String(rows[0].mes)).style(style);
+    worksheet.cell(6,3).string('QUINCENA: ' + String(rows[0].quincena)).style(style);
 
-    /*SELECT el.codigo, concat(em.nombres,' ',em.apellidos) as nombre , el.mes, el.anho, el. quincena, el.epp, el.anticipo, el.prestamo, el.ips, el.saldo_favor, el.debe, el.debo, 
-    el.pasaje, el.manoobra, el.saldo_pagar, el.otros, 
-    el.total, el.dias_t, el.h_50_total, el.h_100_total, el.h_neg_total, el.usuario_insert FROM empleados_liq el
-    inner join empleados em on el.codigo = em.codigo
-    where el.mes = month(current_date()) and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer)*/
+    //conceptos
+    worksheet.cell(10,3).string('DIAS TRABAJADOS:').style(style);
+    worksheet.cell(11,3).string('HORAS EXTRAS 50%:').style(style);
+    worksheet.cell(12,3).string('HORAS EXTRAS 100%:').style(style);
+    worksheet.cell(13,3).string('HORA NEGATIVA:').style(style);
+    worksheet.cell(14,3).string('MANO DE OBRA (Gs):').style(style);
+    worksheet.cell(15,3).string('EQUIPO DE PROTECCION PERSONAL (EPP)').style(style);
+    worksheet.cell(16,3).string('ANTICIPO:').style(style);
+    worksheet.cell(17,3).string('PRESTAMO:').style(style);
+    worksheet.cell(18,3).string('IPS:').style(style);
+    worksheet.cell(19,3).string('SALDO A FAVOR:').style(style);
+    worksheet.cell(20,3).string('ME DEBE:').style(style);
+    worksheet.cell(21,3).string('LO QUE DEBO:').style(style);
+    worksheet.cell(22,3).string('PASAJE:').style(style);
+    worksheet.cell(23,3).string('MO:').style(style);
+    worksheet.cell(24,3).string('SALDO A PAGAR:').style(style);
+    worksheet.cell(25,3).string('OTROS:').style(style);
+    worksheet.cell(26,3).string('TOTAL A PAGAR:').style(style);
+
+    /*
+                            codigo: rows[0].codigo,//codigo empleado
+                        nombre: rows[0].nombre,//nombre empleado
+                        mes: rows[0].mes,
+                        anho: rows[0].anho,
+                        quincena: rows[0].quincena,
+                        epp: rows[0].epp,
+                        anticipo: rows[0].anticipo,
+                        prestamo: rows[0].prestamo,
+                        ips: rows[0].ips,
+                        saldo_pagar: rows[0].saldo_pagar,
+                        debe: rows[0].debe,
+                        debo: rows[0].debo,
+                        pasaje: rows[0].pasaje,
+                        manoobra: rows[0].manoobra,
+                        saldo_favor: rows[0].saldo_favor,
+                        otros: rows[0].otros,
+                        total: rows[0].total,
+                        dias_t: rows[0].dias_t,//cantidad de dias 
+                        h_50_total: rows[0].h_50_total, //total de horas 50%
+                        h_100_total: rows[0].h_100_total,//total de horas 100%
+                        h_neg_total: rows[0].h_neg_total,//total de horas negativas
+    */
 
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+3,1).string(String(row.codigo)).style(style);//codigo del empleado
-        worksheet.cell(i+3,2).string(String(row.nombre)).style(style); //nombre y apellido
-        worksheet.cell(i+3,3).string(String(row.anho)).style(style);
-        worksheet.cell(i+3,3).string(String(row.mes)).style(style);
-        worksheet.cell(i+3,3).string(String(row.quincena)).style(style);
-        worksheet.cell(i+3,3).string(String(row.epp)).style(style);//equipos de proteccion personal
-        worksheet.cell(i+3,4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,5).string(String(row.prestamo)).style(style);
-        worksheet.cell(i+3,6).number(Number(row.ips.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,7).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,8).number(Number(row.debe.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,9).number(Number(row.debo.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,10).number(Number(row.pasaje.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,11).number(Number(row.manoobra.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,12).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,13).number(Number(row.otros.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);
+
+        //worksheet.cell(5, i+3).string(String(row.nombre)).style(style).style(style);
+        //worksheet.cell(5, i+3).number(Number(row.codigo.toString().replace(",","."))).style(style);
+        //worksheet.cell(5, i+3).number(Number(row.anho.toString().replace(",","."))).style(style);
+        //worksheet.cell(5, i+3).number(Number(row.mes.toString().replace(",","."))).style(style);
+        //worksheet.cell(5, i+3).number(Number(row.quincena.toString().replace(",","."))).style(style);
+
+        worksheet.cell(10, 4).string(String(row.dias_t)).style(style);//dias trabajados
+        worksheet.cell(11, 4).string(String(row.h_50_total)).style(style); //nombre y apellido
+        worksheet.cell(12, 4).string(String(row.h_100_total)).style(style);
+        worksheet.cell(13, 4).string(String(row.h_neg_total)).style(style);
+        worksheet.cell(24, 4).number(Number(row.manoobra.toString().replace(",","."))).style(style);
+        worksheet.cell(15, 4).string(String(row.epp)).style(style);//equipos de proteccion personal
+        worksheet.cell(16, 4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
+        worksheet.cell(17, 4).string(String(row.prestamo)).style(style);
+        worksheet.cell(18, 4).number(Number(row.ips.toString().replace(",","."))).style(style);
+        worksheet.cell(19, 4).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
+        worksheet.cell(10, 4).number(Number(row.debe.toString().replace(",","."))).style(style);
+        worksheet.cell(21, 4).number(Number(row.debo.toString().replace(",","."))).style(style);
+        worksheet.cell(22, 4).number(Number(row.pasaje.toString().replace(",","."))).style(style);
+        worksheet.cell(23, 4).number(Number(row.manoobra.toString().replace(",","."))).style(style);
+        worksheet.cell(24, 4).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
+        worksheet.cell(25, 4).number(Number(row.otros.toString().replace(",","."))).style(style);
+        worksheet.cell(26, 4).number(Number(row.total.toString().replace(",","."))).style(style);
 
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
     });
     
-    workbook.write('Listado_LIQUIDACION.xlsx');
+    //escribimos el archivo.
+    workbook.write("LIQ_"+rows[0].anho + rows[0].mes+"_"+ rows[0].quincena+"_" + rows[0].codigo + ".xlsx");
 }
 
 function manhana()
@@ -516,6 +548,7 @@ app.get('/liquidaciones', function(req, res, next) {
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
+/* CUANDO ABRIMOS YA GENERAMOS LA LIQUIDACION ACTUALIZADA DE LA PERSONA Y LO GUARDAMOS EN LA CARPETA DE LIQUIDACIONES */
 app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
     if(req.session.user)
     {   user =  req.session.user;
@@ -535,10 +568,13 @@ app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
                     res.redirect('/liquidaciones')
                 }
                 else { // Si existe el plan
+                    //llamamos a la funcion que genera el excel con el codigo enviado
+                    generar_excel_emp_liq(rows);
+
+
                     //traemos los valores que preguntamos
                     res.render('manoobra/editar_liq', {
                         title: 'Editar Liquidacion', 
-                        id: rows[0].id,
                         codigo: rows[0].codigo,//codigo empleado
                         nombre: rows[0].nombre,//nombre empleado
                         mes: rows[0].mes,
@@ -568,6 +604,7 @@ app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
+/*AL ACTUALIZAR UN DATO YA GENERAMOS LA LIQUIDACION ACTUALIZADA DE LA PERSONA Y LO GUARDAMOS EN LA CARPETA DE LIQUIDACIONES */
 app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
     if(req.session.user)
     {   user =  req.session.user;
@@ -641,6 +678,8 @@ app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
                         })
                     } else {                
                         req.flash('success', 'Datos actualizados correctamente!')
+                        //llamamos a la funcion que genera el excel con el codigo enviado
+                        generar_excel_emp_liq(rows);
 
                         //traemos las planificaciones para mostrar en la tablita frente
                         res.render('manoobra/editar_liq', {
@@ -701,7 +740,7 @@ app.post('/descargar', function(req, res, next) {
 });
 
 /* EXCEL DE LIQUIDACIONES */
-app.post('/generar_liq', function(req, res, next) {
+app.post('/generar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
     //primero traemos los datos de la tabla
     if(req.session.user)
     {   user =  req.session.user;
@@ -712,7 +751,7 @@ app.post('/generar_liq', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         //DESCARGAR PDF CON DATOS DEL ESTUDIO
-        var file = path.resolve("LIQUIDACION_.xlsx");
+        var file = path.resolve("LIQ_"+req.params.anho + req.params.mes+"_"+ req.params.quincena+"_" + req.params.codigo + ".xlsx");
         res.contentType('Content-Type',"application/pdf");
         res.download(file, function (err) {
             if (err) {
