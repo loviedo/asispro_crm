@@ -142,13 +142,22 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //si el usuario es cristina entonces solo ve lo de ella, si no, se ve todo
         var sql_con ="";
-        if(user == "cibanez" || user == "prueba")
+        //como estaba originalmente
+        /*if(user == "cibanez" || user == "prueba")
         {   sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "WHERE t1.usuario_insert in ('cibanez','prueba') or t1.tipo = 'NO_CONF' order by t1.fecha desc";}
+        else*/
+
+        //cada usuario puede ver solamente su carga, y solamente los administradores pueden ver todo.
+        //verificar si los usuarios bajo karen pueden ver los tipos de carga "NO CONFIDENCIALES".
+        if(user == "cibanez" || user == "prueba" || user == "jlopez" || user == "jguerrero" || user == "fduarte" || user == "ogonzalez")
+        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
+        "WHERE t1.usuario_insert = '" + user + "' or t1.tipo = 'NO_CONF' order by t1.fecha desc";}
         else
         //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto.
-        {   sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot order by t1.fecha desc";}
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {
@@ -174,6 +183,7 @@ app.get('/add', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){
         req.getConnection(function(error, conn) {
+            //cualquier usuario puede ver todas las OTs listadas
             conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
                 if (err) {console.log(err);}
                 else{
@@ -183,6 +193,7 @@ app.get('/add', function(req, res, next){
                     });
                     //console.log(datos);//debug
                     req.getConnection(function(error, conn) {
+                        //Cualquier usuario puede ver todos los proveedores listados
                         conn.query('SELECT * FROM proveedor ORDER BY id ASC',function(err, rows2) {
                             if (err) {console.log(err); }
                             else{

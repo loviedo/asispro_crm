@@ -261,7 +261,7 @@ app.post('/add', function(req, res, next){
                         // render to views/factura/add.ejs
                         res.render('cajas/add', {
                             title: 'Agregar Nueva CAJA',
-                            codigo:cajita.codigo,
+                            codigo: cajita.codigo,
                             fecha: cajita.fecha,
                             monto: cajita.monto,
                             exentas: cajita.exentas,

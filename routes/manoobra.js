@@ -534,7 +534,7 @@ app.get('/liquidaciones', function(req, res, next) {
                         conn.query('SELECT el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
                         'IFNULL(el.debe,0) debe, IFNULL(el.debo,0) debo, IFNULL(el.pasaje,0) pasaje, IFNULL(el.manoobra,0) manoobra, IFNULL(el.saldo_pagar,0) saldo_pagar, IFNULL(el.otros,0) otros, IFNULL(el.total,0) total, IFNULL(el.dias_t,0) dias_t, IFNULL(el.h_50_total,0) h_50_total, IFNULL(el.h_100_total,0) h_100_total,  ' +
                         'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.usuario_insert,0) usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
-                        'where el.mes = month(current_date()) and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer) ',function(err, rows) {
+                        'where el.mes >= month(current_date())-1 and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer) ',function(err, rows) {
                             if (err) {
                                 req.flash('error', err)
                                 res.render('manoobra/listar_liq', {title: 'Listado de Trabajos', data: '',usuario: user})
