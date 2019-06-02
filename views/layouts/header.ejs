@@ -443,20 +443,6 @@
                             Dashboard
                         </a>
                     </li>
-                    <li class="active">
-                        <a href="#otsub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
-                            <i class="fas fa-home"></i>
-                            Orden de Trabajo
-                        </a>
-                        <ul class="collapse list-unstyled" id="otsub" >
-                            <li>
-                                <a href="/ot/add">Agregar OT</a>
-                            </li>
-                            <li>
-                                <a href="/ot/">Listar OTs</a>
-                            </li>   
-                        </ul>
-                    </li>
                     <li>
                         <a href="#gastosub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
@@ -468,6 +454,34 @@
                             </li>
                             <li>
                                 <a href="/gastos/">Listar Gastos</a>
+                            </li>   
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#provesub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                            <i class="fas fa-home"></i>
+                            PROVEEDORES
+                        </a>
+                        <ul class="collapse list-unstyled" id="provesub" >
+                            <li>
+                                <a href="/proveedor/add">Agregar Proveedor</a>
+                            </li>
+                            <li>
+                                <a href="/proveedor/">Listado Proveedores</a>
+                            </li>   
+                        </ul>
+                    </li>
+                    <li class="active">
+                        <a href="#otsub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                            <i class="fas fa-home"></i>
+                            Orden de Trabajo
+                        </a>
+                        <ul class="collapse list-unstyled" id="otsub" >
+                            <li>
+                                <a href="/ot/add">Agregar OT</a>
+                            </li>
+                            <li>
+                                <a href="/ot/">Listar OTs</a>
                             </li>   
                         </ul>
                     </li>
@@ -488,7 +502,7 @@
                             </li>  
                         </ul>
                     </li>
-                    <% if (usuario != 'cibanez' && usuario != 'prueba' ) { %>
+                    <% if (usuario != 'cibanez' && usuario != 'prueba' && usuario != 'jlopez' && usuario != 'jguerrero' && usuario != 'fduarte' && usuario != 'ogonzalez') { %>
                     <li>
                         <a href="#rrhhsub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
@@ -560,20 +574,6 @@
                         </ul>
                     </li>
                     <% } %>
-                    <li>
-                        <a href="#provesub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
-                            <i class="fas fa-home"></i>
-                            PROVEEDORES
-                        </a>
-                        <ul class="collapse list-unstyled" id="provesub" >
-                            <li>
-                                <a href="/proveedor/add">Agregar Proveedor</a>
-                            </li>
-                            <li>
-                                <a href="/proveedor/">Listado Proveedores</a>
-                            </li>   
-                        </ul>
-                    </li>
                     <!--
                     <li>
                         <a href="#">

@@ -170,10 +170,14 @@ function generar_excel_emp_liq(rows){
 
     //dibujamos el excel
     //primero la cabecera  
-    worksheet.cell(3,3).string('NOMBRE: ' + String(rows[0].nombre)).style(style);
-    worksheet.cell(4,3).string('AÑO: ' + String(rows[0].anho)).style(style);
-    worksheet.cell(5,3).string('MES: ' + String(rows[0].mes)).style(style);
-    worksheet.cell(6,3).string('QUINCENA: ' + String(rows[0].quincena)).style(style);
+    worksheet.cell(3,3).string('NOMBRE:').style(style);
+    worksheet.cell(4,3).string('AÑO:').style(style);
+    worksheet.cell(5,3).string('MES:').style(style);
+    worksheet.cell(6,3).string('QUINCENA:').style(style);
+    worksheet.cell(3,4).string(String(rows[0].nombre)).style(style);
+    worksheet.cell(4,4).string(String(rows[0].anho)).style(style);
+    worksheet.cell(5,4).string(String(rows[0].mes)).style(style);
+    worksheet.cell(6,4).string(String(rows[0].quincena)).style(style);
 
     //conceptos
     worksheet.cell(10,3).string('DIAS TRABAJADOS:').style(style);
@@ -763,7 +767,6 @@ app.post('/generar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
         });
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 });
-
 
 // DELETE USER --CREO QUE NO USAMOS AQUI
 app.get('/eliminar/(:id)', function(req, res, next) {
