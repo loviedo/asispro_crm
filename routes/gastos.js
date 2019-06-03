@@ -165,8 +165,20 @@ app.get('/', function(req, res, next) {
                     req.flash('error', err)
                     res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
                 } else {
-                    generar_excel_gastos(rows);//generamos excel gastos segun el usuario que sea claro
-                    res.render('gastos/listar', {title: 'Listado de GASTOS', usuario: user, data: rows})
+                    //traemos las cajas asignadas para esa persona
+                    req.getConnection(function(error, conn) {
+                        conn.query("select * from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows2) {
+                            //if(err) throw err
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
+                            } else {
+                                generar_excel_gastos(rows);//generamos excel gastos segun el usuario que sea claro
+                                //pasamos los datos y los datos de las cajas en rows2
+                                res.render('gastos/listar', {title: 'Listado de GASTOS', usuario: user, data: rows, data_cajas: rows2})
+                            }
+                        })
+                    })
                 }
             })
         })
@@ -203,8 +215,8 @@ app.get('/add', function(req, res, next){
                                 });
                                 //console.log(datos_pro);//debug
                                 res.render('gastos/add', {
-                                title: 'Cargar nuevo GASTO', id_proveedor: '0' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', 
+                                title: 'Cargar nuevo GASTO', id_proveedor: '0', id_caja: '0' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
+                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
                                 usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro});
                             }
                         })

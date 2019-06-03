@@ -171,9 +171,9 @@ app.get('/', function(req, res, next) {
     //controlamos quien se loga.
 	if(user.length >0){
         //
-        //DATOS DE CAJAS segun el usuario
+        //DATOS DE CAJAS, SE VEN SOLAMENTE LAS CAJAS ASIGNADAS AL USUARIO ACTUAL
         req.getConnection(function(error, conn) {
-            conn.query('select * from cajas',function(err, rows) {
+            conn.query("select * from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
