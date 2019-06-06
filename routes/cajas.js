@@ -173,9 +173,9 @@ app.get('/', function(req, res, next) {
         //
         //DATOS DE CAJAS, SE VEN SOLAMENTE LAS CAJAS ASIGNADAS AL USUARIO ACTUAL
         //REVISAR POR QUE SE NECESITA CRUZAR CON CODIGO DE EMPLEADO! -->
-        var con_sql = "select * from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
+        var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
         if (user=="josorio" || user =="admin" || user =="ksanabria")
-        {con_sql = "select * from cajas c inner join users u on u.codigo = c.codigo";}
+        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";}
 
         req.getConnection(function(error, conn) {
             conn.query(con_sql,function(err, rows) {
@@ -336,6 +336,107 @@ app.post('/add', function(req, res, next){
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
+
+//PARA EDITAR LOS DATOS 
+app.get('/editar/:id', function(req, res, next){
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    if(user.length >0){
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT * FROM cajas WHERE id = ' + req.params.id, function(err, rows, fields) {
+                if(err) throw err
+                
+                // if user not found
+                if (rows.length <= 0) {
+                    req.flash('error', 'CAJA con id = ' + req.params.id + ' no encontrado')
+                    res.redirect('/cajas')
+                }
+                else {
+
+                    req.getConnection(function(error, conn) {
+                        conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows2) {
+                            if (err) {console.log(err); }
+                            else{
+                                datos_emple = [];
+                                rows2.forEach(function(row) { datos_emple.push(row); });
+                                
+                                //console.log(datos_pro);//debug
+                                res.render('cajas/editar', {
+                                title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
+                                saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  data_emple: datos_emple});
+                            }
+                        })
+                    })
+                }            
+            })
+        })
+    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+//PARA EDITAR LOS DATOS 
+app.post('/editar/:id', function(req, res, next){
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    if(user.length >0){
+
+        var caja=
+        {
+            fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+            codigo: req.sanitize('codigo').trim(),
+            concepto: req.sanitize('concepto').trim(),
+            salida: req.sanitize('salida').trim(),
+            responsable: req.sanitize('responsable').trim(),
+            saldo: req.sanitize('saldo').trim(),
+            gasto: req.sanitize('gasto').trim()
+        }
+        var errors = req.validationErrors()
+
+        if( !errors ) {
+            
+            req.getConnection(function(error, conn) {
+                conn.query('UPDATE cajas SET ? WHERE id = ' + req.params.id, caja, function(err, result) {
+                    //if(err) throw err
+                    if (err) {
+                        req.flash('error', error_msg)
+                        
+                        // render to views/clientes/add.ejs
+                        res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
+                            responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, usuario_insert: user, usuario: user })
+                    } else {                
+                        req.flash('success', 'Datos actualizados correctamente!')
+
+                        req.getConnection(function(error, conn) {
+                            conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows2) {
+                                if (err) {console.log(err); }
+                                else{
+                                    datos_emple = [];
+                                    rows2.forEach(function(row) { datos_emple.push(row); });
+                                    
+                                    //console.log(datos_pro);//debug
+                                    res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
+                                    responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, usuario_insert: user, usuario: user,  data_emple: datos_emple })
+                                }
+                            })
+                        })
+                    }
+                })
+            })
+        }
+        else {//mostramos error
+            var error_msg = ''
+            errors.forEach(function(error) {
+                error_msg += error.msg + '<br>'
+            })
+            req.flash('error', error_msg)
+            res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
+            responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, usuario_insert: user, usuario: user })
+        }
+    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
 
 
 

@@ -1,0 +1,162 @@
+<!-- including header content which is common for all pages  -->
+<%- include ../layouts/header.ejs %>   
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ 
+<!-- funcion para arreglar el formato de las fechas en este caso usamos para el listado de OTs -->
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+%>
+<!-- ESTILO PARA DATEPICKER -->
+<style>
+[type="date"] {
+  background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+}
+[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+/* custom styles */
+body {
+  background: #e5e5e5;
+  font: 13px/1.4 Geneva, 'Lucida Sans', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+}
+label {
+  display: block;
+}
+input {
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 3px 5px;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+  width: 190px;
+}
+
+body .modal-dialog { /* Width */
+    max-width: 80%;
+    width: auto !important;
+}
+</style>
+
+
+<!-- NAV PARA TITULO -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <h3>EDICION FLUJO CAJA</h3>
+    </div>
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
+    <div class="container-fluid">
+        <form action="/cajas/editar/<%= id %>" method="post" name="form1">
+            <div class="form-row">
+
+                <input type="hidden" class="form-control" name="codigo" id="codigo" value="<%= codigo %>">
+                <div class="form-group col-md-6">
+                    <label for="fecha">FECHA</label>
+                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="concepto">CONCEPTO</label>
+                    <input type="text" class="form-control" name="concepto" id="concepto" value="<%= concepto %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="salida">SALIDA</label>
+                    <input type="text" class="form-control" name="salida" id="salida" value="<%= salida %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_responsable">RESPONSABLE</button>
+                    <!--<label for="responsable">RESPONSABLE</label>-->
+                    <input type="text" class="form-control" name="responsable" id="responsable" value="<%= responsable %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="saldo">SALDO</label>
+                    <input type="text" class="form-control" name="saldo" id="saldo" value="<%= saldo %>">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="gasto">GASTO</label>
+                    <input type="text" class="form-control" name="gasto" id="gasto" value="<%= gasto %>">
+                </div>
+            </div>
+            <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">ACTUALIZAR</button>
+        </form>
+    </div>
+</nav>
+
+<!-- MODAL de RESPONSABLES EMPLEADOS-->
+<div class="modal fade" id="modal_responsable" tabindex="-1" role="dialog" aria-labelledby="modal_respoLabel" aria-hidden="true">
+    <div class="modal-dialog" width="100%" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_respoLabel">Listado de OTs</h5>
+        </div>
+        <div class="modal-body">
+            <!-- ACA PONEMOS LA TABLA QUE DEBE SER COMO /LISTAR -->
+
+        <div class="container-fluid" width="100%">
+            <table id="table_modal_caja" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>CODIGO</th>
+                        <th>NOMBRES</th>
+                        <th>OCUPACION</th>
+                        <th>TEL MOVIL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (data_emple) { %>
+                        <% data_emple.forEach(function(empleado){ %>
+                            <tr>
+                                <td><%= empleado.codigo %></td>
+                                <td><%= empleado.nombre %></td>
+                                <td><%= empleado.ocupacion %></td>
+                                <td><%= empleado.tel_movil %></td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-strong">
+    <div class="container-fluid">
+
+    </div>
+</nav>
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>
