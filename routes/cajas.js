@@ -172,8 +172,13 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //
         //DATOS DE CAJAS, SE VEN SOLAMENTE LAS CAJAS ASIGNADAS AL USUARIO ACTUAL
+        //REVISAR POR QUE SE NECESITA CRUZAR CON CODIGO DE EMPLEADO! -->
+        var con_sql = "select * from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
+        if (user=="josorio" || user =="admin" || user =="ksanabria")
+        {con_sql = "select * from cajas c inner join users u on u.codigo = c.codigo";}
+
         req.getConnection(function(error, conn) {
-            conn.query("select * from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows) {
+            conn.query(con_sql,function(err, rows) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)

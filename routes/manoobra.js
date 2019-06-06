@@ -148,7 +148,7 @@ function generar_excel_mano_obra(rows){
 //GENERAMOS CADA VEZ QUE ABRIMOS LA LIQ PARA EDITAR O PARA UPDATEAR.
 function generar_excel_emp_liq(rows){
     var workbook = new excel.Workbook();
-    var worksheet = workbook.addWorksheet('LIQQUIDACION');
+    var worksheet = workbook.addWorksheet('LIQUIDACION');
     //
     const style = workbook.createStyle({
     font: {color: '#000000',size: 12},

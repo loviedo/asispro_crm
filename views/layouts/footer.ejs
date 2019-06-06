@@ -528,6 +528,35 @@
                         }}
                     );
 
+                    var GASTOS_CAJA = $('#table_caja_gasto').DataTable({
+                            "scrollY":        "600px",//tamanho de la tabla
+                            "scrollCollapse": true, //collapse de la tabla  
+                            "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        }}
+                    );
+
                     /*JQUERY PARA ASIGNAR EL NOMBRE DEL EMPLEADO EN EL FORM https://stackoverflow.com/questions/36550092/how-to-get-selected-values-from-datatable?rq=1*/
                     $('#table_rrhh_mano tbody').on('click', 'tr', function () {
                         //$(this).toggleClass('selected');
@@ -620,6 +649,16 @@
                         //console.log(row);//debug en la consola del navegador
                         //asignamos el valor
                         $('#nro_ot').val(row[0]);
+                    } );
+
+                    $('#table_caja_gasto tbody').on( 'click', 'tr', function () {
+                        //$(this).toggleClass('selected');
+                        var pos = GASTOS_CAJA.row(this).index();
+                        var row = GASTOS_CAJA.row(pos).data();
+                        //console.log(row);//debug en la consola del navegador
+                        //asignamos el valor
+                        $('#id_caja').val(row[0]);
+                        $('#caja').val(row[1]);
                     } );
 
                     $('#table_modal_caja tbody').on( 'click', 'tr', function () {
