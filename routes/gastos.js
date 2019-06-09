@@ -154,12 +154,13 @@ app.get('/', function(req, res, next) {
         if(user == "cibanez" || user == "prueba" || user == "jlopez" || user == "jguerrero" || user == "fduarte" || user == "ogonzalez")
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "WHERE t1.usuario_insert = '" + user + "' or t1.tipo = 'NO_CONF' order by t1.fecha desc";}
+        "WHERE (month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and t1.usuario_insert = '" + user + "' ) or " +
+        "(t1.tipo = 'NO_CONF' and month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date())) order by t1.fecha desc";}
         else
         //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto. SOLO TRAEMOS LOS DATOS DEL MES ACTUAL
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "where month(t1.fecha) = month(current_date()) and year(t1.fecha) = year(current_date())" +
+        "where month(t1.fecha) = month(current_date())-1 and year(t1.fecha) = year(current_date())" +
         "order by t1.fecha desc";}
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {
@@ -522,10 +523,10 @@ app.get('/editar/:id', function(req, res, next){
                                             //pasamos los datos y los datos de las cajas en rows2
                                             //console.log(datos_pro);//debug
                                             var date1 = rows[0].fecha;
-                                            res.render('gastos/editar', {title: 'Editar GASTO', id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), monto: rows[0].monto, exentas: rows[0].exentas,
+                                            res.render('gastos/editar', {title: 'Editar GASTO', id_caja: rows[0].id_caja, caja: rows[0].concepto, id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), monto: rows[0].monto, exentas: rows[0].exentas,
                                             iva_10: rows[0].iva_10, iva_5: rows[0].iva_5, gasto_real: rows[0].gasto_real, concepto: rows[0].concepto, fact_condicion: rows[0].fact_condicion,
                                             proveedor: rows[0].proveedor, fact_nro: rows[0].fact_nro, encargado: rows[0].encargado, codigo: rows[0].codigo, nro_ot: rows[0].nro_ot, id_proveedor: rows[0].id_proveedor,
-                                            imputado: rows[0].imputado, origen_pago: rows[0].origen_pago, tipo: rows[0].tipo, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_cajas })
+                                            imputado: rows[0].imputado, origen_pago: rows[0].origen_pago, tipo: rows[0].tipo, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja })
                                         }
                                     })
                                 })
@@ -684,6 +685,7 @@ app.post('/editar/:id', function(req, res, next) {
                             origen_pago: req.body.origen_pago,
                             tipo: req.body.tipo,
                             id_proveedor: req.body.id_proveedor,
+                            id_caja: req.body.id_caja,
                             usuario_insert: user,
                             usuario: user
                         })
@@ -714,10 +716,10 @@ app.post('/editar/:id', function(req, res, next) {
                                                     datos_caja.push(row);
                                                 });
                                                 //pasamos los datos y los datos de las cajas en rows2
-                                                res.render('gastos/editar', { title: 'Editar GASTO', id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: req.body.exentas,
+                                                res.render('gastos/editar', { title: 'Editar GASTO', id_caja: req.body.id_caja, caja: req.body.concepto, id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: req.body.exentas,
                                                 iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,
                                                 proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot, id_proveedor: req.body.id_proveedor, 
-                                                imputado: req.body.imputado, origen_pago: req.body.origen_pago, tipo: req.body.tipo, usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_caja: datos_caja})
+                                                imputado: req.body.imputado, origen_pago: req.body.origen_pago, tipo: req.body.tipo, usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja})
                                             }
                                         })
                                     }) 
