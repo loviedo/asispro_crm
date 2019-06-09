@@ -147,7 +147,7 @@ function formatear_fecha(date) {
         document.getElementById("gasto_real1").disabled = true;  
         //ASIGNAR VALORES
         //document.getElementById("monto").value = ''; 
-        document.getElementById("exentas1").value = 0; 
+        //document.getElementById("exentas1").value = 0; 
         //document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; 
         document.getElementById("iva_5").value = 0;
         document.getElementById("gasto_real1").value = 0; 
@@ -176,6 +176,9 @@ function formatear_fecha(date) {
 
         document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
         document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
+
+        //console.log(document.getElementById("exentas1").value);//debug
+        //console.log(document.getElementById("exentas").value);//debug
     }
 
     //document.getElementById('gasto_real').value = parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value);

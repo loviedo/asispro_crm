@@ -572,9 +572,17 @@ app.post('/editar/:id', function(req, res, next) {
             var date1 = req.sanitize('fecha').escape().trim();
             var mon = Number(req.sanitize('monto').escape().trim()); 
             var exe = Number(req.sanitize('exentas').escape().trim());
+            var exe1 = Number(req.sanitize('exentas1').escape().trim());
             var calcu_iva = req.sanitize('calcu_iva').escape().trim();
             var fact_cond= req.sanitize('fact_condicion').trim();
             var cod = Number(req.sanitize('codigo').escape().trim());
+
+
+            /* EN TODOS LOS CASOS CARGAMOS LAS EXENTAS, SIN IMPORTAR EL CLiCK*/
+            /*if(fact_cond == "CONTADO"){
+                exe = exe1;
+            }*/
+            exe = exe1;
 
             if(calcu_iva == "IVA_10"){
                 var iva10 = Number(req.sanitize('iva_10').escape().trim());
@@ -716,7 +724,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                     datos_caja.push(row);
                                                 });
                                                 //pasamos los datos y los datos de las cajas en rows2
-                                                res.render('gastos/editar', { title: 'Editar GASTO', id_caja: req.body.id_caja, caja: req.body.concepto, id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: req.body.exentas,
+                                                res.render('gastos/editar', { title: 'Editar GASTO', id_caja: req.body.id_caja, caja: req.body.concepto, id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: gasto.exentas,
                                                 iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,
                                                 proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot, id_proveedor: req.body.id_proveedor, 
                                                 imputado: req.body.imputado, origen_pago: req.body.origen_pago, tipo: req.body.tipo, usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja})

@@ -1,0 +1,129 @@
+<!--
+including header content which is common for all pages
+-->
+
+<%- include ../layouts/header.ejs %>
+ 
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>    
+
+<%
+function formatear_fecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    
+    if(month == 12 && day == 31 && year == 1969)
+    { return "-";}
+    else
+    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
+}
+%>
+
+<style>
+.table-fixed tbody {
+height: 400px;
+overflow-y: auto;
+width: 100%;
+}
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+display: block;
+}
+.table-fixed tr:after {
+content: "";
+display: block;
+visibility: hidden;
+clear: both;
+}
+.table-fixed tbody td,
+.table-fixed thead > tr > th {
+float: left;
+}
+.table > thead > tr > th,
+.table > thead > tr > td {
+font-size: .9em;
+font-weight: 400;
+border-bottom: 0;
+letter-spacing: 1px;
+vertical-align: top;
+padding: 8px;
+background: #51596a;
+text-transform: uppercase;
+color: #ffffff;
+}
+</style>
+
+
+<!--  -->
+<div class="container-fluid" width="100%">
+    <table id="tablex_cajas_rol" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+            border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                <tr>
+                    <th>ID</th>
+                    <th>FECHA</th>
+                    <th>CONCEPTO</th>
+                    <th>SALIDA</th>
+                    <th>RESPONSABLE</th>
+                    <th>SALDO</th>
+                    <th>GASTO</th>
+                    <th>ACCIONES</th> 
+                </tr>
+            </thead>
+        <tbody>
+        <% if(data) { %>
+            <% data.forEach(function(caja){ %>
+            <tr>
+                <td><%= caja.id %></td>
+                <td><%= formatear_fecha(caja.fecha) %></td>
+                <td><%= caja.concepto %></td>
+                <td><%= caja.salida %></td>
+                <td><%= caja.responsable %></td>
+                <td><%= caja.saldo %></td>
+                <td><%= caja.gasto %></td>
+                <td>
+                    <div>
+                        <a href='/cajas/detalle/<%= caja.id %>'>Detalle</a> &nbsp; 
+                        <a href='/cajas/editar/<%= caja.id %>'>Editar</a> &nbsp; 
+                        <a href='/cajas/eliminar/<%= caja.id %>'>Eliminar</a><!-- DEBE SER APP.GET en el servidor, NO APP.DELETE, eso en el caso del value DELETE, como vemos mas abajo-->                       
+                        <!--<form method="post" action="/cajas/eliminar/<%= caja.id %>" style="float:right">
+                            <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
+                            <input type="hidden" name="_method" value="DELETE" />
+                        </form>-->
+                    </div>
+                </td>
+            </tr>
+            <% }) %>
+        <% } %>
+        </tbody>
+    </table>
+</div>
+<!---->
+
+<!-- BOTONES DE EXPORTACION -->
+<nav class="navbar navbar-expand-lg navbar-light bg-strong">
+    <div class="container-fluid">
+            <form action="/cajas/descargar" method="POST" name="form">
+                <button type="submit" id="submit" class="btn btn-info">
+                    <i class="fas fa-share"></i>
+                </button>
+            </form>
+    </div>
+</nav>
+<!--
+including footer content which is common for all pages
+-->
+<%- include ../layouts/footer.ejs %>

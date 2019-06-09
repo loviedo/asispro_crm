@@ -5,7 +5,7 @@ var path = require('path');
 var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
-var datos_emple = []; //datos de empleados
+var deta_cajas = []; //datos de empleados
 
 /* funciones de ayuda */
 
@@ -138,8 +138,8 @@ function generar_excel_emp_liq(rows){
     workbook.write('Listado_LIQUIDACION.xlsx');
 }
 
-//completar funcion
-function genera_detalle_caja(rows){
+//recibimos los datos de cabecera de cajas, y el detalle de facturas que se quieren observar.
+function genera_detalle_caja(rows, rows2){
     var workbook = new excel.Workbook();
     var worksheet = workbook.addWorksheet('DETALLE CAJAS');
     //
@@ -410,7 +410,7 @@ app.post('/add', function(req, res, next){
 
 
 //DETALLE DE LA CAJA SELECCIONADA
-app.get('/editar/:id', function(req, res, next){
+app.get('/detalle/:id', function(req, res, next){
     if(req.session.user)
     {   user =  req.session.user;
         userId = req.session.userId;
@@ -426,20 +426,20 @@ app.get('/editar/:id', function(req, res, next){
                     res.redirect('/cajas')
                 }
                 else {
-                    //primero generamos el excel de la caja
-                    genera_detalle_caja(rows);
-
                     req.getConnection(function(error, conn) {
-                        conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows2) {
+                        //traemos los datos de 
+                        conn.query('select * from gastos where id_caja = ' + req.params.id + ' order by fecha desc',function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
-                                datos_emple = [];
-                                rows2.forEach(function(row) { datos_emple.push(row); });
-                                
+                                deta_cajas = [];
+                                rows2.forEach(function(row) { deta_cajas.push(row); });
+
+                                //generamos el excel de la caja
+                                genera_detalle_caja(rows, rows2);
                                 //console.log(datos_pro);//debug
-                                res.render('cajas/editar', {
+                                res.render('cajas/detalle', {
                                 title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
-                                saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  data_emple: datos_emple});
+                                saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  deta_cajas: deta_cajas});
                             }
                         })
                     })
