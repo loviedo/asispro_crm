@@ -138,6 +138,78 @@ function generar_excel_emp_liq(rows){
     workbook.write('Listado_LIQUIDACION.xlsx');
 }
 
+//completar funcion
+function genera_detalle_caja(rows){
+    var workbook = new excel.Workbook();
+    var worksheet = workbook.addWorksheet('DETALLE CAJAS');
+    //
+    const style = workbook.createStyle({
+    font: {color: '#000000',size: 12},
+    numberFormat: '#,##0.00; (#,##0.00); -'
+    });
+
+    //prueba estilo 2
+    const style1 = workbook.createStyle({
+        font: {color: '#000000',fgColor:'#EF820D',size: 12},
+        numberFormat: '#,##0; (#,##0); -'
+    });
+
+    const bgStyle = workbook.createStyle({
+        fill: {type: 'pattern',patternType: 'solid',
+          //bgColor: '#EF820D',
+          //fgColor: '#EF820D', //color fondo de la celda.
+        }
+    });
+
+    //dibujamos el excel
+    //primero la cabecera
+    worksheet.cell(3,1).string('ID').style(style);
+    worksheet.cell(3,2).string('FECHA').style(style);
+    worksheet.cell(3,3).string('SALIDA').style(style);
+    worksheet.cell(3,3).string('RESPONSABLE').style(style);
+    worksheet.cell(3,3).string('CONCEPTO').style(style);
+    worksheet.cell(3,4).string('SALDO').style(style);
+    worksheet.cell(3,5).string('GASTO').style(style);
+
+    /*SELECT el.codigo, concat(em.nombres,' ',em.apellidos) as nombre , el.mes, el.anho, el. quincena, el.epp, el.anticipo, el.prestamo, el.ips, el.saldo_favor, el.debe, el.debo, 
+    el.pasaje, el.manoobra, el.saldo_pagar, el.otros, 
+    el.total, el.dias_t, el.h_50_total, el.h_100_total, el.h_neg_total, el.usuario_insert FROM empleados_liq el
+    inner join empleados em on el.codigo = em.codigo
+    where el.mes = month(current_date()) and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer)*/
+
+    //luego los datos
+    var i = 1;
+    rows.forEach(function(row) {
+        worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);//id
+
+
+        worksheet.cell(i+3,1).string(String(row.codigo)).style(style);//codigo del empleado
+        worksheet.cell(i+3,2).string(String(row.nombre)).style(style); //nombre y apellido
+        worksheet.cell(i+3,3).string(String(row.anho)).style(style);
+        worksheet.cell(i+3,3).string(String(row.mes)).style(style);
+        worksheet.cell(i+3,3).string(String(row.quincena)).style(style);
+        worksheet.cell(i+3,3).string(String(row.epp)).style(style);//equipos de proteccion personal
+        worksheet.cell(i+3,4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,5).string(String(row.prestamo)).style(style);
+        worksheet.cell(i+3,6).number(Number(row.ips.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,7).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,8).number(Number(row.debe.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,9).number(Number(row.debo.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,10).number(Number(row.pasaje.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,11).number(Number(row.manoobra.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,12).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,13).number(Number(row.otros.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);
+
+        //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
+        i=i+1;
+        //console.log(row.descripcion);//debug
+    });
+    
+    workbook.write('Listado_LIQUIDACION.xlsx');
+}
+
+
 function manhana()
 {   var today = new Date();
     var dd = today.getDate()+1;
@@ -337,7 +409,7 @@ app.post('/add', function(req, res, next){
 })
 
 
-//PARA EDITAR LOS DATOS 
+//DETALLE DE LA CAJA SELECCIONADA
 app.get('/editar/:id', function(req, res, next){
     if(req.session.user)
     {   user =  req.session.user;
@@ -354,6 +426,51 @@ app.get('/editar/:id', function(req, res, next){
                     res.redirect('/cajas')
                 }
                 else {
+                    //primero generamos el excel de la caja
+                    genera_detalle_caja(rows);
+
+                    req.getConnection(function(error, conn) {
+                        conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows2) {
+                            if (err) {console.log(err); }
+                            else{
+                                datos_emple = [];
+                                rows2.forEach(function(row) { datos_emple.push(row); });
+                                
+                                //console.log(datos_pro);//debug
+                                res.render('cajas/editar', {
+                                title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
+                                saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  data_emple: datos_emple});
+                            }
+                        })
+                    })
+                }            
+            })
+        })
+    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+//PARA EDITAR LOS DATOS - GET
+app.get('/editar/:id', function(req, res, next){
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    if(user.length >0){
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT * FROM cajas WHERE id = ' + req.params.id, function(err, rows, fields) {
+                if(err) throw err
+                
+                // if user not found
+                if (rows.length <= 0) {
+                    req.flash('error', 'CAJA con id = ' + req.params.id + ' no encontrado')
+                    res.redirect('/cajas')
+                }
+                else {
+                    //primero generamos el excel de la caja
+                    genera_detalle_caja(rows);
+
+
+
 
                     req.getConnection(function(error, conn) {
                         conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows2) {
@@ -454,6 +571,30 @@ app.post('/descargar', function(req, res, next) {
         //vemos los datos en la base
         //DESCARGAR PDF CON DATOS DEL ESTUDIO
         var file = path.resolve("Listado_CAJAS.xlsx");
+        res.contentType('Content-Type',"application/pdf");
+        res.download(file, function (err) {
+            if (err) {
+                console.log("ERROR AL DESCARGAR EL ARCHIVO:");
+                console.log(err);
+            } else {
+                console.log("ARCHIVO ENVIADO!");
+            }
+        });
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+});
+
+app.post('/descargar_caja', function(req, res, next) {
+    //primero traemos los datos de la tabla
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        //DESCARGAR PDF CON DATOS DEL ESTUDIO
+        var file = path.resolve("CAJA.xlsx");
         res.contentType('Content-Type',"application/pdf");
         res.download(file, function (err) {
             if (err) {

@@ -494,9 +494,15 @@ function formatear_fecha(date) {
 
 
 <!-- BOTONES DE EXPORTACION -->
+
+<!-- PARA DESCARGAR LOS GASTOS RELACIONADOS A UNA CAJA -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-
+        <form action="/cajas/descargar_caja" method="POST" name="form">
+            <button type="submit" id="submit" class="btn btn-info">
+                <i class="fas fa-share"></i>
+            </button>
+        </form>
     </div>
 </nav>
 

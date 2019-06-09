@@ -96,7 +96,8 @@ color: #ffffff;
                 <td><%= caja.gasto %></td>
                 <td>
                     <div>
-                        <a href='/cajas/editar/<%= caja.id %>'>Ver</a> &nbsp; 
+                        <a href='/cajas/detalle/<%= caja.id %>'>Detalle</a> &nbsp; 
+                        <a href='/cajas/editar/<%= caja.id %>'>Editar</a> &nbsp; 
                         <a href='/cajas/eliminar/<%= caja.id %>'>Eliminar</a><!-- DEBE SER APP.GET en el servidor, NO APP.DELETE, eso en el caso del value DELETE, como vemos mas abajo-->                       
                         <!--<form method="post" action="/cajas/eliminar/<%= caja.id %>" style="float:right">
                             <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
