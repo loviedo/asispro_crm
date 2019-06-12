@@ -687,33 +687,26 @@ app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
                     } else {                
                         req.flash('success', 'Datos actualizados correctamente!')
                         //llamamos a la funcion que genera el excel con el codigo enviado
-                        generar_excel_emp_liq(rows);
 
-                        //traemos las planificaciones para mostrar en la tablita frente
-                        res.render('manoobra/editar_liq', {
-                            title: 'Editar Mano de Obra',
-                            codigo: req.params.codigo,
-                            anho: req.params.anho,
-                            mes: req.params.mes,
-                            quincena: req.params.quincena,
-                            nombre: req.body.nombre,
-                            epp: liqui.epp,
-                            anticipo: liqui.anticipo,
-                            prestamo: liqui.prestamo,
-                            ips: liqui.ips,
-                            saldo_favor: liqui.saldo_favor,
-                            debe: liqui.debe,
-                            debo: liqui.debo,
-                            pasaje: liqui.pasaje,
-                            manoobra: liqui.manoobra,
-                            saldo_pagar: liqui.saldo_pagar,
-                            otros: liqui.otros,
-                            total: liqui.total,
-                            dias_t: liqui.dias_t,//
-                            h_50_total: liqui.h_50_total, //
-                            h_100_total: liqui.h_100_total,//
-                            h_neg_total: liqui.h_neg_total,//
-                            usuario_insert: user, usuario: user})
+                        req.getConnection(function(error, conn) {
+                            conn.query('select el.*, concat(em.nombres," ",em.apellidos) as nombre from empleados_liq el ' +
+                            'inner join empleados em on el.codigo = em.codigo where el.codigo = ' + req.params.codigo + ' and el.quincena =' + req.params.quincena +
+                            ' and el.anho =' + req.params.anho + ' and el.mes =' + req.params.mes, function(err, rows, fields) {
+                                if (err) {req.flash('error', err)}
+                                else{
+                                //generamos el archivo con los datos actualizados por las dudas.
+                                generar_excel_emp_liq(rows);
+
+                                //traemos las planificaciones para mostrar en la tablita frente
+                                res.render('manoobra/editar_liq', {title: 'Editar Mano de Obra', codigo: req.params.codigo, anho: req.params.anho, mes: req.params.mes,
+                                    quincena: req.params.quincena, nombre: req.body.nombre, epp: liqui.epp, anticipo: liqui.anticipo, prestamo: liqui.prestamo, ips: liqui.ips,
+                                    saldo_favor: liqui.saldo_favor, debe: liqui.debe, debo: liqui.debo, pasaje: liqui.pasaje, manoobra: liqui.manoobra, saldo_pagar: liqui.saldo_pagar,
+                                    otros: liqui.otros, total: liqui.total, dias_t: liqui.dias_t, h_50_total: liqui.h_50_total, h_100_total: liqui.h_100_total,
+                                    h_neg_total: liqui.h_neg_total, usuario_insert: user, usuario: user})
+                                }
+                            })
+                        })
+
                     }
                 })
             })
