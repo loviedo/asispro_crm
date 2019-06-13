@@ -180,7 +180,7 @@ function genera_detalle_caja(rows, rows2){
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);//id
+        /*worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);//id
 
 
         worksheet.cell(i+3,1).string(String(row.codigo)).style(style);//codigo del empleado
@@ -200,7 +200,7 @@ function genera_detalle_caja(rows, rows2){
         worksheet.cell(i+3,12).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
         worksheet.cell(i+3,13).number(Number(row.otros.toString().replace(",","."))).style(style);
         worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);
-
+*/
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug

@@ -242,7 +242,7 @@ function generar_excel_emp_liq(rows){
         worksheet.cell(17, 4).string(String(row.prestamo)).style(style);
         worksheet.cell(18, 4).number(Number(row.ips.toString().replace(",","."))).style(style);
         worksheet.cell(19, 4).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
-        worksheet.cell(10, 4).number(Number(row.debe.toString().replace(",","."))).style(style);
+        worksheet.cell(20, 4).number(Number(row.debe.toString().replace(",","."))).style(style);
         worksheet.cell(21, 4).number(Number(row.debo.toString().replace(",","."))).style(style);
         worksheet.cell(22, 4).number(Number(row.pasaje.toString().replace(",","."))).style(style);
         worksheet.cell(23, 4).number(Number(row.manoobra.toString().replace(",","."))).style(style);
@@ -544,7 +544,7 @@ app.get('/liquidaciones', function(req, res, next) {
                                 res.render('manoobra/listar_liq', {title: 'Listado de Trabajos', data: '',usuario: user})
                             } else {
 
-                                generar_excel_emp_liq(rows);//generamos excel LIQUIDACIONES
+                                //generar_excel_emp_liq(rows);//generamos excel LIQUIDACIONES, DEBE TRAER PARA TODOS
                                 res.render('manoobra/listar_liq', {title: 'Listado de Liquidaciones', usuario: user, data: rows})
                             }
                         })
