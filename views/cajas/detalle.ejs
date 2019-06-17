@@ -84,8 +84,8 @@ color: #ffffff;
                 </tr>
             </thead>
         <tbody>
-        <% if(data) { %>
-            <% data.forEach(function(caja){ %>
+        <% if(deta_cajas) { %>
+            <% deta_cajas.forEach(function(caja){ %>
             <tr>
                 <td><%= caja.id %></td>
                 <td><%= formatear_fecha(caja.fecha) %></td>
