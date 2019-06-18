@@ -1420,14 +1420,14 @@ app.post('/editar_real/:id', function(req, res, next) {
         if( !errors ) {//sin errores
 
         //calculo de dia trabajado, monto y subtotal
-        var otrm = Number(req.sanitize('obra_real_m').trim());
-        var otrt = Number(req.sanitize('obra_real_m').trim());
+        var otrm = Number(req.sanitize('ot_real_m').trim());
+        var otrt = Number(req.sanitize('ot_real_t').trim());
         var jornito = Number(req.sanitize('jornal').trim());
         var val_dia = 0;
         if(otrm >0 && otrm < 999900) //si existe ot real mannhana  y es menor a 999900 (no son OTs administativas)
         {   val_dia = 0.5;}
         if(otrt >0 && otrt < 999900) //si existe ot real tarde  y es menor a 999900 (no son OTs administativas)
-        {   val_dia = vald_dia + 0.5;}
+        {   val_dia = val_dia + 0.5;}
 
         //CALCULAMOS MONTO EN BASE AL JORNAL
         var montito = (jornito * 8);
