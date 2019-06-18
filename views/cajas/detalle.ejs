@@ -72,39 +72,31 @@ color: #ffffff;
     <table id="tablex_cajas_rol" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
             <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
-                <tr>
-                    <th>ID</th>
+                <tr>    
                     <th>FECHA</th>
-                    <th>CONCEPTO</th>
-                    <th>SALIDA</th>
-                    <th>RESPONSABLE</th>
-                    <th>SALDO</th>
-                    <th>GASTO</th>
-                    <th>ACCIONES</th> 
+                    <th>CONDICION</th>
+                    <th>MONTO</th>
+                    <th>EXENTAS</th>
+                    <th>IVA 10%</th>
+                    <th>IVA5 %</th>
+                    <th>GASTO REAL</th>
+                    <th>CONCEPTO</th> 
+                    <th>PROVEEDOR</th> 
                 </tr>
             </thead>
         <tbody>
         <% if(deta_cajas) { %>
             <% deta_cajas.forEach(function(caja){ %>
             <tr>
-                <td><%= caja.id %></td>
                 <td><%= formatear_fecha(caja.fecha) %></td>
+                <td><%= caja.fact_condicion %></td>
+                <td><%= caja.monto %></td>
+                <td><%= caja.exentas %></td>
+                <td><%= caja.iva_10 %></td>
+                <td><%= caja.iva_5 %></td>
+                <td><%= caja.gasto_real %></td>
                 <td><%= caja.concepto %></td>
-                <td><%= caja.salida %></td>
-                <td><%= caja.responsable %></td>
-                <td><%= caja.saldo %></td>
-                <td><%= caja.gasto %></td>
-                <td>
-                    <div>
-                        <a href='/cajas/detalle/<%= caja.id %>'>Detalle</a> &nbsp; 
-                        <a href='/cajas/editar/<%= caja.id %>'>Editar</a> &nbsp; 
-                        <a href='/cajas/eliminar/<%= caja.id %>'>Eliminar</a><!-- DEBE SER APP.GET en el servidor, NO APP.DELETE, eso en el caso del value DELETE, como vemos mas abajo-->                       
-                        <!--<form method="post" action="/cajas/eliminar/<%= caja.id %>" style="float:right">
-                            <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
-                            <input type="hidden" name="_method" value="DELETE" />
-                        </form>-->
-                    </div>
-                </td>
+                <td><%= caja.proveedor %></td>
             </tr>
             <% }) %>
         <% } %>
@@ -114,9 +106,10 @@ color: #ffffff;
 <!---->
 
 <!-- BOTONES DE EXPORTACION -->
+<!-- Pasamos el id para que coloque el nombre adecuadamente -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">
     <div class="container-fluid">
-            <form action="/cajas/descargar" method="POST" name="form">
+            <form action="/cajas/descargar/<%= id %>" method="POST" name="form">
                 <button type="submit" id="submit" class="btn btn-info">
                     <i class="fas fa-share"></i>
                 </button>

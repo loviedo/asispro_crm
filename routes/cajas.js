@@ -206,7 +206,7 @@ function genera_detalle_caja(rows, rows2){
         //console.log(row.descripcion);//debug
     });
     
-    workbook.write('Listado_LIQUIDACION.xlsx');
+    workbook.write('DETALLE_CAJA_ID'+ rows[0].id +'.xlsx');
 }
 
 
@@ -263,7 +263,6 @@ app.get('/', function(req, res, next) {
         })
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
-
 
 //CARGA DE NUEVA CAJA
 app.get('/add', function(req, res, next){
@@ -407,7 +406,6 @@ app.post('/add', function(req, res, next){
         }
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
-
 
 //DETALLE DE LA CAJA SELECCIONADA
 app.get('/detalle/:id', function(req, res, next){
@@ -555,11 +553,8 @@ app.post('/editar/:id', function(req, res, next){
     }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
-
-
-
 /* GENERACION Y EXPORTACION EXCEL */
-app.post('/descargar', function(req, res, next) {
+app.post('/descargar/:id', function(req, res, next) {
     //primero traemos los datos de la tabla
     if(req.session.user)
     {   user =  req.session.user;
@@ -570,7 +565,7 @@ app.post('/descargar', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         //DESCARGAR PDF CON DATOS DEL ESTUDIO
-        var file = path.resolve("Listado_CAJAS.xlsx");
+        var file = path.resolve('DETALLE_CAJA_ID'+ req.params.id +'.xlsx');
         res.contentType('Content-Type',"application/pdf");
         res.download(file, function (err) {
             if (err) {
