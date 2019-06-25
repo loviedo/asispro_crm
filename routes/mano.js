@@ -1440,7 +1440,8 @@ app.post('/editar_real/:id', function(req, res, next) {
         var hneg= Number(req.sanitize('hora_neg').toString().replace(",",".").trim());
 
         //revisar el calculo del plus
-        var plusito = ((jornito*hnormal) + (jornito*h50*(1.5)) + (jornito*h100*(2)) - (jornito*hneg*(2)));
+        var plusito = ((jornito*hnormal) + (jornito*h50) + (jornito*h100) - (jornito*hneg));
+        //var plusito = ((jornito*hnormal) + (jornito*h50*(1.5)) + (jornito*h100*(2)) - (jornito*hneg*(2)));
         //VEMOS EL PASAJE
         var paje= Number(req.sanitize('pasaje').trim());
 
