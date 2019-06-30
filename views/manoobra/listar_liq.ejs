@@ -152,6 +152,7 @@ function hoy()
                     <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
                     border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                         <tr>
+                            <th>COLUMNA</th>
                             <th>CODIGO</th>
                             <th>PERSONAL</th>
                             <th>AÑO</th>
@@ -176,6 +177,7 @@ function hoy()
                 <% if(data) { %>
                 <% data.forEach(function(mano){ %>
                     <tr>
+                        <td><%= mano.codcol %></td>
                         <td><%= mano.codigo %></td>
                         <td><%= mano.nombre %></td>
                         <td><%= mano.anho %></td>

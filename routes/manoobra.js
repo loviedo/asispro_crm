@@ -175,9 +175,13 @@ function generar_excel_emp_liq(rows){
     worksheet.cell(5,3).string('MES:').style(style);
     worksheet.cell(6,3).string('QUINCENA:').style(style);
     worksheet.cell(3,4).string(String(rows[0].nombre)).style(style);
-    worksheet.cell(4,4).string(String(rows[0].anho)).style(style);
-    worksheet.cell(5,4).string(String(rows[0].mes)).style(style);
-    worksheet.cell(6,4).string(String(rows[0].quincena)).style(style);
+    worksheet.cell(4,4).number(Number(rows[0].anho)).style(style);
+    worksheet.cell(5,4).number(Number(rows[0].mes)).style(style);
+    worksheet.cell(6,4).number(Number(rows[0].quincena)).style(style);
+
+    //footer de firma
+    worksheet.cell(32,4).string(String(rows[0].nombre)).style(style);
+    worksheet.cell(33,4).string(String(rows[0].ci)).style(style);
 
     //conceptos
     worksheet.cell(10,3).string('DIAS TRABAJADOS:').style(style);
@@ -231,13 +235,13 @@ function generar_excel_emp_liq(rows){
         //worksheet.cell(5, i+3).number(Number(row.mes.toString().replace(",","."))).style(style);
         //worksheet.cell(5, i+3).number(Number(row.quincena.toString().replace(",","."))).style(style);
 
-        worksheet.cell(10, 4).string(String(row.dias_t)).style(style);//dias trabajados
-        worksheet.cell(11, 4).string(String(row.h_50_total)).style(style); //nombre y apellido
-        worksheet.cell(12, 4).string(String(row.h_100_total)).style(style);
-        worksheet.cell(13, 4).string(String(row.h_neg_total)).style(style);
-        worksheet.cell(15, 4).string(String(row.epp)).style(style);//equipos de proteccion personal
+        worksheet.cell(10, 4).number(Number(row.dias_t.toString().replace(",","."))).style(style);//dias trabajados
+        worksheet.cell(11, 4).number(Number(row.h_50_total.toString().replace(",","."))).style(style); //nombre y apellido
+        worksheet.cell(12, 4).number(Number(row.h_100_total.toString().replace(",","."))).style(style);
+        worksheet.cell(13, 4).number(Number(row.h_neg_total.toString().replace(",","."))).style(style);
+        worksheet.cell(15, 4).number(Number(row.epp.toString().replace(",","."))).style(style);//equipos de proteccion personal
         worksheet.cell(16, 4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
-        worksheet.cell(17, 4).string(String(row.prestamo)).style(style);
+        worksheet.cell(17, 4).number(Number(row.prestamo)).style(style);
         worksheet.cell(18, 4).number(Number(row.ips.toString().replace(",","."))).style(style);
         worksheet.cell(19, 4).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
         worksheet.cell(20, 4).number(Number(row.debe.toString().replace(",","."))).style(style);
@@ -247,6 +251,9 @@ function generar_excel_emp_liq(rows){
         worksheet.cell(24, 4).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
         worksheet.cell(25, 4).number(Number(row.otros.toString().replace(",","."))).style(style);
         worksheet.cell(26, 4).number(Number(row.total.toString().replace(",","."))).style(style);
+
+
+
 
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
@@ -485,7 +492,7 @@ app.get('/liquidaciones', function(req, res, next) {
         'select dias_t from  ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
-        'sum(if(ot_real_m < 9999000 or ot_real_t < 9999000, 1,0)) as dias_t from mano_obra ' +
+        'sum(if(ot_real_m >0 and ot_real_m < 9999000,0.5,0) + if(ot_real_t >0 and ot_real_t < 9999000,0.5,0)) as dias_t from mano_obra ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
         'h_50_total = ( ' +
@@ -533,7 +540,7 @@ app.get('/liquidaciones', function(req, res, next) {
 
                     //TRAEMOS DATOS DE LA BASE
                     req.getConnection(function(error, conn) {
-                        conn.query('SELECT el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
+                        conn.query('SELECT concat(el.anho,LPAD(el.mes,2,"0"),LPAD(el.quincena,2,"0")) as codcol, el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
                         'IFNULL(el.debe,0) debe, IFNULL(el.debo,0) debo, IFNULL(el.pasaje,0) pasaje, IFNULL(el.manoobra,0) manoobra, IFNULL(el.saldo_pagar,0) saldo_pagar, IFNULL(el.otros,0) otros, IFNULL(el.total,0) total, IFNULL(el.dias_t,0) dias_t, IFNULL(el.h_50_total,0) h_50_total, IFNULL(el.h_100_total,0) h_100_total,  ' +
                         'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.usuario_insert,0) usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
                         'where el.mes >= month(current_date())-1 and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer) ',function(err, rows) {
@@ -563,7 +570,7 @@ app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){ 
         req.getConnection(function(error, conn) {
-            conn.query('select el.*, concat(em.nombres," ",em.apellidos) as nombre from empleados_liq el ' +
+            conn.query('select el.*, concat(em.nombres," ",em.apellidos) as nombre, em.ci  from empleados_liq el ' +
             'inner join empleados em on el.codigo = em.codigo where el.codigo = ' + req.params.codigo + ' and el.quincena =' + req.params.quincena +
             ' and el.anho =' + req.params.anho + ' and el.mes =' + req.params.mes, function(err, rows, fields) {
                 if(err) throw err
