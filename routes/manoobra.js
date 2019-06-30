@@ -184,7 +184,6 @@ function generar_excel_emp_liq(rows){
     worksheet.cell(11,3).string('HORAS EXTRAS 50%:').style(style);
     worksheet.cell(12,3).string('HORAS EXTRAS 100%:').style(style);
     worksheet.cell(13,3).string('HORA NEGATIVA:').style(style);
-    worksheet.cell(14,3).string('MANO DE OBRA (Gs):').style(style);
     worksheet.cell(15,3).string('EQUIPO DE PROTECCION PERSONAL (EPP)').style(style);
     worksheet.cell(16,3).string('ANTICIPO:').style(style);
     worksheet.cell(17,3).string('PRESTAMO:').style(style);
@@ -236,7 +235,6 @@ function generar_excel_emp_liq(rows){
         worksheet.cell(11, 4).string(String(row.h_50_total)).style(style); //nombre y apellido
         worksheet.cell(12, 4).string(String(row.h_100_total)).style(style);
         worksheet.cell(13, 4).string(String(row.h_neg_total)).style(style);
-        worksheet.cell(24, 4).number(Number(row.manoobra.toString().replace(",","."))).style(style);
         worksheet.cell(15, 4).string(String(row.epp)).style(style);//equipos de proteccion personal
         worksheet.cell(16, 4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
         worksheet.cell(17, 4).string(String(row.prestamo)).style(style);

@@ -1445,6 +1445,11 @@ app.post('/editar_real/:id', function(req, res, next) {
         //VEMOS EL PASAJE
         var paje= Number(req.sanitize('pasaje').trim());
 
+        //estas variables utilizamos para actulizar los mayores a la fecha actual de update
+        var fecha_futuro = formatear_fecha_yyyymmdd(req.sanitize('fecha').trim())
+        var cod_futuro = req.sanitize('codigo').trim()
+        
+        
         //objeto para actualizar campos
         var mano_plan = {
                 fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),//fecha se mantiene nomas ya
@@ -1488,6 +1493,37 @@ app.post('/editar_real/:id', function(req, res, next) {
                 pasaje: paje,//asignamos el pasaje
                 plus: plusito,//asignamos el plus
             } 
+
+            //valores de los campos a actualizar para el futuro.
+            var mano_futuro = {
+                cliente_plan_m: req.sanitize('cliente_real_m').trim(),
+                cliente_real_m: req.sanitize('cliente_real_m').trim(),
+                cliente_plan_t: req.sanitize('cliente_real_t').trim(),
+                cliente_real_t: req.sanitize('cliente_real_t').trim(),
+                cliente_real_n: req.sanitize('cliente_real_n').trim(),
+                obra_plan_m: req.sanitize('obra_real_m').trim(),
+                obra_real_m: req.sanitize('obra_real_m').trim(),
+                obra_plan_t: req.sanitize('obra_real_t').trim(),
+                obra_real_t: req.sanitize('obra_real_t').trim(),
+                obra_real_n: req.sanitize('obra_real_n').trim(),
+                encargado: req.sanitize('encargado_real').trim(),
+                trato_cliente: req.sanitize('trato_cliente_real').trim(),
+                encargado2: req.sanitize('encargado_real2').trim(),
+                trato_cliente2: req.sanitize('trato_cliente_real2').trim(),
+                encargado_real: req.sanitize('encargado_real').trim(),//real manhana
+                trato_cliente_real: req.sanitize('trato_cliente_real').trim(),//real manhana
+                encargado_real2: req.sanitize('encargado_real2').trim(),//real tarde
+                trato_cliente_real2: req.sanitize('trato_cliente_real2').trim(),//real tarde
+                ot_plan_m: req.sanitize('ot_real_m').trim(),
+                ot_real_m: req.sanitize('ot_real_m').trim(),
+                ot_plan_t: req.sanitize('ot_real_t').trim(),
+                ot_real_t: req.sanitize('ot_real_t').trim(),
+                ot_real_n: req.sanitize('ot_real_n').trim(),
+                //jornal: Number(req.sanitize('jornal').trim()), //recibimos del campo oculto. pero NO ACTUALIZAMOS
+                usuario_insert: user,
+            } 
+
+
             
             req.getConnection(function(error, conn) {
                 conn.query('UPDATE mano_obra SET ? WHERE id = ' + req.params.id, mano_plan, function(err, result) {
@@ -1498,38 +1534,13 @@ app.post('/editar_real/:id', function(req, res, next) {
                         //si hay error
                         res.render('mano/editar_real', {
                             title: 'Editar Plan Laboral',
-                            id: req.params.id,
-                            fecha: mano_plan.fecha,
-                            codigo: mano_plan.codigo,
-                            empleado: mano_plan.empleado,
-                            cliente_plan_m: mano_plan.cliente_plan_m,
-                            cliente_real_m: mano_plan.cliente_real_m,
-                            cliente_plan_t: mano_plan.cliente_plan_t,
-                            cliente_real_t: mano_plan.cliente_real_t,
-                            cliente_real_n: mano_plan.cliente_real_n,
-                            obra_plan_m: mano_plan.obra_plan_m,
-                            obra_real_m: mano_plan.obra_real_m,
-                            obra_plan_t: mano_plan.obra_plan_t,
-                            obra_real_t: mano_plan.obra_real_t,
-                            obra_real_n: mano_plan.obra_real_n,
-                            encargado: mano_plan.encargado,
-                            trato_cliente: mano_plan.trato_cliente,
-                            encargado2: req.body.encargado2,
-                            trato_cliente2: req.body.trato_cliente2,
-                            h_entrada: mano_plan.h_entrada,
-                            h_salida: mano_plan.h_salida,
-                            monto: mano_plan.monto,
-                            subtotal: mano_plan.subtotal,
-                            ot_plan_m: mano_plan.ot_plan_m,
-                            ot_real_m: mano_plan.ot_real_m,
-                            ot_plan_t: mano_plan.ot_plan_t,
-                            ot_real_t: mano_plan.ot_real_t,
-                            ot_real_n: mano_plan.ot_real_n,
-                            hora_normal: mano_plan.hora_normal,
-                            hora_50: mano_plan.hora_50,
-                            hora_100: mano_plan.hora_100,
-                            hora_neg: mano_plan.hora_neg,
-                            pasaje: mano_plan.pasaje,
+                            id: req.params.id, fecha: mano_plan.fecha, codigo: mano_plan.codigo, empleado: mano_plan.empleado, cliente_plan_m: mano_plan.cliente_plan_m, cliente_real_m: mano_plan.cliente_real_m,
+                            cliente_plan_t: mano_plan.cliente_plan_t, cliente_real_t: mano_plan.cliente_real_t, cliente_real_n: mano_plan.cliente_real_n, obra_plan_m: mano_plan.obra_plan_m,
+                            obra_real_m: mano_plan.obra_real_m, obra_plan_t: mano_plan.obra_plan_t, obra_real_t: mano_plan.obra_real_t, obra_real_n: mano_plan.obra_real_n,
+                            encargado: mano_plan.encargado, trato_cliente: mano_plan.trato_cliente, encargado2: req.body.encargado2, trato_cliente2: req.body.trato_cliente2, h_entrada: mano_plan.h_entrada,
+                            h_salida: mano_plan.h_salida, monto: mano_plan.monto, subtotal: mano_plan.subtotal, ot_plan_m: mano_plan.ot_plan_m, ot_real_m: mano_plan.ot_real_m,
+                            ot_plan_t: mano_plan.ot_plan_t, ot_real_t: mano_plan.ot_real_t, ot_real_n: mano_plan.ot_real_n, hora_normal: mano_plan.hora_normal, hora_50: mano_plan.hora_50,
+                            hora_100: mano_plan.hora_100, hora_neg: mano_plan.hora_neg, pasaje: mano_plan.pasaje,
                             //jornal: mano_plan.jornal, //no mostramos en esta pagina
                             //plus: mano_plan.plus, //no mostramos en esta pagina
                             usuario: user
@@ -1537,102 +1548,123 @@ app.post('/editar_real/:id', function(req, res, next) {
                     } else {                
                         req.flash('success', 'Datos actualizados correctamente!')
 
-                        //traemos las planificaciones para mostrar en la tablita frente
-                        datos = [];//datos de planificacion
-                        datos_ot = [];
-                        conn.query('SELECT * FROM mano_obra WHERE id = ' + req.params.id, function(err, rows) {
-                            if (err) {console.log(err);}
-                            else{
-                                rows.forEach(function(row) {    
-                                    datos_ot.push(row);
-                                });
-                                //console.log(datos_ot);//debug de datos de MANO OBRA
-            
-                                conn.query('SELECT * FROM mano_obra order by fecha desc',function(err, rows) {
+                        //actualizamos las fechas del futuro ya cargadas para ese cliente.
+                        conn.query('UPDATE mano_obra SET ? WHERE fecha > "' + fecha_futuro + '" and codigo ="' + cod_futuro + '"', mano_futuro, function(err, result) {
+                            //if(err) throw err
+                            if (err) {
+                                req.flash('error', err)
+                                
+                                //si hay error
+                                res.render('mano/editar_real', {
+                                    title: 'Editar Plan Laboral',
+                                    id: req.params.id, fecha: mano_plan.fecha, codigo: mano_plan.codigo, empleado: mano_plan.empleado, cliente_plan_m: mano_plan.cliente_plan_m, cliente_real_m: mano_plan.cliente_real_m,
+                                    cliente_plan_t: mano_plan.cliente_plan_t, cliente_real_t: mano_plan.cliente_real_t, cliente_real_n: mano_plan.cliente_real_n, obra_plan_m: mano_plan.obra_plan_m,
+                                    obra_real_m: mano_plan.obra_real_m, obra_plan_t: mano_plan.obra_plan_t, obra_real_t: mano_plan.obra_real_t, obra_real_n: mano_plan.obra_real_n,
+                                    encargado: mano_plan.encargado, trato_cliente: mano_plan.trato_cliente, encargado2: req.body.encargado2, trato_cliente2: req.body.trato_cliente2, h_entrada: mano_plan.h_entrada,
+                                    h_salida: mano_plan.h_salida, monto: mano_plan.monto, subtotal: mano_plan.subtotal, ot_plan_m: mano_plan.ot_plan_m, ot_real_m: mano_plan.ot_real_m,
+                                    ot_plan_t: mano_plan.ot_plan_t, ot_real_t: mano_plan.ot_real_t, ot_real_n: mano_plan.ot_real_n, hora_normal: mano_plan.hora_normal, hora_50: mano_plan.hora_50,
+                                    hora_100: mano_plan.hora_100, hora_neg: mano_plan.hora_neg, pasaje: mano_plan.pasaje,
+                                    usuario: user
+                                })
+                            } else {
+
+                                //traemos las planificaciones para mostrar en la tablita frente
+                                datos = [];//datos de planificacion
+                                datos_ot = [];
+                                conn.query('SELECT * FROM mano_obra WHERE id = ' + req.params.id, function(err, rows) {
                                     if (err) {console.log(err);}
                                     else{
                                         rows.forEach(function(row) {    
-                                            datos.push(row);
+                                            datos_ot.push(row);
                                         });
-                                        //console.log(datos);//debug de datos de MANO OBRA
-                                        //traemos los personales para mostrar en el modal
-                                        datos_rrhh = [];
-                                        conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
+                                        //console.log(datos_ot);//debug de datos de MANO OBRA
+                                        conn.query('SELECT * FROM mano_obra order by fecha desc',function(err, rows) {
                                             if (err) {console.log(err);}
                                             else{
                                                 rows.forEach(function(row) {    
-                                                    datos_rrhh.push(row);
+                                                    datos.push(row);
                                                 });
-                                                //console.log(datos_rrhh);//debug de datos de RRHH
-                                                //dibujamos la tabla con los datos que consultamos
-                                                var date1 = new Date(formatear_fecha_yyyymmdd(req.body.fecha));//traemos la fecha de carga de la planificacion.
-                                                var date2 = new Date(hoy());//de hoy
-                                                date1.setDate(date1.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
-                                                date2.setDate(date2.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
-                                                //antes de pasar la info, tenemos que ver que usuario/rol y que fecha es para restringir
-                                                
+                                                //console.log(datos);//debug de datos de MANO OBRA
+                                                //traemos los personales para mostrar en el modal
+                                                datos_rrhh = [];
+                                                conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
+                                                    if (err) {console.log(err);}
+                                                    else{
+                                                        rows.forEach(function(row) {    
+                                                            datos_rrhh.push(row);
+                                                        });
+                                                        //console.log(datos_rrhh);//debug de datos de RRHH
+                                                        //dibujamos la tabla con los datos que consultamos
+                                                        var date1 = new Date(formatear_fecha_yyyymmdd(req.body.fecha));//traemos la fecha de carga de la planificacion.
+                                                        var date2 = new Date(hoy());//de hoy
+                                                        date1.setDate(date1.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
+                                                        date2.setDate(date2.getDate() + 1);//sumamos 1 siempre a las fechas cuando se declara new date
+                                                        //antes de pasar la info, tenemos que ver que usuario/rol y que fecha es para restringir
+                                                        
 
-                                                //REGLAS
-                                                //REAL DE AYER PUEDE EDITARSE TODO MENOS FECHA (rol: 1)
-                                                //REAL DE ANTEAYER PARA ATRAS NO  PUEDE EDITARSE TODO (rol: 2)
-                                                //ROL = 0 es usuario sin restriccion
-                                                if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
-                                                {   //vemos cuantos dias pasaron para ver la restriccion
-                                                    //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
-                                                    var dias_dif = Math.ceil((date1.getTime()- date2.getTime())/ (1000 * 3600 * 24)); 
-                                                    if(dias_dif < -1)//para el caso de lo real mas anteayer para atr[as ya no se puede modificar nada
-                                                    {rol = 2;}
-                                                    if(dias_dif == -1)//para el caso de real, si es la planificacion de ayer, se puede modificar todo menos la fecha
-                                                    {rol = 1;}
-                                                }
-                                                /*if(user == "cibanez")
-                                                { rol=0}*/
+                                                        //REGLAS
+                                                        //REAL DE AYER PUEDE EDITARSE TODO MENOS FECHA (rol: 1)
+                                                        //REAL DE ANTEAYER PARA ATRAS NO  PUEDE EDITARSE TODO (rol: 2)
+                                                        //ROL = 0 es usuario sin restriccion
+                                                        if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
+                                                        {   //vemos cuantos dias pasaron para ver la restriccion
+                                                            //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
+                                                            var dias_dif = Math.ceil((date1.getTime()- date2.getTime())/ (1000 * 3600 * 24)); 
+                                                            if(dias_dif < -1)//para el caso de lo real mas anteayer para atr[as ya no se puede modificar nada
+                                                            {rol = 2;}
+                                                            if(dias_dif == -1)//para el caso de real, si es la planificacion de ayer, se puede modificar todo menos la fecha
+                                                            {rol = 1;}
+                                                        }
+                                                        /*if(user == "cibanez")
+                                                        { rol=0}*/
 
-                                                res.render('mano/editar_real', {
-                                                    title: 'Editar Plan Laboral',
-                                                    id: req.params.id,
-                                                    fecha: req.body.fecha,
-                                                    codigo: req.body.codigo,
-                                                    empleado: req.body.empleado,
-                                                    cliente_plan_m: req.body.cliente_plan_m,
-                                                    cliente_real_m: req.body.cliente_real_m,
-                                                    cliente_plan_t: req.body.cliente_plan_t,
-                                                    cliente_real_t: req.body.cliente_real_t,
-                                                    cliente_real_n: req.body.cliente_real_n,
-                                                    obra_plan_m: req.body.obra_plan_m,
-                                                    obra_real_m: req.body.obra_real_m,
-                                                    obra_plan_t: req.body.obra_plan_t,
-                                                    obra_real_t: req.body.obra_real_t,
-                                                    obra_real_n: req.body.obra_real_n,
-                                                    encargado: req.body.encargado,
-                                                    trato_cliente: req.body.trato_cliente,
-                                                    encargado2: req.body.encargado2,
-                                                    trato_cliente2: req.body.trato_cliente2,
-                                                    encargado_real: req.body.encargado_real,
-                                                    trato_cliente_real: req.body.trato_cliente_real,
-                                                    encargado_real2: req.body.encargadr_real2,
-                                                    trato_cliente_real2: req.body.trato_cliente_real2,
-                                                    h_entrada: req.body.h_entrada,
-                                                    h_salida: req.body.h_salida,
-                                                    monto: req.body.monto,
-                                                    subtotal: req.body.subtotal,
-                                                    hora_50: req.body.hora_50,
-                                                    hora_100: req.body.hora_100,
-                                                    hora_normal: req.body.hora_normal,
-                                                    hora_neg: req.body.hora_neg,
-                                                    ot_plan_m: req.body.ot_plan_m,
-                                                    ot_real_m: req.body.ot_real_m,
-                                                    ot_plan_t: req.body.ot_plan_t,
-                                                    ot_real_t: req.body.ot_real_t,
-                                                    ot_real_n: req.body.ot_real_n,
-                                                    pasaje: req.body.pasaje,
-                                                    restri: rol,
-                                                    jornal: req.body.jornal,
-                                                    usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh
+                                                        res.render('mano/editar_real', {
+                                                            title: 'Editar Plan Laboral',
+                                                            id: req.params.id,
+                                                            fecha: req.body.fecha,
+                                                            codigo: req.body.codigo,
+                                                            empleado: req.body.empleado,
+                                                            cliente_plan_m: req.body.cliente_plan_m,
+                                                            cliente_real_m: req.body.cliente_real_m,
+                                                            cliente_plan_t: req.body.cliente_plan_t,
+                                                            cliente_real_t: req.body.cliente_real_t,
+                                                            cliente_real_n: req.body.cliente_real_n,
+                                                            obra_plan_m: req.body.obra_plan_m,
+                                                            obra_real_m: req.body.obra_real_m,
+                                                            obra_plan_t: req.body.obra_plan_t,
+                                                            obra_real_t: req.body.obra_real_t,
+                                                            obra_real_n: req.body.obra_real_n,
+                                                            encargado: req.body.encargado,
+                                                            trato_cliente: req.body.trato_cliente,
+                                                            encargado2: req.body.encargado2,
+                                                            trato_cliente2: req.body.trato_cliente2,
+                                                            encargado_real: req.body.encargado_real,
+                                                            trato_cliente_real: req.body.trato_cliente_real,
+                                                            encargado_real2: req.body.encargadr_real2,
+                                                            trato_cliente_real2: req.body.trato_cliente_real2,
+                                                            h_entrada: req.body.h_entrada,
+                                                            h_salida: req.body.h_salida,
+                                                            monto: req.body.monto,
+                                                            subtotal: req.body.subtotal,
+                                                            hora_50: req.body.hora_50,
+                                                            hora_100: req.body.hora_100,
+                                                            hora_normal: req.body.hora_normal,
+                                                            hora_neg: req.body.hora_neg,
+                                                            ot_plan_m: req.body.ot_plan_m,
+                                                            ot_real_m: req.body.ot_real_m,
+                                                            ot_plan_t: req.body.ot_plan_t,
+                                                            ot_real_t: req.body.ot_real_t,
+                                                            ot_real_n: req.body.ot_real_n,
+                                                            pasaje: req.body.pasaje,
+                                                            restri: rol,
+                                                            jornal: req.body.jornal,
+                                                            usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh
+                                                        })
+                                                    }              
                                                 })
-                                            }              
+                                            }             
                                         })
-                                    }             
+                                    }
                                 })
                             }
                         })
