@@ -458,7 +458,6 @@ app.post('/editar/:id', function(req, res, next) {
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
-
 // MOSTRAR LISTADO ACUMULATIVO DE LIQUIDACIONES MES
 app.get('/liquidaciones', function(req, res, next) {
     if(req.session.user)
