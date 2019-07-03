@@ -1496,27 +1496,27 @@ app.post('/editar_real/:id', function(req, res, next) {
 
             //valores de los campos a actualizar para el futuro.
             var mano_futuro = {
-                cliente_plan_m: req.sanitize('cliente_real_m').trim(),
+                cliente_plan_m: req.sanitize('cliente_plan_m').trim(),
                 cliente_real_m: req.sanitize('cliente_real_m').trim(),
-                cliente_plan_t: req.sanitize('cliente_real_t').trim(),
+                cliente_plan_t: req.sanitize('cliente_plan_t').trim(),
                 cliente_real_t: req.sanitize('cliente_real_t').trim(),
                 cliente_real_n: req.sanitize('cliente_real_n').trim(),
-                obra_plan_m: req.sanitize('obra_real_m').trim(),
+                obra_plan_m: req.sanitize('obra_plan_m').trim(),
                 obra_real_m: req.sanitize('obra_real_m').trim(),
-                obra_plan_t: req.sanitize('obra_real_t').trim(),
+                obra_plan_t: req.sanitize('obra_plan_t').trim(),
                 obra_real_t: req.sanitize('obra_real_t').trim(),
                 obra_real_n: req.sanitize('obra_real_n').trim(),
-                encargado: req.sanitize('encargado_real').trim(),
-                trato_cliente: req.sanitize('trato_cliente_real').trim(),
-                encargado2: req.sanitize('encargado_real2').trim(),
-                trato_cliente2: req.sanitize('trato_cliente_real2').trim(),
+                encargado: req.sanitize('encargado').trim(),
+                trato_cliente: req.sanitize('trato_cliente').trim(),
+                encargado2: req.sanitize('encargado2').trim(),
+                trato_cliente2: req.sanitize('trato_cliente2').trim(),
                 encargado_real: req.sanitize('encargado_real').trim(),//real manhana
                 trato_cliente_real: req.sanitize('trato_cliente_real').trim(),//real manhana
                 encargado_real2: req.sanitize('encargado_real2').trim(),//real tarde
                 trato_cliente_real2: req.sanitize('trato_cliente_real2').trim(),//real tarde
-                ot_plan_m: req.sanitize('ot_real_m').trim(),
+                ot_plan_m: req.sanitize('ot_plan_m').trim(),
                 ot_real_m: req.sanitize('ot_real_m').trim(),
-                ot_plan_t: req.sanitize('ot_real_t').trim(),
+                ot_plan_t: req.sanitize('ot_plan_t').trim(),
                 ot_real_t: req.sanitize('ot_real_t').trim(),
                 ot_real_n: req.sanitize('ot_real_n').trim(),
                 //jornal: Number(req.sanitize('jornal').trim()), //recibimos del campo oculto. pero NO ACTUALIZAMOS
