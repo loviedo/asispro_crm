@@ -163,36 +163,53 @@ function genera_detalle_caja(rows, rows2){
 
     //dibujamos el excel
     //primero la cabecera
-    worksheet.cell(3,1).string('ID').style(style);
-    worksheet.cell(3,2).string('FECHA').style(style);
+    worksheet.cell(1,3).string('ID').style(style);
+    worksheet.cell(2,3).string('FECHA').style(style);
     worksheet.cell(3,3).string('SALIDA').style(style);
-    worksheet.cell(3,3).string('RESPONSABLE').style(style);
-    worksheet.cell(3,3).string('CONCEPTO').style(style);
-    worksheet.cell(3,4).string('SALDO').style(style);
-    worksheet.cell(3,5).string('GASTO').style(style);
+    worksheet.cell(4,3).string('RESPONSABLE').style(style);
+    worksheet.cell(5,3).string('CONCEPTO').style(style);
+    worksheet.cell(6,3).string('SALDO').style(style);
+    worksheet.cell(7,3).string('GASTO').style(style);
 
-    /*SELECT el.codigo, concat(em.nombres,' ',em.apellidos) as nombre , el.mes, el.anho, el. quincena, el.epp, el.anticipo, el.prestamo, el.ips, el.saldo_favor, el.debe, el.debo, 
-    el.pasaje, el.manoobra, el.saldo_pagar, el.otros, 
-    el.total, el.dias_t, el.h_50_total, el.h_100_total, el.h_neg_total, el.usuario_insert FROM empleados_liq el
-    inner join empleados em on el.codigo = em.codigo
-    where el.mes = month(current_date()) and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer)*/
+    /* DATOS CABECERA */
+    worksheet.cell(1,4).number(Number(rows[0].id)).style(style);
+    worksheet.cell(2,4).date(formatear_fecha_yyyymmdd(rows.fecha)).style(style);//ver formato fecha
+    worksheet.cell(3,4).number(Number(rows[0].salida)).style(style);
+    worksheet.cell(4,4).string(String(rows[0].responsable)).style(style);
+    worksheet.cell(5,4).string(String(rows[0].concepto)).style(style);
+    worksheet.cell(6,4).number(Number(rows[0].saldo)).style(style);
+    worksheet.cell(7,4).number(Number(rows[0].gasto)).style(style);
+
+    /* DATOS DETALLE */
+    worksheet.cell(9,2).string('DETALLE DE GASTOS').style(style);
+    worksheet.cell(10,2).string('FECHA').style(style);
+    worksheet.cell(10,3).string('CONDICION').style(style);
+    worksheet.cell(10,4).string('MONTO').style(style);
+    worksheet.cell(10,5).string('EXENTAS').style(style);
+    worksheet.cell(10,6).string('IVA 10%').style(style);
+    worksheet.cell(10,7).string('IVA 5%').style(style);
+    worksheet.cell(10,8).string('GASTO REAL').style(style);
+    worksheet.cell(10,9).string('CONCEPTO').style(style);
+    worksheet.cell(10,10).string('PROVEEDOR').style(style);
 
     //luego los datos
     var i = 1;
-    rows.forEach(function(row) {
-        /*worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);//id
+    rows2.forEach(function(row) {
+
+        worksheet.cell(i+10,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//codigo del empleado
+        worksheet.cell(i+10,3).string(String(row.fact_condicion)).style(style); //nombre y apellido
+        worksheet.cell(i+10,4).number(Number(row.monto.toString().replace(",","."))).style(style);
+        worksheet.cell(i+10,5).number(Number(row.exentas.toString().replace(",","."))).style(style);
+        worksheet.cell(i+10,6).number(Number(row.iva_10.toString().replace(",","."))).style(style);
+        worksheet.cell(i+10,7).number(Number(row.iva_5.toString().replace(",","."))).style(style);
+        worksheet.cell(i+10,8).number(Number(row.gasto_real.toString().replace(",","."))).style(style);
+        worksheet.cell(i+10,9).string(String(row.concepto)).style(style);
+        worksheet.cell(i+10,10).string(String(row.proveedor)).style(style);
+        /*worksheet.cell(i+10,9).number(Number(rows2.ips.toString().replace(",","."))).style(style);
+        worksheet.cell(i+10,10).number(Number(rows2.saldo_favor.toString().replace(",","."))).style(style);*/
 
 
-        worksheet.cell(i+3,1).string(String(row.codigo)).style(style);//codigo del empleado
-        worksheet.cell(i+3,2).string(String(row.nombre)).style(style); //nombre y apellido
-        worksheet.cell(i+3,3).string(String(row.anho)).style(style);
-        worksheet.cell(i+3,3).string(String(row.mes)).style(style);
-        worksheet.cell(i+3,3).string(String(row.quincena)).style(style);
-        worksheet.cell(i+3,3).string(String(row.epp)).style(style);//equipos de proteccion personal
-        worksheet.cell(i+3,4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,5).string(String(row.prestamo)).style(style);
-        worksheet.cell(i+3,6).number(Number(row.ips.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,7).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
+        /*
         worksheet.cell(i+3,8).number(Number(row.debe.toString().replace(",","."))).style(style);
         worksheet.cell(i+3,9).number(Number(row.debo.toString().replace(",","."))).style(style);
         worksheet.cell(i+3,10).number(Number(row.pasaje.toString().replace(",","."))).style(style);
