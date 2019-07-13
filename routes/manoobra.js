@@ -247,7 +247,8 @@ function generar_excel_emp_liq(rows){
         worksheet.cell(20, 4).number(Number(row.debe.toString().replace(",","."))).style(style);
         worksheet.cell(21, 4).number(Number(row.debo.toString().replace(",","."))).style(style);
         worksheet.cell(22, 4).number(Number(row.pasaje.toString().replace(",","."))).style(style);
-        worksheet.cell(23, 4).number(Number(row.manoobra.toString().replace(",","."))).style(style);
+        //en mano de obra 
+        worksheet.cell(23, 4).number(Number((row.manoobra + row.plus_total).toString().replace(",","."))).style(style);
         worksheet.cell(24, 4).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
         worksheet.cell(25, 4).number(Number(row.otros.toString().replace(",","."))).style(style);
         worksheet.cell(26, 4).number(Number(row.total.toString().replace(",","."))).style(style);

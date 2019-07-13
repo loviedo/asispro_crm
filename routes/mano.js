@@ -1548,9 +1548,9 @@ app.post('/editar_real/:id', function(req, res, next) {
                     } else {                
                         req.flash('success', 'Datos actualizados correctamente!')
 
+                        //finalmente no dejamos que actualice los datos a las fechas a futuro, ponemos un update dummy 
                         //actualizamos las fechas del futuro ya cargadas para ese cliente.
-                        conn.query('UPDATE mano_obra SET ? WHERE fecha > "' + fecha_futuro + '" and codigo ="' + cod_futuro + '"', mano_futuro, function(err, result) {
-                            //if(err) throw err
+                        /*conn.query('UPDATE mano_obra SET ? WHERE fecha > "' + fecha_futuro + '" and codigo ="' + cod_futuro + '"', mano_futuro, function(err, result) {
                             if (err) {
                                 req.flash('error', err)
                                 
@@ -1566,7 +1566,7 @@ app.post('/editar_real/:id', function(req, res, next) {
                                     hora_100: mano_plan.hora_100, hora_neg: mano_plan.hora_neg, pasaje: mano_plan.pasaje,
                                     usuario: user
                                 })
-                            } else {
+                            } else {*/
 
                                 //traemos las planificaciones para mostrar en la tablita frente
                                 datos = [];//datos de planificacion
@@ -1666,8 +1666,8 @@ app.post('/editar_real/:id', function(req, res, next) {
                                         })
                                     }
                                 })
-                            }
-                        })
+                            /*}
+                        })*/
                     }
                 })
             })
