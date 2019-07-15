@@ -472,11 +472,11 @@ app.get('/liquidaciones', function(req, res, next) {
         /* */
         var sql_densa = 'insert into empleados_liq (anho, mes, codigo, quincena, dias_t, manoobra,h_50_total,h_100_total, h_normal_total, h_neg_total, plus_total, usuario_insert) ' +
         'select t1.anho, t1.mes, t1.codigo, t1.quincena, t1.dias_t, t1.manoobra, t1.h_50_total, t1.h_100_total, t1.h_normal_total, t1.h_neg_total, t1.plus, t1.usuario_insert from ' +
-        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo,   ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, sum(if(ot_real_m < 9999000 or ot_real_t < 9999000, 1,0)) as dias_t, ' +
         'IFNULL(sum(subtotal), 0) as manoobra, IFNULL(sum(hora_50), 0) as h_50_total, IFNULL(sum(hora_100), 0) as h_100_total,  ' +
         'IFNULL(sum(hora_normal), 0) as h_normal_total, IFNULL(sum(hora_neg), 0) as h_neg_total, IFNULL(sum(plus), 0) as plus, "admin" as usuario_insert  ' +
-        'from mano_obra ' +
+        'from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc ' +
         ') t1 ' +
@@ -485,49 +485,49 @@ app.get('/liquidaciones', function(req, res, next) {
         'select sum(t2.manoobra) as manoobra from  ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
-        'IFNULL(sum(subtotal), 0) as manoobra from mano_obra ' +
+        'IFNULL(sum(subtotal), 0) as manoobra from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
         'dias_t = ( ' +
         'select dias_t from  ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
-        'sum(if(ot_real_m >0 and ot_real_m < 9999000,0.5,0) + if(ot_real_t >0 and ot_real_t < 9999000,0.5,0)) as dias_t from mano_obra ' +
+        'sum(if(ot_real_m >0 and ot_real_m < 9999000,0.5,0) + if(ot_real_t >0 and ot_real_t < 9999000,0.5,0)) as dias_t from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
         'h_50_total = ( ' +
         'select h_50_total from  ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
-        'IFNULL(sum(hora_50), 0) as h_50_total from mano_obra ' +
+        'IFNULL(sum(hora_50), 0) as h_50_total from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
         'h_100_total = ( ' +
         'select h_100_total from  ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
-        'IFNULL(sum(hora_100), 0) as h_100_total from mano_obra ' +
+        'IFNULL(sum(hora_100), 0) as h_100_total from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
         'h_normal_total = ( ' +
         'select h_normal_total from  ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
-        'IFNULL(sum(hora_normal), 0) as h_normal_total from mano_obra ' +
+        'IFNULL(sum(hora_normal), 0) as h_normal_total from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
         'h_neg_total = ( ' +
         'select h_neg_total from  ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
-        'IFNULL(sum(hora_neg), 0) as h_neg_total from mano_obra ' +
+        'IFNULL(sum(hora_neg), 0) as h_neg_total from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
         'plus_total = ( ' +
         'select plus_total from  ' +
         '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
-        'IFNULL(sum(plus), 0) as plus_total from mano_obra ' +
+        'IFNULL(sum(plus), 0) as plus_total from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena)'
 
