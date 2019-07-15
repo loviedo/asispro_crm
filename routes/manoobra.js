@@ -251,7 +251,7 @@ function generar_excel_emp_liq(rows){
         worksheet.cell(23, 4).number(Number((row.manoobra + row.plus_total).toString().replace(",","."))).style(style);
         worksheet.cell(24, 4).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
         worksheet.cell(25, 4).number(Number(row.otros.toString().replace(",","."))).style(style);
-        worksheet.cell(26, 4).number(Number(row.total.toString().replace(",","."))).style(style);
+        worksheet.cell(26, 4).number(Number((row.total + row.plus_total).toString().replace(",","."))).style(style);
 
 
 
