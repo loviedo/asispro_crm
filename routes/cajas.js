@@ -226,7 +226,6 @@ function genera_detalle_caja(rows, rows2){
     workbook.write('DETALLE_CAJA_ID'+ rows[0].id +'.xlsx');
 }
 
-
 function manhana()
 {   var today = new Date();
     var dd = today.getDate()+1;
@@ -251,7 +250,7 @@ function hoy()
 }
 
 
-// MOSTRAR LISTADO DE Trabajos / mano de PLANIFICADA
+// MOSTRAR CAJAS ASIGNADAS AL USUARIO ACTUAL
 app.get('/', function(req, res, next) {
     if(req.session.user)
     {   user =  req.session.user;
