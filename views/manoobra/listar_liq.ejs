@@ -191,10 +191,10 @@ function hoy()
                         <td><%= mano.debe %></td>
                         <td><%= mano.debo %></td>
                         <td><%= mano.pasaje %></td>
-                        <td><%= mano.manoobra %></td>
+                        <td><%= mano.manoobra + mano.plus %></td>
                         <td><%= mano.saldo_pagar %></td>
                         <td><%= mano.otros %></td>
-                        <td><%= mano.total %></td>
+                        <td><%= mano.total + mano.plus %></td>
                         <td>
                             <div>
                                 <a href='/manoobra/editar_liq/<%= mano.codigo %>/<%= mano.anho %>/<%= mano.mes %>/<%= mano.quincena %>'>Ver</a> &nbsp; 

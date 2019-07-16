@@ -542,7 +542,7 @@ app.get('/liquidaciones', function(req, res, next) {
                     req.getConnection(function(error, conn) {
                         conn.query('SELECT concat(el.anho,LPAD(el.mes,2,"0"),LPAD(el.quincena,2,"0")) as codcol, el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
                         'IFNULL(el.debe,0) debe, IFNULL(el.debo,0) debo, IFNULL(el.pasaje,0) pasaje, IFNULL(el.manoobra,0) manoobra, IFNULL(el.saldo_pagar,0) saldo_pagar, IFNULL(el.otros,0) otros, IFNULL(el.total,0) total, IFNULL(el.dias_t,0) dias_t, IFNULL(el.h_50_total,0) h_50_total, IFNULL(el.h_100_total,0) h_100_total,  ' +
-                        'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.usuario_insert,0) usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
+                        'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.plus_total,0) plus, el.usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
                         'where el.mes >= month(current_date())-1 and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer) ',function(err, rows) {
                             if (err) {
                                 req.flash('error', err)
@@ -605,6 +605,7 @@ app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
                         saldo_favor: rows[0].saldo_favor,
                         otros: rows[0].otros,
                         total: rows[0].total,
+                        plus: rows[0].plus_total,
                         dias_t: rows[0].dias_t,//cantidad de dias 
                         h_50_total: rows[0].h_50_total, //total de horas 50%
                         h_100_total: rows[0].h_100_total,//total de horas 100%
