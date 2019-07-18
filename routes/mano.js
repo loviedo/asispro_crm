@@ -1330,7 +1330,7 @@ app.get('/editar_real/:id', function(req, res, next){
                                         //REAL DE AYER PUEDE EDITARSE TODO MENOS FECHA (rol: 1)
                                         //REAL DE ANTEAYER PARA ATRAS NO  PUEDE EDITARSE TODO (rol: 2)
                                         //ROL = 0 es usuario sin restriccion
-                                        console.log(user);
+                                        console.log('usuario: '+ user +' /rol: ' + rol + ' /ts: ' + today());
                                         if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
                                         {   //vemos cuantos dias pasaron para ver la restriccion
                                             //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
