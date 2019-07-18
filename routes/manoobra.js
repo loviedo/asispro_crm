@@ -529,6 +529,13 @@ app.get('/liquidaciones', function(req, res, next) {
         'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
         'IFNULL(sum(plus), 0) as plus_total from mano_obra where fecha < current_date() ' +
         'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'pasaje = ( ' +
+        'select pasaje from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(pasaje), 0) as pasaje from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
         'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena)'
 
         req.getConnection(function(error, conn) {

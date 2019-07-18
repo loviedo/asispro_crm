@@ -1330,7 +1330,9 @@ app.get('/editar_real/:id', function(req, res, next){
                                         //REAL DE AYER PUEDE EDITARSE TODO MENOS FECHA (rol: 1)
                                         //REAL DE ANTEAYER PARA ATRAS NO  PUEDE EDITARSE TODO (rol: 2)
                                         //ROL = 0 es usuario sin restriccion
-                                        console.log('usuario: '+ user +' /rol: ' + rol + ' /ts: ' + today());
+                                        //console.log('usuario: '+ user +' /rol: ' + rol);//debug
+                                        //ceramos el rol porque puede usarse entre sesiones> 
+                                        rol=0
                                         if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
                                         {   //vemos cuantos dias pasaron para ver la restriccion
                                             //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
@@ -1481,10 +1483,10 @@ app.post('/editar_real/:id', function(req, res, next) {
                 ot_plan_t: req.sanitize('ot_plan_t').trim(),
                 ot_real_t: req.sanitize('ot_real_t').trim(),
                 ot_real_n: req.sanitize('ot_real_n').trim(),
-                hora_normal: req.sanitize('hora_normal').trim(),
-                hora_50: req.sanitize('hora_50').trim(),
-                hora_100: req.sanitize('hora_100').trim(),
-                hora_neg: req.sanitize('hora_neg').trim(),
+                hora_normal: req.sanitize('hora_normal').toString().replace(",",".").trim(),
+                hora_50: req.sanitize('hora_50').toString().replace(",",".").trim(),
+                hora_100: req.sanitize('hora_100').toString().replace(",",".").trim(),
+                hora_neg: req.sanitize('hora_neg').toString().replace(",",".").trim(),
                 //jornal: Number(req.sanitize('jornal').trim()), //recibimos del campo oculto. pero NO ACTUALIZAMOS
                 usuario_insert: user,
 
@@ -1607,6 +1609,7 @@ app.post('/editar_real/:id', function(req, res, next) {
                                                         //REAL DE AYER PUEDE EDITARSE TODO MENOS FECHA (rol: 1)
                                                         //REAL DE ANTEAYER PARA ATRAS NO  PUEDE EDITARSE TODO (rol: 2)
                                                         //ROL = 0 es usuario sin restriccion
+                                                        rol=0;
                                                         if(user == "cibanez" || user == "prueba")//[cambiar a asignar para probar la logica]
                                                         {   //vemos cuantos dias pasaron para ver la restriccion
                                                             //var dias_dif = Math.ceil(Math.abs(date2.getTime() - date1.getTime())/ (1000 * 3600 * 24)); 
