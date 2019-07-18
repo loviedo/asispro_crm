@@ -542,7 +542,7 @@ app.get('/liquidaciones', function(req, res, next) {
             conn.query(sql_densa,function(err, rows) {
                 if (err) {
                     req.flash('error', err)
-                    res.render('manoobra/listar_liq', {title: 'Listado de Trabajos', data: '',usuario: user})
+                    res.render('manoobra/listar_liq', {title: 'Listado de Liquidaciones', data: '',usuario: user})
                 } else {
 
                     //TRAEMOS DATOS DE LA BASE
@@ -553,7 +553,7 @@ app.get('/liquidaciones', function(req, res, next) {
                         'where el.mes >= month(current_date())-1 and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer) ',function(err, rows) {
                             if (err) {
                                 req.flash('error', err)
-                                res.render('manoobra/listar_liq', {title: 'Listado de Trabajos', data: '',usuario: user})
+                                res.render('manoobra/listar_liq', {title: 'Listado de Liquidaciones', data: '',usuario: user})
                             } else {
 
                                 //generar_excel_emp_liq(rows);//generamos excel LIQUIDACIONES, DEBE TRAER PARA TODOS
