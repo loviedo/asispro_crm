@@ -56,7 +56,9 @@ function formatear_fecha(date) {
         var otros = Number(document.getElementById("otros").value);
         var saldo_pagar = Number(document.getElementById("saldo_pagar").value);
 
-        document.getElementById("total").value = (debe+pasaje+manoobra+otros+saldo_pagar) - (debo+epp+anticipo+prestamo+ips+saldo_favor)
+        var plus = Number(document.getElementById("plus").value);
+
+        document.getElementById("total").value = (debe+pasaje+manoobra+otros+saldo_pagar) - (debo+epp+anticipo+prestamo+ips+saldo_favor) + plus
     }
 
 
@@ -161,8 +163,8 @@ function formatear_fecha(date) {
                     <input type="text" class="form-control" name="manoobra" id="manoobra" value="<%= manoobra %>">
                 </div>
                 <div class="form-group col-md-2">
-                    <label for="manoobra">PLUS </label>
-                    <input type="text" class="form-control" name="manoobra" id="manoobra" value="<%= plus %>" readonly="true">
+                    <label for="plus">PLUS </label>
+                    <input type="text" class="form-control" name="plus" id="plus" value="<%= plus %>" readonly="true">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="saldo_pagar">SALDO A PAGAR</label>

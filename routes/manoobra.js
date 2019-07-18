@@ -251,7 +251,7 @@ function generar_excel_emp_liq(rows){
         worksheet.cell(23, 4).number(Number((row.manoobra + row.plus_total).toString().replace(",","."))).style(style);
         worksheet.cell(24, 4).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
         worksheet.cell(25, 4).number(Number(row.otros.toString().replace(",","."))).style(style);
-        worksheet.cell(26, 4).number(Number((row.total + row.plus_total).toString().replace(",","."))).style(style);
+        worksheet.cell(26, 4).number(Number((row.total).toString().replace(",","."))).style(style);
 
 
 
@@ -650,7 +650,7 @@ app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
                 saldo_pagar: Number(req.sanitize('saldo_pagar').trim()),
                 otros: Number(req.sanitize('otros').trim()),
                 total: Number(req.sanitize('total').trim()),
-		plus_total: Number(req.sanitize('plus').trim()),
+		        plus_total: Number(req.sanitize('plus').trim()),
                 //total de horas laburadas en la quincena
                 dias_t: Number(req.sanitize('dias_t').trim()),
                 h_50_total: Number(req.sanitize('h_50_total').trim()),
@@ -708,7 +708,7 @@ app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
                                 res.render('manoobra/editar_liq', {title: 'Editar Mano de Obra', codigo: req.params.codigo, anho: req.params.anho, mes: req.params.mes,
                                     quincena: req.params.quincena, nombre: req.body.nombre, epp: liqui.epp, anticipo: liqui.anticipo, prestamo: liqui.prestamo, ips: liqui.ips,
                                     saldo_favor: liqui.saldo_favor, debe: liqui.debe, debo: liqui.debo, pasaje: liqui.pasaje, manoobra: liqui.manoobra, saldo_pagar: liqui.saldo_pagar,
-                                    otros: liqui.otros, plus: liqui.plus,  total: liqui.total, dias_t: liqui.dias_t, h_50_total: liqui.h_50_total, h_100_total: liqui.h_100_total,
+                                    otros: liqui.otros, plus: liqui.plus_total,  total: liqui.total, dias_t: liqui.dias_t, h_50_total: liqui.h_50_total, h_100_total: liqui.h_100_total,
                                     h_neg_total: liqui.h_neg_total, usuario_insert: user, usuario: user})
                                 }
                             })
