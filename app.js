@@ -109,7 +109,7 @@ app.use(cookieParser('keyboard cat'))
 app.use(session({ 
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     /*cookie: { maxAge: 60000 }*//* DEBUG */
     cookie: { expires: false }/* con esto indicamos que la sesion dura solamente mientras este abierta la ventana del browser */
 }))
