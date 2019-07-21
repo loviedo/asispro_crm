@@ -99,6 +99,14 @@ body .modal-dialog { /* Width */
                     <label for="gasto">GASTO</label>
                     <input type="text" class="form-control" name="gasto" id="gasto" value="<%= gasto %>">
                 </div>
+                <div class="form-group col-md-6">
+                    <label for="estado">ESTADO CAJA</label>
+                    <select class="form-control" name="estado" id="estado" value="<%= estado %>">
+                        <option value="A">ABIERTA</option>
+                        <option value="C">CERRADA</option>
+
+                    </select>
+                </div>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">ACTUALIZAR</button>
         </form>

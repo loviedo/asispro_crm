@@ -481,10 +481,7 @@ app.get('/editar/:id', function(req, res, next){
                 }
                 else {
                     //primero generamos el excel de la caja
-                    genera_detalle_caja(rows);
-
-
-
+                    //genera_detalle_caja(rows);
 
                     req.getConnection(function(error, conn) {
                         conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows2) {
@@ -495,7 +492,7 @@ app.get('/editar/:id', function(req, res, next){
                                 
                                 //console.log(datos_pro);//debug
                                 res.render('cajas/editar', {
-                                title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
+                                title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), estado: rows[0].estado, concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
                                 saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  data_emple: datos_emple});
                             }
                         })
@@ -521,6 +518,7 @@ app.post('/editar/:id', function(req, res, next){
             concepto: req.sanitize('concepto').trim(),
             salida: req.sanitize('salida').trim(),
             responsable: req.sanitize('responsable').trim(),
+            estado: req.sanitize('estado').trim(),
             saldo: req.sanitize('saldo').trim(),
             gasto: req.sanitize('gasto').trim()
         }
@@ -536,7 +534,7 @@ app.post('/editar/:id', function(req, res, next){
                         
                         // render to views/clientes/add.ejs
                         res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
-                            responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, usuario_insert: user, usuario: user })
+                            responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, estado: req.body.estado, usuario_insert: user, usuario: user })
                     } else {                
                         req.flash('success', 'Datos actualizados correctamente!')
 
@@ -549,7 +547,7 @@ app.post('/editar/:id', function(req, res, next){
                                     
                                     //console.log(datos_pro);//debug
                                     res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
-                                    responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, usuario_insert: user, usuario: user,  data_emple: datos_emple })
+                                    responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, estado: req.body.estado, usuario_insert: user, usuario: user,  data_emple: datos_emple })
                                 }
                             })
                         })
@@ -559,12 +557,10 @@ app.post('/editar/:id', function(req, res, next){
         }
         else {//mostramos error
             var error_msg = ''
-            errors.forEach(function(error) {
-                error_msg += error.msg + '<br>'
-            })
+            errors.forEach(function(error) { error_msg += error.msg + '<br>' })
             req.flash('error', error_msg)
             res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
-            responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, usuario_insert: user, usuario: user })
+            responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, estado: req.body.estado, usuario_insert: user, usuario: user })
         }
     }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
