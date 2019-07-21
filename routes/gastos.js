@@ -131,7 +131,79 @@ function generar_excel_gastos(rows){
     workbook.write('Listado_GASTOS.xlsx');
 }
 
-// MOSTRAR LISTADO DE GASTOS
+
+
+// MOSTRAR LISTADO DE GASTOS HISTORICO --------------------------
+app.get('/historico', function(req, res, next) {
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+
+    //controlamos quien se loga.
+	if(user.length >0){
+        //si el usuario es cristina entonces solo ve lo de ella, si no, se ve todo
+        var sql_con ="";
+        var sql_lis = "";
+        //como estaba originalmente
+
+        //cada usuario puede ver solamente su carga, y solamente los administradores pueden ver todo.
+        //verificar si los usuarios bajo karen pueden ver los tipos de carga "NO CONFIDENCIALES".
+        if(user == "cibanez" || user == "prueba" || user == "jlopez" || user == "jguerrero" || user == "fduarte" || user == "ogonzalez")
+        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
+        "WHERE ( /* month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and */ t1.usuario_insert = '" + user + "')  order by t1.fecha desc";
+        sql_lis = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
+        "WHERE t1.usuario_insert = '" + user + "' order by t1.fecha desc"; 
+        }
+        else
+        //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto. SOLO TRAEMOS LOS DATOS DEL MES ACTUAL
+        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
+        " /* where month(t1.fecha) = month(current_date())-1 and year(t1.fecha) = year(current_date()) */ order by t1.fecha desc";
+        sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
+        "order by t1.fecha desc";
+        }
+        req.getConnection(function(error, conn) {
+            conn.query(sql_con,function(err, rows) {
+                if (err) {
+                    req.flash('error', err)
+                    res.render('gastos/listar', {title: 'Histórico de GASTOS', data: '',usuario: user})
+                } else {
+                    //traemos las cajas asignadas para esa persona
+                    req.getConnection(function(error, conn) {
+                        conn.query("select * from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows2) {
+                            //if(err) throw err
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('gastos/listar', {title: 'Histórico de GASTOS', data: '',usuario: user})
+                            } else {
+                                //TRAEMOS LOS DATOS REALES PARA EL LISTADO EXCEL --- TODOS LOS DATOS CORRESPONDIENTES
+                                req.getConnection(function(error, conn) {
+                                    conn.query(sql_lis,function(err, rows3) {
+                                        //if(err) throw err
+                                        if (err) {
+                                            req.flash('error', err)
+                                            res.render('gastos/listar', {title: 'Histórico de GASTOS', data: '',usuario: user})
+                                        } else {
+                                            generar_excel_gastos(rows3);//generamos excel gastos segun el usuario que sea claro
+                                            //pasamos los datos y los datos de las cajas en rows2
+                                            res.render('gastos/listar', {title: 'Histórico de GASTOS', usuario: user, data: rows, data_cajas: rows2})
+                                        }
+                                    })
+                                })
+                            }
+                        })
+                    })
+                }
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+// MOSTRAR LISTADO DE GASTOS SOLO MES ANTERIOR Y MES ACTUAL
 app.get('/', function(req, res, next) {
     if(req.session.user)
     {   user =  req.session.user;

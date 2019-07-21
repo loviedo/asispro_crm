@@ -459,6 +459,115 @@ app.post('/editar/:id', function(req, res, next) {
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
+// MOSTRAR LISTADO HISTORICO DE LIQUIDACIONES
+app.get('/historia_liq', function(req, res, next) {
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+
+        //actualizamos los valores, la consulta es:
+        /* */
+        var sql_densa = 'insert into empleados_liq (anho, mes, codigo, quincena, dias_t, manoobra,h_50_total,h_100_total, h_normal_total, h_neg_total, plus_total, usuario_insert) ' +
+        'select t1.anho, t1.mes, t1.codigo, t1.quincena, t1.dias_t, t1.manoobra, t1.h_50_total, t1.h_100_total, t1.h_normal_total, t1.h_neg_total, t1.plus, t1.usuario_insert from ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, sum(if(ot_real_m < 9999000 or ot_real_t < 9999000, 1,0)) as dias_t, ' +
+        'IFNULL(sum(subtotal), 0) as manoobra, IFNULL(sum(hora_50), 0) as h_50_total, IFNULL(sum(hora_100), 0) as h_100_total,  ' +
+        'IFNULL(sum(hora_normal), 0) as h_normal_total, IFNULL(sum(hora_neg), 0) as h_neg_total, IFNULL(sum(plus), 0) as plus, "admin" as usuario_insert  ' +
+        'from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc ' +
+        ') t1 ' +
+        'on duplicate key update  ' +
+        'manoobra = ( ' +
+        'select sum(t2.manoobra) as manoobra from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(subtotal), 0) as manoobra from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'dias_t = ( ' +
+        'select dias_t from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'sum(if(ot_real_m >0 and ot_real_m < 9999000,0.5,0) + if(ot_real_t >0 and ot_real_t < 9999000,0.5,0)) as dias_t from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'h_50_total = ( ' +
+        'select h_50_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(hora_50), 0) as h_50_total from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'h_100_total = ( ' +
+        'select h_100_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(hora_100), 0) as h_100_total from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'h_normal_total = ( ' +
+        'select h_normal_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(hora_normal), 0) as h_normal_total from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'h_neg_total = ( ' +
+        'select h_neg_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(hora_neg), 0) as h_neg_total from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'plus_total = ( ' +
+        'select plus_total from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(plus), 0) as plus_total from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena), ' +
+        'pasaje = ( ' +
+        'select pasaje from  ' +
+        '(select distinct year(fecha) as anho, month(fecha) as mes, codigo, ' +
+        'case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end as quincena, ' +
+        'IFNULL(sum(pasaje), 0) as pasaje from mano_obra where fecha < current_date() ' +
+        'group by year(fecha), month(fecha), codigo, case when day(fecha) >= 1 and day(fecha) <= 15 then 1 when day(fecha) >= 16 and day(fecha) <= 31 then 2 end ' +
+        'order by year(fecha) desc, month(fecha) desc, codigo asc) t2 where t1.anho=t2.anho and t1.mes = t2.mes and t1.codigo = t2.codigo and t1.quincena = t2.quincena)'
+
+        req.getConnection(function(error, conn) {
+            conn.query(sql_densa,function(err, rows) {
+                if (err) {
+                    req.flash('error', err)
+                    res.render('manoobra/listar_liq', {title: 'Histórico de Liquidaciones', data: '',usuario: user})
+                } else {
+
+                    //TRAEMOS DATOS DE LA BASE
+                    req.getConnection(function(error, conn) {
+                        conn.query('SELECT concat(el.anho,LPAD(el.mes,2,"0"),LPAD(el.quincena,2,"0")) as codcol, el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
+                        'IFNULL(el.debe,0) debe, IFNULL(el.debo,0) debo, IFNULL(el.pasaje,0) pasaje, IFNULL(el.manoobra,0) manoobra, IFNULL(el.saldo_pagar,0) saldo_pagar, IFNULL(el.otros,0) otros, IFNULL(el.total,0) total, IFNULL(el.dias_t,0) dias_t, IFNULL(el.h_50_total,0) h_50_total, IFNULL(el.h_100_total,0) h_100_total,  ' +
+                        'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.plus_total,0) plus, el.usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
+                        'order by convert(el.codigo,unsigned integer) ',function(err, rows) {
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('manoobra/listar_liq', {title: 'Histórico de Liquidaciones', data: '',usuario: user})
+                            } else {
+
+                                //generar_excel_emp_liq(rows);//generamos excel LIQUIDACIONES, DEBE TRAER PARA TODOS
+                                res.render('manoobra/listar_liq', {title: 'Histórico de Liquidaciones', usuario: user, data: rows})
+                            }
+                        })
+                    })
+
+                }
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
 // MOSTRAR LISTADO ACUMULATIVO DE LIQUIDACIONES MES
 app.get('/liquidaciones', function(req, res, next) {
     if(req.session.user)
