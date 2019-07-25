@@ -264,9 +264,11 @@ app.get('/', function(req, res, next) {
         var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
         if (user=="josorio" || user =="admin" || user =="ksanabria")
         {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";}
+
         //calculamos la suma de los gastos asignados para esa caja.
         var sql_act = 'update cajas t1 set t1.gasto = (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id), ' +
                     't1.saldo = t1.salida - (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id)';
+                    
         req.getConnection(function(error, conn) {
             conn.query(sql_act,function(err, rows) {
                 //if(err) throw err
