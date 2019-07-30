@@ -173,7 +173,7 @@ function genera_detalle_caja(rows, rows2){
 
     /* DATOS CABECERA */
     worksheet.cell(1,4).number(Number(rows[0].id)).style(style);
-    worksheet.cell(2,4).date(formatear_fecha_yyyymmdd(rows.fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
+    worksheet.cell(2,4).date(formatear_fecha_yyyymmdd(rows[0].fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
     worksheet.cell(3,4).number(Number(rows[0].salida)).style(style);
     worksheet.cell(4,4).string(String(rows[0].responsable)).style(style);
     worksheet.cell(5,4).string(String(rows[0].concepto)).style(style);
