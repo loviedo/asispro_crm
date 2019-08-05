@@ -147,6 +147,46 @@
                                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                             }
                         },
+                        "footerCallback": function ( row, data, start, end, display ) {
+                            var api = this.api(), data;
+                
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
+                
+                            // Total over all pages
+                            total1 = api.column(6,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total2 = api.column(7,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total3 = api.column(8,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total4 = api.column(9,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total5 = api.column(10,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total6 = api.column(11,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total7 = api.column(12,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total8 = api.column(13,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total9 = api.column(14,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total10 = api.column(15,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total11 = api.column(16,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                            total12 = api.column(17,{search: 'applied'}).data().reduce(function (a,b) {return intVal(a) + intVal(b);}, 0);
+                
+                            // Update footer
+                            $(api.column(6).footer()).html('Gs. '+ total1);
+                            $(api.column(7).footer()).html('Gs. '+ total2);
+                            $(api.column(8).footer()).html('Gs. '+ total3);
+                            $(api.column(9).footer()).html('Gs. '+ total4);
+                            $(api.column(10).footer()).html('Gs. '+ total5);
+                            $(api.column(11).footer()).html('Gs. '+ total6);
+                            $(api.column(12).footer()).html('Gs. '+ total7);
+                            $(api.column(13).footer()).html('Gs. '+ total8);
+                            $(api.column(14).footer()).html('Gs. '+ total9);
+                            $(api.column(15).footer()).html('Gs. '+ total10);
+                            $(api.column(16).footer()).html('Gs. '+ total11);
+                            $(api.column(17).footer()).html('Gs. '+ total12);
+
+                        },
                         dom: 'l<".margin" B>frtip',
                         "bDeferRender": true,
                         "bPaginate": true,
@@ -155,14 +195,19 @@
                             {extend:'copyHtml5', text: 'Copiar', titleAttr: 'Copiar',
                             exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]}
                             }, 
-                            {extend: 'excelHtml5',
+                            //exportamos el footer con las totales.
+                            {extend: 'excelHtml5', footer: true,
                             exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]}
+                            
                             }, 
                             { extend: 'print', text: 'Imprimir'}
                         ]
                     });
+                  
+//ejemplo footer callback https://stackoverflow.com/questions/39663612/datatables-dynamic-totals-in-footer-on-rows-change
+//https://jsfiddle.net/sLxbznx6/1/
 
-                    
+
                     //tabla de gastos con botones
                     $('#tablex_gastos_rol2').DataTable({
                         "scrollY":        "600px",//tamanho standard de la tabla
