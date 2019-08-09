@@ -302,7 +302,7 @@ app.get('/', function(req, res, next) {
             conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows1) {
                 if (err) {
                     req.flash('error', err)
-                    res.render('mano/listar', {title: 'Listado de Trabajos', data: '',usuario: user})
+                    res.render('manoobra/listar', {title: 'Listado de Trabajos', data: '',usuario: user})
                 } else {
                     req.getConnection(function(error, conn) {
                         //aca calculamos segun la ot real m y t para ver si laburo las fechas que traemos
