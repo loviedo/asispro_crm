@@ -185,21 +185,22 @@ function generar_excel_emp_liq(rows){
 
     //conceptos
     worksheet.cell(10,3).string('DIAS TRABAJADOS:').style(style);
-    worksheet.cell(11,3).string('HORAS EXTRAS 50%:').style(style);
-    worksheet.cell(12,3).string('HORAS EXTRAS 100%:').style(style);
-    worksheet.cell(13,3).string('HORA NEGATIVA:').style(style);
-    worksheet.cell(15,3).string('EQUIPO DE PROTECCION PERSONAL (EPP)').style(style);
-    worksheet.cell(16,3).string('ANTICIPO:').style(style);
-    worksheet.cell(17,3).string('PRESTAMO:').style(style);
-    worksheet.cell(18,3).string('IPS:').style(style);
-    worksheet.cell(19,3).string('SALDO A FAVOR:').style(style);
-    worksheet.cell(20,3).string('ME DEBE:').style(style);
-    worksheet.cell(21,3).string('LO QUE DEBO:').style(style);
-    worksheet.cell(22,3).string('PASAJE:').style(style);
-    worksheet.cell(23,3).string('MO:').style(style);
-    worksheet.cell(24,3).string('SALDO A PAGAR:').style(style);
-    worksheet.cell(25,3).string('OTROS:').style(style);
-    worksheet.cell(26,3).string('TOTAL A PAGAR:').style(style);
+    worksheet.cell(11,3).string('HORAS NORMALES:').style(style);
+    worksheet.cell(12,3).string('HORAS EXTRAS 50%:').style(style);
+    worksheet.cell(13,3).string('HORAS EXTRAS 100%:').style(style);
+    worksheet.cell(14,3).string('HORA NEGATIVA:').style(style);
+    worksheet.cell(16,3).string('EQUIPO DE PROTECCION PERSONAL (EPP)').style(style);
+    worksheet.cell(17,3).string('ANTICIPO:').style(style);
+    worksheet.cell(18,3).string('PRESTAMO:').style(style);
+    worksheet.cell(19,3).string('IPS:').style(style);
+    worksheet.cell(20,3).string('SALDO A FAVOR:').style(style);
+    worksheet.cell(21,3).string('ME DEBE:').style(style);
+    worksheet.cell(22,3).string('LO QUE DEBO:').style(style);
+    worksheet.cell(23,3).string('PASAJE:').style(style);
+    worksheet.cell(24,3).string('MO:').style(style);
+    worksheet.cell(25,3).string('SALDO A PAGAR:').style(style);
+    worksheet.cell(26,3).string('OTROS:').style(style);
+    worksheet.cell(27,3).string('TOTAL A PAGAR:').style(style);
 
     /*
                             codigo: rows[0].codigo,//codigo empleado
@@ -236,22 +237,23 @@ function generar_excel_emp_liq(rows){
         //worksheet.cell(5, i+3).number(Number(row.quincena.toString().replace(",","."))).style(style);
 
         worksheet.cell(10, 4).number(Number(row.dias_t.toString().replace(",","."))).style(style);//dias trabajados
-        worksheet.cell(11, 4).number(Number(row.h_50_total.toString().replace(",","."))).style(style); //nombre y apellido
-        worksheet.cell(12, 4).number(Number(row.h_100_total.toString().replace(",","."))).style(style);
-        worksheet.cell(13, 4).number(Number(row.h_neg_total.toString().replace(",","."))).style(style);
-        worksheet.cell(15, 4).number(Number(row.epp.toString().replace(",","."))).style(style);//equipos de proteccion personal
-        worksheet.cell(16, 4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
-        worksheet.cell(17, 4).number(Number(row.prestamo)).style(style);
-        worksheet.cell(18, 4).number(Number(row.ips.toString().replace(",","."))).style(style);
-        worksheet.cell(19, 4).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
-        worksheet.cell(20, 4).number(Number(row.debe.toString().replace(",","."))).style(style);
-        worksheet.cell(21, 4).number(Number(row.debo.toString().replace(",","."))).style(style);
-        worksheet.cell(22, 4).number(Number(row.pasaje.toString().replace(",","."))).style(style);
+        worksheet.cell(11, 4).number(Number(row.h_normal_total.toString().replace(",","."))).style(style); 
+        worksheet.cell(12, 4).number(Number(row.h_50_total.toString().replace(",","."))).style(style); //nombre y apellido
+        worksheet.cell(13, 4).number(Number(row.h_100_total.toString().replace(",","."))).style(style);
+        worksheet.cell(14, 4).number(Number(row.h_neg_total.toString().replace(",","."))).style(style);
+        worksheet.cell(16, 4).number(Number(row.epp.toString().replace(",","."))).style(style);//equipos de proteccion personal
+        worksheet.cell(17, 4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
+        worksheet.cell(18, 4).number(Number(row.prestamo)).style(style);
+        worksheet.cell(19, 4).number(Number(row.ips.toString().replace(",","."))).style(style);
+        worksheet.cell(20, 4).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
+        worksheet.cell(21, 4).number(Number(row.debe.toString().replace(",","."))).style(style);
+        worksheet.cell(22, 4).number(Number(row.debo.toString().replace(",","."))).style(style);
+        worksheet.cell(23, 4).number(Number(row.pasaje.toString().replace(",","."))).style(style);
         //en mano de obra 
-        worksheet.cell(23, 4).number(Number((row.manoobra + row.plus_total).toString().replace(",","."))).style(style);
-        worksheet.cell(24, 4).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
-        worksheet.cell(25, 4).number(Number(row.otros.toString().replace(",","."))).style(style);
-        worksheet.cell(26, 4).number(Number((row.total).toString().replace(",","."))).style(style);
+        worksheet.cell(24, 4).number(Number((row.manoobra + row.plus_total).toString().replace(",","."))).style(style);
+        worksheet.cell(25, 4).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
+        worksheet.cell(26, 4).number(Number(row.otros.toString().replace(",","."))).style(style);
+        worksheet.cell(27, 4).number(Number((row.total).toString().replace(",","."))).style(style);
 
 
 
