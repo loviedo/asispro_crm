@@ -123,9 +123,10 @@ function generar_excel_mano_obra(rows){
         worksheet.cell(i+1,4).number(Number(row.por_m.toString().replace(",","."))).style(style);
         worksheet.cell(i+1,5).string(String(row.cliente_real_t)).style(style);
         worksheet.cell(i+1,6).number(Number(row.por_t.toString().replace(",","."))).style(style);
-        worksheet.cell(i+1,7).number(Number(row.dia.toString().replace(",","."))).style(style);
-        worksheet.cell(i+1,8).number(Number(row.monto.toString().replace(",","."))).style(style);
-        worksheet.cell(i+1,9).number(Number(row.subtotal.toString().replace(",","."))).style(style);
+        worksheet.cell(i+1,7).formula('D'+ (i+1).toString() +' + F'+(i+1).toString()).style(style);//ponemos formulado
+        worksheet.cell(i+1,8).number(Number(row.monto.toString().replace(",","."))).style(style);//
+        worksheet.cell(i+1,9).formula('(D'+ (i+1).toString() +' + F'+(i+1).toString()+')*H'+(i+1).toString()).style(style);
+        //worksheet.cell(i+1,9).number(Number(row.subtotal.toString().replace(",","."))).style(style);//ponemos formulado
         worksheet.cell(i+1,10).number(Number(row.plus.toString().replace(",","."))).style(style);
         worksheet.cell(i+1,11).number(Number(row.hora_50.toString().replace(",","."))).style(style);
         worksheet.cell(i+1,12).number(Number(row.hora_100.toString().replace(",","."))).style(style);
@@ -257,7 +258,6 @@ function generar_liquis(rows)
           //fgColor: '#EF820D', //color fondo de la celda.
         }
     });
-
 
     //dibujamos el excel
     //primero la cabecera
