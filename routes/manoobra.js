@@ -202,39 +202,10 @@ function generar_excel_emp_liq(rows){
     worksheet.cell(26,3).string('OTROS:').style(style);
     worksheet.cell(27,3).string('TOTAL A PAGAR:').style(style);
 
-    /*
-                            codigo: rows[0].codigo,//codigo empleado
-                        nombre: rows[0].nombre,//nombre empleado
-                        mes: rows[0].mes,
-                        anho: rows[0].anho,
-                        quincena: rows[0].quincena,
-                        epp: rows[0].epp,
-                        anticipo: rows[0].anticipo,
-                        prestamo: rows[0].prestamo,
-                        ips: rows[0].ips,
-                        saldo_pagar: rows[0].saldo_pagar,
-                        debe: rows[0].debe,
-                        debo: rows[0].debo,
-                        pasaje: rows[0].pasaje,
-                        manoobra: rows[0].manoobra,
-                        saldo_favor: rows[0].saldo_favor,
-                        otros: rows[0].otros,
-                        total: rows[0].total,
-                        dias_t: rows[0].dias_t,//cantidad de dias 
-                        h_50_total: rows[0].h_50_total, //total de horas 50%
-                        h_100_total: rows[0].h_100_total,//total de horas 100%
-                        h_neg_total: rows[0].h_neg_total,//total de horas negativas
-    */
 
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-
-        //worksheet.cell(5, i+3).string(String(row.nombre)).style(style).style(style);
-        //worksheet.cell(5, i+3).number(Number(row.codigo.toString().replace(",","."))).style(style);
-        //worksheet.cell(5, i+3).number(Number(row.anho.toString().replace(",","."))).style(style);
-        //worksheet.cell(5, i+3).number(Number(row.mes.toString().replace(",","."))).style(style);
-        //worksheet.cell(5, i+3).number(Number(row.quincena.toString().replace(",","."))).style(style);
 
         worksheet.cell(10, 4).number(Number(row.dias_t.toString().replace(",","."))).style(style);//dias trabajados
         worksheet.cell(11, 4).number(Number(row.h_normal_total.toString().replace(",","."))).style(style); 
@@ -255,9 +226,6 @@ function generar_excel_emp_liq(rows){
         worksheet.cell(26, 4).number(Number(row.otros.toString().replace(",","."))).style(style);
         worksheet.cell(27, 4).number(Number((row.total).toString().replace(",","."))).style(style);
 
-
-
-
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -265,6 +233,81 @@ function generar_excel_emp_liq(rows){
     
     //escribimos el archivo.
     workbook.write("LIQ_"+rows[0].anho + rows[0].mes+"_"+ rows[0].quincena+"_" + rows[0].codigo + ".xlsx");
+}
+
+//generamos el listado de liquidaciones totales segun el listado.
+function generar_liquis(rows)
+{   var workbook = new excel.Workbook();
+    var worksheet = workbook.addWorksheet('LIQUIDACIONES');
+    //
+    const style = workbook.createStyle({
+    font: {color: '#000000',size: 12},
+    numberFormat: '#,##0.00; (#,##0.00); -'
+    });
+
+    //prueba estilo 2
+    const style1 = workbook.createStyle({
+        font: {color: '#000000',fgColor:'#EF820D',size: 12},
+        numberFormat: '#,##0; (#,##0); -'
+    });
+
+    const bgStyle = workbook.createStyle({
+        fill: {type: 'pattern',patternType: 'solid',
+          //bgColor: '#EF820D',
+          //fgColor: '#EF820D', //color fondo de la celda.
+        }
+    });
+
+
+    //dibujamos el excel
+    //primero la cabecera
+    worksheet.cell(3,2).string('AÑO').style(style);
+    worksheet.cell(3,3).string('MES').style(style);
+    worksheet.cell(3,4).string('QUINCENA').style(style);
+    worksheet.cell(3,5).string('CODIGO').style(style);
+    worksheet.cell(3,6).string('PERSONAL').style(style);
+    worksheet.cell(3,7).string('EPP').style(style);
+    worksheet.cell(3,8).string('ANTICIPO').style(style);
+    worksheet.cell(3,9).string('PRESTAMO').style(style);
+    worksheet.cell(3,10).string('IPS').style(style);
+    worksheet.cell(3,11).string('SALDO A FAVOR').style(style);
+    worksheet.cell(3,12).string('ME DEBE').style(style);
+    worksheet.cell(3,13).string('LE DEBO').style(style);
+    worksheet.cell(3,14).string('PASAJE').style(style);
+    worksheet.cell(3,15).string('MANO DE OBRA').style(style);
+    worksheet.cell(3,16).string('SALDO A PAGAR').style(style);
+    worksheet.cell(3,17).string('OTROS').style(style);
+    worksheet.cell(3,18).string('TOTAL A PAGAR').style(style);
+
+
+    //luego los datos
+    var i = 1;
+    rows.forEach(function(row) {
+        worksheet.cell(i+3,2).string(String(row.anho)).style(style);//codcol esel codigo de columna, reemplazar si piden
+        worksheet.cell(i+3,3).string(String(row.mes)).style(style);
+        worksheet.cell(i+3,4).string(String(row.quincena)).style(style);
+        worksheet.cell(i+3,5).string(String(row.codigo)).style(style);
+        worksheet.cell(i+3,6).string(String(row.nombre)).style(style);
+        worksheet.cell(i+3,7).number(Number(row.epp.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,8).number(Number(row.anticipo.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,9).number(Number(row.prestamo.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,10).number(Number(row.ips.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,11).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,12).number(Number(row.debe.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,13).number(Number(row.debo.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,14).number(Number(row.pasaje.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,15).number(Number(row.manoobra.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,16).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,17).number(Number(row.otros.toString().replace(",","."))).style(style);
+        worksheet.cell(i+3,18).number(Number(row.total.toString().replace(",","."))).style(style);
+
+        //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
+        i=i+1;
+        //console.log(row.descripcion);//debug
+    });
+    
+    workbook.write('Listado_LIQUIDACIONES.xlsx');
+
 }
 
 function manhana()
@@ -290,6 +333,47 @@ function hoy()
     return today;
 }
 
+
+// MOSTRAR LISTADO DE Trabajos / mano de PLANIFICADA
+app.get('/listado', function(req, res, next) {
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        req.getConnection(function(error, conn) {
+            conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows1) {
+                if (err) {
+                    req.flash('error', err)
+                    res.render('manoobra/listar', {title: 'Listado de Trabajos', data: '',usuario: user})
+                } else {
+                    req.getConnection(function(error, conn) {
+                        //aca calculamos segun la ot real m y t para ver si laburo las fechas que traemos
+                        conn.query('select id, fecha, empleado, case when cast(ot_real_m as unsigned) < 900000 and cast(ot_real_m as unsigned) > 0 then 0.5 else 0 end as por_m, IFNULL(cliente_real_m, 0) as cliente_real_m, '+
+                        'cliente_real_t, case when cast(ot_real_t as unsigned) < 900000 and cast(ot_real_t as unsigned) > 0 then 0.5 else 0 end as por_t, '+
+                        'IFNULL(monto, 0) as monto, IFNULL(subtotal, 0) as subtotal, IFNULL(plus, 0) as plus,  '+
+                        '((case when cast(ot_real_m as unsigned) < 900000 and cast(ot_real_m as unsigned) > 0 then 0.5 else 0 end)+  '+
+                        '(case when cast(ot_real_t as unsigned) < 900000 and cast(ot_real_t as unsigned) > 0 then 0.5 else 0 end)) as dia, '+
+                        'IFNULL(hora_50, 0) as hora_50, IFNULL(hora_100, 0) as hora_100, IFNULL(hora_normal, 0) as hora_normal, '+
+                        'IFNULL(hora_neg, 0) as hora_neg, IFNULL(pasaje, 0) as pasaje, IFNULL(jornal, 0) as jornal, '+
+                        'obra_real_m, obra_real_t, concat(ot_real_m,"/",ot_real_t) as ot from mano_obra where month(fecha) >= month(current_date())-1 and year(fecha) = year(current_date()) order by fecha desc',function(err, rows) {
+                            //if(err) throw err
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('manoobra/listar', {title: 'Listado de Trabajos', data: '',usuario: user})
+                            } else {
+                                generar_excel_mano_obra(rows);//generamos excel PLAN LABORAL / MANO OBRA
+                                res.render('manoobra/listar', {title: 'Listado de Trabajos', usuario: user, data: rows})
+                            }
+                        })
+                    })
+                }
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
 
 // MOSTRAR LISTADO DE Trabajos / mano de PLANIFICADA
 app.get('/', function(req, res, next) {
@@ -559,13 +643,13 @@ app.get('/historia_liq', function(req, res, next) {
                         conn.query('SELECT concat(el.anho,LPAD(el.mes,2,"0"),LPAD(el.quincena,2,"0")) as codcol, el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
                         'IFNULL(el.debe,0) debe, IFNULL(el.debo,0) debo, IFNULL(el.pasaje,0) pasaje, IFNULL(el.manoobra,0) manoobra, IFNULL(el.saldo_pagar,0) saldo_pagar, IFNULL(el.otros,0) otros, IFNULL(el.total,0) total, IFNULL(el.dias_t,0) dias_t, IFNULL(el.h_50_total,0) h_50_total, IFNULL(el.h_100_total,0) h_100_total,  ' +
                         'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.plus_total,0) plus, el.usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
-                        'order by convert(el.codigo,unsigned integer) ',function(err, rows) {
+                        'order by el.anho desc, el.mes desc, el.quincena desc, convert(el.codigo, unsigned integer) asc',function(err, rows) {
                             if (err) {
                                 req.flash('error', err)
                                 res.render('manoobra/listar_liq', {title: 'Histórico de Liquidaciones', data: '',usuario: user})
                             } else {
 
-                                //generar_excel_emp_liq(rows);//generamos excel LIQUIDACIONES, DEBE TRAER PARA TODOS
+                                generar_liquis(rows);//generamos excel LIQUIDACIONES, DEBE TRAER PARA TODOS
                                 res.render('manoobra/listar_liq', {title: 'Histórico de Liquidaciones', usuario: user, data: rows})
                             }
                         })
@@ -675,13 +759,13 @@ app.get('/liquidaciones', function(req, res, next) {
                         conn.query('SELECT concat(el.anho,LPAD(el.mes,2,"0"),LPAD(el.quincena,2,"0")) as codcol, el.codigo, concat(em.nombres," ",em.apellidos) as nombre , el.mes, el.anho, el.quincena, IFNULL(el.epp,0) epp, IFNULL(el.anticipo,0) anticipo, IFNULL(el.prestamo,0) prestamo, IFNULL(el.ips,0) ips, IFNULL(el.saldo_favor,0) saldo_favor,  ' +
                         'IFNULL(el.debe,0) debe, IFNULL(el.debo,0) debo, IFNULL(el.pasaje,0) pasaje, IFNULL(el.manoobra,0) manoobra, IFNULL(el.saldo_pagar,0) saldo_pagar, IFNULL(el.otros,0) otros, IFNULL(el.total,0) total, IFNULL(el.dias_t,0) dias_t, IFNULL(el.h_50_total,0) h_50_total, IFNULL(el.h_100_total,0) h_100_total,  ' +
                         'IFNULL(el.h_neg_total,0) h_neg_total, IFNULL(el.plus_total,0) plus, el.usuario_insert FROM empleados_liq el inner join empleados em on el.codigo = em.codigo ' +
-                        'where el.mes >= month(current_date())-1 and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer) ',function(err, rows) {
+                        'where el.mes >= month(current_date())-1 and el.anho = year(current_date()) order by el.anho desc, el.mes desc, el.quincena desc, convert(el.codigo, unsigned integer) asc',function(err, rows) {
                             if (err) {
                                 req.flash('error', err)
                                 res.render('manoobra/listar_liq', {title: 'Listado de Liquidaciones', data: '',usuario: user})
                             } else {
 
-                                //generar_excel_emp_liq(rows);//generamos excel LIQUIDACIONES, DEBE TRAER PARA TODOS
+                                generar_liquis(rows);//generamos excel LIQUIDACIONES, SOLAMENTE LOS ULTIMOS 2 MESES
                                 res.render('manoobra/listar_liq', {title: 'Listado de Liquidaciones', usuario: user, data: rows})
                             }
                         })
@@ -854,7 +938,7 @@ app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
         res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
-/* GENERACION EXCEL */
+/* GENERACION EXCEL MANO DE OBRA*/
 app.post('/descargar', function(req, res, next) {
     //primero traemos los datos de la tabla
     if(req.session.user)
@@ -867,6 +951,31 @@ app.post('/descargar', function(req, res, next) {
         //vemos los datos en la base
         //DESCARGAR PDF CON DATOS DEL ESTUDIO
         var file = path.resolve("Listado_MANOOBRA.xlsx");
+        res.contentType('Content-Type',"application/pdf");
+        res.download(file, function (err) {
+            if (err) {
+                console.log("ERROR AL ENVIAR EL ARCHIVO:");
+                console.log(err);
+            } else {
+                console.log("ARCHIVO ENVIADO!");
+            }
+        });
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+});
+
+/* GENERACION EXCEL */
+app.post('/descargar_liq', function(req, res, next) {
+    //primero traemos los datos de la tabla
+    if(req.session.user)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+
+    //controlamos quien se loga.
+	if(user.length >0){
+        //vemos los datos en la base
+        //DESCARGAR PDF CON DATOS DEL ESTUDIO
+        var file = path.resolve("Listado_LIQUIDACIONES.xlsx");
         res.contentType('Content-Type',"application/pdf");
         res.download(file, function (err) {
             if (err) {
