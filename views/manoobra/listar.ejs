@@ -168,6 +168,9 @@ function hoy()
                             <th>HS NEGATIVA</th>
                             <th>PASAJE/OTROS</th>
                             <th>JORNAL P/HORA</th>
+                            <th>IMPUTACION</th>
+                            <th>IMPUTACION</th>
+                            <th>OTs</th>
                             <th>ACCIONES</th>
                         </tr>
                     </thead>
@@ -191,6 +194,9 @@ function hoy()
                         <td><%= mano.hora_neg %></td>
                         <td><%= mano.pasaje %></td>
                         <td><%= mano.jornal %></td>
+                        <td><%= mano.obra_real_m %></td>
+                        <td><%= mano.obra_real_t %></td>
+                        <td><%= mano.ot %></td>
                         <td>
                             <div>
                                 <a href='/manoobra/editar/<%= mano.id %>'>Ver</a> &nbsp; 
