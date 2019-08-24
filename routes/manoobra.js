@@ -127,7 +127,9 @@ function generar_excel_mano_obra(rows){
         worksheet.cell(i+1,8).number(Number(row.monto.toString().replace(",","."))).style(style);//
         worksheet.cell(i+1,9).formula('(D'+ (i+1).toString() +' + F'+(i+1).toString()+')*H'+(i+1).toString()).style(style);
         //worksheet.cell(i+1,9).number(Number(row.subtotal.toString().replace(",","."))).style(style);//ponemos formulado
-        worksheet.cell(i+1,10).number(Number(row.plus.toString().replace(",","."))).style(style);
+        //worksheet.cell(i+1,10).number(Number(row.plus.toString().replace(",","."))).style(style);
+        worksheet.cell(i+1,10).formula('(((K'+ (i+1).toString() +'*1.5*P'+(i+1).toString()+')  + (L'+ (i+1).toString() +'*2*P'+(i+1).toString()+') + (M'+ (i+1).toString() +'*P'+(i+1).toString()+')) - (N'+ (i+1).toString() +'*2*P'+(i+1).toString()+'))').style(style);
+        
         worksheet.cell(i+1,11).number(Number(row.hora_50.toString().replace(",","."))).style(style);
         worksheet.cell(i+1,12).number(Number(row.hora_100.toString().replace(",","."))).style(style);
         worksheet.cell(i+1,13).number(Number(row.hora_normal.toString().replace(",","."))).style(style);

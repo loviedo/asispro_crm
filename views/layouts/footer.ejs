@@ -111,8 +111,22 @@
                             {extend:'copyHtml5', text: 'Copiar', titleAttr: 'Copiar',
                             exportOptions: {columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]}
                             }, 
-                            {extend: 'excelHtml5',
-                            exportOptions: {columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]}
+                            {   extend: 'excelHtml5',
+                                exportOptions: {columns: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]},
+                                customize: function (xlsx) {
+                                    var sheet = xlsx.xl.worksheets['hoxa1.xml'];
+                                    var col = $('col', sheet);                  
+                                    $('row c[r^="G"]', sheet).each(function (index, element) {
+                                        if (index >= 2) {                           
+                                            //change the type to `str` which is a formula
+                                            $(this).attr('t', 'str');
+                                            //append the concat formula
+                                            $(this).append('<f>' + 'D3 + F3'/*$('is t', this).text()*/ + '</f>');
+                                            //remove the inlineStr
+                                            $('is', this).remove();
+                                        }                       
+                                    });
+                                }
                             }, 
                             { extend: 'print', text: 'Imprimir'}
                         ]
@@ -237,10 +251,12 @@
                             {extend:'copyHtml5', text: 'Copiar', titleAttr: 'Copiar',
                             exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]}
                             }, 
-                            //exportamos el footer con las totales.
+                            //exportamos el footer con las totales. para eso el true
+                            //hay problemas con esto, ver link https://datatables.net/forums/discussion/41778
+                            //https://datatables.net/forums/discussion/42097/can-you-export-a-table-and-format-a-cell-to-use-a-formula-using-orthogonal-data
                             {extend: 'excelHtml5', footer: true,
-                            exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]}
-                            
+                            exportOptions: {columns: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17], orthogonal: 'export'},
+
                             }, 
                             { extend: 'print', text: 'Imprimir'}
                         ]
