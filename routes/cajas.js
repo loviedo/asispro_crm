@@ -262,13 +262,19 @@ app.get('/', function(req, res, next) {
         //DATOS DE CAJAS, SE VEN SOLAMENTE LAS CAJAS ASIGNADAS AL USUARIO ACTUAL
         //REVISAR POR QUE SE NECESITA CRUZAR CON CODIGO DE EMPLEADO! -->
         var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
-        if (user=="josorio" || user =="admin" || user =="ksanabria")
-        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";}
+        //Karen solamente puede ver las cajas que delega.
+        if (user =="ksanabria")
+        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo order by fecha desc";}
+        //si es el usuario admin/jose, puede ver solamente lo que cargo el.
+        if (user=="josorio" || user =="admin")
+        {   con_sql = "select c.* from cajas c where codigo = 22 order by fecha desc"; 
+            /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
+
 
         //calculamos la suma de los gastos asignados para esa caja.
         var sql_act = 'update cajas t1 set t1.gasto = (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id), ' +
                     't1.saldo = t1.salida - (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id)';
-                    
+        
         req.getConnection(function(error, conn) {
             conn.query(sql_act,function(err, rows) {
                 //if(err) throw err
@@ -304,16 +310,41 @@ app.get('/add', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){
         req.getConnection(function(error, conn) {
-            conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows2) {
+            conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows) {
                 if (err) {console.log(err); }
                 else{
                     datos_emple = [];
-                    rows2.forEach(function(row) { datos_emple.push(row); });
-                    
-                    //console.log(datos_pro);//debug
-                    res.render('cajas/add', {
-                    title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', 
-                    codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple});
+                    rows.forEach(function(row) { datos_emple.push(row); });
+
+                    //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
+                    if(user = "ksanabria")
+                    {
+                        conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert, id_caja " + 
+                        " from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
+                            if (err) {console.log(err); }
+                            else{
+                                //si hay datos, entonces cargamos los datos y habilitamos el alta.
+                                if(rows1.length >=1)
+                                {   datos_caja = [];
+                                    rows1.forEach(function(row) { datos_caja.push(row); });
+                                    //console.log(datos_pro);//debug
+                                    res.render('cajas/add', {
+                                    title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'',
+                                    codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});}
+                                else
+                                {   //avisar que no hay caja habilitada
+                                    req.flash('NO EXISTEN CAJAS HABILITADAS PARA CARGAR, SOLICITAR ALTA AL ADMINISTRADOR')
+                                    res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                }
+                            }
+                        })
+                    }
+                    else
+                    {   //ACA SOLAMENTE DEBERIA PODER ENTRAR EL USUARIO ADMIN O JOSE
+                        //console.log(datos_pro); //debug
+                        res.render('cajas/add', {
+                        title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', 
+                        codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple});}
                 }
             })
         })
@@ -335,7 +366,6 @@ app.post('/add', function(req, res, next){
         
         if(!errors) {//Si no hay errores, entonces conitnuamos
 
-
             //mysql acepta solos YYYY-MM-DD
             var codigo = Number(req.sanitize('codigo').escape().trim()); 
             var fecha = req.sanitize('fecha').escape().trim();
@@ -344,6 +374,12 @@ app.post('/add', function(req, res, next){
             var responsable = req.sanitize('responsable').escape().trim();
             var saldo = Number(req.sanitize('saldo').escape().trim());
             var gasto = Number(req.sanitize('gasto').escape().trim());
+            var caje = '';//no usamos
+            var id_cajita= 0;
+            if(user= 'ksanabria')
+            {   caje = req.sanitize('caja').trim();
+                id_cajita= Number(req.sanitize('id_caja').trim());
+            }
 
             //traemos datos del post.
             var cajita = {
@@ -354,6 +390,7 @@ app.post('/add', function(req, res, next){
                 responsable: responsable,
                 saldo: saldo,
                 gasto: gasto,
+                id_caja: id_cajita, //usamos para el caso de una caja asignada a una caja general. en otro caso va 0
                 usuario_insert: user
             }   
             
@@ -374,6 +411,8 @@ app.post('/add', function(req, res, next){
                             iva_10: cajita.iva_10,
                             iva_5: cajita.iva_5,
                             gasto_real: cajita.gasto_real,
+                            caja: caje,
+                            id_caja: id_cajita,
                             concepto: cajita.concepto,
                             usuario: user,
                             //ver de cargar data_pro: datos_pro
@@ -390,10 +429,35 @@ app.post('/add', function(req, res, next){
                                 datos_emple = [];
                                 rows.forEach(function(row) { datos_emple.push(row); });
                                 
-                                //console.log(datos_pro);//debug
-                                res.render('cajas/add', {
-                                title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', 
-                                codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple});
+                                //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
+                                if(user = "ksanabria")
+                                {
+                                    conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert " + 
+                                     "from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
+                                        if (err) {console.log(err); }
+                                        else{
+                                            //si hay datos, entonces cargamos los datos y habilitamos el alta.
+                                            if(rows1.length >=1)
+                                            {   datos_caja = [];
+                                                rows1.forEach(function(row) { datos_caja.push(row); });
+                                                //console.log(datos_pro);//debug
+                                                res.render('cajas/add', {
+                                                title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0',id_caja: '0', caja:'', 
+                                                codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});}
+                                            else
+                                            {   //avisar que no hay caja habilitada
+                                                req.flash('NO EXISTEN CAJAS HABILITADAS PARA CARGAR, SOLICITAR ALTA AL ADMINISTRADOR')
+                                                res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                            }
+                                        }
+                                    })
+                                }
+                                else
+                                {   //ACA SOLAMENTE DEBERIA PODER ENTRAR EL USUARIO ADMIN O JOSE
+                                    //console.log(datos_pro); //debug
+                                    res.render('cajas/add', {
+                                    title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', 
+                                    codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple});}
                             }
                         })
                     }
@@ -444,6 +508,8 @@ app.get('/detalle/:id', function(req, res, next){
         userId = req.session.userId;
     }
     if(user.length >0){
+
+
         req.getConnection(function(error, conn) {
             conn.query('SELECT * FROM cajas WHERE id = ' + req.params.id, function(err, rows, fields) {
                 if(err) throw err
@@ -455,8 +521,12 @@ app.get('/detalle/:id', function(req, res, next){
                 }
                 else {
                     req.getConnection(function(error, conn) {
-                        //traemos los datos de 
-                        conn.query('select * from gastos where id_caja = ' + req.params.id + ' order by fecha desc',function(err, rows2) {
+                        //traemos el detalle de las cajas, asignadas segun sea el tipo, si el usuario es normal traemos el datos de la caja
+                        var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' order by fecha desc';
+                        //si el usuario es especial, entonces traemos los gastos asociados a sus cajas bajo la caja general creada.
+                        if(user == 'josorio' || user == 'admin')
+                        {   sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc'}
+                        conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
                                 deta_cajas = [];

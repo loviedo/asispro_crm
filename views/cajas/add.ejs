@@ -73,6 +73,7 @@ body .modal-dialog { /* Width */
         <form action="/cajas/add" method="post" name="form1">
             <div class="form-row">
 
+                <input type="hidden" class="form-control" name="id_caja" id="id_caja" value="<%= id_caja %>"><!-- ID DE LA CAJA PARA CARGAR -->
                 <input type="hidden" class="form-control" name="codigo" id="codigo" value="<%= codigo %>">
                 <div class="form-group col-md-6">
                     <label for="fecha">FECHA</label>
@@ -99,6 +100,12 @@ body .modal-dialog { /* Width */
                     <label for="gasto">GASTO</label>
                     <input type="text" class="form-control" name="gasto" id="gasto" value="<%= gasto %>">
                 </div>
+                <% if (usuario == 'ksanabria') { %>  
+                <div class="form-group col-md-6">
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_caja_gastos">CAJAS ASIGNADAS</button>
+                    <input type="text" class="form-control" id="caja" name="caja" value="<%= caja %>">
+                </div>
+                <% } %>
             </div>
             <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
         </form>
@@ -150,6 +157,49 @@ body .modal-dialog { /* Width */
         </div>
     </div>
 </div>
+
+
+<!-- MODAL de CAJAS -->
+<div class="modal fade" id="modal_caja_gastos" tabindex="-1" role="dialog" aria-labelledby="modal_caja_gastosLabel" aria-hidden="true">
+    <div class="modal-dialog" width="100%" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_caja_gastosLabel">Listado de Cajas Asignadas</h5>
+        </div>
+        <div class="modal-body">
+            <!-- ACA PONEMOS LA TABLA QUE DEBE SER COMO /LISTAR -->
+            <div class="container-fluid" width="100%">
+                <table id="table_caja_gasto" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                        <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                        border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                            <tr>
+                                <th>ID</th>
+                                <th>CONCEPTO</th>
+                                <th>RESPONSABLE</th>      
+                            </tr>
+                        </thead>
+                    <tbody>
+                    <% if (data_caja) { %>
+                        <% data_caja.forEach(function(caja){ %>
+                            <tr>
+                                <td><%= caja.id %></td>
+                                <td><%= caja.concepto %></td>
+                                <td><%= caja.responsable %></td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">
