@@ -139,9 +139,10 @@ function generar_excel_emp_liq(rows){
 }
 
 //recibimos los datos de cabecera de cajas, y el detalle de facturas que se quieren observar.
-function genera_detalle_caja(rows, rows2){
+function genera_detalle_caja(rows, rows2,rows3){
     var workbook = new excel.Workbook();
     var worksheet = workbook.addWorksheet('DETALLE CAJAS');
+    worksheet2 = workbook.addWorksheet('RESUMEN CAJAS');
     //
     const style = workbook.createStyle({
     font: {color: '#000000',size: 12},
@@ -208,21 +209,39 @@ function genera_detalle_caja(rows, rows2){
         /*worksheet.cell(i+10,9).number(Number(rows2.ips.toString().replace(",","."))).style(style);
         worksheet.cell(i+10,10).number(Number(rows2.saldo_favor.toString().replace(",","."))).style(style);*/
 
-
-        /*
-        worksheet.cell(i+3,8).number(Number(row.debe.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,9).number(Number(row.debo.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,10).number(Number(row.pasaje.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,11).number(Number(row.manoobra.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,12).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,13).number(Number(row.otros.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);
-*/
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
     });
-    
+
+    /* SIGUIENTE HOJA / CARGAMOS EL RESUMEN DE LAS CAJAS */
+    /* RESUMEN DE LAS CAJAS */
+    worksheet.cell(2,13).string('RESUMEN CAJAS').style(style);
+    worksheet.cell(3,13).string('ID').style(style);
+    worksheet.cell(3,14).string('FECHA').style(style);
+    worksheet.cell(3,15).string('SALIDA').style(style);
+    worksheet.cell(3,16).string('RESPONSABLE').style(style);
+    worksheet.cell(3,17).string('CONCEPTO').style(style);
+    worksheet.cell(3,18).string('SALDO').style(style);
+    worksheet.cell(3,19).string('GASTO').style(style);
+    worksheet.cell(3,20).string('ESTADO (ABIERTA/CERRADA)').style(style);
+
+    /* LISTADO DE CAJAS */
+    var i = 1;
+    rows3.forEach(function(row) {
+        i=i+1;
+        worksheet.cell(3+i,13).number(Number(row.id)).style(style);
+        worksheet.cell(3+i,14).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});
+        worksheet.cell(3+i,15).number(Number(row.salida.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,16).string(String(row.responsable)).style(style);
+        worksheet.cell(3+i,17).string(String(row.concepto)).style(style);
+        worksheet.cell(3+i,18).number(Number(row.saldo.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,19).number(Number(row.gasto.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,20).string(String(row.estado)).style(style);
+        //console.log(row.descripcion);//debug
+    });
+    /* FIN CABECERA */
+
     workbook.write('DETALLE_CAJA_ID'+ rows[0].id +'.xlsx');
 }
 
@@ -263,7 +282,7 @@ app.get('/', function(req, res, next) {
         //REVISAR POR QUE SE NECESITA CRUZAR CON CODIGO DE EMPLEADO! -->
         var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
         //Karen solamente puede ver las cajas que delega.
-        if (user =="ksanabria")
+        if (user == "ksanabria")
         {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo order by fecha desc";}
         //si es el usuario admin/jose, puede ver solamente lo que cargo el.
         if (user=="josorio" || user =="admin")
@@ -526,19 +545,29 @@ app.get('/detalle/:id', function(req, res, next){
                         var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' order by fecha desc';
                         //si el usuario es especial, entonces traemos los gastos asociados a sus cajas bajo la caja general creada.
                         if(user == 'josorio' || user == 'admin')
-                        {   sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc'}
+                        {   sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';}
                         conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
                                 deta_cajas = [];
                                 rows2.forEach(function(row) { deta_cajas.push(row); });
 
-                                //generamos el excel de la caja
-                                genera_detalle_caja(rows, rows2);
-                                //console.log(datos_pro);//debug
-                                res.render('cajas/detalle', {
-                                title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
-                                saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  deta_cajas: deta_cajas});
+                                /* traemos el resumen de las cajas */
+                                sql_cajas = 'select * from cajas where id in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';
+                                conn.query(sql_cajas,function(err, rows3) {
+                                    if (err) {console.log(err); }
+                                    else{
+                                        res_cajas = [];
+                                        rows3.forEach(function(row) {res_cajas.push(row); });
+                                        
+                                        //generamos el excel de la caja
+                                        genera_detalle_caja(rows, rows2, rows3);
+                                        //console.log(datos_pro);//debug
+                                        res.render('cajas/detalle', {
+                                        title: 'DETALLE CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
+                                        saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  deta_cajas: deta_cajas});
+                                    }
+                                })
                             }
                         })
                     })
