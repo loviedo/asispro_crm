@@ -317,7 +317,7 @@ app.get('/add', function(req, res, next){
                     rows.forEach(function(row) { datos_emple.push(row); });
 
                     //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
-                    if(user = "ksanabria")
+                    if(user == "ksanabria")
                     {
                         conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert, id_caja " + 
                         " from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
@@ -342,9 +342,10 @@ app.get('/add', function(req, res, next){
                     else
                     {   //ACA SOLAMENTE DEBERIA PODER ENTRAR EL USUARIO ADMIN O JOSE
                         //console.log(datos_pro); //debug
+                        datos_caja = [];
                         res.render('cajas/add', {
-                        title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', 
-                        codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple});}
+                        title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'',
+                        codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});}
                 }
             })
         })
