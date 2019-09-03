@@ -87,7 +87,7 @@ function formatear_fecha(date) {
             </thead>
         <tbody>
         <% if (data) { %>
-        <% data.forEach(function(cliente){ %>
+            <% data.forEach(function(cliente){ %>
             <tr>
                 <td><%= cliente.id %></td>
                 <td><%= cliente.nombre %></td>
@@ -103,7 +103,7 @@ function formatear_fecha(date) {
                 </td>
             </tr>
             <% }) %>
-            <% } %>
+        <% } %>
         </tbody>
 
     </table>

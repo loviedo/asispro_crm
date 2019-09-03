@@ -497,7 +497,7 @@ app.post('/add', function(req, res, next){
                 
                                                 //traemos las cajas asignadas para esa persona
                                                 req.getConnection(function(error, conn) {
-                                                    conn.query("select * from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows3) {
+                                                    conn.query("select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows3) {
                                                         //if(err) throw err
                                                         if (err) {
                                                             req.flash('error', err)

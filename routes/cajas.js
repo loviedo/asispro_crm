@@ -139,19 +139,19 @@ function generar_excel_emp_liq(rows){
 }
 
 //recibimos los datos de cabecera de cajas, y el detalle de facturas que se quieren observar.
-function genera_detalle_caja(rows, rows2,rows3){
+function genera_detalle_caja(user, rows, rows2, rows3){
     var workbook = new excel.Workbook();
     var worksheet = workbook.addWorksheet('DETALLE CAJAS');
     worksheet2 = workbook.addWorksheet('RESUMEN CAJAS');
     //
     const style = workbook.createStyle({
     font: {color: '#000000',size: 12},
-    numberFormat: '#,##0.00; (#,##0.00); -'
+    numberFormat: '#,##0; (#,##0); -'
     });
 
     //prueba estilo 2
     const style1 = workbook.createStyle({
-        font: {color: '#000000',fgColor:'#EF820D',size: 12},
+        font: {bold: true, color: '#000000',fgColor:'#EF820D',size: 12},
         numberFormat: '#,##0; (#,##0); -'
     });
 
@@ -192,6 +192,10 @@ function genera_detalle_caja(rows, rows2,rows3){
     worksheet.cell(10,8).string('GASTO REAL').style(style);
     worksheet.cell(10,9).string('CONCEPTO').style(style);
     worksheet.cell(10,10).string('PROVEEDOR').style(style);
+    if (user == "admin" || user == "josorio")
+    {   worksheet.cell(10,11).string('ID_CAJA').style(style);
+        worksheet.cell(10,12).string('CONCEPTO').style(style);
+    }
 
     //luego los datos
     var i = 1;
@@ -206,6 +210,10 @@ function genera_detalle_caja(rows, rows2,rows3){
         worksheet.cell(i+10,8).number(Number(row.gasto_real.toString().replace(",","."))).style(style);
         worksheet.cell(i+10,9).string(String(row.concepto)).style(style);
         worksheet.cell(i+10,10).string(String(row.proveedor)).style(style);
+        if (user == "admin" || user == "josorio")
+        {   worksheet.cell(i+10,11).string(String(row.id_caja)).style(style);
+            worksheet.cell(i+10,12).string(String(row.concepto)).style(style);
+        }
         /*worksheet.cell(i+10,9).number(Number(rows2.ips.toString().replace(",","."))).style(style);
         worksheet.cell(i+10,10).number(Number(rows2.saldo_favor.toString().replace(",","."))).style(style);*/
 
@@ -216,30 +224,44 @@ function genera_detalle_caja(rows, rows2,rows3){
 
     /* SIGUIENTE HOJA / CARGAMOS EL RESUMEN DE LAS CAJAS */
     /* RESUMEN DE LAS CAJAS */
-    worksheet.cell(2,13).string('RESUMEN CAJAS').style(style);
-    worksheet.cell(3,13).string('ID').style(style);
-    worksheet.cell(3,14).string('FECHA').style(style);
-    worksheet.cell(3,15).string('SALIDA').style(style);
-    worksheet.cell(3,16).string('RESPONSABLE').style(style);
-    worksheet.cell(3,17).string('CONCEPTO').style(style);
-    worksheet.cell(3,18).string('SALDO').style(style);
-    worksheet.cell(3,19).string('GASTO').style(style);
-    worksheet.cell(3,20).string('ESTADO (ABIERTA/CERRADA)').style(style);
+    worksheet.cell(2,14).string('RESUMEN CAJAS').style(style);
+    worksheet.cell(3,14).string('ID').style(style);
+    worksheet.cell(3,15).string('FECHA').style(style);
+    worksheet.cell(3,16).string('SALIDA').style(style);
+    worksheet.cell(3,17).string('RESPONSABLE').style(style);
+    worksheet.cell(3,18).string('CONCEPTO').style(style);
+    worksheet.cell(3,19).string('SALDO').style(style);
+    worksheet.cell(3,20).string('GASTO').style(style);
+    worksheet.cell(3,21).string('ESTADO (ABIERTA/CERRADA)').style(style);
 
     /* LISTADO DE CAJAS */
     var i = 1;
+    var total_gasto = 0;
+    var total_saldo = 0;
+    var total_salida = 0;
+
     rows3.forEach(function(row) {
+
+        worksheet.cell(3+i,14).number(Number(row.id)).style(style);
+        worksheet.cell(3+i,15).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});
+        worksheet.cell(3+i,16).number(Number(row.salida.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,17).string(String(row.responsable)).style(style);
+        worksheet.cell(3+i,18).string(String(row.concepto)).style(style);
+        worksheet.cell(3+i,19).number(Number(row.saldo.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,20).number(Number(row.gasto.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,21).string(String(row.estado)).style(style);
+
+        //sumamos
+        total_saldo = total_saldo + row.saldo;
+        total_gasto = total_gasto + row.gasto;
+        total_salida = total_salida + row.salida;
         i=i+1;
-        worksheet.cell(3+i,13).number(Number(row.id)).style(style);
-        worksheet.cell(3+i,14).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});
-        worksheet.cell(3+i,15).number(Number(row.salida.toString().replace(",","."))).style(style);
-        worksheet.cell(3+i,16).string(String(row.responsable)).style(style);
-        worksheet.cell(3+i,17).string(String(row.concepto)).style(style);
-        worksheet.cell(3+i,18).number(Number(row.saldo.toString().replace(",","."))).style(style);
-        worksheet.cell(3+i,19).number(Number(row.gasto.toString().replace(",","."))).style(style);
-        worksheet.cell(3+i,20).string(String(row.estado)).style(style);
         //console.log(row.descripcion);//debug
     });
+    //al final colocamos los totalizadores
+    worksheet.cell(3+i,16).number(Number(total_salida)).style(style1);
+    worksheet.cell(3+i,19).number(Number(total_saldo)).style(style1);
+    worksheet.cell(3+i,20).number(Number(total_gasto)).style(style1);
     /* FIN CABECERA */
 
     workbook.write('DETALLE_CAJA_ID'+ rows[0].id +'.xlsx');
@@ -268,7 +290,6 @@ function hoy()
     return today;
 }
 
-
 // MOSTRAR CAJAS ASIGNADAS AL USUARIO ACTUAL
 app.get('/', function(req, res, next) {
     if(req.session.user)
@@ -290,9 +311,14 @@ app.get('/', function(req, res, next) {
             /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
 
 
-        //calculamos la suma de los gastos asignados para esa caja.
+        //actualizamos la suma de los gastos asignados para esa caja.
         var sql_act = 'update cajas t1 set t1.gasto = (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id), ' +
                     't1.saldo = t1.salida - (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id)';
+
+        var sql_cajas_gen_act = 'update cajas t1 set ' +
+        't1.gasto = (select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id), ' +
+        't1.saldo = t1.salida - (select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id) ' +
+        'where codigo =22';
         
         req.getConnection(function(error, conn) {
             conn.query(sql_act,function(err, rows) {
@@ -301,15 +327,25 @@ app.get('/', function(req, res, next) {
                     req.flash('error', err)
                     res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
                 } else {
-                    //si se actualizan correctamente los gastos y sumas de saldos de las cajas, entonces mostramos.
                     req.getConnection(function(error, conn) {
-                        conn.query(con_sql,function(err, rows) {
+                        conn.query(sql_cajas_gen_act,function(err, rows) {
+                            //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
                                 res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
                             } else {
-                                //generar_excel_mano_obra(rows);
-                                res.render('cajas/listar', {title: 'Listado de Cajas', usuario: user, data: rows})
+                                //si se actualizan correctamente los gastos y sumas de saldos de las cajas, entonces mostramos.
+                                req.getConnection(function(error, conn) {
+                                    conn.query(con_sql,function(err, rows) {
+                                        if (err) {
+                                            req.flash('error', err)
+                                            res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                        } else {
+                                            //generar_excel_mano_obra(rows);
+                                            res.render('cajas/listar', {title: 'Listado de Cajas', usuario: user, data: rows})
+                                        }
+                                    })
+                                })
                             }
                         })
                     })
@@ -450,7 +486,7 @@ app.post('/add', function(req, res, next){
                                 rows.forEach(function(row) { datos_emple.push(row); });
                                 
                                 //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
-                                if(user = "ksanabria")
+                                if(user == "ksanabria")
                                 {
                                     conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert " + 
                                      "from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
@@ -561,7 +597,7 @@ app.get('/detalle/:id', function(req, res, next){
                                         rows3.forEach(function(row) {res_cajas.push(row); });
                                         
                                         //generamos el excel de la caja
-                                        genera_detalle_caja(rows, rows2, rows3);
+                                        genera_detalle_caja(user, rows, rows2, rows3);
                                         //console.log(datos_pro);//debug
                                         res.render('cajas/detalle', {
                                         title: 'DETALLE CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
@@ -603,11 +639,36 @@ app.get('/editar/:id', function(req, res, next){
                             else{
                                 datos_emple = [];
                                 rows2.forEach(function(row) { datos_emple.push(row); });
-                                
+
+                                //en caso que sea la user karen, solamente ella ve las cajas asiganadas.
+                                if(user == "ksanabria")
+                                {
+                                    conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert, id_caja " + 
+                                    " from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
+                                        if (err) {console.log(err); }
+                                        else{
+                                            //si hay datos, entonces cargamos los datos y habilitamos el alta.
+                                            if(rows1.length >=1)
+                                            {   datos_caja = [];
+                                                rows1.forEach(function(row) { datos_caja.push(row); });
+                                                //console.log(datos_pro);//debug
+                                                res.render('cajas/editar', {
+                                                title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), estado: rows[0].estado, concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
+                                                id_caja: rows[0].id_caja, caja: rows[0].concepto, saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user, data_emple: datos_emple,data_caja: datos_caja});}
+                                            else
+                                            {   //avisar que no hay caja habilitada
+                                                req.flash('ERROR')
+                                                res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                            }
+                                        }
+                                    })
+                                }
+                                else{
                                 //console.log(datos_pro);//debug
                                 res.render('cajas/editar', {
-                                title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), estado: rows[0].estado, concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
-                                saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  data_emple: datos_emple});
+                                    title: 'EDITAR CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), estado: rows[0].estado, concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
+                                    saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user, data_emple: datos_emple});
+                                }
                             }
                         })
                     })
@@ -634,7 +695,8 @@ app.post('/editar/:id', function(req, res, next){
             responsable: req.sanitize('responsable').trim(),
             estado: req.sanitize('estado').trim(),
             saldo: req.sanitize('saldo').trim(),
-            gasto: req.sanitize('gasto').trim()
+            gasto: req.sanitize('gasto').trim(),
+            id_caja: req.sanitize('id_caja').trim()
         }
         var errors = req.validationErrors()
 
@@ -659,9 +721,36 @@ app.post('/editar/:id', function(req, res, next){
                                     datos_emple = [];
                                     rows2.forEach(function(row) { datos_emple.push(row); });
                                     
+                                    //en caso que sea la user karen, solamente ella ve las cajas asiganadas.
+                                    if(user == "ksanabria")
+                                    {
+                                        conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert, id_caja " + 
+                                        " from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
+                                            if (err) {console.log(err); }
+                                            else{
+                                                //si hay datos, entonces cargamos los datos y habilitamos el alta.
+                                                if(rows1.length >=1)
+                                                {   datos_caja = [];
+                                                    rows1.forEach(function(row) { datos_caja.push(row); });
+                                                    //console.log(datos_pro);//debug
+                                                    res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
+                                                    responsable: req.body.responsable, saldo: req.body.saldo, id_caja: req.body.id_caja, caja: req.body.caja, gasto: req.body.gasto, estado: req.body.estado, usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja });}
+                                                else
+                                                {   //avisar que no hay caja habilitada
+                                                    req.flash('ERROR')
+                                                    res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                                }
+                                            }
+                                        })
+                                    }
+                                    else{
                                     //console.log(datos_pro);//debug
                                     res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
-                                    responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, estado: req.body.estado, usuario_insert: user, usuario: user,  data_emple: datos_emple })
+                                    responsable: req.body.responsable, saldo: req.body.saldo, id_caja: req.body.id_caja, caja: req.body.caja, gasto: req.body.gasto, estado: req.body.estado, usuario_insert: user, usuario: user,  data_emple: datos_emple });
+                                    }
+                                    //console.log(datos_pro);//debug
+                                    //res.render('cajas/editar', { title: 'Editar CAJAS', id: req.params.id, codigo: req.body.codigo, fecha: req.body.fecha, concepto: req.body.concepto, salida: req.body.salida, 
+                                    //responsable: req.body.responsable, saldo: req.body.saldo, gasto: req.body.gasto, estado: req.body.estado, usuario_insert: user, usuario: user,  data_emple: datos_emple })
                                 }
                             })
                         })
