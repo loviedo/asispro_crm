@@ -164,13 +164,13 @@ function genera_detalle_caja(user, rows, rows2, rows3){
 
     //dibujamos el excel
     //primero la cabecera
-    worksheet.cell(1,3).string('ID').style(style);
-    worksheet.cell(2,3).string('FECHA').style(style);
-    worksheet.cell(3,3).string('SALIDA').style(style);
-    worksheet.cell(4,3).string('RESPONSABLE').style(style);
-    worksheet.cell(5,3).string('CONCEPTO').style(style);
-    worksheet.cell(6,3).string('SALDO').style(style);
-    worksheet.cell(7,3).string('GASTO').style(style);
+    worksheet.cell(1,3).string('ID').style(style1);
+    worksheet.cell(2,3).string('FECHA').style(style1);
+    worksheet.cell(3,3).string('SALIDA').style(style1);
+    worksheet.cell(4,3).string('RESPONSABLE').style(style1);
+    worksheet.cell(5,3).string('CONCEPTO').style(style1);
+    worksheet.cell(6,3).string('SALDO').style(style1);
+    worksheet.cell(7,3).string('GASTO').style(style1);
 
     /* DATOS CABECERA */
     worksheet.cell(1,4).number(Number(rows[0].id)).style(style);
@@ -182,19 +182,19 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     worksheet.cell(7,4).number(Number(rows[0].gasto)).style(style);
 
     /* DATOS DETALLE */
-    worksheet.cell(9,2).string('DETALLE DE GASTOS').style(style);
-    worksheet.cell(10,2).string('FECHA').style(style);
-    worksheet.cell(10,3).string('CONDICION').style(style);
-    worksheet.cell(10,4).string('MONTO').style(style);
-    worksheet.cell(10,5).string('EXENTAS').style(style);
-    worksheet.cell(10,6).string('IVA 10%').style(style);
-    worksheet.cell(10,7).string('IVA 5%').style(style);
-    worksheet.cell(10,8).string('GASTO REAL').style(style);
-    worksheet.cell(10,9).string('CONCEPTO').style(style);
-    worksheet.cell(10,10).string('PROVEEDOR').style(style);
+    worksheet.cell(9,2).string('DETALLE DE GASTOS').style(style1);
+    worksheet.cell(10,2).string('FECHA').style(style1);
+    worksheet.cell(10,3).string('CONDICION').style(style1);
+    worksheet.cell(10,4).string('MONTO').style(style1);
+    worksheet.cell(10,5).string('EXENTAS').style(style1);
+    worksheet.cell(10,6).string('IVA 10%').style(style1);
+    worksheet.cell(10,7).string('IVA 5%').style(style1);
+    worksheet.cell(10,8).string('GASTO REAL').style(style1);
+    worksheet.cell(10,9).string('CONCEPTO').style(style1);
+    worksheet.cell(10,10).string('PROVEEDOR').style(style1);
     if (user == "admin" || user == "josorio")
-    {   worksheet.cell(10,11).string('ID_CAJA').style(style);
-        worksheet.cell(10,12).string('CONCEPTO').style(style);
+    {   worksheet.cell(10,11).string('ID_CAJA').style(style1);
+        worksheet.cell(10,12).string('CONCEPTO').style(style1);
     }
 
     //luego los datos
@@ -224,15 +224,15 @@ function genera_detalle_caja(user, rows, rows2, rows3){
 
     /* SIGUIENTE HOJA / CARGAMOS EL RESUMEN DE LAS CAJAS */
     /* RESUMEN DE LAS CAJAS */
-    worksheet.cell(2,14).string('RESUMEN CAJAS').style(style);
-    worksheet.cell(3,14).string('ID').style(style);
-    worksheet.cell(3,15).string('FECHA').style(style);
-    worksheet.cell(3,16).string('SALIDA').style(style);
-    worksheet.cell(3,17).string('RESPONSABLE').style(style);
-    worksheet.cell(3,18).string('CONCEPTO').style(style);
-    worksheet.cell(3,19).string('SALDO').style(style);
-    worksheet.cell(3,20).string('GASTO').style(style);
-    worksheet.cell(3,21).string('ESTADO (ABIERTA/CERRADA)').style(style);
+    worksheet.cell(2,14).string('RESUMEN CAJAS').style(style1);
+    worksheet.cell(3,14).string('ID').style(style1);
+    worksheet.cell(3,15).string('FECHA').style(style1);
+    worksheet.cell(3,16).string('SALIDA').style(style1);
+    worksheet.cell(3,17).string('RESPONSABLE').style(style1);
+    worksheet.cell(3,18).string('CONCEPTO').style(style1);
+    worksheet.cell(3,19).string('SALDO').style(style1);
+    worksheet.cell(3,20).string('GASTO').style(style1);
+    worksheet.cell(3,21).string('ESTADO (ABIERTA/CERRADA)').style(style1);
 
     /* LISTADO DE CAJAS */
     var i = 1;
@@ -304,7 +304,7 @@ app.get('/', function(req, res, next) {
         var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
         //Karen solamente puede ver las cajas que delega.
         if (user == "ksanabria")
-        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo order by fecha desc";}
+        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where c.codigo <> 22 order by fecha desc ";}
         //si es el usuario admin/jose, puede ver solamente lo que cargo el.
         if (user=="josorio" || user =="admin")
         {   con_sql = "select c.* from cajas c where codigo = 22 order by fecha desc"; 
@@ -589,7 +589,9 @@ app.get('/detalle/:id', function(req, res, next){
                                 rows2.forEach(function(row) { deta_cajas.push(row); });
 
                                 /* traemos el resumen de las cajas */
-                                sql_cajas = 'select * from cajas where id in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';
+                                if(user == 'josorio' || user == 'admin')
+                                {sql_cajas = 'select * from cajas where id in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';}
+                                else{sql_cajas = 'select * from cajas where id = ' + req.params.id;}
                                 conn.query(sql_cajas,function(err, rows3) {
                                     if (err) {console.log(err); }
                                     else{

@@ -105,6 +105,7 @@ function generar_excel_gastos(rows){
     rows.forEach(function(row) {
         //worksheet.cell(i+1,1).string(String(i)).style(style);//numeracion
         worksheet.cell(i+1,1).number(Number(row.id)).style(style);//cambiamos por el ID de insercion
+        console.log(row.id)
         worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
         worksheet.cell(i+1,3).number(Number(row.monto)).style(style);
         worksheet.cell(i+1,4).number(Number(row.exentas)).style(style);
