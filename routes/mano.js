@@ -1438,6 +1438,7 @@ app.post('/editar_real/:id', function(req, res, next) {
         var subtotito  = montito * val_dia;
         //CALCULAMOS EL PLUS
         var hnormal= Number(req.sanitize('hora_normal').trim());
+        
         var h50= Number(req.sanitize('hora_50').toString().replace(",",".").trim());
         var h100= Number(req.sanitize('hora_100').toString().replace(",",".").trim());
         var hneg= Number(req.sanitize('hora_neg').toString().replace(",",".").trim());
