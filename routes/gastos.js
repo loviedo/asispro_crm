@@ -58,7 +58,7 @@ function formatear_fecha(date) {
 }
 
 function generar_excel_gastos(rows){
-    var workbook = new excel.Workbook({dateFormat: 'dd/mm/yyyy'});
+    var workbook = new excel.Workbook({numberFormat: 'dd/mm/yyyy'});
     //Add Worksheets to the workbook
     var worksheet = workbook.addWorksheet('GASTOS');
     // Create a reusable style
