@@ -174,7 +174,7 @@ function genera_detalle_caja(user, rows, rows2, rows3){
 
     /* DATOS CABECERA */
     worksheet.cell(1,4).number(Number(rows[0].id)).style(style);
-    worksheet.cell(2,4).date(formatear_fecha_yyyymmdd(rows[0].fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
+    worksheet.cell(2,4).date(formatear_fecha_yyyymmdd(rows[0].fecha)).style({numberFormat: 'dd/mm/yyyy'});//ver formato fecha
     worksheet.cell(3,4).number(Number(rows[0].salida)).style(style);
     worksheet.cell(4,4).string(String(rows[0].responsable)).style(style);
     worksheet.cell(5,4).string(String(rows[0].concepto)).style(style);
@@ -201,7 +201,7 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     var i = 1;
     rows2.forEach(function(row) {
 
-        worksheet.cell(i+10,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//codigo del empleado
+        worksheet.cell(i+10,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//codigo del empleado
         worksheet.cell(i+10,3).string(String(row.fact_condicion)).style(style); //nombre y apellido
         worksheet.cell(i+10,4).number(Number(row.monto.toString().replace(",","."))).style(style);
         worksheet.cell(i+10,5).number(Number(row.exentas.toString().replace(",","."))).style(style);
@@ -243,7 +243,7 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     rows3.forEach(function(row) {
 
         worksheet.cell(3+i,14).number(Number(row.id)).style(style);
-        worksheet.cell(3+i,15).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});
+        worksheet.cell(3+i,15).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});
         worksheet.cell(3+i,16).number(Number(row.salida.toString().replace(",","."))).style(style);
         worksheet.cell(3+i,17).string(String(row.responsable)).style(style);
         worksheet.cell(3+i,18).string(String(row.concepto)).style(style);

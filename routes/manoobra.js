@@ -117,7 +117,7 @@ function generar_excel_mano_obra(rows){
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
+        worksheet.cell(i+1,1).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//ver formato fecha
         worksheet.cell(i+1,2).string(String(row.empleado)).style(style);
         worksheet.cell(i+1,3).string(String(row.cliente_real_m)).style(style);
         worksheet.cell(i+1,4).number(Number(row.por_m.toString().replace(",","."))).style(style);
