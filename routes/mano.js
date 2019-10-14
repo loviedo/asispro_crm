@@ -196,13 +196,13 @@ app.get('/', function(req, res, next) {
 	if(user.length >0){
         //vemos los datos en la base
         req.getConnection(function(error, conn) {
-            conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows1) {
+            conn.query('SELECT * FROM mano_obra where MONTH(fecha) = MONTH(CURRENT_DATE()) AND YEAR(fecha) = YEAR(CURRENT_DATE()) ORDER BY fecha DESC',function(err, rows1) {
                 if (err) {
                     req.flash('error', err)
                     res.render('mano/listar', {title: 'Listado de Trabajos', data: '',usuario: user})
                 } else {
                     req.getConnection(function(error, conn) {
-                        conn.query('SELECT * FROM mano_obra ORDER BY fecha DESC',function(err, rows) {
+                        conn.query('SELECT * FROM mano_obra where MONTH(fecha) = MONTH(CURRENT_DATE()) AND YEAR(fecha) = YEAR(CURRENT_DATE())  ORDER BY fecha DESC',function(err, rows) {
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
