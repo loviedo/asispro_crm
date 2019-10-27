@@ -252,6 +252,15 @@ including header content which is common for all pages
                     <label for="jornal">JORNAL</label>
                     <input type="text" class="form-control" name="jornal" id="jornal" value="<%= jornal %>">
                 </div>
+                <!-- ESTADO DEL EMPLEADO -->
+                <div class="form-group col-md-2">
+                    <label for="estado">TIPO</label>
+                    <select class="form-control" name="estado" id="estado" value="<%= estado %>">
+                        <option value="ACTIVO">ACTIVO</option>
+                        <option value="BAJA">BAJA</option>
+                    </select>
+                </div>
+                <!-- FIN ESTADO DEL EMPLEADO -->
                 <div class="form-group col-md-2">
                     <label for="motivo_salida">MOTIVO SALIDA</label>
                     <input type="text" class="form-control" name="motivo_salida" id="motivo_salida" value="<%= motivo_salida %>">

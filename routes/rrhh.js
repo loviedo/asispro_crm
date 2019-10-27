@@ -519,6 +519,7 @@ app.get('/editar/:id', function(req, res, next){
                         tel_emergencia: rows[0].tel_emergencia,
                         tipo_empleado: rows[0].tipo_empleado,
                         jornal: rows[0].jornal,
+                        estado: rows[0].estado,
                         motivo_salida: rows[0].motivo_salida,
                         usuario: user
                     })
@@ -578,6 +579,7 @@ app.post('/editar/:id', function(req, res, next) {
                 tel_emergencia: req.sanitize('tel_emergencia').trim(),
                 tipo_empleado: req.sanitize('tipo_empleado').trim(),
                 jornal: Number(req.sanitize('jornal').trim()),
+                estado: req.sanitize('estado').trim(),
                 motivo_salida: req.sanitize('motivo_salida').trim(),
                 usuario_insert: user
             }  
@@ -626,6 +628,7 @@ app.post('/editar/:id', function(req, res, next) {
                             tel_emergencia: req.params.tel_emergencia,
                             tipo_empleado: req.params.tipo_empleado,
                             jornal: req.params.jornal,
+                            estado: req.params.estado,
                             motivo_salida: req.params.motivo_salida,
                             usuario_insert: user,
                             usuario: user
@@ -671,6 +674,7 @@ app.post('/editar/:id', function(req, res, next) {
                             tel_emergencia: req.params.tel_emergencia,
                             tipo_empleado: req.params.tipo_empleado,
                             jornal: req.params.jornal,
+                            estado: req.params.estado,//agregado 27/10/2019 --
                             motivo_salida: req.params.motivo_salida,
                             usuario_insert: user,
                             usuario: user               
@@ -679,7 +683,7 @@ app.post('/editar/:id', function(req, res, next) {
                 })
             })
         }
-        else {   //Display errors to user
+        else {   //MOSTRAR ERROR EN PANTALLA
             var error_msg = ''
             errors.forEach(function(error) {
                 error_msg += error.msg + '<br>'
@@ -722,6 +726,7 @@ app.post('/editar/:id', function(req, res, next) {
                 tel_emergencia: req.params.tel_emergencia,
                 tipo_empleado: req.params.tipo_empleado,
                 jornal: req.params.jornal,
+                estado: req.params.estado,//agregado 27/10/2019
                 motivo_salida: req.params.motivo_salida,
                 usuario_insert: user
             })

@@ -1766,7 +1766,8 @@ app.get('/copiar_plan', function(req, res, next) {
                 "(case when cast(mo.ot_plan_t as UNSIGNED) < 900000 and cast(mo.ot_plan_t as UNSIGNED) > 0 then 0.5 else 0 end))*(case when IFNULL(em.jornal, 0) >0 then IFNULL(em.jornal, 0)*8 else 0 end) as subtotal, " +
                 "0, 0, 0, 0, 0, 0, 'SYSTEM', mo.ot_plan_m, mo.ot_plan_m, mo.ot_plan_t, mo.ot_plan_t, IFNULL(em.jornal, 0) as jornal, mo.cliente_real_n, mo.obra_real_n, mo.ot_real_n, " +
                 "mo.encargado2, mo.trato_cliente2, mo.encargado, mo.trato_cliente, mo.encargado2, mo.trato_cliente2 " +
-                "from mano_obra mo inner join empleados em on em.codigo = mo.codigo where mo.fecha = (select max(fecha) from mano_obra)";
+                "from mano_obra mo inner join empleados em on em.codigo = mo.codigo where mo.fecha = (select max(fecha) from mano_obra) and em.estado = 'ACTIVO' ";
+                //solamente copiamos e insertamos aquellos empleados que esten en estado activo.
 
             conn.query(sql_str, function(err, result) {
                 //if(err) throw err
