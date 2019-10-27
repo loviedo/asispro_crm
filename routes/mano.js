@@ -93,16 +93,16 @@ function generar_excel_plan_laboral(rows){
 
     //dibujamos el excel
     //primero la cabecera
-    worksheet.cell(1,1).string('FECHA').style(style);
-    worksheet.cell(1,2).string('EMPLEADO').style(style);
-    worksheet.cell(1,3).string('CLIENTE PLAN MAÑANA').style(bgStyle);
-    worksheet.cell(1,4).string('OBRA PLAN MAÑANA').style(bgStyle);
-    worksheet.cell(1,5).string('ENCARGADO').style(bgStyle);
-    worksheet.cell(1,6).string('TRATO CLIENTE').style(bgStyle);
-    worksheet.cell(1,7).string('CLIENTE PLAN TARDE').style(style);
-    worksheet.cell(1,8).string('OBRA PLAN TARDE').style(style);
-    worksheet.cell(1,9).string('ENCARGADO').style(style);
-    worksheet.cell(1,10).string('TRATO CLIENTE').style(style);
+    worksheet.cell(2,2).string('FECHA').style(style);
+    worksheet.cell(2,3).string('EMPLEADO').style(style);
+    worksheet.cell(2,4).string('CLIENTE PLAN MAÑANA').style(style);
+    worksheet.cell(2,5).string('OBRA PLAN MAÑANA').style(style);
+    worksheet.cell(2,6).string('ENCARGADO').style(style);
+    worksheet.cell(2,7).string('TRATO CLIENTE').style(style);
+    worksheet.cell(2,8).string('CLIENTE PLAN TARDE').style(style);
+    worksheet.cell(2,9).string('OBRA PLAN TARDE').style(style);
+    worksheet.cell(2,10).string('ENCARGADO').style(style);
+    worksheet.cell(2,11).string('TRATO CLIENTE').style(style);
 
     //worksheet.cell(1,2).string('NRO OT').style(style);
     /*worksheet.cell(1,2).string('EMPLEADO').style(style);
@@ -126,16 +126,16 @@ function generar_excel_plan_laboral(rows){
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
-        worksheet.cell(i+1,1).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//ver formato fecha
-        worksheet.cell(i+1,2).string(String(row.empleado)).style(style);
-        worksheet.cell(i+1,3).string(String(row.cliente_plan_m)).style(style);
-        worksheet.cell(i+1,4).string(String(row.obra_plan_m)).style(style);
-        worksheet.cell(i+1,5).string(String(row.encargado)).style(style);
-        worksheet.cell(i+1,6).string(String(row.trato_cliente)).style(style);
-        worksheet.cell(i+1,7).string(String(row.cliente_plan_t)).style(style);
-        worksheet.cell(i+1,8).string(String(row.obra_plan_t)).style(style);
-        worksheet.cell(i+1,9).string(String(row.encargado2)).style(style);
-        worksheet.cell(i+1,10).string(String(row.trato_cliente2)).style(style);
+        worksheet.cell(i+2,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//ver formato fecha
+        worksheet.cell(i+2,3).string(String(row.empleado)).style(style);
+        worksheet.cell(i+2,4).string(String(row.cliente_plan_m)).style(style);
+        worksheet.cell(i+2,5).string(String(row.obra_plan_m)).style(style);
+        worksheet.cell(i+2,6).string(String(row.encargado)).style(style);
+        worksheet.cell(i+2,7).string(String(row.trato_cliente)).style(style);
+        worksheet.cell(i+2,8).string(String(row.cliente_plan_t)).style(style);
+        worksheet.cell(i+2,9).string(String(row.obra_plan_t)).style(style);
+        worksheet.cell(i+2,10).string(String(row.encargado2)).style(style);
+        worksheet.cell(i+2,11).string(String(row.trato_cliente2)).style(style);
 
 
         //worksheet.cell(i+1,2).string(String(row.nro_ot)).style(style);
@@ -239,7 +239,7 @@ app.get('/real', function(req, res, next) {
                     req.getConnection(function(error, conn) {
                         //datos para visualizar
                         //conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 1 DAY)',function(err, rows) {
-                        conn.query("SELECT * FROM mano_obra WHERE fecha < curdate() and month(fecha) >= month(current_date())-1 and year(fecha) = year(current_date()) ORDER BY fecha DESC",function(err, rows) {
+                        conn.query("SELECT * FROM mano_obra WHERE /*fecha < curdate() and*/ month(fecha) >= month(current_date())-1 and year(fecha) = year(current_date()) ORDER BY fecha DESC",function(err, rows) {
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
@@ -1748,13 +1748,26 @@ app.get('/copiar_plan', function(req, res, next) {
 	if(user.length >0){
         //insertamos el valor 
         req.getConnection(function(error, conn) {
-            var sql_str = "insert into mano_obra (fecha, mano_obra. empleado, codigo, cliente_plan_m, cliente_real_m, cliente_plan_t,cliente_real_t,obra_plan_m,obra_real_m,obra_plan_t,obra_real_t, " +
+            /*var sql_str = "insert into mano_obra (fecha, mano_obra. empleado, codigo, cliente_plan_m, cliente_real_m, cliente_plan_t, cliente_real_t,obra_plan_m,obra_real_m,obra_plan_t,obra_real_t, " +
                 "encargado, trato_cliente, h_entrada,h_salida,monto,subtotal,hora_50,hora_100,hora_normal,hora_neg,pasaje, usuario_insert, ot_plan_m,ot_real_m,ot_plan_t, ot_real_t, " + 
                 "jornal, cliente_real_n, obra_real_n, ot_real_n, encargado2, trato_cliente2) " + 
-                "select DATE_ADD(fecha, INTERVAL 1 DAY), mano_obra. empleado, codigo, cliente_plan_m, cliente_real_m, cliente_plan_t,cliente_real_t,obra_plan_m,obra_real_m,obra_plan_t,obra_real_t, " + 
+                "select DATE_ADD(fecha, INTERVAL 1 DAY), mano_obra. empleado, codigo, cliente_plan_m, cliente_real_m, cliente_plan_t, cliente_real_t,obra_plan_m,obra_real_m,obra_plan_t,obra_real_t, " + 
                 "encargado, trato_cliente, h_entrada,h_salida,monto,subtotal,hora_50,hora_100,hora_normal,hora_neg,pasaje, 'SYSTEM', ot_plan_m,ot_real_m,ot_plan_t, ot_real_t , " + 
                 "jornal, cliente_real_n, obra_real_n, ot_real_n, encargado2, trato_cliente2 " + 
-                "from mano_obra where fecha = (select max(fecha) from mano_obra)"
+                "from mano_obra where fecha = (select max(fecha) from mano_obra)";*/
+
+            /* FALTABA AGREGAR LOS ENCARGADOS Y LOS VALORES DE HORARIOS y HS EXTRAS */
+            var sql_str = "insert into mano_obra (fecha, mano_obra.empleado, codigo, cliente_plan_m, cliente_real_m, cliente_plan_t,cliente_real_t,obra_plan_m,obra_real_m,obra_plan_t,obra_real_t, " +
+                "encargado, trato_cliente, h_entrada,h_salida,monto,subtotal, plus,hora_50,hora_100,hora_normal,hora_neg,pasaje, usuario_insert, ot_plan_m,ot_real_m, ot_plan_t, ot_real_t , " +
+                "jornal, cliente_real_n, obra_real_n, ot_real_n, encargado2, trato_cliente2, encargado_real, trato_cliente_real, encargado_real2, trato_cliente_real2) " +
+                "select DATE_ADD(mo.fecha, INTERVAL 1 DAY), mo.empleado, mo.codigo, mo.cliente_plan_m, mo.cliente_plan_m, mo.cliente_plan_t, mo.cliente_plan_t, mo.obra_plan_m, mo.obra_plan_m, mo.obra_plan_t, mo.obra_plan_t, " +
+                "mo.encargado, mo.trato_cliente, '07:30', '16:30', (case when IFNULL(em.jornal, 0) >0 then IFNULL(em.jornal, 0)*8 else 0 end) as monto, " +
+                "((case when cast(mo.ot_plan_m as UNSIGNED) < 900000 and cast(mo.ot_plan_m as UNSIGNED) > 0 then 0.5 else 0 end)+ " +
+                "(case when cast(mo.ot_plan_t as UNSIGNED) < 900000 and cast(mo.ot_plan_t as UNSIGNED) > 0 then 0.5 else 0 end))*(case when IFNULL(em.jornal, 0) >0 then IFNULL(em.jornal, 0)*8 else 0 end) as subtotal, " +
+                "0, 0, 0, 0, 0, 0, 'SYSTEM', mo.ot_plan_m, mo.ot_plan_m, mo.ot_plan_t, mo.ot_plan_t, IFNULL(em.jornal, 0) as jornal, mo.cliente_real_n, mo.obra_real_n, mo.ot_real_n, " +
+                "mo.encargado2, mo.trato_cliente2, mo.encargado, mo.trato_cliente, mo.encargado2, mo.trato_cliente2 " +
+                "from mano_obra mo inner join empleados em on em.codigo = mo.codigo where mo.fecha = (select max(fecha) from mano_obra)";
+
             conn.query(sql_str, function(err, result) {
                 //if(err) throw err
                 if (err) {
