@@ -272,11 +272,20 @@ including header content which is common for all pages
     </div>
 </nav>
 
-<!-- BOTONES DE EXPORTACION -->
+<!-- BOTONES -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
+        <!-- DESCARGAR FICHA EMPLEADO -->
         <div>   
-            <a href="/rrhh/pdf/<%= id %>" class="btn btn-primary">Descargar FICHA EMPLEADO</a>
+            <a href="/rrhh/pdf/<%= id %>" class="btn btn-primary">GENERAR FICHA EMPLEADO</a>
+        </div>
+        <!-- ELIMINAR EMPLEADO -->
+        <div> 
+            <form method="post" action="/rrhh/editar/<%= id %>" style="float:right">
+                <a href="/rrhh/pdf/<%= id %>" class="btn btn-primary" onClick="return confirm('Seguro que desea borrar el empleado?')">ELIMINAR EMPLEADO</a>
+                <!--<input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar el empleado?')" />
+                <input type="hidden" name="_method" value="DELETE" />-->
+            </form>
         </div>
     </div>
 </nav>
