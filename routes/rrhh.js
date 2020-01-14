@@ -69,6 +69,7 @@ function generar_excel_emples(rows){
     worksheet.cell(1,2).string('FECHA INGRESO').style(style);
     worksheet.cell(1,3).string('NOMBRES').style(style);
     worksheet.cell(1,4).string('APELLIDOS').style(style);
+    worksheet.cell(1,4).string('ESTADO').style(style);
     worksheet.cell(1,5).string('SEXO').style(style);
     worksheet.cell(1,6).string('CI').style(style);
     worksheet.cell(1,7).string('FECHA NACIMIENTO').style(style);
@@ -107,6 +108,7 @@ function generar_excel_emples(rows){
         worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha_ingreso));
         worksheet.cell(i+1,3).string(String(row.nombres)).style(style);
         worksheet.cell(i+1,4).string(String(row.apellidos)).style(style);
+        worksheet.cell(i+1,4).string(String(row.estado)).style(style);
         worksheet.cell(i+1,5).string(String(row.sexo)).style(style);
         worksheet.cell(i+1,6).string(String(row.ci)).style(style);
         worksheet.cell(i+1,7).date(formatear_fecha_yyyymmdd(row.fecha_nac));
@@ -190,16 +192,17 @@ app.get('/add', function(req, res, next){
     }
     //controlamos quien se loga.
 	if(user.length >0){
-        // renderear views/user/add.ejs
+        //renderear views/user/add.ejs
+        //Al agregar el empleado ya va con estado ACTIVO (VALOR POR DEFECTO DEL CAMPO EN LA TABLA) en la BBDD
         res.render('rrhh/add', {
             title: 'Cargar nuevo EMPLEADO', codigo:'', fecha_ingreso :'', nombres: '', apellidos: '', sexo:'',ci:'',fecha_nac:'',edad:0, nacionalidad:'',mano_diestra:'',
             estado_civil:'',ocupacion:'',n_hijos:0, email:'',cargo:'',calzado:0, pantalon:0, camisa:0, nivel_educativo:'',g_a_aprobado:'',ant_ano:0, ant_mes:'0',
-            horario_e:'',horario_s:'',dep_trabajo:'',direccion:'',ciudad:'',barrio:'',tel_movil:'',tel_emergencia:'', motivo_salida:'',
+            horario_e:'',horario_s:'',dep_trabajo:'',direccion:'',ciudad:'',barrio:'',tel_movil:'',tel_emergencia:'', motivo_salida:'', 
             tipo_empleado:'',jornal:0, usuario_insert: user, usuario: user})
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
-//NUEVO GASTO - POST DE INSERT
+//NUEVO EMPLEADO - POST DE INSERT
 app.post('/add', function(req, res, next){   
     if(req.session.user)
     {   user =  req.session.user;
@@ -356,7 +359,7 @@ app.post('/add', function(req, res, next){
              * because req.param('name') is deprecated
              */ 
             res.render('rrhh/add', { 
-                title: 'Agregar Nuevo GASTO',
+                title: 'Agregar Nuevo EMPLEADO',
                 codigo: recurso.codigo,
                 fecha_ingreso: recurso.fecha_ingreso,
                 nombres: recurso.nombres,
@@ -519,7 +522,7 @@ app.get('/editar/:id', function(req, res, next){
                         tel_emergencia: rows[0].tel_emergencia,
                         tipo_empleado: rows[0].tipo_empleado,
                         jornal: rows[0].jornal,
-                        estado: rows[0].estado,
+                        estado: rows[0].estado, //agregamos el valor estado.
                         motivo_salida: rows[0].motivo_salida,
                         usuario: user
                     })

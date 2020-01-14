@@ -76,6 +76,7 @@ color: #ffffff;
                     <th>CODIGO</th>
                     <th>NOMBRES</th>
                     <th>APELLIDOS</th>
+                    <th>ESTADO</th>
                     <th>TEL MOVIL</th>
                     <th>OCUPACION</th>
                     <th>FECHA INGRESO</th>
@@ -96,6 +97,7 @@ color: #ffffff;
                 <td><%= emple.codigo %></td>
                 <td><%= emple.nombres %></td>
                 <td><%= emple.apellidos %></td>
+                <td><%= emple.estado %></td>
                 <td><%= emple.tel_movil %></td>
                 <td><%= emple.ocupacion %></td>
                 <td><%= formatear_fecha(emple.fecha_ingreso) %></td>
@@ -108,11 +110,12 @@ color: #ffffff;
                 <td><%= emple.jornal %></td>
                 <td>
                     <div>
-                        <a href='/rrhh/editar/<%= emple.id %>'>Ver</a> &nbsp;                            
+                        <a href='/rrhh/editar/<%= emple.id %>'>Ver</a> &nbsp;  
+                        <!--                         
                         <form method="post" action="/rrhh/eliminar/<%= emple.id %>" style="float:right">
                             <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar el empleado?')" />
                             <input type="hidden" name="_method" value="DELETE" />
-                        </form>
+                        </form>-->
                     </div>
                 </td>
             </tr>
