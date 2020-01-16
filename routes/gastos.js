@@ -394,6 +394,11 @@ app.post('/add', function(req, res, next){
                 else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor}
             }
 
+            //si es la cond es contado y el codigo = 4 // agregado (16/01/2020)
+            if(cod == 4 && fact_cond == "CONTADO")
+            //si el cod = 4 O y  es contado, entonces gastoreal = 0 
+            {gasreal = 0;}
+
             var tipov = '';
             if(user == "admin" || user == "ksanabria" || user == "josorio")
             {   tipov = req.sanitize('tipo').escape().trim();}
