@@ -395,7 +395,7 @@ app.post('/add', function(req, res, next){
             }
 
             //si es la cond es contado y el codigo = 4 // agregado (16/01/2020)
-            if(cod == 4 && fact_cond == "CONTADO")
+            if(cod == 4 && fact_cond == "CONTADO / NOTA DE CREDITO")
             //si el cod = 4 O y  es contado, entonces gastoreal = 0 
             {gasreal = 0;}
 
@@ -924,7 +924,7 @@ app.get('/eliminar/(:id)', function(req, res, next) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
-                    //redireccionar al listado de GASTO
+                    //redireccionar al listado de GASTO --SEGUN DE DONDE SE LE HAYA PUESTO
                     res.redirect('/gastos')
                 } else {
                     req.flash('success', 'Gasto eliminado exitosamente! ID = ' + req.params.id)
