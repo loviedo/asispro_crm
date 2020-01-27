@@ -62,7 +62,7 @@ app.get('/logout', function(req, res) {
 
 //EJEMPLO DE PAGINA PARA USAR COMO SESION
 //pagina que debemos controlar si ya se logo el usuario
-app.get('/dashboard', function(req, res,next) {
+app.get('/dashboard', function(req, res, next) {
     
     //controlamos quien se loga.
 	if(req.session.user){

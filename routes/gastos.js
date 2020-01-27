@@ -924,11 +924,12 @@ app.get('/eliminar/(:id)', function(req, res, next) {
                 //if(err) throw err
                 if (err) {
                     req.flash('error', err)
-                    //redireccionar al listado de GASTO --SEGUN DE DONDE SE LE HAYA PUESTO
+                    //redireccionar al listado de GASTO 
+                    //verificar si es desde donde se le invoca al eliminar para redireccionar (listar o historial)
                     res.redirect('/gastos')
                 } else {
                     req.flash('success', 'Gasto eliminado exitosamente! ID = ' + req.params.id)
-                    //redireccionar al listado de GASTO
+                    //verificar si es desde donde se le invoca al eliminar para redireccionar (listar o historial)
                     res.redirect('/gastos')
 
                     //insertar log de uso de sistema en caso de suceso de insercion
