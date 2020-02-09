@@ -824,7 +824,8 @@
                         var row = OT_DATOS_INGRESOS.row(pos).data();
                         //console.log(row);//debug en la consola del navegador
                         //asignamos el valor
-                        $('#nro_ot').val(row[0]);
+                        $('#nro_ot').val(row[0]);//asignamos el nro de OT
+                        $('#obra').val(row[11]);//asignamos la OBRA de la OT
                     } );
 
                     $('#table_modal_pro_gastos tbody').on( 'click', 'tr', function () {

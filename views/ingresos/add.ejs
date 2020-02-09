@@ -1,4 +1,4 @@
-<!-- including header content which is common for all pages -->
+<!--  -->
 <%- include ../layouts/header.ejs %>    
  
 <% if (messages.error) { %>
@@ -114,50 +114,45 @@ input {
         <h3>Carga de INGRESOS</h3>
     </div>
 </nav>
-
+<!-- cuerpo carga-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
     <div class="container-fluid">
         <form action="/ingresos/add" method="post" name="form1">
             <div class="form-row">
-                <div class="form-group col-md-6">
+
+                <!-- agregamos el ID DEL CLIENTE para guardar en la tabla-->
+                <input type="hidden" class="form-control" name="id_cliente" id="id_cliente" value="<%= id_cliente %>">
+                <div class="form-group col-md-3">
                     <label for="fecha">FECHA</label>
-                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha Ingreso" >
+                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha Ingreso">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="cliente">CLIENTE <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_clientes_ingresos">
-                        ver CLIENTES</button>
-                    <input type="text" class="form-control" id="cliente" name="cliente" value="<%= cliente %>">
-                    <!--<datalist id="lista_cli">
-                        <% /*if (data) { %>
-                            <% data.forEach(function(fila_cli){ %>
-                                <option value="<%= fila_cli %>"><%= fila_cli %></option>
-                            <% }) %>
-                        <% }*/ %>
-                    </datalist> -->
+                <div class="form-group col-md-3">
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_clientes_ingresos">Seleccionar Cliente</button>
+                    <input type="text" class="form-control" id="cliente" name="cliente" value="<%= cliente %>" readonly=true>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
-                            ver OTs</button>
-                    </label>
-                    <input type="text" class="form-control" id="nro_ot" name="nro_ot" value="<%= nro_ot %>">
+                <div class="form-group col-md-3">
+                    <!-- cambiamos para que sea solo seleccionable no tipeable 09/02/2020 -->
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">Seleccionar OT</button>
+                    <input type="text" class="form-control" id="nro_ot" name="nro_ot" value="<%= nro_ot %>" readonly=true>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
+                    <!-- cambiamos para que sea solo seleccionable no tipeable 09/02/2020 -->
                     <label for="obra">OBRA</label>
-                    <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra Descripcion">
+                    <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Descripcion.." readonly=true>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="pago">PAGO</label>
                     <input type="text" class="form-control" name="pago" id="pago" value="<%= pago %>" placeholder="Pago">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="fact_nro">FACTURA NRO</label>
                     <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="monto">MONTO</label>
                     <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" >
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="fact_condicion">FACTURA TIPO</label>
                     <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" onclick="cal_monto()">
                         <option value="CONTADO">CONTADO</option>
@@ -170,22 +165,22 @@ input {
                         <option value="ANULADA">ANULADA</option>-->
                     </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="calcu_iva">PORCENTAJE IVA</label>
                     <select class="form-control" name="calcu_iva" id="calcu_iva" onclick="cal_iva()">
                         <option value="IVA_10">IVA 10%</option>
                         <option value="IVA_5">IVA 5%</option>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="mon_s_iva">MONTO SIN IVA</label>
                     <input type="text" class="form-control" name="mon_s_iva" id="mon_s_iva" value="<%= mon_s_iva %>" placeholder="Monto sin IVA" >
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="iva">IVA</label>
                     <input type="text" class="form-control" name="iva" id="iva" value="<%= iva %>" placeholder="IVA...">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="calcu_ret">PORCENTAJE RETENCION</label>
                     <select class="form-control" name="calcu_ret" id="calcu_ret" onclick="cal_ret()">
                         <option value="SIN_RET">SIN RET</option>
@@ -194,11 +189,11 @@ input {
                         <option value="RET_100">RET 100%</option>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="retencion">RETENCION</label>
                     <input type="text" class="form-control" name="retencion" id="retencion" value="<%= retencion %>" placeholder="Retencion">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="total_facturado">TOTAL FACTURADO</label>
                     <input type="text" class="form-control" name="total_facturado" id="total_facturado" value="<%= total_facturado %>" onclick="cal_monto()">
                 </div>
@@ -210,7 +205,67 @@ input {
 
 
 
+
+
+
 <!-- MODAL de OTs -->
+<div class="modal fade" id="modal_ot_ingresos" tabindex="1" role="dialog" aria-labelledby="modal_ot_ingresosLabel" aria-hidden="true">
+    <div class="modal-dialog" width="100%" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_ot_ingresosLabel">Listado de OTs</h5>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid" width="100%">
+                <table id="table_modal_ot_ingresos" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                        <tr>
+                            <th>Nro OT</th>
+                            <th>FECHA EMISION</th>
+                            <th>F INI EJECUCION</th>
+                            <th>F FIN EJECUCION</th>
+                            <th>Nro FACTURA</th>
+                            <th>Est FACTURA</th>
+                            <th>Nro RECIBO</th>
+                            <th>Nro REMISION</th>
+                            <th>TIPO FACTURA</th>       
+                            <th>CLIENTE</th>
+                            <th>OBRA</th>
+                            <th>DESCRIPCION</th>           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (data) { %>
+                            <% data.forEach(function(ot){ %>
+                        <tr>
+                            <td><%= ot.ot_nro %></td>
+                            <td><%= formatear_fecha(ot.fec_emision) %></td>
+                            <td><%= formatear_fecha(ot.fec_ini_ejecucion) %></td>
+                            <td><%= formatear_fecha(ot.fec_fin_ejecucion) %></td>
+                            <td><%= ot.fact_nro %></td>
+                            <td><%= ot.fact_estado %></td>
+                            <td><%= ot.recibo_nro %></td>
+                            <td><%= ot.remision_nro %></td>
+                            <td><%= ot.fact_tipo %></td>
+                            <td><%= ot.cliente %></td>
+                            <td><%= ot.obra %></td>
+                            <td><%= ot.descripcion %></td>
+                        </tr>
+                            <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+            <div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODAL de OTs -->
+<!-- 
 <div class="modal fade" id="modal_ot_ingresos" tabindex="-1" role="dialog" aria-labelledby="modal_ot_ingresosLabel" aria-hidden="true">
     <div class="modal-dialog" width="100%" role="document">
         <div class="modal-content">
@@ -218,7 +273,6 @@ input {
             <h5 class="modal-title" id="modal_ot_ingresosLabel">Listado de OTs</h5>
         </div>
         <div class="modal-body">
-            <!-- ACA PONEMOS LA TABLA QUE DEBE SER COMO /LISTAR -->
 
 <div class="container-fluid" width="100%">
         <table id="table_modal_ot_ingresos" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
@@ -265,11 +319,10 @@ input {
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
-            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
         </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <!-- MODAL de CLIENTES-->
 <div class="modal fade" id="modal_clientes_ingresos" tabindex="-1" role="dialog" aria-labelledby="modal_clientes_ingresosLabel" aria-hidden="true">
@@ -286,16 +339,16 @@ input {
                             <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
                             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                                 <tr>
-                                    <th>ID</th>  
+                                    <th>ID</th>
                                     <th>NOMBRE</th>
-                                    <th>RUC</th>          
+                                    <th>RUC</th> 
                                 </tr>
                             </thead>
                         <tbody>
                         <% if (data_clientes) { %>
                             <% data_clientes.forEach(function(cli){ %>
                             <tr>
-                                <td><%= cli.ot_nro %></td>
+                                <td><%= cli.id %></td>
                                 <td><%= cli.nombre %></td>
                                 <td><%= cli.ruc %></td>
                             </tr>
