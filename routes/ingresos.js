@@ -57,7 +57,7 @@ function formatear_fecha(date) {
 }
 
 function generar_excel_ingresos(rows){
-    var workbook = new excel.Workbook();
+    var workbook = new excel.Workbook({numberFormat: 'dd/mm/yyyy'});
     //Add Worksheets to the workbook
     var worksheet = workbook.addWorksheet('INGRESOS');
     // Create a reusable style
@@ -92,13 +92,14 @@ function generar_excel_ingresos(rows){
     worksheet.cell(1,12).string('RETENCION').style(style);
     worksheet.cell(1,13).string('PORCENTAJE').style(style);
     worksheet.cell(1,14).string('TOTAL FACTURADO').style(style);
+    worksheet.cell(1,15).string('OBSERVACIONES').style(style);
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
     var i = 1;
     rows.forEach(function(row) {
         worksheet.cell(i+1,1).number(Number(row.id)).style(style);
-        worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha));
+        worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
         worksheet.cell(i+1,3).string(String(row.cliente)).style(style);
         worksheet.cell(i+1,4).string(String(row.obra)).style(style);
         worksheet.cell(i+1,5).number(Number(row.nro_ot)).style(style);
@@ -111,6 +112,7 @@ function generar_excel_ingresos(rows){
         worksheet.cell(i+1,12).number(Number(row.retencion)).style(style);
         worksheet.cell(i+1,13).string(String(row.calcu_ret)).style(style);
         worksheet.cell(i+1,14).number(Number(row.total_facturado)).style(style1);
+        worksheet.cell(i+1,15).number(Number(row.obs)).style(style1);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -169,8 +171,8 @@ app.get('/add', function(req, res, next){
                             });  
                             //console.log(datos);//debug nros de ot
                             res.render('ingresos/add', {
-                                title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
-                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0',data: datos, usuario_insert: user, usuario: user, data_clientes: datos_clientes});
+                                title: 'Cargar nuevo INGRESO',fecha: '', id_cliente='', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
+                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', obs='', data: datos, usuario_insert: user, usuario: user, data_clientes: datos_clientes});
                         }
                     })                                            
                 }
@@ -204,6 +206,7 @@ app.post('/add', function(req, res, next){
 
             var ingreso = {
                 fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+                id_cliente: req.sanitize('id_cliente').trim(),
                 cliente: req.sanitize('cliente').trim(),
                 obra: req.sanitize('obra').trim(),
                 fact_nro: req.sanitize('fact_nro').trim(),
@@ -217,6 +220,7 @@ app.post('/add', function(req, res, next){
                 nro_ot: Number(req.sanitize('nro_ot').trim()),
                 monto_s_iva: Number(req.sanitize('mon_s_iva').trim()),
                 pago: req.sanitize('pago').trim(),//string
+                obs: req.sanitize('obs').trim(),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
             }   
@@ -232,6 +236,7 @@ app.post('/add', function(req, res, next){
                         res.render('ingresos/add', {
                             title: 'Agregar Nuevo INGRESO',
                             fecha: ingreso.fecha,
+                            id_cliente: ingreso.id_cliente,
                             cliente: ingreso.cliente,
                             obra: ingreso.obra,
                             pago: ingreso.pago,
@@ -269,8 +274,8 @@ app.post('/add', function(req, res, next){
                                                 datos_clientes.push(row);
                                             });  
                                             res.render('ingresos/add', {
-                                                title: 'Cargar nuevo INGRESO',fecha: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
-                                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', data: datos, usuario_insert: user, usuario: user,data_clientes: datos_clientes});
+                                                title: 'Cargar nuevo INGRESO',fecha: '', id_cliente: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
+                                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', obs='', data: datos, usuario_insert: user, usuario: user,data_clientes: datos_clientes});
                                         }
                                     })
                                 }
@@ -294,7 +299,8 @@ app.post('/add', function(req, res, next){
              */ 
             res.render('ingresos/add', { 
                 title: 'Agregar Nuevo INGRESO',
-                fech: ingreso.fecha,
+                fecha: ingreso.fecha,
+                id_cliente: ingreso.id_cliente,
                 cliente: ingreso.cliente,
                 obra: ingreso.obra,
                 fact_nro: ingreso.fact_nro,
@@ -308,6 +314,7 @@ app.post('/add', function(req, res, next){
                 pago: ingreso.pago,
                 mon_s_iva: ingreso.mon_s_iva,
                 nro_ot: ingreso.nro_ot,
+                obs: ingreso.obs,
                 usuario: user
             })
         }
@@ -352,10 +359,10 @@ app.get('/editar/:id', function(req, res, next){
                                             datos_clientes.push(row);
                                         });  
                                         //console.log(datos);//debug nros de ot
-                                        res.render('ingresos/editar', { title: 'Editar INGRESO', id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), cliente: rows[0].cliente, obra: rows[0].obra,
+                                        res.render('ingresos/editar', { title: 'Editar INGRESO', id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), id_cliente: rows[0].id_cliente,cliente: rows[0].cliente, obra: rows[0].obra,
                                             fact_nro: rows[0].fact_nro, fact_condicion: rows[0].fact_condicion, monto: rows[0].monto, pago: rows[0].pago, calcu_iva: rows[0].calcu_iva,
                                             iva: rows[0].iva, retencion: rows[0].retencion, calcu_ret: rows[0].calcu_ret, total_facturado: rows[0].total_facturado, nro_ot: rows[0].nro_ot,
-                                            mon_s_iva: rows[0].monto_s_iva, data: datos, usuario: user, data_clientes: datos_clientes})
+                                            mon_s_iva: rows[0].monto_s_iva, obs: rows[0].obs, data: datos, usuario: user, data_clientes: datos_clientes})
                                     }
                                 })  
 
@@ -388,6 +395,7 @@ app.post('/editar/:id', function(req, res, next) {
 
         var ingreso = {
                 fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+                id_cliente: req.sanitize('id_cliente').trim(),
                 cliente: req.sanitize('cliente').trim(),
                 obra: req.sanitize('obra').trim(),
                 fact_nro: req.sanitize('fact_nro').trim(),
@@ -401,6 +409,7 @@ app.post('/editar/:id', function(req, res, next) {
                 nro_ot: Number(req.sanitize('nro_ot').trim()),
                 monto_s_iva: Number(req.sanitize('mon_s_iva').trim()),
                 pago: req.sanitize('pago').trim(),
+                obs: req.sanitize('obs').trim(),
                 usuario_insert: user
                 //usuario_insert: req.sanitize('usuario_insert').trim()//no usamos en la pagina.
             } 
@@ -415,6 +424,7 @@ app.post('/editar/:id', function(req, res, next) {
                         res.render('ingresos/editar', {
                             title: 'Agregar Nuevo INGRESO',
                             fecha: ingreso.fecha,
+                            id_cliente: ingreso.id_cliente,
                             cliente: ingreso.cliente,
                             obra: ingreso.obra,
                             pago: ingreso.pago,
@@ -428,6 +438,7 @@ app.post('/editar/:id', function(req, res, next) {
                             total_facturado: ingreso.total_facturado,
                             nro_ot: ingreso.nro_ot,
                             mon_s_iva: ingreso.mon_s_iva,
+                            obs: ingreso.obs,
                             usuario: user
                         })
                     } else {                
@@ -456,6 +467,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                 title: 'Editar INGRESO',
                                                 id: req.params.id,
                                                 fecha: req.body.fecha,
+                                                id_cliente: req.body.id_cliente,
                                                 cliente: req.body.cliente,
                                                 obra: req.body.obra,
                                                 pago: req.body.pago,
@@ -471,6 +483,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                 mon_s_iva: req.body.mon_s_iva,
                                                 usuario_insert: user,
                                                 data: datos,
+                                                obs: req.body.obs,
                                                 data_clientes: datos_clientes,
                                                 usuario: user               
                                             })
@@ -500,6 +513,7 @@ app.post('/editar/:id', function(req, res, next) {
             res.render('ingresos/editar', { 
                 title: 'Editar INGRESO',
                 fecha: req.body.fecha,
+                id_cliente: req.body.id_cliente,
                 cliente: req.body.cliente,
                 obra: req.body.obra,
                 fact_nro: req.body.fact_nro,
@@ -513,6 +527,7 @@ app.post('/editar/:id', function(req, res, next) {
                 nro_ot: req.body.nro_ot,
                 pago: req.body.pago,
                 mon_s_iva: req.body.mon_s_iva,
+                obs: req.body.obs,
                 usuario_insert: user
             })
         }
