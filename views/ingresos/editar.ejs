@@ -121,46 +121,38 @@ function formatear_fecha(date) {
         
         <form action="/ingresos/editar/<%= id %>" method="post" name="form1">
             <div class="form-row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="fecha">FECHA</label>
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha Ingreso" >
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="cliente">CLIENTE <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_clientes_ingresos">
-                        ver CLIENTES</button>
-                    </label>
-                    <input type="text" class="form-control" id="cliente" name="cliente" value="<%= cliente %>">
-                    <!--<datalist id="lista_cli">
-                        <% /*if (data) { %>
-                            <% data.forEach(function(fila_cli){ %>
-                                <option value="<%= fila_cli %>"><%= fila_cli %></option>
-                            <% }) %>
-                        <% }*/ %>
-                    </datalist> -->
+                <!-- cambios para poder seleccionar al cliente.-->
+                <div class="form-group col-md-3">
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_clientes_ingresos">Seleccionar Cliente</button>
+                    <input type="text" class="form-control" id="cliente" name="cliente" value="<%= cliente %>" readonly=true>
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="nro_ot">NRO OT <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">
-                            ver OTs</button>
-                    </label>
-                    <input type="text" class="form-control" id="nro_ot" name="nro_ot" value="<%= nro_ot %>">
+                <div class="form-group col-md-3">
+                    <!-- cambiamos para que sea solo seleccionable no tipeable 09/02/2020 -->
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_ot_ingresos">Seleccionar OT</button>
+                    <input type="text" class="form-control" id="nro_ot" name="nro_ot" value="<%= nro_ot %>" readonly=true>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
+                    <!-- cambiamos para que sea solo seleccionable no tipeable 09/02/2020 -->
                     <label for="obra">OBRA</label>
-                    <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Obra Descripcion">
+                    <input type="text" class="form-control" name="obra" id="obra" value="<%= obra %>" placeholder="Descripcion.." readonly=true>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="pago">PAGO</label>
                     <input type="text" class="form-control" name="pago" id="pago" value="<%= pago %>" placeholder="Pago">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="fact_nro">FACTURA NRO</label>
                     <input type="text" class="form-control" name="fact_nro" id="fact_nro" value="<%= fact_nro %>" placeholder="NRO FACTURA">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="monto">MONTO</label>
                     <input type="text" class="form-control" name="monto" id="monto" value="<%= monto %>" placeholder="Monto" >
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="fact_condicion">FACTURA TIPO</label>
                     <select class="form-control" name="fact_condicion" id="fact_condicion" value="<%= fact_condicion %>" onclick="cal_monto()">
                         <option value="CONTADO">CONTADO</option>
@@ -173,22 +165,22 @@ function formatear_fecha(date) {
                         <option value="ANULADA">ANULADA</option>-->
                     </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="calcu_iva">PORCENTAJE IVA</label>
                     <select class="form-control" name="calcu_iva" id="calcu_iva" onclick="cal_iva()">
                         <option value="IVA_10">IVA 10%</option>
                         <option value="IVA_5">IVA 5%</option>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="mon_s_iva">MONTO SIN IVA</label>
                     <input type="text" class="form-control" name="mon_s_iva" id="mon_s_iva" value="<%= mon_s_iva %>" placeholder="Monto sin IVA" >
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="iva">IVA</label>
                     <input type="text" class="form-control" name="iva" id="iva" value="<%= iva %>" placeholder="IVA...">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="calcu_ret">PORCENTAJE RETENCION</label>
                     <select class="form-control" name="calcu_ret" id="calcu_ret" onclick="cal_ret()">
                         <option value="SIN_RET">SIN RET</option>
@@ -197,13 +189,17 @@ function formatear_fecha(date) {
                         <option value="RET_100">RET 100%</option>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="retencion">RETENCION</label>
                     <input type="text" class="form-control" name="retencion" id="retencion" value="<%= retencion %>" placeholder="Retencion">
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="total_facturado">TOTAL FACTURADO</label>
                     <input type="text" class="form-control" name="total_facturado" id="total_facturado" value="<%= total_facturado %>" onclick="cal_monto()">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="total_facturado">OBSERVACIONES</label>
+                    <input type="text" class="form-control" name="obs" id="obs" value="<%= obs %>" placeholder="Observaciones...">
                 </div>
             </div>
             <button type="submit" name="Submit" value="Actualizar" class="btn btn-primary">ACTUALIZAR</button>

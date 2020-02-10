@@ -132,8 +132,6 @@ function generar_excel_gastos(rows){
     workbook.write('Listado_GASTOS.xlsx');
 }
 
-
-
 // MOSTRAR LISTADO DE GASTOS HISTORICO --------------------------
 app.get('/historico', function(req, res, next) {
     if(req.session.user)

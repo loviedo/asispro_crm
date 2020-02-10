@@ -112,7 +112,7 @@ function generar_excel_ingresos(rows){
         worksheet.cell(i+1,12).number(Number(row.retencion)).style(style);
         worksheet.cell(i+1,13).string(String(row.calcu_ret)).style(style);
         worksheet.cell(i+1,14).number(Number(row.total_facturado)).style(style1);
-        worksheet.cell(i+1,15).number(Number(row.obs)).style(style1);
+        worksheet.cell(i+1,15).string(String(row.obs)).style(style);
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -171,8 +171,8 @@ app.get('/add', function(req, res, next){
                             });  
                             //console.log(datos);//debug nros de ot
                             res.render('ingresos/add', {
-                                title: 'Cargar nuevo INGRESO',fecha: '', id_cliente='', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
-                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', obs='', data: datos, usuario_insert: user, usuario: user, data_clientes: datos_clientes});
+                                title: 'Cargar nuevo INGRESO',fecha: '', id_cliente:'', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
+                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', obs:'', data: datos, usuario_insert: user, usuario: user, data_clientes: datos_clientes});
                         }
                     })                                            
                 }
@@ -275,7 +275,7 @@ app.post('/add', function(req, res, next){
                                             });  
                                             res.render('ingresos/add', {
                                                 title: 'Cargar nuevo INGRESO',fecha: '', id_cliente: '', cliente: '', obra: '', pago: '', nro_ot: '0',monto: '0', fact_nro: '',fact_condicion: 'CONTADO', calcu_iva:'',
-                                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', obs='', data: datos, usuario_insert: user, usuario: user,data_clientes: datos_clientes});
+                                                mon_s_iva:'0', iva: '',retencion: '',calcu_ret: '', total_facturado: '0', obs:'', data: datos, usuario_insert: user, usuario: user,data_clientes: datos_clientes});
                                         }
                                     })
                                 }
