@@ -69,6 +69,7 @@ app.get('/dashboard', function(req, res, next) {
         //si esta definido entonces pasamos el valor
         user =  req.session.user;
         userId = req.session.userId;
+        sesionId = req.session.id; //debug
         
         req.getConnection(function(error, conn) {
             var sql="SELECT * FROM `users` WHERE `id`='"+userId+"'"; 
