@@ -4,7 +4,6 @@ var path = require('path');//para las direcciones locales
 var mysql = require('mysql');//instaciamos mysql
 
 
- 
 /**
  * middleware que provee API consistente para conns mysql mientras hacemos el ciclo request/response 
  */ 
@@ -16,10 +15,10 @@ var myConnection  = require('express-myconnection');
  */ 
 var config = require('./config/config.js')
 var dbOptions = {
-    host:      config.database.host,
-    user:       config.database.user,
+    host:     config.database.host,
+    user:     config.database.user,
     password: config.database.password,
-    port:       config.database.port, 
+    port:     config.database.port, 
     database: config.database.db
 }
 /**
@@ -105,15 +104,16 @@ var flash = require('express-flash')
 var cookieParser = require('cookie-parser');
 /*modulos de sesion */
 var session = require('express-session');
-app.use(cookieParser('keyboard cat'))
+app.use(cookieParser());
 app.use(session({ 
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: false,
+    name:"asispro",
+    saveUninitialized: false
     /*cookie: { maxAge: 60000 }*//* DEBUG */
-    cookie: { expires: false }/* con esto indicamos que la sesion dura solamente mientras este abierta la ventana del browser */
-}))
-app.use(flash())
+    /*cookie: { expires: true, path: "/", secure:false }/* con esto indicamos que la sesion dura solamente mientras este abierta la ventana del browser */
+}));
+app.use(flash());
 
 //cargamos los lugares en donde tenemos los archivos de vistas del proyecto
 app.use('/', index);//el home
