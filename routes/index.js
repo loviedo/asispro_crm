@@ -17,7 +17,7 @@ app.get('/', function(req, res) {
     }*/ //debug
     
     //controlamos quien se loga. 
-	if(req.session.loggedin){
+	if(req.session.loggedIn){
         //si esta definido entonces pasamos el valor
         user =  req.session.user;
         userId = req.session.userId;
@@ -65,7 +65,7 @@ app.get('/logout', function(req, res) {
 app.get('/dashboard', function(req, res, next) {
     
     //controlamos quien se loga.
-	if(req.session.loggedin){
+	if(req.session.loggedIn){
         //si esta definido entonces pasamos el valor
         user =  req.session.user;
         userId = req.session.userId;
@@ -100,7 +100,7 @@ app.post('/login', function(req, res, next) {
                 res.render('login',{title: 'TEST APLICACION ASISPRO', message: 'Usuario o Contrasena equivocada', usuario: user});
             } else {
                 if (rows.length > 0)
-                {   req.session.loggedin = true;//para verificar que este creada la sesion
+                {   req.session.loggedIn = true;//para verificar que este creada la sesion
                     req.session.userId = rows[0].id;
                     req.session.user = rows[0].user_name;
                     //console.log(rows[0].id);

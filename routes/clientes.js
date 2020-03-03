@@ -69,7 +69,7 @@ function generar_excel_clientes(rows){
 
 // MOSTRAR LISTADO DE CLIENTES
 app.get('/', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -95,7 +95,7 @@ app.get('/', function(req, res, next) {
 //RESPONSE PARA CARGA DE CLIENTES -- FORMULARIO 
 app.get('/add', function(req, res, next){
    
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
