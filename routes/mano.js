@@ -188,7 +188,7 @@ function hoy()
 
 // MOSTRAR LISTADO DE Trabajos / mano de PLANIFICADA
 app.get('/', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -221,7 +221,7 @@ app.get('/', function(req, res, next) {
 
 // MOSTRAR LISTADO DE TRABAJOS / mano de obra REAL
 app.get('/real', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -259,7 +259,7 @@ app.get('/real', function(req, res, next) {
 //RESPONSE PARA CARGA DE TRABAJOS / OBRAS ELABORADAS -- FORMULARIO NORMAL -- NO MOSTRAMOS 
 app.get('/add', function(req, res, next){
    
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -317,7 +317,7 @@ app.get('/add', function(req, res, next){
 //RESPONSE PARA CARGA DE TRABAJOS / OBRAS ELABORADAS -- FORMULARIO SIMPLIFICADO - CARGA CRISTINA 
 app.get('/add_mano', function(req, res, next){
    
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -372,7 +372,7 @@ app.get('/add_mano', function(req, res, next){
 //aqui solamente listamos los datos segun la fecha cargada
 app.post('/add_listar', function(req, res, next){
    
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -429,7 +429,7 @@ app.post('/add_listar', function(req, res, next){
 
 //NUEVO PROGRAMACION DE OBRA - POST DE INSERT SIMPLIFICADO
 app.post('/add_mano', function(req, res, next){   
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -622,7 +622,7 @@ app.post('/add_mano', function(req, res, next){
 
 //NUEVO PROGRAMACION DE OBRA - POST DE INSERT NORMAL
 app.post('/add', function(req, res, next){   
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -822,7 +822,7 @@ app.post('/add', function(req, res, next){
 
 //FORMULARIO DE EDICION DE DATOS
 app.get('/editar/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -940,7 +940,7 @@ app.get('/editar/:id', function(req, res, next){
 })
 
 app.post('/editar/:id', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -1282,7 +1282,7 @@ app.post('/editar/:id', function(req, res, next) {
 })
 
 app.get('/editar_real/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -1406,7 +1406,7 @@ app.get('/editar_real/:id', function(req, res, next){
 })
 
 app.post('/editar_real/:id', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -1684,7 +1684,7 @@ app.post('/editar_real/:id', function(req, res, next) {
 /* GENERACION EXCEL */
 app.post('/descargar', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -1709,7 +1709,7 @@ app.post('/descargar', function(req, res, next) {
 // DELETE USER
 app.get('/eliminar/(:id)', function(req, res, next) {
 
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -1739,7 +1739,7 @@ app.get('/eliminar/(:id)', function(req, res, next) {
 
 app.get('/copiar_plan', function(req, res, next) {
 
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }

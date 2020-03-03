@@ -17,7 +17,7 @@ app.get('/', function(req, res) {
     }*/ //debug
     
     //controlamos quien se loga. 
-	if(req.session.user){
+	if(req.session.loggedin){
         //si esta definido entonces pasamos el valor
         user =  req.session.user;
         userId = req.session.userId;
@@ -65,11 +65,11 @@ app.get('/logout', function(req, res) {
 app.get('/dashboard', function(req, res, next) {
     
     //controlamos quien se loga.
-	if(req.session.user){
+	if(req.session.loggedin){
         //si esta definido entonces pasamos el valor
         user =  req.session.user;
         userId = req.session.userId;
-        sesionId = req.session.id; //debug
+        sesionId = req.session.id; //debug //id de la sesion
         
         req.getConnection(function(error, conn) {
             var sql="SELECT * FROM `users` WHERE `id`='"+userId+"'"; 
@@ -88,9 +88,8 @@ app.get('/dashboard', function(req, res, next) {
 
 //ACCION PARA LOGIN
 app.post('/login', function(req, res, next) {
-    var post  = req.body;
-    var name= post.user_name;//campo del form
-    var pass= post.password;//campo del form
+    var name= req.body.user_name;//campo del form
+    var pass= req.body.password;//campo del form
 
     req.getConnection(function(error, conn) {
         var sql="SELECT id, first_name, last_name, user_name FROM users WHERE user_name='"+name+"' and password = '"+pass+"'";  
@@ -101,7 +100,7 @@ app.post('/login', function(req, res, next) {
                 res.render('login',{title: 'TEST APLICACION ASISPRO', message: 'Usuario o Contrasena equivocada', usuario: user});
             } else {
                 if (rows.length > 0)
-                {   // render views/facturas/listar.ejs
+                {   req.session.loggedin = true;//para verificar que este creada la sesion
                     req.session.userId = rows[0].id;
                     req.session.user = rows[0].user_name;
                     //console.log(rows[0].id);

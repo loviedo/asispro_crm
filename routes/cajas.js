@@ -292,7 +292,7 @@ function hoy()
 
 // MOSTRAR CAJAS ASIGNADAS AL USUARIO ACTUAL
 app.get('/', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -358,7 +358,7 @@ app.get('/', function(req, res, next) {
 //CARGA DE NUEVA CAJA
 app.get('/add', function(req, res, next){
    
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -409,7 +409,7 @@ app.get('/add', function(req, res, next){
 
 //NUEVO GASTO - POST DE INSERT
 app.post('/add', function(req, res, next){   
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -559,7 +559,7 @@ app.post('/add', function(req, res, next){
 
 //DETALLE DE LA CAJA SELECCIONADA
 app.get('/detalle/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -617,7 +617,7 @@ app.get('/detalle/:id', function(req, res, next){
 
 //PARA EDITAR LOS DATOS - GET
 app.get('/editar/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -682,7 +682,7 @@ app.get('/editar/:id', function(req, res, next){
 
 //PARA EDITAR LOS DATOS 
 app.post('/editar/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -773,7 +773,7 @@ app.post('/editar/:id', function(req, res, next){
 /* GENERACION Y EXPORTACION EXCEL */
 app.post('/descargar/:id', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -797,7 +797,7 @@ app.post('/descargar/:id', function(req, res, next) {
 
 app.post('/descargar_caja', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -822,7 +822,7 @@ app.post('/descargar_caja', function(req, res, next) {
 //BORRAR CAJA
 app.get('/eliminar/(:id)', function(req, res, next) {
 
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }

@@ -122,7 +122,7 @@ function generar_excel_ingresos(rows){
 
 // MOSTRAR LISTADO DE INGRESOS
 app.get('/', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -148,7 +148,7 @@ app.get('/', function(req, res, next) {
 //RESPONSE PARA CARGA DE INGRESOS -- FORMULARIO 
 app.get('/add', function(req, res, next){
    
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -187,7 +187,7 @@ app.get('/add', function(req, res, next){
 
 //NUEVO GASTO - POST DE INSERT
 app.post('/add', function(req, res, next){   
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -323,7 +323,7 @@ app.post('/add', function(req, res, next){
 
 //FORMULARIO DE EDICION DE DATOS
 app.get('/editar/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -376,7 +376,7 @@ app.get('/editar/:id', function(req, res, next){
 })
 
 app.post('/editar/:id', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -537,7 +537,7 @@ app.post('/editar/:id', function(req, res, next) {
 /* GENERAMOS Y ENVIAMOS EXCEL */
 app.post('/descargar', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -562,7 +562,7 @@ app.post('/descargar', function(req, res, next) {
 // DELETE USER
 app.delete('/eliminar/(:id)', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }

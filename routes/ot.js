@@ -148,7 +148,7 @@ app.get('/', function(req, res, next) {
  
 // SHOW ADD USER FORM
 app.get('/add', function(req, res, next){    
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -163,7 +163,7 @@ app.get('/add', function(req, res, next){
  
 // ADD NEW factura POST ACTION
 app.post('/add', function(req, res, next){   
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -303,7 +303,7 @@ app.post('/add', function(req, res, next){
  
 // SHOW EDIT USER FORM
 app.get('/editar/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -355,7 +355,7 @@ app.get('/editar/:id', function(req, res, next){
  
 // EDIT USER POST ACTION
 app.post('/editar/:id', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -503,7 +503,7 @@ app.post('/editar/:id', function(req, res, next) {
 /* GENERAMOS Y ENVIAMOS EXCEL OT */
 app.post('/descargar', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -527,7 +527,7 @@ app.post('/descargar', function(req, res, next) {
 
 // DELETE USER
 app.delete('/eliminar/(:id)', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }

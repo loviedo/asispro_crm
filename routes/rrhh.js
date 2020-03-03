@@ -161,9 +161,10 @@ function formatear_fecha(date) {
 
 // MOSTRAR LISTADO DE GASTOS
 app.get('/', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
+        sesionId = req.session.id;
     }
 
     //controlamos quien se loga.
@@ -186,7 +187,7 @@ app.get('/', function(req, res, next) {
 
 //RESPONSE PARA CARGA DE GASTOS -- FORMULARIO 
 app.get('/add', function(req, res, next){    
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -204,7 +205,7 @@ app.get('/add', function(req, res, next){
 
 //NUEVO EMPLEADO - POST DE INSERT
 app.post('/add', function(req, res, next){   
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -403,7 +404,7 @@ app.post('/add', function(req, res, next){
 
 //FORMULARIO DE EDICION DE DATOS
 app.get('/editar/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -533,7 +534,7 @@ app.get('/editar/:id', function(req, res, next){
 })
 
 app.post('/editar/:id', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -740,7 +741,7 @@ app.post('/editar/:id', function(req, res, next) {
 /* GENERAMOS Y ENVIAMOS EXCEL */
 app.post('/descargar', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -764,7 +765,7 @@ app.post('/descargar', function(req, res, next) {
 
 // DELETE EMPLEADO
 app.delete('/eliminar/(:id)', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -794,7 +795,7 @@ app.delete('/eliminar/(:id)', function(req, res, next) {
 //GET DE EDICION DE ESTUDIO 
 //OBTENCION DE DATOS Y MUESTRA
 app.get('/pdf/(:id)', function(req,res,next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }

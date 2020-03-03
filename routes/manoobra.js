@@ -338,7 +338,7 @@ function hoy()
 
 // MOSTRAR LISTADO DE Trabajos / mano de PLANIFICADA
 app.get('/listado', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -379,7 +379,7 @@ app.get('/listado', function(req, res, next) {
 
 // MOSTRAR LISTADO DE Trabajos / mano de PLANIFICADA
 app.get('/', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -419,7 +419,7 @@ app.get('/', function(req, res, next) {
 })
 
 app.get('/editar/:id', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -469,7 +469,7 @@ app.get('/editar/:id', function(req, res, next){
 })
 
 app.post('/editar/:id', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -549,7 +549,7 @@ app.post('/editar/:id', function(req, res, next) {
 
 // MOSTRAR LISTADO HISTORICO DE LIQUIDACIONES
 app.get('/historia_liq', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -665,7 +665,7 @@ app.get('/historia_liq', function(req, res, next) {
 
 // MOSTRAR LISTADO ACUMULATIVO DE LIQUIDACIONES MES
 app.get('/liquidaciones', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -781,7 +781,7 @@ app.get('/liquidaciones', function(req, res, next) {
 
 /* CUANDO ABRIMOS YA GENERAMOS LA LIQUIDACION ACTUALIZADA DE LA PERSONA Y LO GUARDAMOS EN LA CARPETA DE LIQUIDACIONES */
 app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -838,7 +838,7 @@ app.get('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next){
 
 /*AL ACTUALIZAR UN DATO YA GENERAMOS LA LIQUIDACION ACTUALIZADA DE LA PERSONA Y LO GUARDAMOS EN LA CARPETA DE LIQUIDACIONES */
 app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -943,7 +943,7 @@ app.post('/editar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
 /* GENERACION EXCEL MANO DE OBRA*/
 app.post('/descargar', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -968,7 +968,7 @@ app.post('/descargar', function(req, res, next) {
 /* GENERACION EXCEL */
 app.post('/descargar_liq', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -993,7 +993,7 @@ app.post('/descargar_liq', function(req, res, next) {
 /* EXCEL DE LIQUIDACIONES */
 app.post('/generar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
     //primero traemos los datos de la tabla
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
@@ -1017,8 +1017,7 @@ app.post('/generar_liq/:codigo/:anho/:mes/:quincena', function(req, res, next) {
 
 // DELETE USER --CREO QUE NO USAMOS AQUI
 app.get('/eliminar/(:id)', function(req, res, next) {
-
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
