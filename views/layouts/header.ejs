@@ -464,7 +464,7 @@
                     <li>
                         <a href="#provesub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
-                            PROVEEDORES
+                            Proveedores
                         </a>
                         <ul class="collapse list-unstyled" id="provesub" >
                             <li>
@@ -527,7 +527,7 @@
                     <li>
                         <a href="#ingresub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
-                            INGRESOS
+                            Ingresos
                         </a>
                         <ul class="collapse list-unstyled" id="ingresub" >
                             <li>
@@ -555,7 +555,7 @@
                     <li>
                         <a href="#manoobrasub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
-                            MANO DE OBRA
+                            Mano de Obra
                         </a>
                         <ul class="collapse list-unstyled" id="manoobrasub" >
                             <li>
@@ -580,7 +580,7 @@
                     <li>
                         <a href="#cajasub" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
                             <i class="fas fa-home"></i>
-                            CAJAS
+                            Cajas
                         </a>
                         <ul class="collapse list-unstyled" id="cajasub" >
                             <% if (usuario != 'rsanabria' && usuario != 'cibanez' && usuario != 'prueba' && usuario != 'jlopez' && usuario != 'jguerrero' && usuario != 'fduarte' && usuario != 'ogonzalez') { %>
@@ -589,7 +589,10 @@
                             </li>
                             <% } %>
                             <li>
-                                <a href="/cajas/">Ver Flujos</a>
+                                <a href="/cajas/">Ver Flujos Abiertos</a>
+                            </li> 
+                            <li>
+                                <a href="/cajas/cerrados">Ver Flujos Cerrados</a>
                             </li>   
                         </ul>
                     </li>

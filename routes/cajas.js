@@ -45,99 +45,6 @@ function formatear_fecha_yyyymmdd(date) {
     else{return null;}
 }
 
-function formatear_fecha(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    
-    if(month == 12 && day == 31 && year == 1969)
-    { return "-";}
-    else
-    {return [day,month,year].join('/');}//retornamos valor como a mysql le gusta
-}
-
-//completar funcion
-function generar_excel_emp_liq(rows){
-    var workbook = new excel.Workbook();
-    var worksheet = workbook.addWorksheet('LIQUIDACIONES');
-    //
-    const style = workbook.createStyle({
-    font: {color: '#000000',size: 12},
-    numberFormat: '#,##0.00; (#,##0.00); -'
-    });
-
-    //prueba estilo 2
-    const style1 = workbook.createStyle({
-        font: {color: '#000000',fgColor:'#EF820D',size: 12},
-        numberFormat: '#,##0; (#,##0); -'
-    });
-
-    const bgStyle = workbook.createStyle({
-        fill: {type: 'pattern',patternType: 'solid',
-          //bgColor: '#EF820D',
-          //fgColor: '#EF820D', //color fondo de la celda.
-        }
-    });
-
-    //dibujamos el excel
-    //primero la cabecera
-    worksheet.cell(3,1).string('NRO').style(style);
-    worksheet.cell(3,2).string('NOMBRE Y APELLIDO').style(style);
-    worksheet.cell(3,3).string('AÑO').style(style);
-    worksheet.cell(3,3).string('MES').style(style);
-    worksheet.cell(3,3).string('QUINCENA').style(style);
-    worksheet.cell(3,3).string('EPP').style(style);
-    worksheet.cell(3,4).string('ANTICIPO').style(style);
-    worksheet.cell(3,5).string('PRESTAMO').style(style);
-    worksheet.cell(3,6).string('IPS').style(style);
-    worksheet.cell(3,7).string('SALDO A FAVOR').style(style);
-    worksheet.cell(3,8).string('ME DEBE').style(style);
-    worksheet.cell(3,9).string('LO QUE DEBO').style(style);
-    worksheet.cell(3,10).string('PASAJE').style(style);
-    worksheet.cell(3,11).string('MO').style(style);
-    worksheet.cell(3,12).string('SALDO A PAGAR').style(style);
-    worksheet.cell(3,13).string('OTROS').style(style);
-    worksheet.cell(3,14).string('TOTAL A PAGAR').style(style);
-
-    /*SELECT el.codigo, concat(em.nombres,' ',em.apellidos) as nombre , el.mes, el.anho, el. quincena, el.epp, el.anticipo, el.prestamo, el.ips, el.saldo_favor, el.debe, el.debo, 
-    el.pasaje, el.manoobra, el.saldo_pagar, el.otros, 
-    el.total, el.dias_t, el.h_50_total, el.h_100_total, el.h_neg_total, el.usuario_insert FROM empleados_liq el
-    inner join empleados em on el.codigo = em.codigo
-    where el.mes = month(current_date()) and el.anho = year(current_date()) order by convert(el.codigo,unsigned integer)*/
-
-    //luego los datos
-    var i = 1;
-    rows.forEach(function(row) {
-        worksheet.cell(i+3,1).string(String(row.codigo)).style(style);//codigo del empleado
-        worksheet.cell(i+3,2).string(String(row.nombre)).style(style); //nombre y apellido
-        worksheet.cell(i+3,3).string(String(row.anho)).style(style);
-        worksheet.cell(i+3,3).string(String(row.mes)).style(style);
-        worksheet.cell(i+3,3).string(String(row.quincena)).style(style);
-        worksheet.cell(i+3,3).string(String(row.epp)).style(style);//equipos de proteccion personal
-        worksheet.cell(i+3,4).number(Number(row.anticipo.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,5).string(String(row.prestamo)).style(style);
-        worksheet.cell(i+3,6).number(Number(row.ips.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,7).number(Number(row.saldo_favor.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,8).number(Number(row.debe.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,9).number(Number(row.debo.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,10).number(Number(row.pasaje.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,11).number(Number(row.manoobra.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,12).number(Number(row.saldo_pagar.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,13).number(Number(row.otros.toString().replace(",","."))).style(style);
-        worksheet.cell(i+3,14).number(Number(row.total.toString().replace(",","."))).style(style);
-
-        //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
-        i=i+1;
-        //console.log(row.descripcion);//debug
-    });
-    
-    workbook.write('Listado_LIQUIDACION.xlsx');
-}
-
 //recibimos los datos de cabecera de cajas, y el detalle de facturas que se quieren observar.
 function genera_detalle_caja(user, rows, rows2, rows3){
     var workbook = new excel.Workbook();
@@ -171,6 +78,7 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     worksheet.cell(5,3).string('CONCEPTO').style(style1);
     worksheet.cell(6,3).string('SALDO').style(style1);
     worksheet.cell(7,3).string('GASTO').style(style1);
+    worksheet.cell(8,3).string('ESTADO').style(style1);
 
     /* DATOS CABECERA */
     worksheet.cell(1,4).number(Number(rows[0].id)).style(style);
@@ -180,39 +88,50 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     worksheet.cell(5,4).string(String(rows[0].concepto)).style(style);
     worksheet.cell(6,4).number(Number(rows[0].saldo)).style(style);
     worksheet.cell(7,4).number(Number(rows[0].gasto)).style(style);
+    worksheet.cell(8,4).string(String(rows[0].estado)).style(style);
 
     /* DATOS DETALLE */
-    worksheet.cell(9,2).string('DETALLE DE GASTOS').style(style1);
-    worksheet.cell(10,2).string('FECHA').style(style1);
-    worksheet.cell(10,3).string('CONDICION').style(style1);
-    worksheet.cell(10,4).string('MONTO').style(style1);
-    worksheet.cell(10,5).string('EXENTAS').style(style1);
-    worksheet.cell(10,6).string('IVA 10%').style(style1);
-    worksheet.cell(10,7).string('IVA 5%').style(style1);
-    worksheet.cell(10,8).string('GASTO REAL').style(style1);
-    worksheet.cell(10,9).string('CONCEPTO').style(style1);
-    worksheet.cell(10,10).string('PROVEEDOR').style(style1);
+    worksheet.cell(11,2).string('DETALLE DE GASTOS').style(style1);
+    worksheet.cell(12,2).string('FECHA').style(style1);
+    worksheet.cell(12,3).string('CONDICION').style(style1);
+    worksheet.cell(12,4).string('MONTO').style(style1);
+    worksheet.cell(12,5).string('EXENTAS').style(style1);
+    worksheet.cell(12,6).string('IVA 10%').style(style1);
+    worksheet.cell(12,7).string('IVA 5%').style(style1);
+    worksheet.cell(12,8).string('GASTO REAL').style(style1);
+    worksheet.cell(12,9).string('CONCEPTO').style(style1);
+    worksheet.cell(12,10).string('PROVEEDOR').style(style1);
+    worksheet.cell(12,11).string('ENCARGADO').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,12).string('CODIGO').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,13).string('NRO OT').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,14).string('CLIENTE').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,15).string('OBRA').style(style1);//agregado 09/03/2020
     if (user == "admin" || user == "josorio")
-    {   worksheet.cell(10,11).string('ID_CAJA').style(style1);
-        worksheet.cell(10,12).string('CONCEPTO').style(style1);
+    {   worksheet.cell(12,16).string('ID_CAJA').style(style1);
+        worksheet.cell(12,17).string('CONCEPTO').style(style1);
     }
 
     //luego los datos
     var i = 1;
     rows2.forEach(function(row) {
 
-        worksheet.cell(i+10,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//codigo del empleado
-        worksheet.cell(i+10,3).string(String(row.fact_condicion)).style(style); //nombre y apellido
-        worksheet.cell(i+10,4).number(Number(row.monto.toString().replace(",","."))).style(style);
-        worksheet.cell(i+10,5).number(Number(row.exentas.toString().replace(",","."))).style(style);
-        worksheet.cell(i+10,6).number(Number(row.iva_10.toString().replace(",","."))).style(style);
-        worksheet.cell(i+10,7).number(Number(row.iva_5.toString().replace(",","."))).style(style);
-        worksheet.cell(i+10,8).number(Number(row.gasto_real.toString().replace(",","."))).style(style);
-        worksheet.cell(i+10,9).string(String(row.concepto)).style(style);
-        worksheet.cell(i+10,10).string(String(row.proveedor)).style(style);
+        worksheet.cell(i+12,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//codigo del empleado
+        worksheet.cell(i+12,3).string(String(row.fact_condicion)).style(style); //nombre y apellido
+        worksheet.cell(i+12,4).number(Number(row.monto.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,5).number(Number(row.exentas.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,6).number(Number(row.iva_10.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,7).number(Number(row.iva_5.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,8).number(Number(row.gasto_real.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,9).string(String(row.concepto)).style(style);
+        worksheet.cell(i+12,10).string(String(row.proveedor)).style(style);
+        worksheet.cell(i+12,11).string(String(row.encargado)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,12).number(Number(row.codigo)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,13).number(Number(row.nro_ot)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,14).string(String(row.cliente)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,15).string(String(row.obra)).style(style);//agregado 09/03/2020
         if (user == "admin" || user == "josorio")
-        {   worksheet.cell(i+10,11).string(String(row.id_caja)).style(style);
-            worksheet.cell(i+10,12).string(String(row.concepto)).style(style);
+        {   worksheet.cell(i+12,16).string(String(row.id_caja)).style(style);
+            worksheet.cell(i+12,17).string(String(row.concepto)).style(style);
         }
         /*worksheet.cell(i+10,9).number(Number(rows2.ips.toString().replace(",","."))).style(style);
         worksheet.cell(i+10,10).number(Number(rows2.saldo_favor.toString().replace(",","."))).style(style);*/
@@ -221,18 +140,22 @@ function genera_detalle_caja(user, rows, rows2, rows3){
         i=i+1;
         //console.log(row.descripcion);//debug
     });
+    //agregamos TOTAL
+    worksheet.cell(i+1+12,2).string('TOTAL MONTO').style(style1);//agregado 09/03/2020
+    worksheet.cell(i+1+12,4).formula('=SUM(D13:D'+(i+12)+')').style(style);//asumimos que si o si esta cargado el gasto
+
 
     /* SIGUIENTE HOJA / CARGAMOS EL RESUMEN DE LAS CAJAS */
     /* RESUMEN DE LAS CAJAS */
-    worksheet.cell(2,14).string('RESUMEN CAJAS').style(style1);
-    worksheet.cell(3,14).string('ID').style(style1);
-    worksheet.cell(3,15).string('FECHA').style(style1);
-    worksheet.cell(3,16).string('SALIDA').style(style1);
-    worksheet.cell(3,17).string('RESPONSABLE').style(style1);
-    worksheet.cell(3,18).string('CONCEPTO').style(style1);
-    worksheet.cell(3,19).string('SALDO').style(style1);
-    worksheet.cell(3,20).string('GASTO').style(style1);
-    worksheet.cell(3,21).string('ESTADO (ABIERTA/CERRADA)').style(style1);
+    worksheet.cell(2,19).string('RESUMEN SUBCAJAS').style(style1);
+    worksheet.cell(3,19).string('ID').style(style1);
+    worksheet.cell(3,20).string('FECHA').style(style1);
+    worksheet.cell(3,21).string('SALIDA').style(style1);
+    worksheet.cell(3,22).string('RESPONSABLE').style(style1);
+    worksheet.cell(3,23).string('CONCEPTO').style(style1);
+    worksheet.cell(3,24).string('SALDO').style(style1);
+    worksheet.cell(3,25).string('GASTO').style(style1);
+    worksheet.cell(3,26).string('ESTADO (ABIERTA/CERRADA)').style(style1);
 
     /* LISTADO DE CAJAS */
     var i = 1;
@@ -242,14 +165,14 @@ function genera_detalle_caja(user, rows, rows2, rows3){
 
     rows3.forEach(function(row) {
 
-        worksheet.cell(3+i,14).number(Number(row.id)).style(style);
-        worksheet.cell(3+i,15).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});
-        worksheet.cell(3+i,16).number(Number(row.salida.toString().replace(",","."))).style(style);
-        worksheet.cell(3+i,17).string(String(row.responsable)).style(style);
-        worksheet.cell(3+i,18).string(String(row.concepto)).style(style);
-        worksheet.cell(3+i,19).number(Number(row.saldo.toString().replace(",","."))).style(style);
-        worksheet.cell(3+i,20).number(Number(row.gasto.toString().replace(",","."))).style(style);
-        worksheet.cell(3+i,21).string(String(row.estado)).style(style);
+        worksheet.cell(3+i,19).number(Number(row.id)).style(style);
+        worksheet.cell(3+i,20).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});
+        worksheet.cell(3+i,21).number(Number(row.salida.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,22).string(String(row.responsable)).style(style);
+        worksheet.cell(3+i,23).string(String(row.concepto)).style(style);
+        worksheet.cell(3+i,24).number(Number(row.saldo.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,25).number(Number(row.gasto.toString().replace(",","."))).style(style);
+        worksheet.cell(3+i,26).string(String(row.estado)).style(style);
 
         //sumamos
         total_saldo = total_saldo + row.saldo;
@@ -259,9 +182,9 @@ function genera_detalle_caja(user, rows, rows2, rows3){
         //console.log(row.descripcion);//debug
     });
     //al final colocamos los totalizadores
-    worksheet.cell(3+i,16).number(Number(total_salida)).style(style1);
-    worksheet.cell(3+i,19).number(Number(total_saldo)).style(style1);
-    worksheet.cell(3+i,20).number(Number(total_gasto)).style(style1);
+    worksheet.cell(3+i,22).number(Number(total_salida)).style(style1);
+    worksheet.cell(3+i,25).number(Number(total_saldo)).style(style1);
+    worksheet.cell(3+i,23).number(Number(total_gasto)).style(style1);
     /* FIN CABECERA */
 
     workbook.write('DETALLE_CAJA_ID'+ rows[0].id +'.xlsx');
@@ -309,7 +232,6 @@ app.get('/', function(req, res, next) {
         if (user=="josorio" || user =="admin")
         {   con_sql = "select c.* from cajas c where codigo = 22 order by fecha desc"; 
             /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
-
 
         //actualizamos la suma de los gastos asignados para esa caja.
         var sql_act = 'update cajas t1 set t1.gasto = (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id), ' +
@@ -581,7 +503,9 @@ app.get('/detalle/:id', function(req, res, next){
                         var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' order by fecha desc';
                         //si el usuario es especial, entonces traemos los gastos asociados a sus cajas bajo la caja general creada.
                         if(user == 'josorio' || user == 'admin')
-                        {   sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';}
+                        {   //sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';
+                        sql_consulta = 'select * from gastos g inner join ot t on g.nro_ot = t.ot_nro where g.id_caja in (select id from cajas where id_caja = ' + req.params.id + ') '+
+                        'order by g.id, g.fecha desc';}
                         conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
