@@ -269,9 +269,7 @@ app.get('/add', function(req, res, next){
             //traemos las OTs para mostrar en la ventana modal
             datos = [];
             conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
-                if (err) {
-                    console.log(err);
-                }
+                if (err) {console.log(err);}
                 else{
                     rows.forEach(function(row) {    
                         datos.push(row);
@@ -280,9 +278,7 @@ app.get('/add', function(req, res, next){
                     //traemos los personales para mostrar en el modal
                     datos_rrhh = [];
                     conn.query('SELECT * FROM empleados ORDER BY codigo DESC',function(err, rows) {
-                        if (err) {
-                            console.log(err);
-                        }
+                        if (err) {console.log(err);}
                         else{
                             rows.forEach(function(row) {    
                                 datos_rrhh.push(row);

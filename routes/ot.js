@@ -154,15 +154,38 @@ app.get('/add', function(req, res, next){
     }
     //controlamos quien se loga.
 	if(user.length >0){
-        // render to views/user/add.ejs
-        res.render('ot/add', {
-            title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '',remision_nro: '', 
-            fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', usuario_insert: user, usuario: user})
+
+        req.getConnection(function(error, conn) {
+            conn.query('select max(ot_nro)+1 as max_ot from ot where ot_nro < 100000',  function(err, rows) {
+                if (err) {
+                    req.flash('error', err)
+                    //IGUAL mostramos la pagina con el ERROR
+                    res.render('ot/add', { title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '', 
+                    remision_nro: '',fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', usuario_insert: user, usuario: user})
+                } else {
+                    req.getConnection(function(error, conn) {
+                        conn.query('select id, nombre, ruc from clientes',function(err, rows1) {
+                            //if(err) throw err
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
+                            } else {
+                                rows1.forEach(function(row) {datos_cli.push(row);});
+                                //mostramos la pagina con el ERROR
+                                res.render('ot/add', { title: 'Cargar nueva OT', ot_nro: rows[0].max_ot, fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '', 
+                                remision_nro: '',fact_tipo: '',fact_estado: '', id_cliente:'', cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', clientes: datos_cli, usuario_insert: user, usuario: user});
+                            }
+                        })
+                    })
+                }
+            })
+        })
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
  
 // ADD NEW factura POST ACTION
 app.post('/add', function(req, res, next){   
+
     if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
@@ -205,6 +228,7 @@ app.post('/add', function(req, res, next){
                 remision_nro: remision_nro,
                 fact_tipo: req.sanitize('fact_tipo').trim(),
                 fact_estado: req.sanitize('fact_estado').trim(),
+                id_cliente: req.sanitize('id_cliente').trim(),
                 cliente: req.sanitize('cliente').trim(),
                 obra: req.sanitize('obra').trim(),
                 descripcion: req.sanitize('descripcion').trim(),
@@ -233,6 +257,7 @@ app.post('/add', function(req, res, next){
                             remision_nro: ot.remision_nro,
                             fact_tipo: ot.fact_tipo,
                             fact_estado: ot.fact_estado,
+                            id_cliente: ot.id_cliente,
                             cliente: ot.cliente,
                             obra: ot.obra,
                             descripcion: ot.descripcion,
@@ -255,6 +280,7 @@ app.post('/add', function(req, res, next){
                             remision_nro: '',
                             fact_tipo: '',
                             fact_estado: '',
+                            id_cliente: '',
                             cliente: '',
                             obra: '',
                             descripcion: '',
@@ -290,6 +316,7 @@ app.post('/add', function(req, res, next){
                 fact_tipo: req.body.fact_tipo,
                 fact_estado: req.body.fact_estado,
                 remision_nro: req.body.remision_nro,
+                id_cliente: req.body.id_cliente,
                 cliente: req.body.cliente,
                 obra: req.body.obra,
                 descripcion: req.body.descripcion,
@@ -339,6 +366,7 @@ app.get('/editar/:id', function(req, res, next){
                         remision_nro: rows[0].remision_nro,
                         fact_tipo: rows[0].fact_tipo,
                         fact_estado: rows[0].fact_estado,
+                        id_cliente: rows[0].id_cliente,
                         cliente: rows[0].cliente,
                         obra: rows[0].obra,
                         descripcion: rows[0].descripcion,
@@ -401,6 +429,7 @@ app.post('/editar/:id', function(req, res, next) {
                 remision_nro: remision_nro,
                 fact_tipo: req.sanitize('fact_tipo').trim(),
                 fact_estado: req.sanitize('fact_estado').trim(),
+                id_cliente: req.sanitize('id_cliente').trim(),
                 cliente: req.sanitize('cliente').trim(),
                 obra: req.sanitize('obra').trim(),
                 descripcion: req.sanitize('descripcion').trim(),
@@ -429,6 +458,7 @@ app.post('/editar/:id', function(req, res, next) {
                             remision_nro: req.body.remision_nro,
                             fact_tipo: req.body.fact_tipo,
                             fact_estado: req.body.fact_estado,
+                            id_cliente: req.body.id_cliente,
                             cliente: req.body.cliente,
                             obra: req.body.obra,
                             descripcion: req.body.descripcion,
@@ -453,6 +483,7 @@ app.post('/editar/:id', function(req, res, next) {
                             remision_nro: req.body.remision_nro,
                             fact_tipo: req.body.fact_tipo,
                             fact_estado: req.body.fact_estado,
+                            id_cliente: req.body.id_cliente,
                             cliente: req.body.cliente,
                             obra: req.body.obra,
                             descripcion:req.body.descripcion,
@@ -488,6 +519,7 @@ app.post('/editar/:id', function(req, res, next) {
                 fact_tipo: req.body.fact_tipo,
                 fact_estado: req.body.fact_estado,
                 remision_nro: req.body.remision_nro,
+                id_cliente: req.body.id_cliente,
                 cliente: req.body.cliente,
                 obra: req.body.obra,
                 descripcion: req.body.descripcion,

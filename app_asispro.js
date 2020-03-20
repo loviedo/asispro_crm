@@ -106,12 +106,14 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 app.use(cookieParser());
 app.use(session({ 
-    secret: 'keyboard cat',
+    secret: 'keyboard cat1',
     resave: false,
     name:"asispro",
-    saveUninitialized: false
-    /*cookie: { maxAge: 60000 }*//* DEBUG */
-    /*cookie: { expires: true, path: "/", secure:false }/* con esto indicamos que la sesion dura solamente mientras este abierta la ventana del browser */
+    saveUninitialized: false,
+    cookie: { 
+      expires: false, /* expires: false el usuario debe logarse cada vez que cierre el navegador */
+      maxAge: 24 * 60 * 60 * 1000 /* maxAge: 6 * 60 * 60 * 1000 la sesion expira a las 6 horas */
+    }
 }));
 app.use(flash());
 

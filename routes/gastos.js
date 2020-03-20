@@ -105,7 +105,7 @@ function generar_excel_gastos(rows){
     rows.forEach(function(row) {
         //worksheet.cell(i+1,1).string(String(i)).style(style);//numeracion
         worksheet.cell(i+1,1).number(Number(row.id)).style(style);//cambiamos por el ID de insercion
-        console.log(row.id)
+        //console.log(row.id) //DEBUG
         worksheet.cell(i+1,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({dateFormat: 'dd/mm/yyyy'});//ver formato fecha
         worksheet.cell(i+1,3).number(Number(row.monto)).style(style);
         worksheet.cell(i+1,4).number(Number(row.exentas)).style(style);
@@ -590,9 +590,7 @@ app.get('/editar/:id', function(req, res, next){
                 else { // Si existe la factura
                     req.getConnection(function(error, conn) {
                         conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows2) {
-                            if (err) {
-                                console.log(err);
-                            }
+                            if (err) {console.log(err);}
                             else{
                                 datos = [];
                                 rows2.forEach(function(row) {    
@@ -602,9 +600,7 @@ app.get('/editar/:id', function(req, res, next){
 
                                 req.getConnection(function(error, conn) {
                                     conn.query('SELECT * FROM proveedor ORDER BY id ASC',function(err, rows3) {
-                                        if (err) {
-                                            console.log(err);
-                                        }
+                                        if (err) {console.log(err);}
                                         else{
                                             datos_pro = [];
                                             rows3.forEach(function(row) {    
@@ -805,9 +801,7 @@ app.post('/editar/:id', function(req, res, next) {
                         
                         req.getConnection(function(error, conn) {
                             conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
-                                if (err) {
-                                    console.log(err);
-                                }
+                                if (err) {console.log(err);}
                                 else{
                                     datos = [];
                                     rows.forEach(function(row) {    
@@ -823,9 +817,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                 res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
                                             } else {
                                                 datos_caja = [];
-                                                rows4.forEach(function(row) {    
-                                                    datos_caja.push(row);
-                                                });
+                                                rows4.forEach(function(row) {datos_caja.push(row);});
                                                 //pasamos los datos y los datos de las cajas en rows2
                                                 res.render('gastos/editar', { title: 'Editar GASTO', id_caja: req.body.id_caja, caja: req.body.concepto, id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: gasto.exentas,
                                                 iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,
