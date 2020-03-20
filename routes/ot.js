@@ -164,16 +164,17 @@ app.get('/add', function(req, res, next){
                     remision_nro: '',fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', usuario_insert: user, usuario: user})
                 } else {
                     req.getConnection(function(error, conn) {
-                        conn.query('select id, nombre, ruc from clientes',function(err, rows1) {
+                        conn.query('select id, nombre, ruc from clientes ORDER BY id DESC',function(err, rows1) {
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
                                 res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
                             } else {
+                                datos_cli = [];
                                 rows1.forEach(function(row) {datos_cli.push(row);});
                                 //mostramos la pagina con el ERROR
                                 res.render('ot/add', { title: 'Cargar nueva OT', ot_nro: rows[0].max_ot, fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '', 
-                                remision_nro: '',fact_tipo: '',fact_estado: '', id_cliente:'', cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', clientes: datos_cli, usuario_insert: user, usuario: user});
+                                remision_nro: '',fact_tipo: '',fact_estado: '', id_cliente:'', cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', data_clientes: datos_cli, usuario_insert: user, usuario: user});
                             }
                         })
                     })
