@@ -94,7 +94,8 @@ function calcu_concepto()
             document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
         }
         if(cond1 == "CONTADO")
-        {   document.getElementById("gasto_real1").disabled = false;}
+        //cambiamos en 26/03/2020 gasto real siempre desactivado
+        {   document.getElementById("gasto_real1").disabled = true;}
     }
 }
 
@@ -150,7 +151,7 @@ function changeText() {
         document.getElementById("exentas1").disabled = false; 
         document.getElementById("iva_10").disabled = false; 
         document.getElementById("iva_5").disabled = false;
-        document.getElementById("gasto_real1").disabled = false;  
+        document.getElementById("gasto_real1").disabled = true;  
         //ASIGNAR VALORES
         //document.getElementById("monto").value = 0; 
        // document.getElementById("exentas").value = 0; 

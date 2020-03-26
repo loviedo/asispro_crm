@@ -332,7 +332,7 @@ app.get('/add', function(req, res, next){
                                             //console.log(datos_pro);//debug
                                             res.render('gastos/add', {
                                                 title: 'Cargar nuevo GASTO', id_proveedor: '0', id_caja: '0' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
+                                                fact_condicion: 'CONTADO / NOTA DE CREDITO', proveedor: '',fact_nro: '', encargado: '', codigo: '0',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
                                                 usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                         }
                                     })
@@ -355,11 +355,12 @@ app.post('/add', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){
         
+        //no verificamos todos los campos.
         req.assert('fact_condicion', 'CONDICION').notEmpty()//exentas no vacio
         req.assert('fecha', 'FECHA').notEmpty()//fecha no vacia
         req.assert('monto', 'MONTO').notEmpty()//monto no vacia
         req.assert('exentas', 'EXENTAS').notEmpty()//exentas no vacio
-        req.assert('calcu_iva', 'IVA%').notEmpty()//porcentaje iva no vacio
+        req.assert('calcu_iva', 'IVA %').notEmpty()//porcentaje iva no vacio
         req.assert('codigo', 'CODIGO').notEmpty()//codigo no vacio
         req.assert('concepto', 'CONCEPTO').notEmpty()//exentas no vacio
         req.assert('nro_ot', 'NRO OT').notEmpty()//exentas no vacio
