@@ -198,8 +198,23 @@ function asignar_ot(){
     //alert(valor); //debug
 }
 
-</script>
+function check_fill(){
+    $('form input').keyup(function() {
 
+        var empty = false;
+        $('form input').each(function() {
+            if ($(this).val() == '') {
+                empty = true;
+            }
+        });
+
+
+        if (empty) {$('#insertar').attr('disabled', 'disabled');} // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
+         else {$('#insertar').removeAttr('disabled');} //http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
+        
+    });
+}
+</script>
 
 <!-- NAV PARA TITULO -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#000000;">
@@ -329,7 +344,7 @@ function asignar_ot(){
                 </div>
             <% } %>
             </div>
-            <button type="submit" name="Submit" value="Insertar" class="btn btn-primary">INSERTAR</button>
+            <button type="submit" name="Submit" id="insertar" value="insertar" class="btn btn-primary">INSERTAR</button>
         </form>
     </div>
 </nav>
@@ -476,8 +491,6 @@ function asignar_ot(){
         </div>
     </div>
 </div>
-
-
 
 <!-- BOTONES DE EXPORTACION -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">

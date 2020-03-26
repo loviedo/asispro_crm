@@ -242,8 +242,9 @@ app.get('/', function(req, res, next) {
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja " +
-        "where month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) /*and (c1.estado= 'C' or c1.estado is null)*/ " +
+        "where month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and (c1.estado= 'C' or c1.estado is null) " +
         "order by t1.fecha desc";
+        //cambiamos el where habilitamos el estado de las cajas.
         sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja where (c1.estado= 'C' or c1.estado is null) " +
@@ -353,8 +354,20 @@ app.post('/add', function(req, res, next){
     }
     //controlamos quien se loga.
 	if(user.length >0){
-        /*req.assert('name', 'Nombre es requerido').notEmpty()           //Validar nombre
-        req.assert('age', 'Edad es requerida').notEmpty()             //Validar edad
+        
+        req.assert('fact_condicion', 'CONDICION').notEmpty()//exentas no vacio
+        req.assert('fecha', 'FECHA').notEmpty()//fecha no vacia
+        req.assert('monto', 'MONTO').notEmpty()//monto no vacia
+        req.assert('exentas', 'EXENTAS').notEmpty()//exentas no vacio
+        req.assert('calcu_iva', 'IVA%').notEmpty()//porcentaje iva no vacio
+        req.assert('codigo', 'CODIGO').notEmpty()//codigo no vacio
+        req.assert('concepto', 'CONCEPTO').notEmpty()//exentas no vacio
+        req.assert('nro_ot', 'NRO OT').notEmpty()//exentas no vacio
+        req.assert('origen_pago', 'ORIGEN PAGO').notEmpty()//exentas no vacio
+        req.assert('fact_nro', 'NRO FACTURA').notEmpty()//exentas no vacio
+
+        //req.assert(req.body.fecha, 'La fecha es requerida').notEmpty()//fecha no vacia
+        /*req.assert('age', 'Edad es requerida').notEmpty()             //Validar edad
         req.assert('email', 'SE requiere un email valido').isEmail()  //Validar email*/
         var errors = req.validationErrors();
         
@@ -526,45 +539,67 @@ app.post('/add', function(req, res, next){
                                 }
                             })
                         })
-
                     }
                 })
             })
         }
         //tuvimos errores
         else {//Mostrar errores
-            var error_msg = ''
+            var error_msg = 'Favor completar campos: '
             errors.forEach(function(error) {
-                error_msg += error.msg + '<br>'
+                error_msg += error.msg + ' '
             })                
-            req.flash('error', error_msg)        
+            req.flash('error', error_msg)//mostramos el error     
             
-            /**
-             * Using req.body.name 
-             * because req.param('name') is deprecated
-             */ 
-            res.render('gastos/add', { 
-                title: 'Agregar Nuevo GASTO',
-                fecha: req.body.fecha,
-                monto: req.body.monto,
-                exentas: req.body.exentas,
-                iva_10: req.body.iva_10,
-                iva_5: req.body.iva_5,
-                gasto_real: req.body.gasto_real,
-                concepto: req.body.concepto,
-                fact_condicion: req.body.fact_condicion,
-                proveedor: req.body.proveedor,
-                fact_nro: req.body.fact_nro,
-                encargado: req.body.encargado,
-                codigo: req.body.codigo,
-                nro_ot: req.body.nro_ot,
-                imputado: req.body.imputado,
-                origen_pago: req.body.origen_pago,
-                tipo: req.body.tipo,
-                id_proveeedor: req.body.id_proveeedor,
-                id_caja: req.body.id_caja,
-                caja: req.body.caja,
-                usuario_insert: user
+            /* */ 
+            //devolvemos los params
+            req.getConnection(function(error, conn) {
+                //cualquier usuario puede ver todas las OTs listadas
+                conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
+                    if (err) {console.log(err);}
+                    else{
+                        datos = [];
+                        rows.forEach(function(row) {    
+                            datos.push(row);
+                        });
+                        //console.log(datos);//debug
+                        req.getConnection(function(error, conn) {
+                            //Cualquier usuario puede ver todos los proveedores listados
+                            conn.query('SELECT * FROM proveedor ORDER BY id ASC',function(err, rows2) {
+                                if (err) {console.log(err); }
+                                else{
+                                    datos_pro = [];
+                                    rows2.forEach(function(row) {    
+                                        datos_pro.push(row);
+                                    });
+    
+                                    //traemos las cajas asignadas para esa persona
+                                    req.getConnection(function(error, conn) {
+                                        conn.query("select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows3) {
+                                            //if(err) throw err
+                                            if (err) {
+                                                req.flash('error', err)
+                                                res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
+                                            } else {
+                                                datos_caja = [];
+                                                rows3.forEach(function(row) {    
+                                                    datos_caja.push(row);
+                                                });
+                                                //pasamos los datos y los datos de las cajas en rows2
+                                                //console.log(datos_pro);//debug
+                                                res.render('gastos/add', { title: 'Agregar Nuevo GASTO',id_caja: req.body.id_caja,id_proveedor: req.body.id_proveedor,fecha: req.body.fecha, monto: req.body.monto,exentas: req.body.exentas,iva_10: req.body.iva_10, iva_5: req.body.iva_5,
+                                                gasto_real: req.body.gasto_real,concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,proveedor: req.body.proveedor,fact_nro: req.body.fact_nro,
+                                                encargado: req.body.encargado,/*agregado 25/03/2020*/ usuario: user, codigo: req.body.codigo, nro_ot: req.body.nro_ot, imputado: req.body.imputado, origen_pago: req.body.origen_pago,
+                                                tipo: req.body.tipo,id_proveeedor: req.body.id_proveeedor,id_caja: req.body.id_caja, caja: req.body.caja, usuario_insert: user,
+                                                data: datos, data_pro: datos_pro, data_cajas: datos_caja})
+                                            }
+                                        })
+                                    })
+                                }
+                            })
+                        })
+                    }
+                })
             })
         }
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}

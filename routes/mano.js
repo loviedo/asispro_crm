@@ -949,6 +949,21 @@ app.post('/editar/:id', function(req, res, next) {
         req.assert('email', 'A valid email is required').isEmail()  //Validate email
         */
         var errors = req.validationErrors()
+
+        /* INICIO-- cambios si la OT es administrativa */
+        var cpm = req.sanitize('cliente_plan_m').trim();
+        var cpt = req.sanitize('cliente_plan_t').trim();
+        var jornal_ = Number(req.sanitize('jornal').trim());
+        var monto_ = Number(req.sanitize('monto').trim());
+        var subtotal_ = Number(req.sanitize('subtotal').trim())
+        
+        if(cpm == '9999000' && cpt == '9999000')
+        {   //si las OT son administrativas, entonces el jornal y el monto deben ser 0
+            jornal = 0;
+            monto =0;
+            subtotal = 0;
+        }
+        /* FIN-- cambios si la OT es administrativa */
         
         if( !errors ) {   //No errors were found.  Passed Validation!
         var mano_plan = {
@@ -976,8 +991,8 @@ app.post('/editar/:id', function(req, res, next) {
                 trato_cliente_real2: req.sanitize('trato_cliente2').trim(),//
                 //h_entrada: req.sanitize('h_entrada').trim(),
                 //h_salida: req.sanitize('h_salida').trim(),
-                //monto: Number(req.sanitize('monto').trim()),
-                //subtotal: Number(req.sanitize('subtotal').trim()),
+                monto: monto_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
+                subtotal: subtotal_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
                 //hora_50: req.sanitize('hora_50').trim(),
                 //hora_100: req.sanitize('hora_100').trim(),
                 //hora_normal: req.sanitize('hora_normal').trim(),
@@ -990,7 +1005,7 @@ app.post('/editar/:id', function(req, res, next) {
                 //hora_neg: req.sanitize('hora_neg').trim(),
                 //pasaje: Number(req.sanitize('pasaje').trim()),//no actualizamos prque no existe en la pagina
                 //restri: Number(req.sanitize('restri').trim())
-                //jornal: Number(req.sanitize('jornal').trim()),
+                jornal: jornal_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
                 usuario_insert: user
             } 
             
@@ -1114,8 +1129,8 @@ app.post('/editar/:id', function(req, res, next) {
                                                     trato_cliente2: req.body.trato_cliente2,
                                                     h_entrada: req.body.h_entrada,
                                                     h_salida: req.body.h_salida,
-                                                    monto: req.body.monto,
-                                                    subtotal: req.body.subtotal,
+                                                    monto: req.body.monto, /* */
+                                                    subtotal: req.body.subtotal, /* */
                                                     hora_50: req.body.hora_50,
                                                     hora_100: req.body.hora_100,
                                                     hora_normal: req.body.hora_normal,
@@ -1127,7 +1142,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                     ot_real_n: req.body.ot_real_n,
                                                     pasaje: req.body.pasaje,
                                                     restri: rol,
-                                                    jornal: req.body.jornal,
+                                                    jornal: req.body.jornal, /* */
                                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh
                                                 })
                                             }              
@@ -1429,9 +1444,13 @@ app.post('/editar_real/:id', function(req, res, next) {
         {   val_dia = val_dia + 0.5;}
 
         //CALCULAMOS MONTO EN BASE AL JORNAL
-        var montito = (jornito * 8);
+        var montito = jornito * 8;;
+        //if(otrm >0 && otrm < 999900) //si existe ot real mannhana  y es menor a 999900 (no son OTs administativas)
+        //{   montito = jornito * 8;}
+
         //CALCULAMOS SUBTOTAL EN BASE AL MONTO X DIA LABURADO (0.5+ 0.5 en el maximo valor de los casos)
         var subtotito  = montito * val_dia;
+        
         //CALCULAMOS EL PLUS
         var hnormal= Number(req.sanitize('hora_normal').trim());
         
