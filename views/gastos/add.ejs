@@ -199,72 +199,35 @@ function asignar_ot(){
     //alert(valor); //debug
 }
 
-function keypress(){
+//usamos al tipear monto y exentas.
+function tipea(){
     //LOGICA CARGA GASTOS
     var cond = document.getElementById("fact_condicion").value;
+
     //alert(cond);
     if(cond == "BOLETA_PAGO" || cond == "COMP_INGRESO" || cond == "RECIBO" || cond == "S_F" || cond == "RECIBO_COMUN" || cond == "NOTA_CREDITO" || cond == "NO_CONTABLE")
-    {   //HABLITAR- DESHABILITAR
-        //document.getElementById("monto").disabled = true; 
-        document.getElementById("exentas1").disabled = true; 
-        document.getElementById("iva_10").false = true; 
-        document.getElementById("iva_5").false = true;
-        document.getElementById("gasto_real").disabled = false; //solo gasto real habilitado
-        document.getElementById("gasto_real1").disabled = false; //solo gasto real habilitado
-        document.getElementById("monto1").disabled = false; //solo gasto real habilitado
-        document.getElementById("monto").disabled = false;
-        document.getElementById("exentas1").disabled = false; //solo gasto real habilitado
-        //ASIGNAR VALORES
-        document.getElementById("monto").value = 0; 
-        document.getElementById("exentas1").value = 0; 
-        document.getElementById("iva_10").value = 0; 
-        document.getElementById("iva_5").value = 0;
-        document.getElementById("gasto_real").value = 0; 
-
-        document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
+    {   document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
         document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
         document.getElementById("monto").value = (parseInt(document.getElementById("monto1").value) || 0);
 
         //console.log(document.getElementById("gasto_real").value);//debug en la consola del navegador
     }
     if(cond == "CREDITO")//SOLO 
-    {   //HABLITAR- DESHABILITAR
-        document.getElementById("monto1").disabled = false; 
-        document.getElementById("exentas1").disabled = false; 
-        document.getElementById("iva_10").disabled = false; 
-        document.getElementById("iva_5").disabled = false;
-        document.getElementById("gasto_real1").disabled = true;  
-        //ASIGNAR VALORES
-        //document.getElementById("monto").value = ''; 
-        document.getElementById("exentas1").value = 0; 
-        //document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; 
-        document.getElementById("iva_5").value = 0;
-        document.getElementById("gasto_real1").value = 0; 
-
-        document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
+    {   document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
         document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
         document.getElementById("monto").value = (parseInt(document.getElementById("monto1").value) || 0);
     }
     if(cond == "CONTADO")
-    {   //HABLITAR- DESHABILITAR
-        document.getElementById("monto1").disabled = false; 
-        document.getElementById("exentas1").disabled = false; 
-        document.getElementById("iva_10").disabled = false; 
-        document.getElementById("iva_5").disabled = false;
-        document.getElementById("gasto_real1").disabled = true;  
-        //ASIGNAR VALORES
-        //document.getElementById("monto").value = 0; 
-       // document.getElementById("exentas").value = 0; 
-        //document.getElementById("iva_10").value = Math.round((document.getElementById('monto').value /11)*100) /100; //iva 10% incluido
-        //document.getElementById("iva_5").value = Math.round((document.getElementById('monto').value *5/105)*100) /100; //iva 5% incluido
-        
-        //calculo de gasto real.
+    {   //calculo de gasto real.
         document.getElementById("gasto_real").value = ((parseInt(document.getElementById("monto").value) || 0) + (parseInt(document.getElementById("exentas").value) || 0));
-        document.getElementById("gasto_real1").value = ((parseInt(document.getElementById("monto").value) || 0) + (parseInt(document.getElementById("exentas").value) || 0));
+        document.getElementById("gasto_real1").value = ((parseInt(document.getElementById("monto1").value) || 0) + (parseInt(document.getElementById("exentas1").value) || 0));
         document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
 
         document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
         document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
+
+        //window.alert(document.getElementById("monto1").value);//debug
+        //window.alert(document.getElementById("gasto_real1").value);//debug
     }
 }
 
@@ -304,12 +267,12 @@ function keypress(){
                 </div>
                 <div class="form-group col-md-6">
                     <label for="monto1">MONTO</label>
-                    <input type="text" class="form-control" name="monto1" id="monto1" value="<%= monto %>" placeholder="Monto" onkeypress="keypress()" onclick="changeText()">
+                    <input type="text" class="form-control" name="monto1" id="monto1" value="<%= monto %>" placeholder="Monto" onkeyup="tipea()" onclick="changeText()">
                     <input type="hidden" class="form-control" name="monto" id="monto" value="<%= monto %>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="exentas1">EXENTAS</label>
-                    <input type="text" class="form-control" name="exentas1" id="exentas1" value="<%= exentas %>" placeholder="Exentas" onclick="changeText()">
+                    <input type="text" class="form-control" name="exentas1" id="exentas1" value="<%= exentas %>" placeholder="Exentas" onkeyup="tipea()" onclick="changeText()">
                     <input type="hidden" class="form-control" name="exentas" id="exentas" value="<%= exentas %>">
                 </div>
                 <div class="form-group col-md-6">
