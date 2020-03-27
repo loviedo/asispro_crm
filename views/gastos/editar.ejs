@@ -209,6 +209,39 @@ function formatear_fecha(date) {
         document.getElementById("nro_ot").value = document.querySelector('.dataTables_filter input').value;
         //alert(valor); //debug
     }
+
+//usamos al tipear monto y exentas.
+function tipea(){
+    //LOGICA CARGA GASTOS
+    var cond = document.getElementById("fact_condicion").value;
+
+    //alert(cond);
+    if(cond == "BOLETA_PAGO" || cond == "COMP_INGRESO" || cond == "RECIBO" || cond == "S_F" || cond == "RECIBO_COMUN" || cond == "NOTA_CREDITO" || cond == "NO_CONTABLE")
+    {   document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById("monto1").value) || 0);
+
+        //console.log(document.getElementById("gasto_real").value);//debug en la consola del navegador
+    }
+    if(cond == "CREDITO")//SOLO 
+    {   document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById("gasto_real1").value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById("monto1").value) || 0);
+    }
+    if(cond == "CONTADO")
+    {   //calculo de gasto real.
+        document.getElementById("gasto_real").value = ((parseInt(document.getElementById("monto").value) || 0) + (parseInt(document.getElementById("exentas").value) || 0));
+        document.getElementById("gasto_real1").value = ((parseInt(document.getElementById("monto1").value) || 0) + (parseInt(document.getElementById("exentas1").value) || 0));
+        document.getElementById("exentas").value = (parseInt(document.getElementById("exentas1").value) || 0);
+
+        document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
+        document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
+
+        //window.alert(document.getElementById("monto1").value);//debug
+        //window.alert(document.getElementById("gasto_real1").value);//debug
+    }
+}
+
 </script>
 
 <!-- NAV PARA TITULO -->
@@ -246,12 +279,12 @@ function formatear_fecha(date) {
                 </div>
                 <div class="form-group col-md-6">
                     <label for="monto">MONTO</label>
-                    <input type="text" class="form-control" name="monto1" id="monto1" value="<%= monto %>" placeholder="Monto" onclick="changeText()">
+                    <input type="text" class="form-control" name="monto1" id="monto1" value="<%= monto %>" placeholder="Monto" onkeyup="tipea()" onclick="changeText()">
                     <input type="hidden" class="form-control" name="monto" id="monto" value="<%= monto %>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="exentas">EXENTAS</label>
-                    <input type="text" class="form-control" name="exentas1" id="exentas1" value="<%= exentas %>" placeholder="Exentas" onclick="changeText()">
+                    <input type="text" class="form-control" name="exentas1" id="exentas1" value="<%= exentas %>" placeholder="Exentas" onkeyup="tipea()" onclick="changeText()">
                     <input type="hidden" class="form-control" name="exentas" id="exentas" value="<%= exentas %>">
                 </div>
                 <div class="form-group col-md-6">

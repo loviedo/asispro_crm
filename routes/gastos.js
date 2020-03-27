@@ -382,6 +382,16 @@ app.post('/add', function(req, res, next){
             var calcu_iva = req.sanitize('calcu_iva').escape().trim();
             var fact_cond= req.sanitize('fact_condicion').trim();
             var cod = Number(req.sanitize('codigo').escape().trim());
+            var greal1 = 0;
+
+            /* 26/03/2020 - consecuencia al deshabilitar el gasto_real cuando es contado.
+            si es contado, se deshabilita el gasto_real1 por tanto NO viene en el submit. en ese caso usamos el gasto_real que si viene y esta hidden. */
+            if(fact_cond == "CONTADO"){
+                greal1= Number(req.sanitize('gasto_real').escape().trim()); //por si venga nulo
+            } else {
+                greal1= Number(req.sanitize('gasto_real1').escape().trim()); //el caso contrario como normalmente venimos haciendo
+            }
+
 
             if(calcu_iva == "IVA_10"){
                 var iva10 = Number(req.sanitize('iva_10').escape().trim());
@@ -393,17 +403,17 @@ app.post('/add', function(req, res, next){
             }
             /*if()
             {}*/
-            var gasreal = ''
+            var gasreal = '';
             if(cod == 4 || fact_cond == "CREDITO")
             //si el cod = 4 O es credito entonces tenemos que leer gasto_real, porque gasto_real1 esta anulado
             {gasreal = Number(req.sanitize('gasto_real').escape().trim());}
-            else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}
+            else{gasreal = greal1;}
 
             
             //para el caso del codigo 4 y factura no son credito  y NO SON CODIGO 4
             if(gasreal == 0 && fact_cond !== "CREDITO" && cod !== 4)
             {   if(cod !== 4){gasreal = Number(req.sanitize('gasto_real').escape().trim());}
-                else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor}
+                else{gasreal = greal1;}//el otro valor}
             }
 
             //si es la cond es contado y el codigo = 4 // agregado (16/01/2020)
@@ -684,13 +694,19 @@ app.post('/editar/:id', function(req, res, next) {
     }
     //controlamos quien se loga.
 	if(user.length >0){
-        /*  -- VALIDACIONES ESPERAMOS
-        req.assert('name', 'Name is required').notEmpty()           //Validate name
-        req.assert('age', 'Age is required').notEmpty()             //Validate age
-        req.assert('email', 'A valid email is required').isEmail()  //Validate email
-        */
+        req.assert('fact_condicion', 'CONDICION').notEmpty()//exentas no vacio
+        req.assert('fecha', 'FECHA').notEmpty()//fecha no vacia
+        req.assert('monto', 'MONTO').notEmpty()//monto no vacia
+        req.assert('exentas', 'EXENTAS').notEmpty()//exentas no vacio
+        req.assert('calcu_iva', 'IVA %').notEmpty()//porcentaje iva no vacio
+        req.assert('codigo', 'CODIGO').notEmpty()//codigo no vacio
+        req.assert('concepto', 'CONCEPTO').notEmpty()//exentas no vacio
+        req.assert('nro_ot', 'NRO OT').notEmpty()//exentas no vacio
+        req.assert('origen_pago', 'ORIGEN PAGO').notEmpty()//exentas no vacio
+        req.assert('fact_nro', 'NRO FACTURA').notEmpty()//exentas no vacio
         var errors = req.validationErrors()
         
+
         if( !errors ) {   //No errors were found.  Passed Validation!
             
             /********************************************
@@ -711,7 +727,16 @@ app.post('/editar/:id', function(req, res, next) {
             var calcu_iva = req.sanitize('calcu_iva').escape().trim();
             var fact_cond= req.sanitize('fact_condicion').trim();
             var cod = Number(req.sanitize('codigo').escape().trim());
+            var greal1 = 0;
 
+
+            /* 26/03/2020 - consecuencia al deshabilitar el gasto_real cuando es contado.
+            si es contado, se deshabilita el gasto_real1 por tanto NO viene en el submit. en ese caso usamos el gasto_real que si viene y esta hidden. */
+            if(fact_cond == "CONTADO"){
+                greal1= Number(req.sanitize('gasto_real').escape().trim()); //por si venga nulo
+            } else {
+                greal1= Number(req.sanitize('gasto_real1').escape().trim()); //el caso contrario como normalmente venimos haciendo
+            }
 
             /* EN TODOS LOS CASOS CARGAMOS LAS EXENTAS, SIN IMPORTAR EL CLiCK*/
             /*if(fact_cond == "CONTADO"){
@@ -733,13 +758,13 @@ app.post('/editar/:id', function(req, res, next) {
             if(cod == 4 || fact_cond == "CREDITO")
             //si el cod = 4 O es credito entonces tenemos que leer gasto_real, porque gasto_real1 esta anulado
             {gasreal = Number(req.sanitize('gasto_real').escape().trim());}
-            else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}
+            else{gasreal = greal1;}
 
             
             //para el caso del codigo 4 y factura no son credito  y NO SON CODIGO 4
             if(gasreal == 0 && fact_cond !== "CREDITO" && cod !== 4)
             {   if(cod !== 4){gasreal = Number(req.sanitize('gasto_real').escape().trim());}
-                else{gasreal = Number(req.sanitize('gasto_real1').escape().trim());}//el otro valor}
+                else{gasreal = greal1;}//el otro valor}
             }
 
             var tipov = '';
