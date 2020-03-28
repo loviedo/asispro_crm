@@ -349,32 +349,20 @@ app.get('/editar/:id', function(req, res, next){
                 }
                 else { // Si existe la factura
                     // render to views/factura/edit.ejs template file
-
                     var date1 = rows[0].fec_emision;
                     var date2 = rows[0].fec_ini_ejecucion;
                     var date3 = rows[0].fec_fin_ejecucion;
-
-                    res.render('ot/editar', {
-                        title: 'Editar OT', 
-                        //data: rows[0],
-                        id: rows[0].id,
-                        ot_nro: rows[0].ot_nro,
-                        fec_emision: formatear_fecha_yyyymmdd(date1),
-                        fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
-                        fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3),
-                        fact_nro: rows[0].fact_nro,
-                        recibo_nro: rows[0].recibo_nro,
-                        remision_nro: rows[0].remision_nro,
-                        fact_tipo: rows[0].fact_tipo,
-                        fact_estado: rows[0].fact_estado,
-                        id_cliente: rows[0].id_cliente,
-                        cliente: rows[0].cliente,
-                        obra: rows[0].obra,
-                        descripcion: rows[0].descripcion,
-                        encargado: rows[0].encargado,
-                        trato_cliente: rows[0].trato_cliente,
-                        usuario_insert: user,
-                        usuario: user
+                    conn.query('SELECT * FROM clientes ORDER BY id DESC',function(err, rows1) {
+                        if (err) {console.log(err);}
+                        else{
+                            datos_clientes = [];
+                            rows1.forEach(function(row) {datos_clientes.push(row);});  
+                            //console.log(datos);//debug nros de ot
+                            res.render('ot/editar', {title: 'Editar OT', id: rows[0].id, ot_nro: rows[0].ot_nro, fec_emision: formatear_fecha_yyyymmdd(date1), fec_ini_ejecucion: formatear_fecha_yyyymmdd(date2),
+                            fec_fin_ejecucion: formatear_fecha_yyyymmdd(date3), fact_nro: rows[0].fact_nro, recibo_nro: rows[0].recibo_nro, remision_nro: rows[0].remision_nro, fact_tipo: rows[0].fact_tipo,
+                            fact_estado: rows[0].fact_estado, id_cliente: rows[0].id_cliente, cliente: rows[0].cliente, obra: rows[0].obra, descripcion: rows[0].descripcion, encargado: rows[0].encargado,
+                            trato_cliente: rows[0].trato_cliente, usuario_insert: user, usuario: user, data_clientes: datos_clientes})
+                        }
                     })
                 }            
             })
@@ -471,27 +459,18 @@ app.post('/editar/:id', function(req, res, next) {
                     } else {
                         req.flash('success', 'OT actualizada exitosamente!')
                         
-                        // render ot/editar
-                        res.render('ot/editar', {
-                            title: 'Editar OT',
-                            id: req.params.id, 
-                            ot_nro: req.body.ot_nro,
-                            fec_emision: req.body.fec_emision,
-                            fec_ini_ejecucion: req.body.fec_ini_ejecucion, 
-                            fec_fin_ejecucion: req.body.fec_fin_ejecucion,
-                            fact_nro: req.body.fact_nro,
-                            recibo_nro: req.body.recibo_nro,
-                            remision_nro: req.body.remision_nro,
-                            fact_tipo: req.body.fact_tipo,
-                            fact_estado: req.body.fact_estado,
-                            id_cliente: req.body.id_cliente,
-                            cliente: req.body.cliente,
-                            obra: req.body.obra,
-                            descripcion:req.body.descripcion,
-                            encargado:req.body.encargado,
-                            trato_cliente:req.body.trato_cliente,
-                            usuario_insert: user,
-                            usuario: user
+                        conn.query('SELECT * FROM clientes ORDER BY id DESC',function(err, rows1) {
+                            if (err) {console.log(err);}
+                            else{
+                                datos_clientes = [];
+                                rows1.forEach(function(row) {datos_clientes.push(row);});  
+                                //console.log(datos);//debug nros de ot
+                                // render ot/editar
+                                res.render('ot/editar', {title: 'Editar OT', id: req.params.id, ot_nro: req.body.ot_nro, fec_emision: req.body.fec_emision, fec_ini_ejecucion: req.body.fec_ini_ejecucion, 
+                                    fec_fin_ejecucion: req.body.fec_fin_ejecucion, fact_nro: req.body.fact_nro, recibo_nro: req.body.recibo_nro, remision_nro: req.body.remision_nro, fact_tipo: req.body.fact_tipo,
+                                    fact_estado: req.body.fact_estado, id_cliente: req.body.id_cliente, cliente: req.body.cliente, obra: req.body.obra, descripcion:req.body.descripcion,
+                                    encargado:req.body.encargado, trato_cliente:req.body.trato_cliente, usuario_insert: user, usuario: user, data_clientes:datos_clientes})
+                            }
                         })
                     }
                 })

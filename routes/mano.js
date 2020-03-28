@@ -953,15 +953,15 @@ app.post('/editar/:id', function(req, res, next) {
         /* INICIO-- cambios si la OT es administrativa */
         var cpm = req.sanitize('cliente_plan_m').trim();
         var cpt = req.sanitize('cliente_plan_t').trim();
-        var jornal_ = Number(req.sanitize('jornal').trim());
-        var monto_ = Number(req.sanitize('monto').trim());
-        var subtotal_ = Number(req.sanitize('subtotal').trim())
+        var jornal_ = 0;
+        var monto_ = 0;
+        var subtotal_ = 0;
         
         if(cpm == '9999000' && cpt == '9999000')
         {   //si las OT son administrativas, entonces el jornal y el monto deben ser 0
-            jornal = 0;
-            monto =0;
-            subtotal = 0;
+            jornal_ = 0;
+            monto_ = 0;
+            subtotal_ = 0;
         }
         /* FIN-- cambios si la OT es administrativa */
         
@@ -991,8 +991,8 @@ app.post('/editar/:id', function(req, res, next) {
                 trato_cliente_real2: req.sanitize('trato_cliente2').trim(),//
                 //h_entrada: req.sanitize('h_entrada').trim(),
                 //h_salida: req.sanitize('h_salida').trim(),
-                monto: monto_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
-                subtotal: subtotal_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
+                //monto: monto_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
+                //subtotal: subtotal_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
                 //hora_50: req.sanitize('hora_50').trim(),
                 //hora_100: req.sanitize('hora_100').trim(),
                 //hora_normal: req.sanitize('hora_normal').trim(),
@@ -1005,9 +1005,55 @@ app.post('/editar/:id', function(req, res, next) {
                 //hora_neg: req.sanitize('hora_neg').trim(),
                 //pasaje: Number(req.sanitize('pasaje').trim()),//no actualizamos prque no existe en la pagina
                 //restri: Number(req.sanitize('restri').trim())
-                jornal: jornal_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
+                //jornal: jornal_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
                 usuario_insert: user
             } 
+
+            if(cpm == '9999000' && cpt == '9999000'){
+                mano_plan = {
+                    fecha: formatear_fecha_yyyymmdd(req.sanitize('fecha').trim()),
+                    codigo: req.sanitize('codigo').trim(),
+                    empleado: req.sanitize('empleado').trim(),
+                    cliente_plan_m: req.sanitize('cliente_plan_m').trim(),
+                    cliente_real_m: req.sanitize('cliente_plan_m').trim(),
+                    cliente_plan_t: req.sanitize('cliente_plan_t').trim(),
+                    cliente_real_t: req.sanitize('cliente_plan_t').trim(),
+                    //cliente_real_n: req.sanitize('cliente_real_n').trim(),
+                    obra_plan_m: req.sanitize('obra_plan_m').trim(),
+                    obra_real_m: req.sanitize('obra_plan_m').trim(),
+                    obra_plan_t: req.sanitize('obra_plan_t').trim(),
+                    obra_real_t: req.sanitize('obra_plan_t').trim(),
+                    //obra_real_n: req.sanitize('obra_real_n').trim(),
+                    encargado: req.sanitize('encargado').trim(),
+                    trato_cliente: req.sanitize('trato_cliente').trim(),
+                    encargado2: req.sanitize('encargado2').trim(),//encargado tarde
+                    trato_cliente2: req.sanitize('trato_cliente2').trim(),//trato cliente tarde
+                    //en lo real cargamos lo que se haya modificado en lo planificado
+                    encargado_real: req.sanitize('encargado').trim(),//
+                    trato_cliente_real: req.sanitize('trato_cliente').trim(),//
+                    encargado_real2: req.sanitize('encargado2').trim(),//
+                    trato_cliente_real2: req.sanitize('trato_cliente2').trim(),//
+                    //h_entrada: req.sanitize('h_entrada').trim(),
+                    //h_salida: req.sanitize('h_salida').trim(),
+                    monto: monto_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
+                    subtotal: subtotal_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
+                    //hora_50: req.sanitize('hora_50').trim(),
+                    //hora_100: req.sanitize('hora_100').trim(),
+                    //hora_normal: req.sanitize('hora_normal').trim(),
+                    //hora_neg: req.sanitize('hora_neg').trim(),
+                    ot_plan_m: req.sanitize('ot_plan_m').trim(),
+                    ot_real_m: req.sanitize('ot_plan_m').trim(),
+                    ot_plan_t: req.sanitize('ot_plan_t').trim(),
+                    ot_real_t: req.sanitize('ot_plan_t').trim(),
+                    ot_real_n: req.sanitize('ot_real_n').trim(),
+                    //hora_neg: req.sanitize('hora_neg').trim(),
+                    //pasaje: Number(req.sanitize('pasaje').trim()),//no actualizamos prque no existe en la pagina
+                    //restri: Number(req.sanitize('restri').trim())
+                    jornal: jornal_,//agregado 25/03/2020 por temas de actualizar cuando es ot admin
+                    usuario_insert: user
+                } 
+            }
+
             
             req.getConnection(function(error, conn) {
                 conn.query('UPDATE mano_obra SET ? WHERE id = ' + req.params.id, mano_plan, function(err, result) {
@@ -1016,26 +1062,11 @@ app.post('/editar/:id', function(req, res, next) {
                         req.flash('error', err)
                         
                         // render to views/gastos/add.ejs
-                        res.render('mano/editar', {
-                            title: 'Editar Plan Laboral',
-                            id: req.params.id,
-                            fecha: mano_plan.fecha,
-                            codigo: mano_plan.codigo,
-                            empleado: mano_plan.empleado,
-                            cliente_plan_m: mano_plan.cliente_plan_m,
-                            cliente_real_m: mano_plan.cliente_plan_m,
-                            cliente_plan_t: mano_plan.cliente_plan_t,
-                            cliente_real_t: mano_plan.cliente_plan_t,
+                        res.render('mano/editar', {title: 'Editar Plan Laboral', id: req.params.id, fecha: mano_plan.fecha, codigo: mano_plan.codigo, empleado: mano_plan.empleado,
+                            cliente_plan_m: mano_plan.cliente_plan_m, cliente_real_m: mano_plan.cliente_plan_m, cliente_plan_t: mano_plan.cliente_plan_t, cliente_real_t: mano_plan.cliente_plan_t,
                             //cliente_real_n: mano_plan.cliente_real_n,
-                            obra_plan_m: mano_plan.obra_plan_m,
-                            obra_real_m: mano_plan.obra_plan_m,
-                            obra_plan_t: mano_plan.obra_plan_t,
-                            obra_real_t: mano_plan.obra_plan_t,
-                            obra_real_n: mano_plan.obra_real_n,
-                            encargado: mano_plan.encargado,
-                            trato_cliente: mano_plan.trato_cliente,
-                            encargado2: mano_plan.encargado2,
-                            trato_cliente2: mano_plan.trato_cliente2,
+                            obra_plan_m: mano_plan.obra_plan_m,obra_real_m: mano_plan.obra_plan_m, obra_plan_t: mano_plan.obra_plan_t, obra_real_t: mano_plan.obra_plan_t, obra_real_n: mano_plan.obra_real_n,
+                            encargado: mano_plan.encargado, trato_cliente: mano_plan.trato_cliente, encargado2: mano_plan.encargado2, trato_cliente2: mano_plan.trato_cliente2,
                             //h_entrada: mano_plan.h_entrada,
                             //h_salida: mano_plan.h_salida,
                             //monto: mano_plan.monto,
@@ -1044,11 +1075,7 @@ app.post('/editar/:id', function(req, res, next) {
                             //hora_100: mano_plan.hora_100,
                             //hora_normal: mano_plan.hora_normal,
                             //hora_neg: mano_plan.hora_neg,
-                            ot_plan_m: mano_plan.ot_plan_m,
-                            ot_real_m: mano_plan.ot_plan_m,
-                            ot_plan_t: mano_plan.ot_plan_t,
-                            ot_real_t: mano_plan.ot_plan_t,
-                            ot_real_n: mano_plan.ot_real_n,
+                            ot_plan_m: mano_plan.ot_plan_m, ot_real_m: mano_plan.ot_plan_m,ot_plan_t: mano_plan.ot_plan_t,ot_real_t: mano_plan.ot_plan_t,ot_real_n: mano_plan.ot_real_n,
                             //pasaje: mano_plan.pasaje,
                             restri: mano_plan.restri,//pasamos la restriccion guardada en el req
                             //jornal: mano_plan.jornal,
@@ -1107,42 +1134,14 @@ app.post('/editar/:id', function(req, res, next) {
                                                 }
 
 
-                                                res.render('mano/editar', {
-                                                    title: 'Editar Plan Laboral',
-                                                    id: req.params.id,
-                                                    fecha: req.body.fecha,
-                                                    codigo: req.body.codigo,
-                                                    empleado: req.body.empleado,
-                                                    cliente_plan_m: req.body.cliente_plan_m,
-                                                    cliente_real_m: req.body.cliente_real_m,
-                                                    cliente_plan_t: req.body.cliente_plan_t,
-                                                    cliente_real_t: req.body.cliente_real_t,
-                                                    cliente_real_n: req.body.cliente_real_n,
-                                                    obra_plan_m: req.body.obra_plan_m,
-                                                    obra_real_m: req.body.obra_real_m,
-                                                    obra_plan_t: req.body.obra_plan_t,
-                                                    obra_real_t: req.body.obra_real_t,
-                                                    obra_real_n: req.body.obra_real_n,
-                                                    encargado: req.body.encargado,
-                                                    trato_cliente: req.body.trato_cliente,
-                                                    encargado2: req.body.encargado2,
-                                                    trato_cliente2: req.body.trato_cliente2,
-                                                    h_entrada: req.body.h_entrada,
-                                                    h_salida: req.body.h_salida,
-                                                    monto: req.body.monto, /* */
-                                                    subtotal: req.body.subtotal, /* */
-                                                    hora_50: req.body.hora_50,
-                                                    hora_100: req.body.hora_100,
-                                                    hora_normal: req.body.hora_normal,
-                                                    hora_neg: req.body.hora_neg,
-                                                    ot_plan_m: req.body.ot_plan_m,
-                                                    ot_real_m: req.body.ot_real_m,
-                                                    ot_plan_t: req.body.ot_plan_t,
-                                                    ot_real_t: req.body.ot_real_t,
-                                                    ot_real_n: req.body.ot_real_n,
-                                                    pasaje: req.body.pasaje,
-                                                    restri: rol,
-                                                    jornal: req.body.jornal, /* */
+                                                res.render('mano/editar', {title: 'Editar Plan Laboral',id: req.params.id,fecha: req.body.fecha,codigo: req.body.codigo,empleado: req.body.empleado,
+                                                    cliente_plan_m: req.body.cliente_plan_m,cliente_real_m: req.body.cliente_real_m,cliente_plan_t: req.body.cliente_plan_t,cliente_real_t: req.body.cliente_real_t,
+                                                    cliente_real_n: req.body.cliente_real_n,obra_plan_m: req.body.obra_plan_m,obra_real_m: req.body.obra_real_m,obra_plan_t: req.body.obra_plan_t,
+                                                    obra_real_t: req.body.obra_real_t,obra_real_n: req.body.obra_real_n,encargado: req.body.encargado,trato_cliente: req.body.trato_cliente,
+                                                    encargado2: req.body.encargado2,trato_cliente2: req.body.trato_cliente2,h_entrada: req.body.h_entrada,h_salida: req.body.h_salida,
+                                                    monto: req.body.monto, /* */subtotal: req.body.subtotal, /* */hora_50: req.body.hora_50,hora_100: req.body.hora_100,hora_normal: req.body.hora_normal,
+                                                    hora_neg: req.body.hora_neg,ot_plan_m: req.body.ot_plan_m,ot_real_m: req.body.ot_real_m,ot_plan_t: req.body.ot_plan_t,ot_real_t: req.body.ot_real_t,
+                                                    ot_real_n: req.body.ot_real_n, pasaje: req.body.pasaje, restri: rol, jornal: req.body.jornal, /* */
                                                     usuario_insert: user, usuario: user, data_ot: datos_ot, data: datos, data_rrhh: datos_rrhh
                                                 })
                                             }              
@@ -1169,44 +1168,14 @@ app.post('/editar/:id', function(req, res, next) {
                         
                         // render to views/gastos/add.ejs
                         res.render('mano/editar', {
-                            title: 'Editar Plan Laboral',
-                            id: req.params.id,
-                            fecha: mano_plan.fecha,
-                            codigo: mano_plan.codigo,
-                            empleado: mano_plan.empleado,
-                            cliente_plan_m: mano_plan.cliente_plan_m,
-                            cliente_real_m: mano_plan.cliente_real_m,
-                            cliente_plan_t: mano_plan.cliente_plan_t,
-                            cliente_real_t: mano_plan.cliente_real_t,
-                            cliente_real_n: mano_plan.cliente_real_n,
-                            obra_plan_m: mano_plan.obra_plan_m,
-                            obra_real_m: mano_plan.obra_real_m,
-                            obra_plan_t: mano_plan.obra_plan_t,
-                            obra_real_t: mano_plan.obra_real_t,
-                            obra_real_n: mano_plan.obra_real_n,
-                            encargado: mano_plan.encargado,
-                            trato_cliente: mano_plan.trato_cliente,
-                            encargado2: req.body.encargado2,
-                            trato_cliente2: req.body.trato_cliente2,
-                            h_entrada: mano_plan.h_entrada,
-                            h_salida: mano_plan.h_salida,
-                            monto: mano_plan.monto,
-                            subtotal: mano_plan.subtotal,
-                            hora_50: mano_plan.hora_50,
-                            hora_100: mano_plan.hora_100,
-                            hora_normal: mano_plan.hora_normal,
-                            hora_neg: mano_plan.hora_neg,
-                            ot_plan_m: mano_plan.ot_plan_m,
-                            ot_real_m: mano_plan.ot_real_m,
-                            ot_plan_t: mano_plan.ot_plan_t,
-                            ot_real_t: mano_plan.ot_real_t,
-                            ot_real_n: mano_plan.ot_real_n,
-                            hora_normal: mano_plan.hora_normal,
-                            hora_50: mano_plan.hora_50,
-                            hora_100: mano_plan.hora_100,
-                            hora_neg: mano_plan.hora_neg,
-                            pasaje: mano_plan.pasaje,
-                            restri: rol,
+                            title: 'Editar Plan Laboral', id: req.params.id, fecha: mano_plan.fecha, codigo: mano_plan.codigo, empleado: mano_plan.empleado, cliente_plan_m: mano_plan.cliente_plan_m,
+                            cliente_real_m: mano_plan.cliente_real_m, cliente_plan_t: mano_plan.cliente_plan_t, cliente_real_t: mano_plan.cliente_real_t, cliente_real_n: mano_plan.cliente_real_n,
+                            obra_plan_m: mano_plan.obra_plan_m, obra_real_m: mano_plan.obra_real_m, obra_plan_t: mano_plan.obra_plan_t, obra_real_t: mano_plan.obra_real_t,
+                            obra_real_n: mano_plan.obra_real_n, encargado: mano_plan.encargado, trato_cliente: mano_plan.trato_cliente, encargado2: req.body.encargado2, trato_cliente2: req.body.trato_cliente2,
+                            h_entrada: mano_plan.h_entrada, h_salida: mano_plan.h_salida, monto: mano_plan.monto, subtotal: mano_plan.subtotal, hora_50: mano_plan.hora_50, hora_100: mano_plan.hora_100,
+                            hora_normal: mano_plan.hora_normal, hora_neg: mano_plan.hora_neg, ot_plan_m: mano_plan.ot_plan_m, ot_real_m: mano_plan.ot_real_m, ot_plan_t: mano_plan.ot_plan_t,
+                            ot_real_t: mano_plan.ot_real_t,ot_real_n: mano_plan.ot_real_n,hora_normal: mano_plan.hora_normal,hora_50: mano_plan.hora_50,hora_100: mano_plan.hora_100,
+                            hora_neg: mano_plan.hora_neg,pasaje: mano_plan.pasaje,restri: rol,
                             //jornal: mano_plan.jornal,
                             usuario: user
                         })

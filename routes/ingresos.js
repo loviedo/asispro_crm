@@ -365,7 +365,6 @@ app.get('/editar/:id', function(req, res, next){
                                             mon_s_iva: rows[0].monto_s_iva, obs: rows[0].obs, data: datos, usuario: user, data_clientes: datos_clientes})
                                     }
                                 })  
-
                             }
                         })
                     })
