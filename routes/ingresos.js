@@ -6,6 +6,7 @@ var user = '';//global para ver el usuario
 var userId = '';//global para userid
 //var datos = []; 
 
+
 function formatear_fecha_yyyymmdd(date) {
     var d;
 

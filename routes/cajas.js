@@ -182,9 +182,9 @@ function genera_detalle_caja(user, rows, rows2, rows3){
         //console.log(row.descripcion);//debug
     });
     //al final colocamos los totalizadores
-    worksheet.cell(3+i,22).number(Number(total_salida)).style(style1);
-    worksheet.cell(3+i,25).number(Number(total_saldo)).style(style1);
-    worksheet.cell(3+i,23).number(Number(total_gasto)).style(style1);
+    worksheet.cell(3+i,21).number(Number(total_salida)).style(style1);
+    worksheet.cell(3+i,24).number(Number(total_saldo)).style(style1);
+    worksheet.cell(3+i,25).number(Number(total_gasto)).style(style1);
     /* FIN CABECERA */
 
     workbook.write('DETALLE_CAJA_ID'+ rows[0].id +'.xlsx');
