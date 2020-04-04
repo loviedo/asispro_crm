@@ -389,7 +389,11 @@ app.post('/add', function(req, res, next){
             if(fact_cond == "CONTADO"){
                 greal1= Number(req.sanitize('gasto_real').escape().trim()); //por si venga nulo
             } else {
-                greal1= Number(req.sanitize('gasto_real1').escape().trim()); //el caso contrario como normalmente venimos haciendo
+                if(fact_cond == "CREDITO"){
+                    greal1= Number(req.sanitize('gasto_real').escape().trim());}
+                else{
+                    greal1= Number(req.sanitize('gasto_real1').escape().trim()); //SI NO ES CONTADO NI CREDITO entonces como normalmente venimos haciendo
+                }
             }
 
 
