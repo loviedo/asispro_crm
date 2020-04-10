@@ -142,7 +142,10 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     });
     //agregamos TOTAL
     worksheet.cell(i+1+12,2).string('TOTAL MONTO').style(style1);//agregado 09/03/2020
-    worksheet.cell(i+1+12,4).formula('=SUM(D13:D'+(i+12)+')').style(style);//asumimos que si o si esta cargado el gasto
+    worksheet.cell(i+1+12,4).formula('=SUM(E13:E'+(i+12)+')').style(style);//asumimos que si o si esta cargado el gasto
+    worksheet.cell(i+1+12,4).formula('=SUM(E13:E'+(i+12)+')').style(style);//asumimos que si o si esta cargado exentas
+    worksheet.cell(i+1+12,4).formula('=SUM(F13:F'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva10
+    worksheet.cell(i+1+12,4).formula('=SUM(G13:G'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva5
 
 
     /* SIGUIENTE HOJA / CARGAMOS EL RESUMEN DE LAS CAJAS */
@@ -500,12 +503,12 @@ app.get('/detalle/:id', function(req, res, next){
                 else {
                     req.getConnection(function(error, conn) {
                         //traemos el detalle de las cajas, asignadas segun sea el tipo, si el usuario es normal traemos el datos de la caja
-                        var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' order by fecha desc';
+                        var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' order by fecha';
                         //si el usuario es especial, entonces traemos los gastos asociados a sus cajas bajo la caja general creada.
                         if(user == 'josorio' || user == 'admin')
                         {   //sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';
                         sql_consulta = 'select * from gastos g inner join ot t on g.nro_ot = t.ot_nro where g.id_caja in (select id from cajas where id_caja = ' + req.params.id + ') '+
-                        'order by g.id, g.fecha desc';}
+                        'order by g.id, g.fecha';}
                         conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
