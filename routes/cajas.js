@@ -142,10 +142,10 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     });
     //agregamos TOTAL
     worksheet.cell(i+1+12,2).string('TOTAL MONTO').style(style1);//agregado 09/03/2020
-    worksheet.cell(i+1+12,4).formula('=SUM(E13:E'+(i+12)+')').style(style);//asumimos que si o si esta cargado el gasto
-    worksheet.cell(i+1+12,4).formula('=SUM(E13:E'+(i+12)+')').style(style);//asumimos que si o si esta cargado exentas
-    worksheet.cell(i+1+12,4).formula('=SUM(F13:F'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva10
-    worksheet.cell(i+1+12,4).formula('=SUM(G13:G'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva5
+    worksheet.cell(i+1+12,4).formula('=SUM(D13:D'+(i+12)+')').style(style);//asumimos que si o si esta cargado el gasto
+    worksheet.cell(i+1+12,5).formula('=SUM(E13:E'+(i+12)+')').style(style);//asumimos que si o si esta cargado exentas
+    worksheet.cell(i+1+12,6).formula('=SUM(F13:F'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva10
+    worksheet.cell(i+1+12,7).formula('=SUM(G13:G'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva5
 
 
     /* SIGUIENTE HOJA / CARGAMOS EL RESUMEN DE LAS CAJAS */
