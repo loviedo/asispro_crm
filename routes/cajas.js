@@ -503,12 +503,12 @@ app.get('/detalle/:id', function(req, res, next){
                 else {
                     req.getConnection(function(error, conn) {
                         //traemos el detalle de las cajas, asignadas segun sea el tipo, si el usuario es normal traemos el datos de la caja
-                        var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' order by fecha';
+                        var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' and codigo <> 9 order by fecha';
                         //si el usuario es especial, entonces traemos los gastos asociados a sus cajas bajo la caja general creada.
                         if(user == 'josorio' || user == 'admin')
                         {   //sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';
                         sql_consulta = 'select * from gastos g inner join ot t on g.nro_ot = t.ot_nro where g.id_caja in (select id from cajas where id_caja = ' + req.params.id + ') '+
-                        'order by g.id, g.fecha';}
+                        ' and g.codigo <> 9 order by g.id, g.fecha';}
                         conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
