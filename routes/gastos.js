@@ -88,16 +88,17 @@ function generar_excel_gastos(rows){
     worksheet.cell(1,8).string('CONCEPTO').style(style);
     worksheet.cell(1,9).string('CONDICION FACTURA').style(style);
     worksheet.cell(1,10).string('PROVEEDOR').style(style);
-    worksheet.cell(1,11).string('NRO FACTURA').style(style);
-    worksheet.cell(1,12).string('ENCARGADO').style(style);
-    worksheet.cell(1,13).string('CODIGO').style(style);
-    worksheet.cell(1,14).string('OT NRO').style(style);
-    worksheet.cell(1,15).string('CLIENTE').style(style);
-    worksheet.cell(1,16).string('OBRA').style(style);
-    worksheet.cell(1,17).string('IMPUTADO').style(style);
-    worksheet.cell(1,18).string('ORIGEN PAGO').style(style);
+    worksheet.cell(1,11).string('RUC').style(style);
+    worksheet.cell(1,12).string('NRO FACTURA').style(style);
+    worksheet.cell(1,13).string('ENCARGADO').style(style);
+    worksheet.cell(1,14).string('CODIGO').style(style);
+    worksheet.cell(1,15).string('OT NRO').style(style);
+    worksheet.cell(1,16).string('CLIENTE').style(style);
+    worksheet.cell(1,17).string('OBRA').style(style);
+    worksheet.cell(1,18).string('IMPUTADO').style(style);
+    worksheet.cell(1,19).string('ORIGEN PAGO').style(style);
     if(user == "admin" || user == "ksanabria" || user == "josorio")
-    {    worksheet.cell(1,19).string('TIPO').style(style);}
+    {    worksheet.cell(1,20).string('TIPO').style(style);}
     //worksheet.cell(1,1).string('').style(style);
 
     //luego los datos
@@ -115,16 +116,17 @@ function generar_excel_gastos(rows){
         worksheet.cell(i+1,8).string(String(row.concepto)).style(style);
         worksheet.cell(i+1,9).string(String(row.fact_condicion)).style(style);
         worksheet.cell(i+1,10).string(String(row.proveedor)).style(style);
-        worksheet.cell(i+1,11).string(String(row.fact_nro)).style(style);
-        worksheet.cell(i+1,12).string(String(row.encargado)).style(style);
-        worksheet.cell(i+1,13).number(Number(row.codigo)).style(style1);
-        worksheet.cell(i+1,14).number(Number(row.nro_ot)).style(style1);
-        worksheet.cell(i+1,15).string(String(row.cliente)).style(style);
-        worksheet.cell(i+1,16).string(String(row.obra)).style(style);
-        worksheet.cell(i+1,17).string(String(row.imputado)).style(style);
-        worksheet.cell(i+1,18).string(String(row.origen_pago)).style(style);
+        worksheet.cell(i+1,11).string(String(row.ruc)).style(style);
+        worksheet.cell(i+1,12).string(String(row.fact_nro)).style(style);
+        worksheet.cell(i+1,13).string(String(row.encargado)).style(style);
+        worksheet.cell(i+1,14).number(Number(row.codigo)).style(style1);
+        worksheet.cell(i+1,15).number(Number(row.nro_ot)).style(style1);
+        worksheet.cell(i+1,16).string(String(row.cliente)).style(style);
+        worksheet.cell(i+1,17).string(String(row.obra)).style(style);
+        worksheet.cell(i+1,18).string(String(row.imputado)).style(style);
+        worksheet.cell(i+1,19).string(String(row.origen_pago)).style(style);
         if(user == "admin" || user == "ksanabria" || user == "josorio")
-        {    worksheet.cell(i+1,19).string(String(row.tipo)).style(style);}
+        {    worksheet.cell(i+1,20).string(String(row.tipo)).style(style);}
         //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
         i=i+1;
         //console.log(row.descripcion);//debug
@@ -149,25 +151,25 @@ app.get('/historico', function(req, res, next) {
         //cada usuario puede ver solamente su carga, y solamente los administradores pueden ver todo.
         //verificar si los usuarios bajo karen pueden ver los tipos de carga "NO CONFIDENCIALES".
         if(user == "rsanabria" || user == "cibanez" || user == "prueba" || user == "jlopez" || user == "jguerrero" || user == "fduarte" || user == "ogonzalez")
-        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "left join cajas c1 on c1.id = t1.id_caja " +
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
         "WHERE ( /* month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and */ t1.usuario_insert = '" + user + "' /*and (c1.estado= 'C' or c1.estado is null) */)  order by t1.fecha desc";
-        sql_lis = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        sql_lis = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " +
-        "left join cajas c1 on c1.id = t1.id_caja " + 
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " + 
         "WHERE t1.usuario_insert = '" + user + "' and (c1.estado= 'C' or c1.estado is null) order by t1.fecha desc"; 
         }
         else
         //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto. SOLO TRAEMOS LOS DATOS DEL MES ACTUAL
-        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "left join cajas c1 on c1.id = t1.id_caja /*where (c1.estado= 'C' or c1.estado is null) */ " +
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor /*where (c1.estado= 'C' or c1.estado is null) */ " +
         " /* where month(t1.fecha) = month(current_date())-1 and year(t1.fecha) = year(current_date()) */ order by t1.fecha desc";
-        sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " +
-        "left join cajas c1 on c1.id = t1.id_caja where (c1.estado= 'C' or c1.estado is null) " + //esta parte trae solamente las cajas cerradas/
-        "order by t1.fecha desc";
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " + 
+        "where (c1.estado= 'C' or c1.estado is null) order by t1.fecha desc"; //esta parte trae solamente las cajas cerradas/
         }
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {
@@ -228,27 +230,27 @@ app.get('/', function(req, res, next) {
         //cada usuario puede ver solamente su carga, y solamente los administradores pueden ver todo.
         //verificar si los usuarios bajo karen pueden ver los tipos de carga "NO CONFIDENCIALES".
         if(user == "rsanabria" || user == "cibanez" || user == "prueba" || user == "jlopez" || user == "jguerrero" || user == "fduarte" || user == "ogonzalez")
-        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "left join cajas c1 on c1.id = t1.id_caja " +
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
         "WHERE (month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and t1.usuario_insert = '" + user + "' /*and (c1.estado= 'C' or c1.estado is null)*/ )  order by t1.fecha desc";
-        sql_lis = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        sql_lis = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "left join cajas c1 on c1.id = t1.id_caja " +
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
         "WHERE t1.usuario_insert = '" + user + "' and (c1.estado= 'C' or c1.estado is null) order by t1.fecha desc"; 
         }
         else
         //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto. SOLO TRAEMOS LOS DATOS DEL MES ACTUAL
-        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "left join cajas c1 on c1.id = t1.id_caja " +
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
         "where month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and (c1.estado= 'C' or c1.estado is null) " +
         "order by t1.fecha desc";
         //cambiamos el where habilitamos el estado de las cajas.
-        sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor,t1.fact_nro, t1.encargado,t1.codigo, " + 
+        sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "left join cajas c1 on c1.id = t1.id_caja where (c1.estado= 'C' or c1.estado is null) " +
-        "order by t1.fecha desc";
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
+        "where (c1.estado= 'C' or c1.estado is null) order by t1.fecha desc";
         }
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {
