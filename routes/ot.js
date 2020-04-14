@@ -168,7 +168,8 @@ app.get('/add', function(req, res, next){
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
-                                res.render('mano/listar_real', {title: 'Listado de Trabajos', data: '',usuario: user})
+                                res.render('ot/add', { title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '', 
+                                remision_nro: '',fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', usuario_insert: user, usuario: user})
                             } else {
                                 datos_cli = [];
                                 rows1.forEach(function(row) {datos_cli.push(row);});
@@ -245,50 +246,46 @@ app.post('/add', function(req, res, next){
                     //if(err) throw err
                     if (err) {
                         req.flash('error', err)
-                        
-                        // render to views/factura/add.ejs
-                        res.render('ot/add', {
-                            title: 'Agregar Nueva OT',
-                            ot_nro: ot.ot_nro,
-                            fec_emision: ot.fec_emision,
-                            fec_ini_ejecucion: ot.fec_ini_ejecucion,
-                            fec_fin_ejecucion: ot.fec_fin_ejecucion,
-                            fact_nro: ot.fact_nro,
-                            recibo_nro: ot.recibo_nro,
-                            remision_nro: ot.remision_nro,
-                            fact_tipo: ot.fact_tipo,
-                            fact_estado: ot.fact_estado,
-                            id_cliente: ot.id_cliente,
-                            cliente: ot.cliente,
-                            obra: ot.obra,
-                            descripcion: ot.descripcion,
-                            encargado: ot.encargado,
-                            trato_cliente: ot.trato_cliente,
-                            usuario: user
+
+                        req.getConnection(function(error, conn) {
+                            conn.query('select id, nombre, ruc from clientes ORDER BY id DESC',function(err, rows1) {
+                                //if(err) throw err
+                                if (err) {
+                                    req.flash('error', err)
+                                    res.render('ot/add', { title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '', 
+                                    remision_nro: '',fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', usuario_insert: user, usuario: user})
+                                } else {
+                                    datos_cli = [];
+                                    rows1.forEach(function(row) {datos_cli.push(row);});
+                                    //mostramos la pagina con el ERROR
+                                    res.render('ot/add', {title: 'Agregar Nueva OT',ot_nro: ot.ot_nro,fec_emision: ot.fec_emision,fec_ini_ejecucion: ot.fec_ini_ejecucion,fec_fin_ejecucion: ot.fec_fin_ejecucion,
+                                    fact_nro: ot.fact_nro,recibo_nro: ot.recibo_nro,remision_nro: ot.remision_nro,fact_tipo: ot.fact_tipo,fact_estado: ot.fact_estado,id_cliente: ot.id_cliente,
+                                    cliente: ot.cliente,obra: ot.obra,descripcion: ot.descripcion,encargado: ot.encargado,trato_cliente: ot.trato_cliente, data_clientes: datos_cli, usuario_insert: user,usuario: user})
+                                }
+                            })
                         })
                     } else {                
                         req.flash('success', 'Datos agregados correctamente!')
                         
-                        // render to views/ot/add.ejs
-                        res.render('ot/add', {
-                            title: 'Agregar nueva Factura',
-                            ot_nro: '',
-                            fec_emision: '',
-                            fec_ini_ejecucion: '',
-                            fec_fin_ejecucion: '',
-                            fact_nro: '',
-                            recibo_nro: '',
-                            remision_nro: '',
-                            fact_tipo: '',
-                            fact_estado: '',
-                            id_cliente: '',
-                            cliente: '',
-                            obra: '',
-                            descripcion: '',
-                            encargado: '',
-                            trato_cliente: '',
-                            usuario: user                 
+                        req.getConnection(function(error, conn) {
+                            conn.query('select id, nombre, ruc from clientes ORDER BY id DESC',function(err, rows1) {
+                                //if(err) throw err
+                                if (err) {
+                                    req.flash('error', err)
+                                    res.render('ot/add', { title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '', 
+                                    remision_nro: '',fact_tipo: '',fact_estado: '',cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', usuario_insert: user, usuario: user})
+                                } else {
+                                    datos_cli = [];
+                                    rows1.forEach(function(row) {datos_cli.push(row);});
+                                    //mostramos la pagina con el ERROR
+                                    res.render('ot/add', { title: 'Cargar nueva OT', ot_nro: '', fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '', 
+                                    remision_nro: '',fact_tipo: '',fact_estado: '', id_cliente:'', cliente: '', obra: '', descripcion: '',encargado: '',trato_cliente: '', data_clientes: datos_cli, usuario_insert: user, usuario: user});
+                                }
+                            })
                         })
+                        //render views/ot/add.ejs
+                        /*res.render('ot/add', {title: 'Agregar nueva OT',ot_nro: '',fec_emision: '',fec_ini_ejecucion: '',fec_fin_ejecucion: '',fact_nro: '',recibo_nro: '',remision_nro: '',
+                            fact_tipo: '',fact_estado: '',id_cliente: '',cliente: '',obra: '',descripcion: '',encargado: '',trato_cliente: '',usuario: user});*/
                     }
                 })
             })
