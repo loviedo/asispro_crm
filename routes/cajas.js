@@ -146,7 +146,7 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     worksheet.cell(i+1+12,5).formula('=SUM(E13:E'+(i+12)+')').style(style);//asumimos que si o si esta cargado exentas
     worksheet.cell(i+1+12,6).formula('=SUM(F13:F'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva10
     worksheet.cell(i+1+12,7).formula('=SUM(G13:G'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva5
-
+    worksheet.cell(i+1+12,8).formula('=SUM(H13:H'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en gasto real
 
     /* SIGUIENTE HOJA / CARGAMOS EL RESUMEN DE LAS CAJAS */
     /* RESUMEN DE LAS CAJAS */
