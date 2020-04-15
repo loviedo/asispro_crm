@@ -508,7 +508,7 @@ app.get('/detalle/:id', function(req, res, next){
                         if(user == 'josorio' || user == 'admin')
                         {   //sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';
                         sql_consulta = 'select * from gastos g inner join ot t on g.nro_ot = t.ot_nro where g.id_caja in (select id from cajas where id_caja = ' + req.params.id + ') '+
-                        ' and g.codigo <> 9 order by g.id, g.fecha';}
+                        ' order by g.id, g.fecha';}
                         conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
