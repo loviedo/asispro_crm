@@ -154,22 +154,22 @@ app.get('/historico', function(req, res, next) {
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "WHERE ( t1.usuario_insert = '" + user + "' and (c1.estado= 'C' or c1.estado is null))  order by t1.fecha desc";
+        "WHERE ( t1.usuario_insert = '" + user + "' and ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null)))  order by t1.fecha desc";
         sql_lis = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " +
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " + 
-        "WHERE t1.usuario_insert = '" + user + "' and (c1.estado= 'C' or c1.estado is null) order by t1.fecha desc"; 
+        "WHERE t1.usuario_insert = '" + user + "' and ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null)) order by t1.fecha desc"; 
         }
         else
         //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto. SOLO TRAEMOS LOS DATOS DEL MES ACTUAL
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
-        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor where (c1.estado= 'C' or c1.estado is null)" +
+        "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor where ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null))" +
         "order by t1.fecha desc";
         sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc,t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " +
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " + 
-        "where (c1.estado= 'C' or c1.estado is null) order by t1.fecha desc"; //esta parte trae solamente las cajas cerradas/
+        "where ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null)) order by t1.fecha desc"; //esta parte trae solamente las cajas cerradas/
         }
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {
@@ -233,24 +233,24 @@ app.get('/', function(req, res, next) {
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "WHERE (month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and t1.usuario_insert = '" + user + "' and (c1.estado= 'C' or c1.estado is null) )  order by t1.fecha desc";
+        "WHERE (month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and t1.usuario_insert = '" + user + "' and ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null)) )  order by t1.fecha desc";
         sql_lis = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "WHERE t1.usuario_insert = '" + user + "' and (c1.estado= 'C' or c1.estado is null) order by t1.fecha desc"; 
+        "WHERE t1.usuario_insert = '" + user + "' and ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null)) order by t1.fecha desc"; 
         }
         else
         //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto. SOLO TRAEMOS LOS DATOS DEL MES ACTUAL
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "where month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and (c1.estado= 'C' or c1.estado is null) " +
+        "where month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null)) " +
         "order by t1.fecha desc";
         //cambiamos el where habilitamos el estado de las cajas.
         sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "where (c1.estado= 'C' or c1.estado is null) order by t1.fecha desc";
+        "where ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null)) order by t1.fecha desc";
         }
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {
@@ -333,7 +333,7 @@ app.get('/add', function(req, res, next){
                                             //pasamos los datos y los datos de las cajas en rows2
                                             //console.log(datos_pro);//debug
                                             res.render('gastos/add', {
-                                                title: 'Cargar nuevo GASTO', id_proveedor: '0', id_caja: '0' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
+                                                title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja: '' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
                                                 fact_condicion: 'CONTADO / NOTA DE CREDITO', proveedor: '',fact_nro: '', encargado: '', codigo: '0',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
                                                 usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                         }
@@ -544,7 +544,7 @@ app.post('/add', function(req, res, next){
                                                             //pasamos los datos y los datos de las cajas en rows2
                                                             //console.log(datos_pro);//debug
                                                             res.render('gastos/add', {
-                                                                title: 'Cargar nuevo GASTO', id_proveedor: '0', id_caja: '0' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
+                                                                title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja: '' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
                                                                 fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
                                                                 usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                                         }
