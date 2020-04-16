@@ -236,14 +236,15 @@ app.get('/', function(req, res, next) {
         {   con_sql = "select c.* from cajas c where codigo = 22 order by fecha desc"; 
             /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
 
-        //actualizamos la suma de los gastos asignados para esa caja.
+        //actualizamos la suma de los gastos asignados para cada subcaja que le corresponda a esta caja // SE SUMA A LOS GASTOS ASIGNADOS A ESA CAJA ORIGINAL
         var sql_act = 'update cajas t1 set t1.gasto = (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id), ' +
                     't1.saldo = t1.salida - (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id)';
 
+        //actualiza los saldos sobre las subcajas
         var sql_cajas_gen_act = 'update cajas t1 set ' +
-        't1.gasto = (select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id), ' +
-        't1.saldo = t1.salida - (select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id) ' +
-        'where codigo =22';
+        't1.gasto = t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0), ' +
+        't1.saldo = t1.salida - (t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)) ' +
+        'where t1.codigo =22';
         
         req.getConnection(function(error, conn) {
             conn.query(sql_act,function(err, rows) {
