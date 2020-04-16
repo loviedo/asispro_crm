@@ -230,7 +230,7 @@ app.get('/', function(req, res, next) {
         var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
         //Karen solamente puede ver las cajas que delega.
         if (user == "ksanabria")
-        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where c.codigo <> 22 order by fecha desc ";}
+        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo /*where c.codigo <> 22*/ order by fecha desc ";}
         //si es el usuario admin/jose, puede ver solamente lo que cargo el.
         if (user=="josorio" || user =="admin")
         {   con_sql = "select c.* from cajas c where codigo = 22 order by fecha desc"; 
