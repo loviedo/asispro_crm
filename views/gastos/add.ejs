@@ -166,6 +166,10 @@ function changeText() {
         document.getElementById("gasto_real").value = (parseInt(document.getElementById('gasto_real1').value) || 0);
         document.getElementById("monto").value = (parseInt(document.getElementById('monto1').value) || 0);
     }
+    if(cond == "TEMPORAL")
+    {   //si es temporal ponemos directo la condicion 9
+        document.getElementById("codigo").value = 9;
+    }
 
     //document.getElementById('gasto_real').value = parseInt(document.getElementById('monto').value) + parseInt(document.getElementById('exentas').value);
 
@@ -255,6 +259,7 @@ function tipea(){
                         <option value="NO_CONTABLE">NO CONTABLE</option>
                         <!--<option value="COMP_INGRESO">COMPROBANTE DE INGRESO</option> SACAMOS PASA A SER "NO_CONTABLE"-->
                         <option value="RECIBO">RECIBO</option>
+                        <option value="TEMPORAL">TEMPORAL</option>
                         <!--<option value="RECIBO_COMUN">RECIBO COMUN</option> SACAMOS queda como "NO_CONTABLE" -->
                         <!--<option value="BOLETA_PAGO">BOLETA DE PAGO</option> SACAMOS queda como "NO_CONTABLE"-->
                         <!--<option value="S_F">S/F</option> SACAMOS queda como "NO_CONTABLE"-->
@@ -263,7 +268,7 @@ function tipea(){
                 </div>
                 <div class="form-group col-md-6">
                     <label for="fecha">FECHA</label>
-                    <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" >
+                    <input type="date"  class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" max="<%= maxdate %>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="monto1">MONTO</label>

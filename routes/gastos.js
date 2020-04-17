@@ -272,7 +272,7 @@ app.get('/', function(req, res, next) {
                                         //if(err) throw err
                                         if (err) {
                                             req.flash('error', err)
-                                            res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
+                                            res.render('gastos/listar', {title: 'Listado de GASTOS',  data: '',usuario: user})
                                         } else {
                                             generar_excel_gastos(rows3);//generamos excel gastos segun el usuario que sea claro
                                             //pasamos los datos y los datos de las cajas en rows2
@@ -334,6 +334,7 @@ app.get('/add', function(req, res, next){
                                             //console.log(datos_pro);//debug
                                             res.render('gastos/add', {
                                                 title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja: '' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
+                                                maxdate: formatear_fecha_yyyymmdd(Date.now()),
                                                 fact_condicion: 'CONTADO / NOTA DE CREDITO', proveedor: '',fact_nro: '', encargado: '', codigo: '0',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
                                                 usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                         }
@@ -675,7 +676,7 @@ app.get('/editar/:id', function(req, res, next){
                                             //console.log(datos_pro);//debug
                                             var date1 = rows[0].fecha;
                                             res.render('gastos/editar', {title: 'Editar GASTO', id_caja: rows[0].id_caja, caja: rows[0].id_caja /* VER DE CARGAR EL CONCEPTO SI NO TIENE CAJA!! */, 
-                                            id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), monto: rows[0].monto, exentas: rows[0].exentas,
+                                            id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), monto: rows[0].monto, exentas: rows[0].exentas,maxdate: formatear_fecha_yyyymmdd(Date.now()),
                                             iva_10: rows[0].iva_10, iva_5: rows[0].iva_5, gasto_real: rows[0].gasto_real, concepto: rows[0].concepto, fact_condicion: rows[0].fact_condicion,
                                             proveedor: rows[0].proveedor, fact_nro: rows[0].fact_nro, encargado: rows[0].encargado, codigo: rows[0].codigo, nro_ot: rows[0].nro_ot, id_proveedor: rows[0].id_proveedor,
                                             imputado: rows[0].imputado, origen_pago: rows[0].origen_pago, tipo: rows[0].tipo, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja })
