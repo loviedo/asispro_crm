@@ -281,6 +281,71 @@ app.get('/', function(req, res, next) {
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
+//VER FLUJOS CERRADOS
+app.get('/', function(req, res, next) {
+    if(req.session.loggedIn)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+    }
+    //controlamos quien se loga.
+	if(user.length >0){
+        //
+        //DATOS DE CAJAS, SE VEN SOLAMENTE LAS CAJAS ASIGNADAS AL USUARIO ACTUAL
+        //REVISAR POR QUE SE NECESITA CRUZAR CON CODIGO DE EMPLEADO! -->
+        var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
+        //Karen solamente puede ver las cajas que delega.
+        if (user == "ksanabria")
+        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo /*where c.codigo <> 22*/ order by fecha desc ";}
+        //si es el usuario admin/jose, puede ver solamente lo que cargo el.
+        if (user=="josorio" || user =="admin")
+        {   con_sql = "select c.* from cajas c where codigo = 22 order by fecha desc"; 
+            /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
+
+        //actualizamos la suma de los gastos asignados para cada subcaja que le corresponda a esta caja // SE SUMA A LOS GASTOS ASIGNADOS A ESA CAJA ORIGINAL
+        var sql_act = 'update cajas t1 set t1.gasto = (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id), ' +
+                    't1.saldo = t1.salida - (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id)';
+
+        //actualiza los saldos sobre las subcajas
+        var sql_cajas_gen_act = 'update cajas t1 set ' +
+        't1.gasto = t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0), ' +
+        't1.saldo = t1.salida - (t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)) ' +
+        'where t1.codigo =22';
+        
+        req.getConnection(function(error, conn) {
+            conn.query(sql_act,function(err, rows) {
+                //if(err) throw err
+                if (err) {
+                    req.flash('error', err)
+                    res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                } else {
+                    req.getConnection(function(error, conn) {
+                        conn.query(sql_cajas_gen_act,function(err, rows) {
+                            //if(err) throw err
+                            if (err) {
+                                req.flash('error', err)
+                                res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                            } else {
+                                //si se actualizan correctamente los gastos y sumas de saldos de las cajas, entonces mostramos.
+                                req.getConnection(function(error, conn) {
+                                    conn.query(con_sql,function(err, rows) {
+                                        if (err) {
+                                            req.flash('error', err)
+                                            res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                        } else {
+                                            //generar_excel_mano_obra(rows);
+                                            res.render('cajas/listar', {title: 'Listado de Cajas', usuario: user, data: rows})
+                                        }
+                                    })
+                                })
+                            }
+                        })
+                    })
+                }
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
 //CARGA DE NUEVA CAJA
 app.get('/add', function(req, res, next){
    
