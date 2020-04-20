@@ -227,18 +227,18 @@ app.get('/', function(req, res, next) {
         //
         //DATOS DE CAJAS, SE VEN SOLAMENTE LAS CAJAS ASIGNADAS AL USUARIO ACTUAL
         //REVISAR POR QUE SE NECESITA CRUZAR CON CODIGO DE EMPLEADO! -->
-        var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
+        var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "' and c.estado ='A'";
         //Karen solamente puede ver las cajas que delega.
         if (user == "ksanabria")
-        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo /*where c.codigo <> 22*/ order by fecha desc ";}
+        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo and c.estado ='A' order by fecha desc ";}
         //si es el usuario admin/jose, puede ver solamente lo que cargo el.
         if (user=="josorio" || user =="admin")
-        {   con_sql = "select c.* from cajas c where codigo = 22 order by fecha desc"; 
+        {   con_sql = "select c.* from cajas c where codigo = 22 and c.estado ='A' order by fecha desc"; 
             /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
 
         //actualizamos la suma de los gastos asignados para cada subcaja que le corresponda a esta caja // SE SUMA A LOS GASTOS ASIGNADOS A ESA CAJA ORIGINAL
         var sql_act = 'update cajas t1 set t1.gasto = (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id), ' +
-                    't1.saldo = t1.salida - (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id)';
+        't1.saldo = t1.salida - (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id)';
 
         //actualiza los saldos sobre las subcajas
         var sql_cajas_gen_act = 'update cajas t1 set ' +
@@ -282,7 +282,7 @@ app.get('/', function(req, res, next) {
 })
 
 //VER FLUJOS CERRADOS
-app.get('/', function(req, res, next) {
+app.get('/cerrados/', function(req, res, next) {
     if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
@@ -292,13 +292,13 @@ app.get('/', function(req, res, next) {
         //
         //DATOS DE CAJAS, SE VEN SOLAMENTE LAS CAJAS ASIGNADAS AL USUARIO ACTUAL
         //REVISAR POR QUE SE NECESITA CRUZAR CON CODIGO DE EMPLEADO! -->
-        var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'";
+        var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "' and c.estado ='C'";
         //Karen solamente puede ver las cajas que delega.
         if (user == "ksanabria")
-        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo /*where c.codigo <> 22*/ order by fecha desc ";}
+        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo /*where c.codigo <> 22*/  and c.estado ='C' order by fecha desc ";}
         //si es el usuario admin/jose, puede ver solamente lo que cargo el.
         if (user=="josorio" || user =="admin")
-        {   con_sql = "select c.* from cajas c where codigo = 22 order by fecha desc"; 
+        {   con_sql = "select c.* from cajas c where codigo = 22 and c.estado ='C' order by fecha desc"; 
             /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
 
         //actualizamos la suma de los gastos asignados para cada subcaja que le corresponda a esta caja // SE SUMA A LOS GASTOS ASIGNADOS A ESA CAJA ORIGINAL
@@ -356,11 +356,15 @@ app.get('/add', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){
         req.getConnection(function(error, conn) {
-            conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows) {
+            conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados where codigo is not null ORDER BY codigo',function(err, rows) {
                 if (err) {console.log(err); }
                 else{
                     datos_emple = [];
                     rows.forEach(function(row) { datos_emple.push(row); });
+
+                    //jose solamente a karen puede asignarle caja? lo siguiente no usamos hasta saber
+                    var con = 'select e.codigo, concat(e.nombres," ",e.apellidos) as nombre, e.ocupacion, e.tel_movil ' +
+                    'from empleados e inner join users u on u.codigo = e.codigo where u.codigo is not null ORDER BY e.codigo';
 
                     //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
                     if(user == "ksanabria")
@@ -572,9 +576,11 @@ app.get('/detalle/:id', function(req, res, next){
                         var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' order by fecha';
                         //si el usuario es especial, entonces traemos los gastos asociados a sus cajas bajo la caja general creada.
                         if(user == 'josorio' || user == 'admin')
-                        {   //sql_consulta = 'select * from gastos where id_caja in (select id from cajas where id_caja = ' + req.params.id + ') order by id, fecha desc';
-                        sql_consulta = 'select * from gastos g inner join ot t on g.nro_ot = t.ot_nro where g.id_caja in (select id from cajas where id_caja = ' + req.params.id + ') '+
-                        ' order by g.id, g.fecha';}
+                        {   //traemos todos losgastos asignados a las subcajas que haya habilitado a Karen + los gastos de esa caja.
+                            sql_consulta = 'select * from ' +
+                            '(select g.* from gastos g inner join ot t on g.nro_ot = t.ot_nro where g.id_caja in (select id from cajas where id_caja = 22) ' + 
+                            'union select g.* from gastos g where g.id_caja = 22) t1 order by t1.fecha';
+                        }
                         conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
@@ -626,10 +632,11 @@ app.get('/editar/:id', function(req, res, next){
                 }
                 else {
                     //primero generamos el excel de la caja
-                    //genera_detalle_caja(rows);
+                    var con = 'select e.codigo, concat(e.nombres," ",e.apellidos) as nombre, e.ocupacion, e.tel_movil ' +
+                    'from empleados e inner join users u on u.codigo = e.codigo where u.codigo is not null ORDER BY e.codigo';
 
                     req.getConnection(function(error, conn) {
-                        conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados ORDER BY codigo',function(err, rows2) {
+                        conn.query(con,function(err, rows2) {
                             if (err) {console.log(err); }
                             else{
                                 datos_emple = [];

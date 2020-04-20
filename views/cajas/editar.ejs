@@ -73,7 +73,9 @@ body .modal-dialog { /* Width */
         <form action="/cajas/editar/<%= id %>" method="post" name="form1">
             <div class="form-row">
 
+                <% if (usuario != 'josorio' || usuario == 'admin') { %>   
                 <input type="hidden" class="form-control" name="id_caja" id="id_caja" value="<%= id_caja %>"><!-- ID DE LA CAJA PARA CARGAR -->
+                <% } %>
                 <input type="hidden" class="form-control" name="codigo" id="codigo" value="<%= codigo %>">
                 <div class="form-group col-md-6">
                     <label for="fecha">FECHA</label>
@@ -90,7 +92,7 @@ body .modal-dialog { /* Width */
                 <div class="form-group col-md-6">
                     <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_responsable">RESPONSABLE</button>
                     <!--<label for="responsable">RESPONSABLE</label>-->
-                    <input type="text" class="form-control" name="responsable" id="responsable" value="<%= responsable %>">
+                    <input type="text" class="form-control" name="responsable" id="responsable" value="<%= responsable %>" readonly="true">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="saldo">SALDO</label>
@@ -107,7 +109,7 @@ body .modal-dialog { /* Width */
                         <option value="C">CERRADA</option>
                     </select>
                 </div>
-                <!-- CARGAR LAS CAJAS DE LA PERSONA  recibimos el valor "caja" pero le pasamos CONCEPTO desde los datos de CAJA -->
+                <!-- CARGAR LAS CAJAS DE LA PERSONA recibimos el valor "caja" pero le pasamos CONCEPTO desde los datos de CAJA -->
                 <% if (usuario == 'ksanabria' ||  usuario == 'admin' ) { %>   
                     <div class="form-group col-md-6">
                         <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_caja_gastos">CAJAS ASIGNADAS</button>
@@ -166,6 +168,7 @@ body .modal-dialog { /* Width */
 </div>
 
 <!-- MODAL de CAJAS -->
+<% if (usuario !== 'josorio') { %>   
 <div class="modal fade" id="modal_caja_gastos" tabindex="-1" role="dialog" aria-labelledby="modal_caja_gastosLabel" aria-hidden="true">
     <div class="modal-dialog" width="100%" role="document">
         <div class="modal-content">
@@ -204,6 +207,7 @@ body .modal-dialog { /* Width */
         </div>
     </div>
 </div>
+<% } %>
 
 
 <!-- BOTONES DE EXPORTACION -->
