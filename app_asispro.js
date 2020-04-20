@@ -71,11 +71,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
  
  
-
-/**
- * This module let us use HTTP verbs such as PUT or DELETE 
- * in places where they are not supported
- */ 
+/** This module let us use HTTP verbs such as PUT or DELETE 
+ * in places where they are not supported */ 
 var methodOverride = require('method-override');
  
 /**
@@ -94,12 +91,8 @@ app.use(methodOverride(function (req, res) {
 }));
  
 /**
- * This module shows flash messages
- * generally used to show success or error messages
- * 
- * Flash messages are stored in session
- * So, we also have to install and use 
- * cookie-parser & session modules
+ * This module shows flash messages generally used to show success or error messages
+ * Flash messages are stored in session So, we also have to install and use cookie-parser & session modules
  */ 
 var flash = require('express-flash')
 var cookieParser = require('cookie-parser');

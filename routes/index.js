@@ -3,8 +3,8 @@
 routes/index.js and routes/users.js. These two files contains code to show content of index and users page.
 */
 
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 var user = '';//global para ver el usuario
 var userId = 0;//global userid
 

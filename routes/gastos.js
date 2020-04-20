@@ -336,7 +336,7 @@ app.get('/add', function(req, res, next){
                                             //console.log(datos_pro);//debug
                                             res.render('gastos/add', {
                                                 title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja: '' ,fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                                                maxdate: formatear_fecha_yyyymmdd(Date.now()),
+                                                maxdate: formatear_fecha_yyyymmdd(Date.now()),fecha_fin_tim: '',
                                                 fact_condicion: 'CONTADO / NOTA DE CREDITO', proveedor: '',fact_nro: '', encargado: '', codigo: '0',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
                                                 usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                         }
@@ -360,17 +360,24 @@ app.post('/add', function(req, res, next){
     //controlamos quien se loga.
 	if(user.length >0){
         
+        //para el caso de tipo doc =temporal
+
+        var fact_cond0= req.sanitize('fact_condicion').trim();
+
         //no verificamos todos los campos.
-        req.assert('fact_condicion', 'CONDICION').notEmpty()//exentas no vacio
+        req.assert('fact_condicion', 'CONDICION').notEmpty()//tipo de comprobanto no vacio
         req.assert('fecha', 'FECHA').notEmpty()//fecha no vacia
         req.assert('monto', 'MONTO').notEmpty()//monto no vacia
         req.assert('exentas', 'EXENTAS').notEmpty()//exentas no vacio
         req.assert('calcu_iva', 'IVA %').notEmpty()//porcentaje iva no vacio
         req.assert('codigo', 'CODIGO').notEmpty()//codigo no vacio
         req.assert('concepto', 'CONCEPTO').notEmpty()//exentas no vacio
-        req.assert('nro_ot', 'NRO OT').notEmpty()//exentas no vacio
         req.assert('origen_pago', 'ORIGEN PAGO').notEmpty()//exentas no vacio
         req.assert('fact_nro', 'NRO FACTURA').notEmpty()//exentas no vacio
+        if(fact_cond0 != 'TEMPORAL')
+        {   req.assert('nro_ot', 'NRO OT').notEmpty()//exentas no vacio
+        }
+
 
         //req.assert(req.body.fecha, 'La fecha es requerida').notEmpty()//fecha no vacia
         /*req.assert('age', 'Edad es requerida').notEmpty()             //Validar edad
@@ -551,7 +558,7 @@ app.post('/add', function(req, res, next){
                                                             //console.log(datos_pro);//debug
                                                             res.render('gastos/add', {
                                                                 title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja: '' ,fecha: '',fecha_fin_tim: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                                                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
+                                                                fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'',maxdate: formatear_fecha_yyyymmdd(Date.now()), origen_pago:'',tipo:'', caja:'', 
                                                                 usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                                         }
                                                     })
@@ -613,7 +620,7 @@ app.post('/add', function(req, res, next){
                                                 res.render('gastos/add', { title: 'Agregar Nuevo GASTO',id_caja: req.body.id_caja,id_proveedor: req.body.id_proveedor,fecha: req.body.fecha, monto: req.body.monto,exentas: req.body.exentas,iva_10: req.body.iva_10, iva_5: req.body.iva_5,
                                                 gasto_real: req.body.gasto_real,concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,proveedor: req.body.proveedor,fact_nro: req.body.fact_nro,fecha_fin_tim: req.body.fecha_fin_tim,
                                                 encargado: req.body.encargado,/*agregado 25/03/2020*/ usuario: user, codigo: req.body.codigo, nro_ot: req.body.nro_ot, imputado: req.body.imputado, origen_pago: req.body.origen_pago,
-                                                tipo: req.body.tipo,id_proveeedor: req.body.id_proveeedor,id_caja: req.body.id_caja, caja: req.body.caja, usuario_insert: user,
+                                                tipo: req.body.tipo,id_proveeedor: req.body.id_proveeedor,id_caja: req.body.id_caja, caja: req.body.caja, usuario_insert: user, maxdate: formatear_fecha_yyyymmdd(Date.now()),
                                                 data: datos, data_pro: datos_pro, data_cajas: datos_caja})
                                             }
                                         })
@@ -708,6 +715,11 @@ app.post('/editar/:id', function(req, res, next) {
     //controlamos quien se loga.
 	if(user.length >0){
         //validaciones
+
+        var fact_cond0= req.sanitize('fact_condicion').trim();
+        if(fact_cond0 != 'TEMPORAL')
+        {   req.assert('nro_ot', 'NRO OT').notEmpty()//exentas no vacio
+        }
         req.assert('fact_condicion', 'CONDICION').notEmpty()//exentas no vacio
         req.assert('fecha', 'FECHA').notEmpty()//fecha no vacia
         req.assert('monto', 'MONTO').notEmpty()//monto no vacia
@@ -715,7 +727,6 @@ app.post('/editar/:id', function(req, res, next) {
         req.assert('calcu_iva', 'IVA %').notEmpty()//porcentaje iva no vacio
         req.assert('codigo', 'CODIGO').notEmpty()//codigo no vacio
         req.assert('concepto', 'CONCEPTO').notEmpty()//exentas no vacio
-        req.assert('nro_ot', 'NRO OT').notEmpty()//exentas no vacio
         req.assert('origen_pago', 'ORIGEN PAGO').notEmpty()//exentas no vacio
         req.assert('fact_nro', 'NRO FACTURA').notEmpty()//exentas no vacio
         var errors = req.validationErrors()
@@ -858,6 +869,7 @@ app.post('/editar/:id', function(req, res, next) {
                             id: req.params.id,
                             fecha: req.body.fecha,
                             monto: req.body.monto,
+                            maxdate: formatear_fecha_yyyymmdd(Date.now()),
                             exentas: req.body.exentas,
                             iva_10: req.body.iva_10,
                             iva_5: req.body.iva_5,
@@ -903,7 +915,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                 //pasamos los datos y los datos de las cajas en rows2
                                                 res.render('gastos/editar', { title: 'Editar GASTO', id_caja: req.body.id_caja, caja: req.body.concepto, id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: gasto.exentas,
                                                 iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion, fecha_fin_tim: req.body.fecha_fin_tim,
-                                                proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot, id_proveedor: req.body.id_proveedor, 
+                                                proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot, id_proveedor: req.body.id_proveedor, maxdate: formatear_fecha_yyyymmdd(Date.now()),
                                                 imputado: req.body.imputado, origen_pago: req.body.origen_pago, tipo: req.body.tipo, usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja})
                                             }
                                         })
@@ -933,6 +945,7 @@ app.post('/editar/:id', function(req, res, next) {
                 title: 'Editar GASTO',
                 fecha: req.body.fecha,
                 monto: req.body.monto,
+                maxdate: formatear_fecha_yyyymmdd(Date.now()),
                 exentas: req.body.exentas,
                 iva_10: req.body.iva_10,
                 iva_5: req.body.iva_5,
