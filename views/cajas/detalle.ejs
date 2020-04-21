@@ -74,6 +74,7 @@ color: #ffffff;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>    
                     <th>FECHA</th>
+                    <th>CAJA</th>
                     <th>CONDICION</th>
                     <th>MONTO</th>
                     <th>EXENTAS</th>
@@ -95,6 +96,7 @@ color: #ffffff;
             <tr>
                 <td><%= formatear_fecha(gasto.fecha) %></td>
                 <td><%= gasto.fact_condicion %></td>
+                <td><%= gasto.concepto %></td>
                 <td><%= gasto.monto %></td>
                 <td><%= gasto.exentas %></td>
                 <td><%= gasto.iva_10 %></td>

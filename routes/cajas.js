@@ -295,7 +295,7 @@ app.get('/cerrados/', function(req, res, next) {
         var con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "' and c.estado ='C'";
         //Karen solamente puede ver las cajas que delega.
         if (user == "ksanabria")
-        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo /*where c.codigo <> 22*/  and c.estado ='C' order by fecha desc ";}
+        {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo and c.estado ='C' order by fecha desc ";}
         //si es el usuario admin/jose, puede ver solamente lo que cargo el.
         if (user=="josorio" || user =="admin")
         {   con_sql = "select c.* from cajas c where codigo = 22 and c.estado ='C' order by fecha desc"; 
@@ -576,10 +576,10 @@ app.get('/detalle/:id', function(req, res, next){
                         var sql_consulta='select * from gastos where id_caja = ' + req.params.id + ' order by fecha';
                         //si el usuario es especial, entonces traemos los gastos asociados a sus cajas bajo la caja general creada.
                         if(user == 'josorio' || user == 'admin')
-                        {   //traemos todos losgastos asignados a las subcajas que haya habilitado a Karen + los gastos de esa caja.
+                        {   //traemos todos los gastos asignados a las subcajas que haya habilitado a Karen + los gastos de esa caja.
                             sql_consulta = 'select * from ' +
-                            '(select g.* from gastos g inner join ot t on g.nro_ot = t.ot_nro where g.id_caja in (select id from cajas where id_caja = 22) ' + 
-                            'union select g.* from gastos g where g.id_caja = 22) t1 order by t1.fecha';
+                            '(select g.* from gastos g inner join ot t on g.nro_ot = t.ot_nro where g.id_caja in (select id from cajas where id_caja = ' + req.params.id + ') ' + 
+                            'union select g.* from gastos g where g.id_caja = ' + req.params.id + ') t1 order by t1.fecha';
                         }
                         conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
@@ -601,7 +601,7 @@ app.get('/detalle/:id', function(req, res, next){
                                         genera_detalle_caja(user, rows, rows2, rows3);
                                         //console.log(datos_pro);//debug
                                         res.render('cajas/detalle', {
-                                        title: 'DETALLE CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
+                                        title: 'DETALLE CAJA', id: req.params.id, fecha: formatear_fecha_yyyymmdd(rows[0].fecha), concepto1: rows[0].concepto, salida: rows[0].salida, responsable: rows[0].responsable, 
                                         saldo: rows[0].saldo, gasto: rows[0].gasto, codigo: rows[0].codigo, usuario_insert: user, usuario: user,  deta_cajas: deta_cajas});
                                     }
                                 })
