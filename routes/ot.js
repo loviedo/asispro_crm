@@ -4,9 +4,9 @@
 editing, deleting and viewing users from database. Database queries, form validation and template rendering is done here.
  */
 
-var path = require('path');
-var express = require('express');
-var app = express();
+    var path = require('path');
+    var express = require('express');
+    var app = express();
 var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
@@ -122,7 +122,7 @@ function generar_excel_ot(rows){
 
 // MOSTRAR LISTA DE FACTURAS
 app.get('/', function(req, res, next) {
-    if(req.session.user)
+    if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
     }
