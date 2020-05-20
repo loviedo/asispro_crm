@@ -89,6 +89,7 @@ color: #ffffff;
                     <th>CONDICION FACTURACION</th>
                     <th>PROVEEDOR</th>       
                     <th>FACTURA NRO</th>
+                    <th>FECHA FIN TIM</th>
                     <th>ENCARGADO</th>
                     <th>CODIGO</th>
                     <th>NRO OT</th> 
@@ -117,6 +118,7 @@ color: #ffffff;
                 <td><%= gasto.fact_condicion %></td>
                 <td><%= gasto.proveedor %></td>
                 <td><%= gasto.fact_nro %></td>
+                <td><%= formatear_fecha(gasto.fecha_fin_tim) %></td>
                 <td><%= gasto.encargado %></td>
                 <td><%= gasto.codigo %></td>
                 <td><%= gasto.nro_ot %></td>
