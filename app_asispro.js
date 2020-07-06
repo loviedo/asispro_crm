@@ -106,7 +106,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: { 
       expires: false, /* expires: false el usuario debe logarse cada vez que cierre el navegador */
-      maxAge: 24 * 60 * 60 * 1000 /* maxAge: 6 * 60 * 60 * 1000 la sesion expira a las 6 horas */
+      maxAge: 24 * 60 * 60 * 1000 /* maxAge: 6 * 60 * 60 * 1000 la sesion expira a las 6 horas (horas minutos segundos milisegundos) */
     }
 }));
 app.use(flash());
