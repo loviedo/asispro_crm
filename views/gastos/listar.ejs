@@ -87,15 +87,16 @@ color: #ffffff;
                     <th>GASTO REAL</th>
                     <th>CONCEPTO</th>
                     <th>CONDICION FACTURACION</th>
-                    <th>PROVEEDOR</th>       
+                    <th>PROVEEDOR</th>  
+                    <th>RUC</th>     
                     <th>FACTURA NRO</th>
-                    <th>FECHA FIN TIM</th>
+                    <th>FECHA FIN TIMB</th>
                     <th>ENCARGADO</th>
                     <th>CODIGO</th>
                     <th>NRO OT</th> 
                     <th>CLIENTE</th> 
                     <th>OBRA</th> 
-                    <th>INFO ADICIONAL</th><!-- ANTES ERA IMPUTADO A /// HOY (13/01/2020) CAMBIAMOS A INFORMACION ADICIONAL -->
+                    <th>IMPUTADO</th><!-- ANTES ERA IMPUTADO A /// HOY (13/01/2020) CAMBIAMOS A INFORMACION ADICIONAL // cambiamos de vuelta a imputado-->
                     <th>ORIGEN PAGO</th> 
                     <% if (usuario == 'ksanabria' ||  usuario == 'josorio' ||  usuario == 'admin' ) { %>     
                         <th> TIPO</th> 
@@ -117,6 +118,7 @@ color: #ffffff;
                 <td><%= gasto.concepto %></td>
                 <td><%= gasto.fact_condicion %></td>
                 <td><%= gasto.proveedor %></td>
+                <td><%= gasto.ruc %></td><!-- agregamos 12/07/2020-->
                 <td><%= gasto.fact_nro %></td>
                 <td><%= formatear_fecha(gasto.fecha_fin_tim) %></td>
                 <td><%= gasto.encargado %></td>
