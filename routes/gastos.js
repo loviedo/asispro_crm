@@ -98,7 +98,7 @@ function generar_excel_gastos(rows){
     worksheet.cell(1,16).string('OT NRO').style(style);
     worksheet.cell(1,17).string('CLIENTE').style(style);
     worksheet.cell(1,18).string('OBRA').style(style);
-    worksheet.cell(1,19).string('IMPUTADO').style(style);
+    worksheet.cell(1,19).string('INFO ADICIONAL').style(style);
     worksheet.cell(1,20).string('ORIGEN PAGO').style(style);
     if(user == "admin" || user == "ksanabria" || user == "josorio")
     {    worksheet.cell(1,21).string('TIPO').style(style);}
@@ -400,6 +400,7 @@ app.post('/add', function(req, res, next){
             var calcu_iva = req.sanitize('calcu_iva').escape().trim();
             var fact_cond= req.sanitize('fact_condicion').trim();
             var cod = Number(req.sanitize('codigo').escape().trim());
+            var tim = req.sanitize('tim_nro').escape().trim();
             var greal1 = 0;
 
             /* 26/03/2020 - consecuencia al deshabilitar el gasto_real cuando es contado.
@@ -475,6 +476,7 @@ app.post('/add', function(req, res, next){
                 fact_condicion: req.sanitize('fact_condicion').trim(),
                 proveedor: req.sanitize('proveedor').trim(),//se sacó el escape()
                 fact_nro: req.sanitize('fact_nro').trim(),
+                tim_nro : tim,
                 fecha_fin_tim: formatear_fecha_yyyymmdd(date2),
                 encargado: req.sanitize('encargado').trim(),
                 codigo: cod,
@@ -510,7 +512,7 @@ app.post('/add', function(req, res, next){
                             fact_condicion: gasto.fact_condicion,
                             proveedor: gasto.proveedor,
                             fact_nro: gasto.fact_nro,
-                            fact_nro: gasto.fecha_fin_tim,
+                            fecha_fin_tim: gasto.fecha_fin_tim,
                             encargado: gasto.encargado,
                             codigo: gasto.codigo,
                             nro_ot: gasto.nro_ot,
@@ -562,7 +564,7 @@ app.post('/add', function(req, res, next){
                                                             //pasamos los datos y los datos de las cajas en rows2
                                                             //console.log(datos_pro);//debug
                                                             res.render('gastos/add', {
-                                                                title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja: '' ,fecha: '',fecha_fin_tim: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
+                                                                title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja: '' ,fecha: '',tim_nro: '',fecha_fin_tim: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
                                                                 fact_condicion: '',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'',maxdate: formatear_fecha_yyyymmdd(Date.now()), origen_pago:'',tipo:'', caja:'', 
                                                                 usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                                         }
@@ -623,7 +625,7 @@ app.post('/add', function(req, res, next){
                                                 //pasamos los datos y los datos de las cajas en rows2
                                                 //console.log(datos_pro);//debug
                                                 res.render('gastos/add', { title: 'Agregar Nuevo GASTO',id_caja: req.body.id_caja,id_proveedor: req.body.id_proveedor,fecha: req.body.fecha, monto: req.body.monto,exentas: req.body.exentas,iva_10: req.body.iva_10, iva_5: req.body.iva_5,
-                                                gasto_real: req.body.gasto_real,concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,proveedor: req.body.proveedor,fact_nro: req.body.fact_nro,fecha_fin_tim: req.body.fecha_fin_tim,
+                                                gasto_real: req.body.gasto_real,concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,proveedor: req.body.proveedor,fact_nro: req.body.fact_nro, tim_nro: req.body.tim_nro, fecha_fin_tim: req.body.fecha_fin_tim,
                                                 encargado: req.body.encargado,/*agregado 25/03/2020*/ usuario: user, codigo: req.body.codigo, nro_ot: req.body.nro_ot, imputado: req.body.imputado, origen_pago: req.body.origen_pago,
                                                 tipo: req.body.tipo,id_proveeedor: req.body.id_proveeedor,id_caja: req.body.id_caja, caja: req.body.caja, usuario_insert: user, maxdate: formatear_fecha_yyyymmdd(Date.now()),
                                                 data: datos, data_pro: datos_pro, data_cajas: datos_caja})
@@ -693,8 +695,8 @@ app.get('/editar/:id', function(req, res, next){
                                             //console.log(datos_pro);//debug
                                             var date1 = rows[0].fecha;
                                             res.render('gastos/editar', {title: 'Editar GASTO', id_caja: rows[0].id_caja, caja: rows[0].id_caja /* VER DE CARGAR EL CONCEPTO SI NO TIENE CAJA!! */, 
-                                            id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), monto: rows[0].monto, exentas: rows[0].exentas,maxdate: formatear_fecha_yyyymmdd(Date.now()),
-                                            iva_10: rows[0].iva_10, iva_5: rows[0].iva_5, gasto_real: rows[0].gasto_real, concepto: rows[0].concepto, fact_condicion: rows[0].fact_condicion, fecha_fin_tim: rows[0].fecha_fin_tim,
+                                            id: rows[0].id, fecha: formatear_fecha_yyyymmdd(date1), monto: rows[0].monto, exentas: rows[0].exentas, maxdate: formatear_fecha_yyyymmdd(Date.now()),
+                                            iva_10: rows[0].iva_10, iva_5: rows[0].iva_5, gasto_real: rows[0].gasto_real, concepto: rows[0].concepto, fact_condicion: rows[0].fact_condicion, tim_nro: rows[0].tim_nro, fecha_fin_tim: rows[0].fecha_fin_tim,
                                             proveedor: rows[0].proveedor, fact_nro: rows[0].fact_nro, encargado: rows[0].encargado, codigo: rows[0].codigo, nro_ot: rows[0].nro_ot, id_proveedor: rows[0].id_proveedor,
                                             imputado: rows[0].imputado, origen_pago: rows[0].origen_pago, tipo: rows[0].tipo, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja })
                                         }
@@ -752,6 +754,7 @@ app.post('/editar/:id', function(req, res, next) {
             //mysql acepta solos YYYY-MM-DD
             var date1 = req.sanitize('fecha').escape().trim();
             var date2 = req.sanitize('fecha_fin_tim').escape().trim();
+            var tim = req.sanitize('tim_nro').escape().trim();
             var mon = Number(req.sanitize('monto').escape().trim()); 
             var exe = Number(req.sanitize('exentas').escape().trim());
             var exe1 = Number(req.sanitize('exentas1').escape().trim());
@@ -827,6 +830,7 @@ app.post('/editar/:id', function(req, res, next) {
                 fact_condicion: req.sanitize('fact_condicion').trim(),
                 proveedor: req.sanitize('proveedor').trim(),
                 fact_nro: req.sanitize('fact_nro').trim(),
+                tim_nro: tim,
                 fecha_fin_tim: formatear_fecha_yyyymmdd(date2),
                 encargado: req.sanitize('encargado').trim(),
                 codigo: cod,
@@ -883,6 +887,7 @@ app.post('/editar/:id', function(req, res, next) {
                             fact_condicion: req.body.fact_condicion,
                             proveedor: req.body.proveedor,
                             fact_nro: req.body.fact_nro,
+                            tim_nro: req.body.tim_nro,
                             fecha_fin_tim: req.body.fecha_fin_tim,
                             encargado: req.body.encargado,
                             codigo: req.body.codigo,
@@ -919,7 +924,7 @@ app.post('/editar/:id', function(req, res, next) {
                                                 rows4.forEach(function(row) {datos_caja.push(row);});
                                                 //pasamos los datos y los datos de las cajas en rows2
                                                 res.render('gastos/editar', { title: 'Editar GASTO', id_caja: req.body.id_caja, caja: req.body.concepto, id: req.params.id,fecha: req.body.fecha,monto: req.body.monto, exentas: gasto.exentas,
-                                                iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion, fecha_fin_tim: req.body.fecha_fin_tim,
+                                                iva_10: req.body.iva_10, iva_5: req.body.iva_5, gasto_real: req.body.gasto_real, concepto: req.body.concepto, fact_condicion: req.body.fact_condicion, tim_nro: req.body.tim_nro, fecha_fin_tim: req.body.fecha_fin_tim,
                                                 proveedor: req.body.proveedor, fact_nro: req.body.fact_nro, encargado: req.body.encargado, codigo: req.body.codigo, nro_ot: req.body.nro_ot, id_proveedor: req.body.id_proveedor, maxdate: formatear_fecha_yyyymmdd(Date.now()),
                                                 imputado: req.body.imputado, origen_pago: req.body.origen_pago, tipo: req.body.tipo, usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja})
                                             }
@@ -959,6 +964,7 @@ app.post('/editar/:id', function(req, res, next) {
                 fact_condicion: req.body.fact_condicion,
                 proveedor: req.body.proveedor,
                 fact_nro: req.body.fact_nro,
+                tim_nro: req.body.tim_nro,
                 fecha_fin_tim: req.body.fecha_fin_tim,
                 encargado: req.body.encargado,
                 codigo: req.body.codigo,

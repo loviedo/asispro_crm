@@ -90,6 +90,7 @@ color: #ffffff;
                     <th>PROVEEDOR</th>  
                     <th>RUC</th>     
                     <th>FACTURA NRO</th>
+                    <th>TIMBRADO NRO</th>
                     <th>FECHA FIN TIMB</th>
                     <th>ENCARGADO</th>
                     <th>CODIGO</th>
@@ -120,6 +121,7 @@ color: #ffffff;
                 <td><%= gasto.proveedor %></td>
                 <td><%= gasto.ruc %></td><!-- agregamos 12/07/2020-->
                 <td><%= gasto.fact_nro %></td>
+                <td><%= gasto.tim_nro %></td>
                 <td><%= formatear_fecha(gasto.fecha_fin_tim) %></td>
                 <td><%= gasto.encargado %></td>
                 <td><%= gasto.codigo %></td>
