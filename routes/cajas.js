@@ -92,58 +92,62 @@ function genera_detalle_caja(user, rows, rows2, rows3){
 
     /* DATOS DETALLE */
     worksheet.cell(11,2).string('DETALLE DE GASTOS').style(style1);
-    worksheet.cell(12,2).string('FECHA').style(style1);
-    worksheet.cell(12,3).string('MONTO').style(style1);
-    worksheet.cell(12,4).string('EXENTAS').style(style1);
-    worksheet.cell(12,5).string('IVA 10%').style(style1);
-    worksheet.cell(12,6).string('IVA 5%').style(style1);
-    worksheet.cell(12,7).string('GASTO REAL').style(style1);
-    worksheet.cell(12,8).string('CONCEPTO').style(style1);
-    worksheet.cell(12,9).string('CONDICION').style(style1);
-    worksheet.cell(12,10).string('PROVEEDOR').style(style1);
-    worksheet.cell(12,11).string('RUC').style(style1);
-    worksheet.cell(12,12).string('NRO_FACTURA').style(style1);
-    worksheet.cell(12,13).string('FECHA FIN TIMBRADO').style(style1);
-    worksheet.cell(12,14).string('ENCARGADO').style(style1);//agregado 09/03/2020
-    worksheet.cell(12,15).string('CODIGO').style(style1);//agregado 09/03/2020
-    worksheet.cell(12,16).string('NRO OT').style(style1);//agregado 09/03/2020
-    worksheet.cell(12,17).string('CLIENTE').style(style1);//agregado 09/03/2020
-    worksheet.cell(12,18).string('OBRA').style(style1);//agregado 09/03/2020
-    worksheet.cell(12,19).string('IMPUTADO').style(style1);//agregado 14/07/2020
-    worksheet.cell(12,20).string('ORIGEN PAGO').style(style1);//agregado 14/07/2020
-    worksheet.cell(12,21).string('TIPO').style(style1);//agregado 14/07/202
+    worksheet.cell(12,2).string('ID').style(style1);
+    worksheet.cell(12,3).string('FECHA').style(style1);
+    worksheet.cell(12,4).string('MONTO').style(style1);
+    worksheet.cell(12,5).string('EXENTAS').style(style1);
+    worksheet.cell(12,6).string('IVA 10%').style(style1);
+    worksheet.cell(12,7).string('IVA 5%').style(style1);
+    worksheet.cell(12,8).string('GASTO REAL').style(style1);
+    worksheet.cell(12,9).string('CONCEPTO').style(style1);
+    worksheet.cell(12,10).string('CONDICION').style(style1);
+    worksheet.cell(12,11).string('PROVEEDOR').style(style1);
+    worksheet.cell(12,12).string('RUC').style(style1);
+    worksheet.cell(12,13).string('NRO_FACTURA').style(style1);
+    worksheet.cell(12,14).string('TIMBRADO NRO').style(style1);//agregado el 15/07/2020
+    worksheet.cell(12,15).string('FECHA FIN TIMBRADO').style(style1);
+    worksheet.cell(12,16).string('ENCARGADO').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,17).string('CODIGO').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,18).string('NRO OT').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,19).string('CLIENTE').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,20).string('OBRA').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,21).string('IMPUTADO').style(style1);//agregado 14/07/2020
+    worksheet.cell(12,22).string('ORIGEN PAGO').style(style1);//agregado 14/07/2020
+    worksheet.cell(12,23).string('TIPO').style(style1);//agregado 14/07/202
     if (user == "admin" || user == "josorio")
-    {   worksheet.cell(12,22).string('ID_CAJA').style(style1);
-        worksheet.cell(12,23).string('CONCEPTO').style(style1);
+    {   worksheet.cell(12,24).string('ID_CAJA').style(style1);
+        worksheet.cell(12,25).string('CONCEPTO').style(style1);
     }
 
     //luego los datos
     var i = 1;
     rows2.forEach(function(row) {
 
-        worksheet.cell(i+12,2).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//codigo del empleado
-        worksheet.cell(i+12,3).number(Number(row.monto.toString().replace(",","."))).style(style);
-        worksheet.cell(i+12,4).number(Number(row.exentas.toString().replace(",","."))).style(style);
-        worksheet.cell(i+12,5).number(Number(row.iva_10.toString().replace(",","."))).style(style);
-        worksheet.cell(i+12,6).number(Number(row.iva_5.toString().replace(",","."))).style(style);
-        worksheet.cell(i+12,7).number(Number(row.gasto_real.toString().replace(",","."))).style(style);
-        worksheet.cell(i+12,8).string(String(row.concepto)).style(style);
-        worksheet.cell(i+12,9).string(String(row.fact_condicion)).style(style); //condicion de la factura
-        worksheet.cell(i+12,10).string(String(row.proveedor)).style(style); //proveedor
-        worksheet.cell(i+12,11).string(String(row.ruc)).style(style); //ruc proveedor
-        worksheet.cell(i+12,12).string(String(row.fact_nro)).style(style); //nro de factura
-        worksheet.cell(i+12,13).string(String(row.fecha_fin_tim)).style(style); //fecha fin de timbrado
-        worksheet.cell(i+12,14).string(String(row.encargado)).style(style);//agregado 09/03/2020
-        worksheet.cell(i+12,15).number(Number(row.codigo)).style(style);//agregado 09/03/2020
-        worksheet.cell(i+12,16).number(Number(row.nro_ot)).style(style);//agregado 09/03/2020
-        worksheet.cell(i+12,17).string(String(row.cliente)).style(style);//agregado 09/03/2020
-        worksheet.cell(i+12,18).string(String(row.obra)).style(style);//agregado 09/03/2020
-        worksheet.cell(i+12,19).number(Number(row.imputado)).style(style);//agregado 14/07/2020 --
-        worksheet.cell(i+12,20).string(String(row.origen_pago)).style(style);//agregado 14/07/2020 --
-        worksheet.cell(i+12,21).string(String(row.tipo)).style(style);//agregado 14/07/2020 --
+        worksheet.cell(i+12,2).number(Number(row.id.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,3).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//codigo del empleado
+        worksheet.cell(i+12,4).number(Number(row.monto.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,5).number(Number(row.exentas.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,6).number(Number(row.iva_10.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,7).number(Number(row.iva_5.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,8).number(Number(row.gasto_real.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,9).string(String(row.concepto)).style(style);
+        worksheet.cell(i+12,10).string(String(row.fact_condicion)).style(style); //condicion de la factura
+        worksheet.cell(i+12,11).string(String(row.proveedor)).style(style); //proveedor
+        worksheet.cell(i+12,12).string(String(row.ruc)).style(style); //ruc proveedor
+        worksheet.cell(i+12,13).string(String(row.fact_nro)).style(style); //nro de factura
+        worksheet.cell(i+12,14).string(String(row.tim_nro)).style(style); //nro de timbrado proveedor
+        worksheet.cell(i+12,15).string(String(row.fecha_fin_tim)).style(style); //fecha fin de timbrado
+        worksheet.cell(i+12,16).string(String(row.encargado)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,17).number(Number(row.codigo)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,18).number(Number(row.nro_ot)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,19).string(String(row.cliente)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,20).string(String(row.obra)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,21).number(Number(row.imputado)).style(style);//agregado 14/07/2020 --
+        worksheet.cell(i+12,22).string(String(row.origen_pago)).style(style);//agregado 14/07/2020 --
+        worksheet.cell(i+12,23).string(String(row.tipo)).style(style);//agregado 14/07/2020 --
         if (user == "admin" || user == "josorio")
-        {   worksheet.cell(i+12,22).string(String(row.id_caja)).style(style);
-            worksheet.cell(i+12,23).string(String(row.concepto)).style(style);
+        {   worksheet.cell(i+12,24).string(String(row.id_caja)).style(style);
+            worksheet.cell(i+12,25).string(String(row.concepto)).style(style);
         }
         /*worksheet.cell(i+10,9).number(Number(rows2.ips.toString().replace(",","."))).style(style);
         worksheet.cell(i+10,10).number(Number(rows2.saldo_favor.toString().replace(",","."))).style(style);*/
