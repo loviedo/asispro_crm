@@ -118,7 +118,7 @@ app.use('/facturas', facturas);//gestion de facturas
 app.use('/ot', ots);//gestion de OT
 app.use('/gastos', gastos);//gestion de GASTOS
 app.use('/proveedor', prov);//gestion de proveedores
-app.use('/rrhh', rrhh);//gestion de proveedores
+app.use('/rrhh', rrhh);//gestion de proveedores   
 app.use('/clientes', clientes);//gestion de clientes
 app.use('/ingresos', ingresos);//gestion de ingresos
 app.use('/mano', planmano);//gestion de planificacion laboral
