@@ -80,7 +80,7 @@ color: #ffffff;
                     <th>RESPONSABLE</th>
                     <th>SALDO</th>
                     <th>GASTO</th>
-                    <th>ACCIONES</th> 
+                    <th>ACCIONES</th>
                 </tr>
             </thead>
         <tbody>
@@ -97,14 +97,11 @@ color: #ffffff;
                 <td>
                     <div>
                         <a href='/cajas/detalle/<%= caja.id %>'>Detalle</a> &nbsp; 
-                        <% if(usuario == 'josorio' || usuario == 'ksanabria' || usuario == 'admin') { %>
+                        <!-- solo josorio puede editar o eliminar -->
+                        <% if(usuario == 'josorio' || usuario == 'admin') { %>
                             <a href='/cajas/editar/<%= caja.id %>'>Editar</a> &nbsp; 
-                            <a href='/cajas/eliminar/<%= caja.id %>'>Eliminar</a><!-- DEBE SER APP.GET en el servidor, NO APP.DELETE, eso en el caso del value DELETE, como vemos mas abajo-->  
+                            <a href='/cajas/eliminar/<%= caja.id %>'>Eliminar</a>  
                         <% } %>                     
-                        <!--<form method="post" action="/cajas/eliminar/<%= caja.id %>" style="float:right">
-                            <input type="submit" name="delete" value='Delete' onClick="return confirm('Seguro que desea borrar la factura?')" />
-                            <input type="hidden" name="_method" value="DELETE" />
-                        </form>-->
                     </div>
                 </td>
             </tr>

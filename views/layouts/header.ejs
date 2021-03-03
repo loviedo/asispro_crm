@@ -583,9 +583,12 @@
                             Cajas
                         </a>
                         <ul class="collapse list-unstyled" id="cajasub" >
-                            <% if (usuario != 'rsanabria' && usuario != 'cibanez' && usuario != 'prueba' && usuario != 'jlopez' && usuario != 'jguerrero' && usuario != 'fduarte' && usuario != 'ogonzalez') { %>
+                            <% if (usuario == 'ksanabria' || usuario == 'josorio' || usuario == 'admin') { %>
                             <li>
                                 <a href="/cajas/add">Agregar Caja</a>
+                            </li>
+                            <li>
+                                <a href="/cajas/add_origen">Agregar Origen</a> <!-- agregado 17/01/2021 -->
                             </li>
                             <% } %>
                             <li>

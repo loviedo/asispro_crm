@@ -249,7 +249,7 @@ app.get('/', function(req, res, next) {
         {con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo and c.estado ='A' order by fecha desc ";}
         //si es el usuario admin/jose, puede ver solamente lo que cargo el.
         if (user=="josorio" || user =="admin")
-        {   con_sql = "select c.* from cajas c where codigo = 22 and c.estado ='A' order by fecha desc"; 
+        {con_sql = "select c.* from cajas c where codigo = 22 and c.estado ='A' order by fecha desc"; 
             /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
 
         //actualizamos la suma de los gastos asignados para cada subcaja que le corresponda a esta caja // SE SUMA A LOS GASTOS ASIGNADOS A ESA CAJA ORIGINAL
@@ -359,6 +359,131 @@ app.get('/cerrados/', function(req, res, next) {
                 }
             })
         })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+//CARGA DE NUEVO ORIGEN
+app.get('/add_origen', function(req, res, next){
+   
+    if(req.session.loggedIn)
+    {   
+        
+        user =  req.session.user;
+        userId = req.session.userId;
+
+        //si ya está logado no hace falta preguntar el user.length
+        //}
+        //controlamos quien se loga.
+        //if(user.length >0){
+    
+        //traemos los datos de los empleados.
+        req.getConnection(function(error, conn) {
+            conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados where codigo is not null ORDER BY codigo',function(err, rows) {
+                if (err) {console.log(err); }
+                else{
+                    datos_emple = [];
+                    rows.forEach(function(row) { datos_emple.push(row); });
+
+                    //jose solamente a karen puede asignarle caja? lo siguiente no usamos hasta saber
+                    var con = 'select e.codigo, concat(e.nombres," ",e.apellidos) as nombre, e.ocupacion, e.tel_movil ' +
+                    'from empleados e inner join users u on u.codigo = e.codigo where u.codigo is not null ORDER BY e.codigo';
+
+                    //console.log(datos_pro);//debug
+                    //solamente jose, karen y admin deberian ver la pagina
+                    res.render('cajas/add_origen', {title: 'AGREGAR ORIGEN', fecha: '', origen: '', salida: '0', responsable: '',usuario: user, data_emple: datos_emple});
+                }
+            });
+        });
+
+    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
+//NUEVO ORIGEN - POST DE INSERT
+app.post('/add_origen', function(req, res, next){   
+    if(req.session.loggedIn)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+
+        /*req.assert('name', 'Nombre es requerido').notEmpty()           //Validar nombre
+        req.assert('age', 'Edad es requerida').notEmpty()             //Validar edad
+        req.assert('email', 'SE requiere un email valido').isEmail()  //Validar email*/
+        var errors = req.validationErrors();
+        
+        if(!errors) {//Si no hay errores, entonces conitnuamos
+
+            //mysql acepta solos YYYY-MM-DD
+            var fecha = req.sanitize('fecha').escape().trim();
+            var origen = req.sanitize('origen').escape().trim();
+            var salida = Number(req.sanitize('salida').escape().trim()); 
+            var responsable = req.sanitize('responsable').escape().trim();
+            
+
+            //traemos datos del post.
+            var cajita = {
+                fecha: formatear_fecha_yyyymmdd(fecha),
+                origen: origen,
+                salida: salida,
+                responsable: responsable,
+                usuario_insert: user
+            }   
+            
+            //conectamos a la base de datos
+            req.getConnection(function(error, conn) {
+                conn.query('INSERT INTO origenes SET ?', cajita, function(err, result) {
+                    //if(err) throw err
+                    if (err) {
+                        req.flash('error', err) /* mostramos error y mostramos los campos */
+                        
+                        // render to views/factura/add.ejs
+                        res.render('cajas/add_origen', {
+                            title: 'Agregar Nuevo ORIGEN',
+                            fecha: cajita.fecha,
+                            origen: cajita.origen,
+                            salida: cajita.salida,
+                            responsable: cajita.responsable,
+                            data_emple: req.body.datos_emple,
+                            usuario: user
+                            //ver de cargar data_pro: datos_pro
+                        })
+                    } else {                
+                        req.flash('success', 'Datos agregados correctamente!');
+
+                        //traemos los datos de los empleados.
+                        req.getConnection(function(error, conn) {
+                            conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados where codigo is not null ORDER BY codigo',function(err, rows) {
+                                if (err) {console.log(err); }
+                                else{
+                                    datos_emple = [];
+                                    rows.forEach(function(row) { datos_emple.push(row); });
+
+                                    //console.log(datos_pro);//debug
+                                    //solamente jose, karen y admin deberian ver la pagina
+                                    res.render('cajas/add_origen', {title: 'AGREGAR ORIGEN', fecha: '', origen: '', salida: '0', responsable: '',usuario: user, data_emple: datos_emple});
+                                }
+                            });
+                        });
+                    }
+                })
+            })
+        }
+        //tuvimos errores
+        else {//Mostrar errores
+            var error_msg = ''
+            errors.forEach(function(error) {error_msg += error.msg + '<br>'})                
+            req.flash('error', error_msg)        
+            
+            /**
+             * Using req.body.name because req.param('name') is deprecated
+             */ 
+            res.render('cajas/add_origen', { 
+                title: 'Agregar Nuevo ORIGEN',
+                fecha: req.body.fecha,
+                origen: req.body.origen,
+                salida: req.body.salida,
+                responsable: req.body.responsable,
+                usuario_insert: user
+            })
+        }
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 

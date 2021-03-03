@@ -358,7 +358,12 @@ function tipea(){
                 </div>
                 <div class="form-group col-md-6">
                     <label for="origen_pago">ORIGEN PAGO</label>
-                    <input type="text" class="form-control" name="origen_pago" id="origen_pago" value="<%= origen_pago %>" placeholder="origen pago">
+                        <select class="form-control" name="origen_pago" id="origen_pago" value="<%= origen_pago %>" placeholder="Origen Pago">
+                        <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                        <option value="ON_LINE">ON-LINE</option>
+                        <option value="NO_DESEMBOLSADO">NO DESEMBOLSADO</option>
+                    </select>
+                    <!--<input type="text" class="form-control" name="origen_pago" id="origen_pago" value="<%= origen_pago %>" placeholder="origen pago">-->
                 </div>
                 <!-- CARGAR LAS CAJAS DE LA PERSONA  recibimos el valor "caja" pero le pasamos CONCEPTO desde los datos de CAJA -->
                 <div class="form-group col-md-6">
@@ -500,7 +505,10 @@ function tipea(){
                             <tr>
                                 <th>ID</th>
                                 <th>CONCEPTO</th>
-                                <th>RESPONSABLE</th>      
+                                <th>RESPONSABLE</th>
+                                <th>SALIDA</th> 
+                                <th>GASTO</th> 
+                                <th>SALDO</th>    
                             </tr>
                         </thead>
                     <tbody>
@@ -510,6 +518,9 @@ function tipea(){
                                 <td><%= caja.id %></td>
                                 <td><%= caja.concepto %></td>
                                 <td><%= caja.responsable %></td>
+                                <td><%= caja.salida %></td>
+                                <td><%= caja.gasto %></td>
+                                <td><%= caja.saldo %></td>
                             </tr>
                         <% }) %>
                     <% } %>

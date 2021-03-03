@@ -1,7 +1,7 @@
 
 <!-- CIERRE DEL DIV WRAPPER y DEL DIV CONTENT-->      
             <!-- jQuery CDN - Slim version (=without AJAX) -->
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <!-- Popper.JS -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
             <!-- Bootstrap JS -->
@@ -9,8 +9,9 @@
             
 
             <!-- Datatables -->
-            <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-            <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+            <!--<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
+            <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script><!-- para el tema de decimales -->
             
             <!-- CDN AGREGADOS PARA BOTONES-->
             <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
@@ -75,6 +76,48 @@
                             }
                         }
                     });
+
+                    $('#tablex_cajas_rol').DataTable({
+                        "scrollY":        "1000px",//tamanho de la tabla // agrandamos para mostrar lo de planificacion
+                        "scrollCollapse": true, //collapse de la tabla  
+                        "language": {
+                            "sProcessing":     "Procesando...",
+                            "sLengthMenu":     "Mostrar _MENU_ registros",
+                            "sZeroRecords":    "No se encontraron resultados",
+                            "sEmptyTable":     "Ningún dato disponible en esta tabla",
+                            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "decimal": ".",//separador decimales /--no funca ... agregamos el render abajo y ya anda
+                            "thousands": ",",//Separador miles /--no funca ... agregamos el render abajo y ya anda
+                            "sInfoPostFix":    "",
+                            "sSearch":         "Buscar:",
+                            "sUrl":            "",
+                            "sInfoThousands":  ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst":    "Primero",
+                                "sLast":     "Último",
+                                "sNext":     "Siguiente",
+                                "sPrevious": "Anterior"
+                            },
+                            "oAria": {
+                                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
+                        //todo esto agregamos para que formatee los nros con el render asignado (helper de datatables.js)
+                        columns:[
+                            {title: "ID" },
+                            {title: "FECHA" },
+                            {title: "ORIGEN" },
+                            {title: "SALIDA", render: $.fn.dataTable.render.number( '.', ',', 0, 'Gs. ' )},
+                            {title: "RESPONSABLE" },
+                            {title: "SALDO", render: $.fn.dataTable.render.number( '.', ',', 0, 'Gs. ' ) },
+                            {title: "GASTO", render: $.fn.dataTable.render.number( '.', ',', 0, 'Gs. ' ) },
+                            {title: "ACCIONES"}
+                        ]
+                    });                    
 
                     $('#tablex_mano_obra').DataTable({
                             "scrollY":        "1000px",//tamanho de la tabla // agrandamos para mostrar lo de planificacion
@@ -686,6 +729,8 @@
                             "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
                             "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
                             "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                            "decimal": ".",//separador decimales /--no funca ... agregamos el render abajo y ya anda
+                            "thousands": ",",//Separador miles /--no funca ... agregamos el render abajo y ya anda
                             "sInfoPostFix":    "",
                             "sSearch":         "Buscar:",
                             "sUrl":            "",
@@ -700,7 +745,16 @@
                             "oAria": {
                                 "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
                                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                            }
+                            },
+                            //todo esto agregamos para que formatee los nros con el render asignado (helper de datatables.js)
+                            columns:[
+                                {title: "ID" },
+                                {title: "CONCEPTO" },
+                                {title: "RESPONSABLE" },
+                                {title: "SALIDA", render: $.fn.dataTable.render.number( '.', ',', 0, 'Gs. ' )},
+                                {title: "GASTO", render: $.fn.dataTable.render.number( '.', ',', 0, 'Gs. ' ) },
+                                {title: "SALDO", render: $.fn.dataTable.render.number( '.', ',', 0, 'Gs. ' ) }
+                            ]
                         }}
                     );
 
