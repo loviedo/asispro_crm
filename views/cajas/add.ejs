@@ -75,13 +75,15 @@ body .modal-dialog { /* Width */
 
                 <input type="hidden" class="form-control" name="id_caja" id="id_caja" value="<%= id_caja %>"><!-- ID DE LA CAJA PARA CARGAR -->
                 <input type="hidden" class="form-control" name="codigo" id="codigo" value="<%= codigo %>">
+                <input type="hidden" class="form-control" name="id_ori" id="id_ori" value="<%= id_ori %>">
                 <div class="form-group col-md-6">
                     <label for="fecha">FECHA</label>
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="concepto">ORIGEN</label>
-                    <input type="text" class="form-control" name="concepto" id="concepto" value="<%= concepto %>">
+                    <!--<label for="concepto">ORIGEN</label>-->
+                    <button type="button" class="btn btn-small" data-toggle="modal" data-target="#modal_origen">ORIGEN</button>
+                    <input type="text" class="form-control" name="concepto" id="concepto" value="<%= concepto %>"><!-- verificar el nombre concepto? origen?-->
                 </div>
                 <div class="form-group col-md-6">
                     <label for="salida">SALIDA</label>
@@ -153,6 +155,51 @@ body .modal-dialog { /* Width */
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
             <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL de ORIGENES-->
+<div class="modal fade" id="modal_origen" tabindex="-1" role="dialog" aria-labelledby="modal_oriLabel" aria-hidden="true">
+    <div class="modal-dialog" width="100%" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modal_oriLabel">Listado de ORIGENES</h5>
+        </div>
+        <div class="modal-body">
+            <!-- ACA PONEMOS LA TABLA QUE DEBE SER COMO /LISTAR -->
+
+        <div class="container-fluid" width="100%">
+            <table id="table_modal_ori" class="table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
+                    border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
+                    <tr>
+                        <th>ID</th>
+                        <th>FECHA</th>
+                        <th>ORIGEN</th>
+                        <th>SALIDA</th>
+                        <th>RESPONSABLE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (data_ori) { %>
+                        <% data_ori.forEach(function(origen){ %>
+                            <tr>
+                                <td><%= origen.id %></td>
+                                <td><%= formatear_fecha(origen.fecha) %></td>
+                                <td><%= origen.origen %></td>
+                                <td><%= origen.salida %></td>
+                                <td><%= origen.responsable %></td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
         </div>
         </div>
     </div>

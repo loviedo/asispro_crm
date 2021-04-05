@@ -510,25 +510,37 @@ app.get('/add', function(req, res, next){
                     //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
                     if(user == "ksanabria")
                     {
-                        conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert, id_caja " + 
-                        " from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
-                            if (err) {console.log(err); }
+                        //asumimos que siempre hay origenes por cargar -- segun cliente, cambiar luego!
+                        conn.query("select id, fecha, origen, salida, responsable from origenes ORDER BY fecha asc",function(err, rows4) {
+                            if (err) {console.log(err);}
                             else{
-                                //si hay datos, entonces cargamos los datos y habilitamos el alta.
-                                if(rows1.length >=1)
-                                {   datos_caja = [];
-                                    rows1.forEach(function(row) { datos_caja.push(row); });
-                                    //console.log(datos_pro);//debug
-                                    res.render('cajas/add', {
-                                    title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'', 
-                                    codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});}
-                                else
-                                {   //avisar que no hay caja habilitada
-                                    req.flash('NO EXISTEN CAJAS HABILITADAS PARA CARGAR, SOLICITAR ALTA AL ADMINISTRADOR')
-                                    res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
-                                }
+                                datos_ori = [];
+                                rows4.forEach(function(row) { datos_ori.push(row); });
+                                
+                                //traemos datos de 
+                                conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert, id_caja " + 
+                                " from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
+                                    if (err) {console.log(err); }
+                                    else{
+                                        //si hay datos, entonces cargamos los datos y habilitamos el alta.
+                                        if(rows1.length >=1)
+                                        {   datos_caja = [];
+                                            rows1.forEach(function(row) { datos_caja.push(row); });
+                                            //console.log(datos_pro);//debug
+                                            //render la pagina
+                                            res.render('cajas/add', {
+                                            title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'', 
+                                            codigo: '0', id_ori:'0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja, data_ori: datos_ori});}
+                                        else
+                                        {   //avisar que no hay caja habilitada
+                                            req.flash('NO EXISTEN CAJAS HABILITADAS PARA CARGAR, SOLICITAR ALTA AL ADMINISTRADOR')
+                                            res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                        }
+                                    }
+                                });
                             }
-                        })
+                        });
+
                     }
                     else
                     {   //ACA SOLAMENTE DEBERIA PODER ENTRAR EL USUARIO ADMIN O JOSE
@@ -536,7 +548,8 @@ app.get('/add', function(req, res, next){
                         datos_caja = [];
                         res.render('cajas/add', {
                         title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'',
-                        codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});}
+                        codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});
+                    }
                 }
             })
         })
@@ -566,6 +579,7 @@ app.post('/add', function(req, res, next){
             var responsable = req.sanitize('responsable').escape().trim();
             var saldo = Number(req.sanitize('saldo').escape().trim());
             var gasto = Number(req.sanitize('gasto').escape().trim());
+            var id_origen = Number(req.sanitize('id_ori').escape().trim());
             var caje = '';//no usamos
             var id_cajita= 0;
             if(user= 'ksanabria')
@@ -583,6 +597,7 @@ app.post('/add', function(req, res, next){
                 saldo: saldo,
                 gasto: gasto,
                 id_caja: id_cajita, //usamos para el caso de una caja asignada a una caja general. en otro caso va 0
+                id_ori: id_origen,
                 usuario_insert: user
             }   
             
@@ -605,6 +620,7 @@ app.post('/add', function(req, res, next){
                             gasto_real: cajita.gasto_real,
                             caja: caje,
                             id_caja: id_cajita,
+                            id_ori: cajita.id_ori,
                             concepto: cajita.concepto,
                             usuario: user,
                             //ver de cargar data_pro: datos_pro
@@ -624,25 +640,37 @@ app.post('/add', function(req, res, next){
                                 //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
                                 if(user == "ksanabria")
                                 {
-                                    conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert " + 
-                                     "from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
-                                        if (err) {console.log(err); }
+                                    //modificado 04/04/2021
+                                    //asumimos que siempre hay origenes por cargar -- segun cliente, cambiar luego!
+                                    conn.query("select id, fecha, origen, salida, responsable from origenes ORDER BY fecha asc",function(err, rows4) {
+                                        if (err) {console.log(err);}
                                         else{
-                                            //si hay datos, entonces cargamos los datos y habilitamos el alta.
-                                            if(rows1.length >=1)
-                                            {   datos_caja = [];
-                                                rows1.forEach(function(row) { datos_caja.push(row); });
-                                                //console.log(datos_pro);//debug
-                                                res.render('cajas/add', {
-                                                title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0',id_caja: '0', caja:'', 
-                                                codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});}
-                                            else
-                                            {   //avisar que no hay caja habilitada
-                                                req.flash('NO EXISTEN CAJAS HABILITADAS PARA CARGAR, SOLICITAR ALTA AL ADMINISTRADOR')
-                                                res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
-                                            }
+                                            datos_ori = [];
+                                            rows4.forEach(function(row) { datos_ori.push(row); });
+                                            
+                                            //traemos datos de 
+                                            conn.query("select id, fecha, salida, codigo, responsable, concepto, saldo, gasto, estado, usuario_insert, id_caja " + 
+                                            " from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
+                                                if (err) {console.log(err); }
+                                                else{
+                                                    //si hay datos, entonces cargamos los datos y habilitamos el alta.
+                                                    if(rows1.length >=1)
+                                                    {   datos_caja = [];
+                                                        rows1.forEach(function(row) { datos_caja.push(row); });
+                                                        //console.log(datos_pro);//debug
+                                                        //render la pagina
+                                                        res.render('cajas/add', {
+                                                        title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'', 
+                                                        codigo: '0', id_ori:'0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja, data_ori: datos_ori});}
+                                                    else
+                                                    {   //avisar que no hay caja habilitada
+                                                        req.flash('NO EXISTEN CAJAS HABILITADAS PARA CARGAR, SOLICITAR ALTA AL ADMINISTRADOR')
+                                                        res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                                    }
+                                                }
+                                            });
                                         }
-                                    })
+                                    });
                                 }
                                 else
                                 {   //ACA SOLAMENTE DEBERIA PODER ENTRAR EL USUARIO ADMIN O JOSE
