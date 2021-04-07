@@ -548,7 +548,7 @@ app.get('/add', function(req, res, next){
                         datos_caja = [];
                         res.render('cajas/add', {
                         title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'',
-                        codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});
+                        codigo: '0', id_ori:'0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});
                     }
                 }
             })
