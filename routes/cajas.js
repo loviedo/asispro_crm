@@ -508,7 +508,7 @@ app.get('/add', function(req, res, next){
                     'from empleados e inner join users u on u.codigo = e.codigo where u.codigo is not null ORDER BY e.codigo';
 
                     //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
-                    if(user == "ksanabria")
+                    if(user == "ksanabria" || user == "josorio")
                     {
                         //asumimos que siempre hay origenes por cargar -- segun cliente, cambiar luego!
                         conn.query("select id, fecha, origen, salida, responsable from origenes ORDER BY fecha asc",function(err, rows4) {
@@ -556,7 +556,7 @@ app.get('/add', function(req, res, next){
     }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
-//NUEVO GASTO - POST DE INSERT
+//NUEVO CAJA - POST DE INSERT
 app.post('/add', function(req, res, next){   
     if(req.session.loggedIn)
     {   user =  req.session.user;
@@ -638,7 +638,8 @@ app.post('/add', function(req, res, next){
                                 rows.forEach(function(row) { datos_emple.push(row); });
                                 
                                 //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
-                                if(user == "ksanabria")
+                                //agregamos el usuario jose porque debe poder ver las cajas
+                                if(user == "ksanabria" || user == "josorio")
                                 {
                                     //modificado 04/04/2021
                                     //asumimos que siempre hay origenes por cargar -- segun cliente, cambiar luego!
@@ -677,7 +678,7 @@ app.post('/add', function(req, res, next){
                                     //console.log(datos_pro); //debug
                                     res.render('cajas/add', {
                                     title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', 
-                                    codigo: '0', usuario_insert: user, usuario: user,  data_emple: datos_emple});}
+                                    codigo: '0',id_ori:'0', usuario_insert: user, usuario: user,  data_emple: datos_emple});}
                             }
                         })
                     }
