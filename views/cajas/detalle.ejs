@@ -73,6 +73,7 @@ color: #ffffff;
             <thead style="background: rgb(137, 151, 212); border-left: 1px solid #EB8; border-right: 1px solid #B74;
             border-top: 1px solid #EB8; font-weight: normal; padding: 4px 3px;">
                 <tr>    
+                    <th>GASTO ID</th>
                     <th>FECHA</th>
                     <th>CAJA</th>
                     <th>CONDICION</th>
@@ -94,6 +95,7 @@ color: #ffffff;
         <% if(deta_cajas) { %>
             <% deta_cajas.forEach(function(gasto){ %>
             <tr>
+                <td><%= gasto.id %></td>
                 <td><%= formatear_fecha(gasto.fecha) %></td>
                 <td><%= gasto.fact_condicion %></td>
                 <td><%= gasto.concepto %></td>

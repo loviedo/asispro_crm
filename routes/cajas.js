@@ -209,6 +209,105 @@ function genera_detalle_caja(user, rows, rows2, rows3){
     workbook.write('DETALLE_CAJA_ID'+ rows[0].id +'.xlsx');
 }
 
+//recibimos los datos de .
+function genera_total_gastos(rows){
+    
+    var workbook = new excel.Workbook();
+    var worksheet = workbook.addWorksheet('RESUMEN CAJAS');
+    //
+    const style = workbook.createStyle({font: {color: '#000000',size: 12},numberFormat: '#,##0; (#,##0); -'});
+
+    //prueba estilo 2
+    const style1 = workbook.createStyle({font: {bold: true, color: '#000000',fgColor:'#EF820D',size: 12}, numberFormat: '#,##0; (#,##0); -'});
+
+    const bgStyle = workbook.createStyle({
+        fill: {type: 'pattern',patternType: 'solid',
+          //bgColor: '#EF820D',
+          //fgColor: '#EF820D', //color fondo de la celda.
+        }
+    });
+
+    //dibujamos el excel
+
+    /* DATOS DETALLE */
+    worksheet.cell(11,2).string('DETALLE DE GASTOS POR CAJA').style(style1);
+    worksheet.cell(12,2).string('ID CAJA').style(style1);
+    worksheet.cell(12,3).string('ID GASTO').style(style1);
+    worksheet.cell(12,4).string('FECHA').style(style1);
+    worksheet.cell(12,5).string('MONTO').style(style1);
+    worksheet.cell(12,6).string('EXENTAS').style(style1);
+    worksheet.cell(12,7).string('IVA 10%').style(style1);
+    worksheet.cell(12,8).string('IVA 5%').style(style1);
+    worksheet.cell(12,9).string('GASTO REAL').style(style1);
+    worksheet.cell(12,10).string('CONCEPTO').style(style1);
+    worksheet.cell(12,11).string('CONDICION').style(style1);
+    worksheet.cell(12,12).string('PROVEEDOR').style(style1);
+    worksheet.cell(12,13).string('RUC').style(style1);
+    worksheet.cell(12,14).string('NRO_FACTURA').style(style1);
+    worksheet.cell(12,15).string('TIMBRADO NRO').style(style1);//agregado el 15/07/2020
+    worksheet.cell(12,16).string('FECHA FIN TIMBRADO').style(style1);
+    worksheet.cell(12,17).string('ENCARGADO').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,18).string('CODIGO').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,19).string('NRO OT').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,20).string('CLIENTE').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,21).string('OBRA').style(style1);//agregado 09/03/2020
+    worksheet.cell(12,22).string('IMPUTADO').style(style1);//agregado 14/07/2020
+    worksheet.cell(12,23).string('ORIGEN PAGO').style(style1);//agregado 14/07/2020
+    worksheet.cell(12,24).string('TIPO').style(style1);//agregado 14/07/202
+    if (user == "admin" || user == "josorio")
+    {   worksheet.cell(12,26).string('CONCEPTO').style(style1);}
+
+    //luego los datos de los gastos
+    var i = 1;
+    rows.forEach(function(row) {
+
+        worksheet.cell(i+12,2).number(Number(row.id_caja.toString().replace(",","."))).style(style);//agregamos id caja 26/04/2021
+        worksheet.cell(i+12,3).number(Number(row.id.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,4).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});//codigo del empleado
+        worksheet.cell(i+12,5).number(Number(row.monto.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,6).number(Number(row.exentas.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,7).number(Number(row.iva_10.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,8).number(Number(row.iva_5.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,9).number(Number(row.gasto_real.toString().replace(",","."))).style(style);
+        worksheet.cell(i+12,10).string(String(row.concepto)).style(style);
+        worksheet.cell(i+12,11).string(String(row.fact_condicion)).style(style); //condicion de la factura
+        worksheet.cell(i+12,12).string(String(row.proveedor)).style(style); //proveedor
+        worksheet.cell(i+12,13).string(String(row.ruc)).style(style); //ruc proveedor
+        worksheet.cell(i+12,14).string(String(row.fact_nro)).style(style); //nro de factura
+        worksheet.cell(i+12,15).string(String(row.tim_nro)).style(style); //nro de timbrado proveedor
+        worksheet.cell(i+12,16).date(formatear_fecha_yyyymmdd(row.fecha_fin_tim)).style({numberFormat: 'dd/mm/yyyy'});//fecha fin de timbrado
+        worksheet.cell(i+12,17).string(String(row.encargado)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,18).number(Number(row.codigo)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,19).number(Number(row.nro_ot)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,20).string(String(row.cliente)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,21).string(String(row.obra)).style(style);//agregado 09/03/2020
+        worksheet.cell(i+12,22).number(Number(row.imputado)).style(style);//agregado 14/07/2020 --
+        worksheet.cell(i+12,23).string(String(row.origen_pago)).style(style);//agregado 14/07/2020 --
+        worksheet.cell(i+12,24).string(String(row.tipo)).style(style);//agregado 14/07/2020 --
+        if (user == "admin" || user == "josorio")
+        {   worksheet.cell(i+12,25).string(String(row.id_caja)).style(style);
+            worksheet.cell(i+12,26).string(String(row.concepto)).style(style);
+        }
+        /*worksheet.cell(i+10,9).number(Number(rows2.ips.toString().replace(",","."))).style(style);
+        worksheet.cell(i+10,10).number(Number(rows2.saldo_favor.toString().replace(",","."))).style(style);*/
+
+        //worksheet.cell(i+1,2).string(String(row.)).style(style);//debug
+        i=i+1;
+        //console.log(row.descripcion);//debug
+    });
+    //agregamos TOTAL
+    worksheet.cell(i+1+12,2).string('TOTAL MONTO').style(style1);//agregado 09/03/2020
+    worksheet.cell(i+1+12,5).formula('=SUM(E13:E'+(i+12)+')').style(style);//asumimos que si o si esta cargado el gasto
+    worksheet.cell(i+1+12,6).formula('=SUM(F13:F'+(i+12)+')').style(style);//asumimos que si o si esta cargado exentas
+    worksheet.cell(i+1+12,7).formula('=SUM(G13:G'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva10
+    worksheet.cell(i+1+12,8).formula('=SUM(H13:H'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en iva5
+    worksheet.cell(i+1+12,9).formula('=SUM(I13:I'+(i+12)+')').style(style);//asumimos que si o si esta cargado algo en gasto real
+
+    workbook.write('RESUMEN_CAJAS.xlsx');
+}
+
+
+
 function manhana()
 {   var today = new Date();
     var dd = today.getDate()+1;
@@ -261,7 +360,12 @@ app.get('/', function(req, res, next) {
         't1.gasto = t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0), ' +
         't1.saldo = t1.salida - (t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)) ' +
         'where t1.codigo =22';
-        
+
+        //tenemos que generar los gastos para el resumen de las cajas para el usuario de KAREN, finalmente ella nada mas va a rendir la caja a jose
+        var sql_total_gastos = 'select c.id as id_caja, g.id, g.fecha, g.monto, g.concepto, g.exentas, g.iva_10, g.iva_5, g.gasto_real, g.tipo, g.proveedor, g.fact_condicion, p.nombre,p.ruc, g.fact_nro, ' +  
+        'g.tim_nro, g.fecha_fin_tim, g.encargado, g.codigo, g.nro_ot, t.cliente, t.obra, g.imputado, g.origen_pago, g.id_caja  ' +  
+        'from gastos g left join proveedor p on p.id = g.id_proveedor inner join cajas c on g.id_caja = c.id inner join ot t on g.nro_ot = t.ot_nro order by c.id desc, g.fecha desc';
+
         req.getConnection(function(error, conn) {
             conn.query(sql_act,function(err, rows) {
                 //if(err) throw err
@@ -279,21 +383,31 @@ app.get('/', function(req, res, next) {
                                 //si se actualizan correctamente los gastos y sumas de saldos de las cajas, entonces mostramos.
                                 req.getConnection(function(error, conn) {
                                     conn.query(con_sql,function(err, rows) {
-                                        if (err) {
+                                        if (err) {//error
                                             req.flash('error', err)
                                             res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
                                         } else {
-                                            //generar_excel_mano_obra(rows);
-                                            res.render('cajas/listar', {title: 'Listado de Cajas', usuario: user, data: rows})
+                                            //traemos los datos totales de caja y generamos la planilla para exportar.
+                                            req.getConnection(function(error, conn) {
+                                                conn.query(sql_total_gastos,function(err, rows_total) {
+                                                    if (err) {//error
+                                                        req.flash('error', err);
+                                                        res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user});
+                                                    } else {
+                                                        genera_total_gastos(rows_total);//generamos el excel para exportar
+                                                        res.render('cajas/listar', {title: 'Listado de Cajas', usuario: user, data: rows});
+                                                    }
+                                                });
+                                            });
                                         }
-                                    })
-                                })
+                                    });
+                                });
                             }
-                        })
-                    })
+                        });
+                    });
                 }
-            })
-        })
+            });
+        });
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
@@ -727,8 +841,6 @@ app.get('/detalle/:id', function(req, res, next){
     if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
-    }
-    if(user.length >0){
 
 
         req.getConnection(function(error, conn) {
@@ -743,11 +855,14 @@ app.get('/detalle/:id', function(req, res, next){
                 else {
                     req.getConnection(function(error, conn) {
                         //traemos el detalle de las cajas, asignadas segun sea el tipo, si el usuario es normal traemos el datos de la caja
-                        var sql_consulta='select * from gastos g left join proveedor p on p.id = g.id_proveedor inner join ot t on g.nro_ot = t.ot_nro where id_caja = ' + req.params.id + ' order by fecha';
+                        var sql_consulta=
+                        'select g.id, g.fecha, g.monto, g.concepto, g.exentas, g.iva_10, g.iva_5, g.gasto_real, g.tipo, g.proveedor, g.fact_condicion, p.nombre,' +  
+                        'p.ruc, g.fact_nro, g.tim_nro, g.fecha_fin_tim, g.encargado, g.codigo, g.nro_ot, t.cliente, t.obra, g.imputado, g.origen_pago, g.id_caja   from gastos g ' +  
+                        'left join proveedor p on p.id = g.id_proveedor inner join ot t on g.nro_ot = t.ot_nro where id_caja = ' + req.params.id + ' order by fecha';
                         //si el usuario es especial, entonces traemos los gastos asociados a sus cajas bajo la caja general creada.
                         if(user == 'josorio' || user == 'admin')
                         {   //traemos todos los gastos asignados a las subcajas que haya habilitado a Karen + los gastos de esa caja.
-                            sql_consulta = 'select * from ' +
+                            sql_consulta = 
                             '(select g.*, p.ruc,p.nombre, t.cliente, t.obra from gastos g inner join ot t on g.nro_ot = t.ot_nro inner join ot t on g.nro_ot = t.ot_nro left join proveedor p on p.id = g.id_proveedor where g.id_caja in (select id from cajas where id_caja = ' + req.params.id + ') ' + 
                             'union select g.*, p.ruc,p.nombre, t.cliente, t.obra from gastos g inner join ot t on g.nro_ot = t.ot_nro left join proveedor p on p.id = g.id_proveedor where g.id_caja = ' + req.params.id + ') t1 order by t1.fecha';
                         }
@@ -755,7 +870,7 @@ app.get('/detalle/:id', function(req, res, next){
                             if (err) {console.log(err); }
                             else{
                                 deta_cajas = [];
-                                rows2.forEach(function(row) { deta_cajas.push(row); });
+                                rows2.forEach(function(row) { deta_cajas.push(row); console.log('rows2asdasds.id'); });
 
                                 /* traemos el resumen de las cajas */
                                 if(user == 'josorio' || user == 'admin')
@@ -965,18 +1080,15 @@ app.post('/descargar/:id', function(req, res, next) {
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 });
 
-app.post('/descargar_caja', function(req, res, next) {
+app.post('/resumen_cajas', function(req, res, next) {
     //primero traemos los datos de la tabla
     if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
-    }
 
-    //controlamos quien se loga.
-	if(user.length >0){
         //vemos los datos en la base
-        //DESCARGAR PDF CON DATOS DEL ESTUDIO
-        var file = path.resolve("CAJA.xlsx");
+        //DESCARGAR PDF CON DATOS DE LA CAJA
+        var file = path.resolve("RESUMEN_CAJAS.xlsx");
         res.contentType('Content-Type',"application/pdf");
         res.download(file, function (err) {
             if (err) {

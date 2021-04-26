@@ -4,14 +4,15 @@
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         
         {
             "type": "node",
             "request": "launch",
             "name": "Iniciar programa",
-            "trace": true,
-            "program": "${workspaceFolder}\\app_asispro.js",
-            "outputCapture": "std", // or "console" 
+            "program": "${workspaceFolder}\\app_asispro.js" ,
+            "outputCapture": "std" // or "console",
+            
         }
     ]
 }
