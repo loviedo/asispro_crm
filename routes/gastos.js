@@ -242,24 +242,24 @@ app.get('/', function(req, res, next) {
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, IFNULL(t1.tim_nro,0) as tim_nro, case when t1.fecha_fin_tim is null then makedate(1970,1) else t1.fecha_fin_tim end as fecha_fin_tim, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "WHERE (month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and t1.usuario_insert = '" + user + "' and ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null) or (t1.id_caja =0)))  order by t1.fecha desc";
+        "WHERE (month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and t1.usuario_insert = '" + user + "' and ((t1.id_caja is not null and c1.estado= 'C' and t1.codigo <> 9) or (t1.id_caja is null) or (t1.id_caja =0)))  order by t1.fecha desc";
         sql_lis = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, IFNULL(t1.tim_nro,0) as tim_nro, case when t1.fecha_fin_tim is null then makedate(1970,1) else t1.fecha_fin_tim end as fecha_fin_tim, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "WHERE t1.usuario_insert = '" + user + "' and ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null) or (t1.id_caja =0)) order by t1.fecha desc"; 
+        "WHERE t1.usuario_insert = '" + user + "' and ((t1.id_caja is not null and c1.estado= 'C' and t1.codigo <> 9) or (t1.id_caja is null) or (t1.id_caja =0)) order by t1.fecha desc"; 
         }
         else
         //traemos los datos (OBRA y CLIENTE) de la OT asociada a ese gasto. SOLO TRAEMOS LOS DATOS DEL MES ACTUAL
         {sql_con = "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, IFNULL(t1.tim_nro,0) as tim_nro, case when t1.fecha_fin_tim is null then makedate(1970,1) else t1.fecha_fin_tim end as fecha_fin_tim, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "where month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null) or (t1.id_caja =0)) " +
+        "where month(t1.fecha) >= month(current_date())-1 and year(t1.fecha) = year(current_date()) and ((t1.id_caja is not null and c1.estado= 'C' and t1.codigo <> 9) or (t1.id_caja is null) or (t1.id_caja =0)) " +
         "order by t1.fecha desc";
         //cambiamos el where habilitamos el estado de las cajas.
         sql_lis= "SELECT t1.id,t1.fecha,t1.monto,t1.exentas,t1.iva_10,t1.iva_5,t1.gasto_real,t1.concepto,t1.fact_condicion, t1.proveedor, p.ruc, t1.fact_nro, IFNULL(t1.tim_nro,0) as tim_nro, case when t1.fecha_fin_tim is null then makedate(1970,1) else t1.fecha_fin_tim end as fecha_fin_tim, t1.encargado,t1.codigo, " + 
         "t1.nro_ot, t1.imputado, t1.usuario_insert, t1.origen_pago, t1.tipo, t1.id_proveedor, t2.ot_nro, t2.cliente, t2.obra FROM gastos t1 left join ot t2 on t2.ot_nro = t1.nro_ot " + 
         "left join cajas c1 on c1.id = t1.id_caja left join proveedor p on p.id = t1.id_proveedor " +
-        "where ((t1.id_caja is not null and c1.estado= 'C') or (t1.id_caja is null) or (t1.id_caja =0)) order by t1.fecha desc";
+        "where ((t1.id_caja is not null and c1.estado= 'C' and t1.codigo <> 9) or (t1.id_caja is null) or (t1.id_caja =0)) order by t1.fecha desc";
         }
         req.getConnection(function(error, conn) {
             conn.query(sql_con,function(err, rows) {

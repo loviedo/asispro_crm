@@ -902,8 +902,10 @@ app.get('/detalle/:id', function(req, res, next){
                         if(user == 'josorio' || user == 'admin')
                         {   //traemos todos los gastos asignados a las subcajas que haya habilitado a Karen + los gastos de esa caja.
                             sql_consulta = 
-                            '(select g.*, p.ruc,p.nombre, t.cliente, t.obra from gastos g inner join ot t on g.nro_ot = t.ot_nro inner join ot t on g.nro_ot = t.ot_nro left join proveedor p on p.id = g.id_proveedor where g.id_caja in (select id from cajas where id_caja = ' + req.params.id + ') ' + 
+                            '(select g.*, p.ruc,p.nombre, t.cliente, t.obra from gastos g inner join ot t on g.nro_ot = t.ot_nro left join proveedor p on p.id = g.id_proveedor where g.id_caja = ' + req.params.id + ' ' + 
                             'union select g.*, p.ruc,p.nombre, t.cliente, t.obra from gastos g inner join ot t on g.nro_ot = t.ot_nro left join proveedor p on p.id = g.id_proveedor where g.id_caja = ' + req.params.id + ') t1 order by t1.fecha';
+                            //pisamos lo de las subcajas y dejamos como estaba.
+                            sql_consulta = 'select g.*, p.ruc,p.nombre, t.cliente, t.obra from gastos g inner join ot t on g.nro_ot = t.ot_nro left join proveedor p on p.id = g.id_proveedor where g.id_caja = ' + req.params.id;
                         }
                         conn.query(sql_consulta,function(err, rows2) {
                             if (err) {console.log(err); }
