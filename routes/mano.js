@@ -239,7 +239,8 @@ app.get('/real', function(req, res, next) {
                     req.getConnection(function(error, conn) {
                         //datos para visualizar
                         //conn.query('select * from mano_obra where fecha >= DATE_SUB((select max(fecha) from mano_obra), INTERVAL 1 DAY)',function(err, rows) {
-                        conn.query("SELECT * FROM mano_obra WHERE /*fecha < curdate() and*/ month(fecha) >= month(current_date())-1 and year(fecha) = year(current_date()) ORDER BY fecha DESC",function(err, rows) {
+                        //conn.query("SELECT * FROM mano_obra WHERE /*fecha < curdate() and*/ month(fecha) >= month(current_date())-1 and year(fecha) = year(current_date()) ORDER BY fecha DESC",function(err, rows) {
+                        conn.query("SELECT * FROM mano_obra WHERE /*fecha < curdate() and*/ (month(fecha) =12 and year(fecha) =2021) or (month(fecha) =1 and year(fecha) =2022)  ORDER BY fecha DESC",function(err, rows) {
                             //if(err) throw err
                             if (err) {
                                 req.flash('error', err)

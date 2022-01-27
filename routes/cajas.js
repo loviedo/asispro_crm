@@ -665,7 +665,7 @@ app.get('/add', function(req, res, next){
                     {
                         //asumimos que siempre hay origenes por cargar -- segun cliente, cambiar luego!
                         conn.query("select id, fecha, origen, salida, responsable from origenes ORDER BY fecha asc",function(err, rows4) {
-                            if (err) {console.log(err);}
+                            if (err) {console.log(err);}//completar el manejo de errores.
                             else{
                                 datos_ori = [];
                                 rows4.forEach(function(row) { datos_ori.push(row); });
@@ -675,8 +675,8 @@ app.get('/add', function(req, res, next){
                                 " from cajas where codigo = 22 and estado = 'A' ORDER BY fecha asc",function(err, rows1) {
                                     if (err) {console.log(err); }
                                     else{
-                                        //si hay datos, entonces cargamos los datos y habilitamos el alta.
-                                        if(rows1.length >=1)
+                                        //si hay datos en origenes, entonces es posible dar alta de cajas.
+                                        if(rows4.length >=1)
                                         {   datos_caja = [];
                                             rows1.forEach(function(row) { datos_caja.push(row); });
                                             //console.log(datos_pro);//debug
