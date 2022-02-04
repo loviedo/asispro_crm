@@ -279,6 +279,14 @@ function tipea(){
                     </select>
                 </div>
                 <div class="form-group col-md-6">
+                    <label for="fact_tipo">CONDICION FACTURA</label>
+                    <select class="form-control" name="fact_tipo" id="fact_tipo" value="<%= fact_tipo %>" placeholder="Tipo Comprobante" onclick="changeText()">
+                        <option value="CONTADO">VIRTUAL</option>
+                        <option value="CREDITO">PREIMPRESO</option>
+                        <option value="NO_CONTABLE">ELECTRONICA O AUTOIMPRESO</option>
+                    </select>
+                </div>                
+                <div class="form-group col-md-6">
                     <label for="fecha">FECHA</label>
                     <input type="date" class="form-control" name="fecha" id="fecha" value="<%= fecha %>" placeholder="Fecha del Gasto" max="<%= maxdate %>">
                 </div>
