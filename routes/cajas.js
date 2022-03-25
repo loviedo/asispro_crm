@@ -237,24 +237,26 @@ function genera_total_gastos(rows,rows1){
 
     /* RESUMEN DE LAS CAJAS */
     worksheet.cell(2,3).string('RESUMEN CAJAS').style(style1);
-    worksheet.cell(4,3).string('ID').style(style1);
-    worksheet.cell(4,4).string('FECHA').style(style1);
-    worksheet.cell(4,5).string('SALIDA').style(style1);
-    worksheet.cell(4,6).string('RESPONSABLE').style(style1);
-    worksheet.cell(4,7).string('CONCEPTO').style(style1);
-    worksheet.cell(4,8).string('SALDO').style(style1);
-    worksheet.cell(4,9).string('GASTO').style(style1);
-    worksheet.cell(4,10).string('ESTADO (ABIERTA/CERRADA)').style(style1);
+    worksheet.cell(4,3).string('ID CAJA').style(style1);
+    worksheet.cell(4,4).string('ID CAJA PADRE').style(style1);
+    worksheet.cell(4,5).string('FECHA').style(style1);
+    worksheet.cell(4,6).string('SALIDA').style(style1);
+    worksheet.cell(4,7).string('RESPONSABLE').style(style1);
+    worksheet.cell(4,8).string('CONCEPTO').style(style1);
+    worksheet.cell(4,9).string('SALDO').style(style1);
+    worksheet.cell(4,10).string('GASTO').style(style1);
+    worksheet.cell(4,11).string('ESTADO (ABIERTA/CERRADA)').style(style1);
 
     rows1.forEach(function(row) {
         worksheet.cell(5+i,3).number(Number(row.id)).style(style);
-        worksheet.cell(5+i,4).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});
-        worksheet.cell(5+i,5).number(Number(row.salida.toString().replace(",","."))).style(style);
-        worksheet.cell(5+i,6).string(String(row.responsable)).style(style);
-        worksheet.cell(5+i,7).string(String(row.concepto)).style(style);
-        worksheet.cell(5+i,8).number(Number(row.saldo.toString().replace(",","."))).style(style);
-        worksheet.cell(5+i,9).number(Number(row.gasto.toString().replace(",","."))).style(style);
-        worksheet.cell(5+i,10).string(String(row.estado)).style(style);
+        worksheet.cell(5+i,4).number(Number(row.id_caja)).style(style);
+        worksheet.cell(5+i,5).date(formatear_fecha_yyyymmdd(row.fecha)).style({numberFormat: 'dd/mm/yyyy'});
+        worksheet.cell(5+i,6).number(Number(row.salida.toString().replace(",","."))).style(style);
+        worksheet.cell(5+i,7).string(String(row.responsable)).style(style);
+        worksheet.cell(5+i,8).string(String(row.concepto)).style(style);
+        worksheet.cell(5+i,9).number(Number(row.saldo.toString().replace(",","."))).style(style);
+        worksheet.cell(5+i,10).number(Number(row.gasto.toString().replace(",","."))).style(style);
+        worksheet.cell(5+i,11).string(String(row.estado)).style(style);
 
         //totalizamos
         total_saldo = total_saldo + row.saldo;
@@ -265,9 +267,9 @@ function genera_total_gastos(rows,rows1){
     });
     //al final colocamos los totalizadores
     worksheet.cell(5+i+1,3).string('TOTALES').style(style1);
-    worksheet.cell(5+i+1,5).number(Number(total_salida)).style(style1);
-    worksheet.cell(5+i+1,8).number(Number(total_saldo)).style(style1);
-    worksheet.cell(5+i+1,9).number(Number(total_gasto)).style(style1);
+    worksheet.cell(5+i+1,6).number(Number(total_salida)).style(style1);
+    worksheet.cell(5+i+1,9).number(Number(total_saldo)).style(style1);
+    worksheet.cell(5+i+1,10).number(Number(total_gasto)).style(style1);
 
 
     /* DATOS DETALLE */    
@@ -396,8 +398,8 @@ app.get('/', function(req, res, next) {
 
         //actualiza los saldos sobre las subcajas
         var sql_cajas_gen_act = 'update cajas t1 set ' +
-        't1.gasto = t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0), ' +
-        't1.saldo = t1.salida - (t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)) ' +
+        't1.gasto = t1.gasto /* + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)*/, ' +
+        't1.saldo = t1.salida /*- (t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0))*/ ' +
         'where t1.codigo =22';
 
         //tenemos que generar los gastos para el resumen de las cajas para el usuario de KAREN, finalmente ella nada mas va a rendir la caja a jose
