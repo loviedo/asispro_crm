@@ -55,7 +55,6 @@ var cajas = require('./routes/cajas');
 var expressValidator = require('express-validator');
 app.use(expressValidator());
  
- 
 /**
  * body-parser module is used to read HTTP POST data
  * it's an express middleware that reads form's input 
@@ -98,6 +97,7 @@ var flash = require('express-flash')
 var cookieParser = require('cookie-parser');
 /*modulos de sesion */
 var session = require('express-session');
+//var passport = require('passport');//pruebas
 app.use(cookieParser());
 app.use(session({ 
     secret: 'keyboard cat1',
@@ -109,6 +109,8 @@ app.use(session({
       maxAge: 24 * 60 * 60 * 1000 /* maxAge: 6 * 60 * 60 * 1000 la sesion expira a las 6 horas (horas minutos segundos milisegundos) */
     }
 }));
+//app.use(passport.initialize());
+//app.use(passport.session()); //persistent login session
 app.use(flash());
 
 //cargamos los lugares en donde tenemos los archivos de vistas del proyecto

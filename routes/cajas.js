@@ -396,11 +396,17 @@ app.get('/', function(req, res, next) {
         var sql_act = 'update cajas t1 set t1.gasto = (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id), ' +
         't1.saldo = t1.salida - (select IFNULL(sum(t2.gasto_real), 0) from gastos t2 where t2.id_caja= t1.id)';
 
-        //actualiza los saldos sobre las subcajas
+        //actualiza los saldos sobre las subcajas -- esta version actualiza los valores de gastos de las subcajas.
         var sql_cajas_gen_act = 'update cajas t1 set ' +
         't1.gasto = t1.gasto /* + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)*/, ' +
-        't1.saldo = t1.salida /*- (t1.gasto + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0))*/ ' +
+        't1.saldo = t1.salida - (t1.gasto /*+ IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)*/) ' +
         'where t1.codigo =22';
+
+        //actualiza los saldos sobre las subcajas -- esta version le resta la salida de las subcajas. UTILIZAMOS ESTA VERSION!
+        var sql_cajas_gen_act = 'update cajas t1 set ' +
+        't1.gasto = t1.gasto /* + IFNULL((select c.gasto from (select distinct id_caja, IFNULL(sum(t2.gasto), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)*/, ' +
+        't1.saldo = t1.salida - (t1.gasto + IFNULL((select sum(c.gasto) from (select distinct id_caja, IFNULL(sum(t2.salida), 0) as gasto from cajas t2 where t2.id_caja >0 group by t2.id_caja) c where c.id_caja = t1.id),0)) ' +
+        'where t1.codigo =22';        
 
         //tenemos que generar los gastos para el resumen de las cajas para el usuario de KAREN, finalmente ella nada mas va a rendir la caja a jose
         var sql_total_gastos = 'select c.id as id_caja, g.id, g.fecha, g.monto, g.concepto, g.exentas, g.iva_10, g.iva_5, g.gasto_real, g.tipo, g.proveedor, g.fact_condicion, p.nombre,p.ruc, g.fact_nro, ' +  
