@@ -3,7 +3,6 @@ var app = express();
 var path = require('path');//para las direcciones locales
 var mysql = require('mysql');//instaciamos mysql
 
-
 /**
  * middleware que provee API consistente para conns mysql mientras hacemos el ciclo request/response 
  */ 
@@ -97,20 +96,46 @@ var flash = require('express-flash')
 var cookieParser = require('cookie-parser');
 /*modulos de sesion */
 var session = require('express-session');
-//var passport = require('passport');//pruebas
+const redis = require('redis');//https://medium.com/swlh/session-management-in-nodejs-using-redis-as-session-store-64186112aa9
+const connectRedis = require('connect-redis');
+//const passport = require('passport');//agergamos para el manejo de sesion
+//const LocalStrategy = require('passport-local').Strategy;//agergamos para el manejo de sesion
+//var MySQLStore = express('express-mysql-session')(session);//agergamos para el manejo de sesion
+
+//configuracion a redis, ordenar el codigo despues
+const RedisStore = connectRedis(session);
+//Configure redis client
+const redisClient = redis.createClient({
+  host: '216.70.112.44',
+  port: 6379,
+  url: 'redis://216.70.112.44:6379'
+});
+//redisClient.connect();//test
+
+redisClient.on('error', function (err) {
+  console.log('NO se pudo conectar a redis. ' + err);
+});
+redisClient.on('connect', function (err) {
+  console.log('conectado a redis');
+});
+
+
 app.use(cookieParser());
 app.use(session({ 
     secret: 'keyboard cat1',
     resave: false,
-    name:"asispro",
     saveUninitialized: false,
-    cookie: { 
-      expires: false, /* expires: false el usuario debe logarse cada vez que cierre el navegador */
+    store: new RedisStore({ client: redisClient }),
+    cookie: {
+      secure: false, // if true only transmit cookie over https
+      httpOnly: false, // if true prevent client side JS from reading the cookie 
+      //expires: false, /* expires: false el usuario debe logarse cada vez que cierre el navegador */
       maxAge: 24 * 60 * 60 * 1000 /* maxAge: 6 * 60 * 60 * 1000 la sesion expira a las 6 horas (horas minutos segundos milisegundos) */
     }
 }));
 //app.use(passport.initialize());
 //app.use(passport.session()); //persistent login session
+
 app.use(flash());
 
 //cargamos los lugares en donde tenemos los archivos de vistas del proyecto

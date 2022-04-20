@@ -6,6 +6,7 @@ var config = {
         password: 'Super123', //pass
         port:       3306, // default MySQL port
         db:       'asispro_erp' //BBDD
+        //db: 'test'
     },
     server: {
         host: '127.0.0.1',

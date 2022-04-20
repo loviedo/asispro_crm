@@ -8,14 +8,13 @@ var app = express();
 var user = '';//global para ver el usuario
 var userId = 0;//global userid
 
-
 app.get('/', function(req, res) {
     //console.log(req.session.cookie.maxAge) //debug
     /*if(req.session.user)
     {   user =  req.session.user;
         userId = req.session.userId;
     }*/ //debug
-    
+    const sess = req.session;
     //controlamos quien se loga. 
 	if(req.session.loggedIn){
         //si esta definido entonces pasamos el valor
@@ -60,7 +59,7 @@ app.get('/logout', function(req, res) {
     res.redirect('/'); //cerramos la sesion y vamos al home
 })
 
-//EJEMPLO DE PAGINA PARA USAR COMO SESION
+//EJEMPLO DE PAGINA PARA USAR COMO SESION   
 //pagina que debemos controlar si ya se logo el usuario
 app.get('/dashboard', function(req, res, next) {
     
@@ -91,6 +90,7 @@ app.post('/login', function(req, res, next) {
     var name= req.body.user_name;//campo del form
     var pass= req.body.password;//campo del form
 
+    const sess = req.session;
     req.getConnection(function(error, conn) {
         var sql="SELECT id, first_name, last_name, user_name FROM users WHERE user_name='"+name+"' and password = '"+pass+"'";  
         conn.query(sql,function(err, rows, fields) {
@@ -147,10 +147,6 @@ app.post('/signup', function(req, res, next) {
         })
     })
 })
-
-
-
-
 
  
 /** 
