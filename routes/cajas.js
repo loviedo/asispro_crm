@@ -324,7 +324,7 @@ function genera_total_gastos(rows,rows1){
         worksheet2.cell(i+4,19).number(Number(row.nro_ot)).style(style);//agregado 09/03/2020
         worksheet2.cell(i+4,20).string(String(row.cliente)).style(style);//agregado 09/03/2020
         worksheet2.cell(i+4,21).string(String(row.obra)).style(style);//agregado 09/03/2020
-        worksheet2.cell(i+4,22).number(Number(row.imputado)).style(style);//agregado 14/07/2020 --
+        worksheet2.cell(i+4,22).string(String(row.imputado)).style(style);//agregado 14/07/2020 --
         worksheet2.cell(i+4,23).string(String(row.origen_pago)).style(style);//agregado 14/07/2020 --
         worksheet2.cell(i+4,24).string(String(row.tipo)).style(style);//agregado 14/07/2020 --
         if (user == "admin" || user == "josorio")
