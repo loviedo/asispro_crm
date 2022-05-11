@@ -142,7 +142,7 @@ function genera_detalle_caja(user, rows, rows2, rows3){
         worksheet.cell(i+12,18).number(Number(row.nro_ot)).style(style);//agregado 09/03/2020
         worksheet.cell(i+12,19).string(String(row.cliente)).style(style);//agregado 09/03/2020
         worksheet.cell(i+12,20).string(String(row.obra)).style(style);//agregado 09/03/2020
-        worksheet.cell(i+12,21).number(Number(row.imputado)).style(style);//agregado 14/07/2020 --
+        worksheet.cell(i+12,21).string(String(row.imputado)).style(style);//agregado 14/07/2020 --
         worksheet.cell(i+12,22).string(String(row.origen_pago)).style(style);//agregado 14/07/2020 --
         worksheet.cell(i+12,23).string(String(row.tipo)).style(style);//agregado 14/07/2020 --
         if (user == "admin" || user == "josorio")
