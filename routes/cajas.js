@@ -414,7 +414,7 @@ app.get('/', function(req, res, next) {
         //tenemos que generar los gastos para el resumen de las cajas para el usuario de KAREN, finalmente ella nada mas va a rendir la caja a jose
         var sql_total_gastos = 'select c.id as id_caja, g.id, g.fecha, g.monto, g.concepto, g.exentas, g.iva_10, g.iva_5, g.gasto_real, g.tipo, g.proveedor, g.fact_condicion, p.nombre,p.ruc, g.fact_nro, ' +  
         'g.tim_nro, g.fecha_fin_tim, g.encargado, g.codigo, g.nro_ot, t.cliente, t.obra, g.imputado, g.origen_pago, g.id_caja  ' +  
-        'from gastos g left join proveedor p on p.id = g.id_proveedor inner join cajas c on g.id_caja = c.id inner join ot t on g.nro_ot = t.ot_nro order by c.id desc, g.fecha desc';
+        'from gastos g left join proveedor p on p.id = g.id_proveedor inner join cajas c on g.id_caja = c.id inner join ot t on g.nro_ot = t.ot_nro order by g.fecha asc';
 
         req.getConnection(function(error, conn) {
             conn.query(sql_act,function(err, rows) {
