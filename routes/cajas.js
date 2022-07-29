@@ -534,6 +534,31 @@ app.get('/cerrados/', function(req, res, next) {
     } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
 })
 
+//CERRAR FLUJO DE CAJA
+app.post('/cerrar/:id', function(req, res, next) {
+
+    if(req.session.loggedIn)
+    {   user =  req.session.user;
+        userId = req.session.userId;
+
+        var cajita = {estado: 'C', usuario_insert: user}  
+        
+        req.getConnection(function(error, conn) {
+            conn.query('UPDATE cajas SET ? WHERE id = ' + req.params.id, cajita, function(err, result) {
+                //if(err) throw err
+                if (err) {
+                    req.flash('error', err)
+                    
+                } else {                
+                    req.flash('success', 'Datos actualizados correctamente!')
+                    // render to views/ot/add.ejs
+                    res.redirect('/cajas/detalle/'+req.params.id);
+                }
+            })
+        })
+    } else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+})
+
 //CARGA DE NUEVO ORIGEN
 app.get('/add_origen', function(req, res, next){
    

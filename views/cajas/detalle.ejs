@@ -132,11 +132,16 @@ color: #ffffff;
 <!-- Pasamos el id para que coloque el nombre adecuadamente -->
 <nav class="navbar navbar-expand-lg navbar-light bg-strong">
     <div class="container-fluid">
-            <form action="/cajas/descargar/<%= id %>" method="POST" name="form">
-                <button type="submit" id="submit" class="btn btn-info">
-                    <i class="fas fa-share"></i>
-                </button>
-            </form>
+        <form action="/cajas/cerrar/<%= id %>" method="POST" name="form">
+            <button type="submit" id="submit" class="btn btn-info">
+                <i class="fas fa-lock"></i>
+            </button>
+        </form>
+        <form action="/cajas/descargar/<%= id %>" method="POST" name="form">
+            <button type="submit" id="submit" class="btn btn-info">
+                <i class="fas fa-share"></i>
+            </button>
+        </form>
     </div>
 </nav>
 <!--
