@@ -127,10 +127,11 @@ app.use(session({
     saveUninitialized: false,
     store: new RedisStore({ client: redisClient }),
     cookie: {
-      secure: false, // if true only transmit cookie over https
-      httpOnly: false, // if true prevent client side JS from reading the cookie 
+      secure: false, // if true only transmit cookie over https. el sitio no es https entonces usamos false.
+      httpOnly: true, // if true prevent client side JS from reading the cookie 
       //expires: false, /* expires: false el usuario debe logarse cada vez que cierre el navegador */
-      maxAge: 1 * 60 * 60 * 1000 /* maxAge: 6 * 60 * 60 * 1000 la sesion expira a las 6 horas (horas minutos segundos milisegundos) */
+      maxAge: 1 * 60 * 60 * 1000 /* dejamos 1 hora de tiempo para las cookies. 
+      /* maxAge: 6 * 60 * 60 * 1000 la sesion expira a las 6 horas (horas minutos segundos milisegundos) */
     }
 }));
 //app.use(passport.initialize());

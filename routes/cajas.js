@@ -692,7 +692,7 @@ app.get('/add', function(req, res, next){
         userId = req.session.userId;
     }
     //controlamos quien se loga.
-	if(user.length >0){
+	if(req.session.user.length >0){
         req.getConnection(function(error, conn) {
             conn.query('select codigo, concat(nombres," ",apellidos) as nombre, ocupacion, tel_movil from empleados where codigo is not null ORDER BY codigo',function(err, rows) {
                 if (err) {console.log(err); }
@@ -705,7 +705,7 @@ app.get('/add', function(req, res, next){
                     'from empleados e inner join users u on u.codigo = e.codigo where u.codigo is not null ORDER BY e.codigo';
 
                     //si el usuario es KAREN entonces debe ver si tiene caja asignada en estado abierta. SINO TIENE NO PUEDE CREAR CAJA
-                    if(user == "ksanabria" || user == "josorio")
+                    if(req.session.user == "ksanabria" || req.session.user == "josorio")
                     {
                         //asumimos que siempre hay origenes por cargar -- segun cliente, cambiar luego!
                         conn.query("select id, fecha, origen, salida, responsable from origenes ORDER BY fecha asc",function(err, rows4) {
@@ -727,11 +727,11 @@ app.get('/add', function(req, res, next){
                                             //render la pagina
                                             res.render('cajas/add', {
                                             title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'', 
-                                            codigo: '0', id_ori:'0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja, data_ori: datos_ori});}
+                                            codigo: '0', id_ori:'0', usuario_insert: req.session.user, usuario: req.session.user,  data_emple: datos_emple, data_caja: datos_caja, data_ori: datos_ori});}
                                         else
                                         {   //avisar que no hay caja habilitada
                                             req.flash('NO EXISTEN CAJAS HABILITADAS PARA CARGAR, SOLICITAR ALTA AL ADMINISTRADOR')
-                                            res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: user})
+                                            res.render('cajas/listar', {title: 'Listado de Cajas', data: '',usuario: req.session.user})
                                         }
                                     }
                                 });
@@ -745,12 +745,12 @@ app.get('/add', function(req, res, next){
                         datos_caja = [];
                         res.render('cajas/add', {
                         title: 'AGREGAR CAJA', fecha: '', concepto: '', salida: '0', responsable: '', saldo: '0', gasto: '0', id_caja: '0', caja:'',
-                        codigo: '0', id_ori:'0', usuario_insert: user, usuario: user,  data_emple: datos_emple, data_caja: datos_caja});
+                        codigo: '0', id_ori:'0', usuario_insert: req.session.user, usuario: req.session.user,  data_emple: datos_emple, data_caja: datos_caja});
                     }
                 }
             })
         })
-    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: req.session.user});}
 })
 
 //NUEVO CAJA - POST DE INSERT
@@ -779,7 +779,7 @@ app.post('/add', function(req, res, next){
             var id_origen = Number(req.sanitize('id_ori').escape().trim());
             var caje = '';//no usamos
             var id_cajita= 0;
-            if(user= 'ksanabria')
+            if(user== 'ksanabria')
             {   caje = req.sanitize('caja').trim();
                 id_cajita= Number(req.sanitize('id_caja').trim());
             }

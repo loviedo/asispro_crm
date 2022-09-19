@@ -307,9 +307,7 @@ app.get('/add', function(req, res, next){
     if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
-    }
-    //controlamos quien se loga.
-	if(user.length >0){
+
         req.getConnection(function(error, conn) {
             //cualquier usuario puede ver todas las OTs listadas
             conn.query('SELECT * FROM ot ORDER BY ot_nro DESC',function(err, rows) {
@@ -332,11 +330,11 @@ app.get('/add', function(req, res, next){
 
                                 //traemos las cajas asignadas para esa persona
                                 req.getConnection(function(error, conn) {
-                                    conn.query("select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows3) {
+                                    conn.query("select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + req.session.user + "'",function(err, rows3) {
                                         //if(err) throw err
                                         if (err) {
                                             req.flash('error', err)
-                                            res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
+                                            res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: req.session.user})
                                         } else {
                                             datos_caja = [];
                                             rows3.forEach(function(row) {    
@@ -348,7 +346,7 @@ app.get('/add', function(req, res, next){
                                                 title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja:'',fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
                                                 maxdate: formatear_fecha_yyyymmdd(Date.now()),tim_nro: '',fecha_fin_tim: '',fact_tipo: 'VIRTUAL',
                                                 fact_condicion: 'CONTADO / NOTA DE CREDITO', proveedor: '',fact_nro: '', encargado: '', codigo: '0',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
-                                                usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
+                                                usuario_insert: req.session.user, usuario: req.session.user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                         }
                                     })
                                 })
@@ -358,7 +356,7 @@ app.get('/add', function(req, res, next){
                 }
             })
         })
-    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: user});}
+    }else {res.render('index', {title: 'ASISPRO ERP', message: 'Debe estar logado para ver la pagina', usuario: req.session.user});}
 });
 
 //NUEVO GASTO - POST DE INSERT
@@ -366,9 +364,6 @@ app.post('/add', function(req, res, next){
     if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
-    }
-    //controlamos quien se loga.
-	if(user.length >0){
         
         //para el caso de tipo doc =temporal
 
@@ -451,7 +446,7 @@ app.post('/add', function(req, res, next){
             {gasreal = 0;}
 
             var tipov = '';
-            if(user == "admin" || user == "ksanabria" || user == "josorio")
+            if(req.session.user == "admin" || req.session.user == "ksanabria" || req.session.user == "josorio")
             {   tipov = req.sanitize('tipo').escape().trim();}
 
             /*if(gasreal == 0 && fact_cond !== "CREDITO" && cod == 4)
@@ -494,7 +489,7 @@ app.post('/add', function(req, res, next){
                 id_proveedor: req.sanitize('id_proveedor').trim(),
                 id_caja: id_cajita,//vemos si existe o no entonces le cargamos
                 //caja: cajita,//si no se cargo nada va vacio
-                usuario_insert: user
+                usuario_insert: req.session.user
                 //usuario_insert: req.sanitize('usuario_insert').escape().trim()//no usamos en la pagina.
             }   
             
@@ -530,7 +525,7 @@ app.post('/add', function(req, res, next){
                             id_proveedor: gasto.id_proveedor,
                             id_caja: gasto.id_caja,
                             caja: gasto.caja,
-                            usuario: user,
+                            usuario: req.session.user,
                             data: datos, data_pro: datos_pro
                         })
                     } else {                
@@ -559,11 +554,11 @@ app.post('/add', function(req, res, next){
                 
                                                 //traemos las cajas asignadas para esa persona
                                                 req.getConnection(function(error, conn) {
-                                                    conn.query("select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows3) {
+                                                    conn.query("select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + req.session.user + "'",function(err, rows3) {
                                                         //if(err) throw err
                                                         if (err) {
                                                             req.flash('error', err)
-                                                            res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
+                                                            res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: req.session.user})
                                                         } else {
                                                             datos_caja = [];
                                                             rows3.forEach(function(row) {    
@@ -574,7 +569,7 @@ app.post('/add', function(req, res, next){
                                                             res.render('gastos/add', {
                                                                 title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja: '' ,fecha: '',tim_nro: '',fecha_fin_tim: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
                                                                 fact_condicion: 'CONTADO / NOTA DE CREDITO',fact_tipo: 'VIRTUAL',proveedor: '',fact_nro: '', encargado: '', codigo: '',nro_ot:'0',imputado:'',maxdate: formatear_fecha_yyyymmdd(Date.now()), origen_pago:'',tipo:'', caja:'', 
-                                                                usuario_insert: user, usuario: user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
+                                                                usuario_insert: req.session.user, usuario: req.session.user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                                         }
                                                     })
                                                 })
@@ -620,11 +615,11 @@ app.post('/add', function(req, res, next){
     
                                     //traemos las cajas asignadas para esa persona
                                     req.getConnection(function(error, conn) {
-                                        conn.query("select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + user + "'",function(err, rows3) {
+                                        conn.query("select c.* from cajas c inner join users u on u.codigo = c.codigo where u.user_name = '" + req.session.user + "'",function(err, rows3) {
                                             //if(err) throw err
                                             if (err) {
                                                 req.flash('error', err)
-                                                res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: user})
+                                                res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: req.session.user})
                                             } else {
                                                 datos_caja = [];
                                                 rows3.forEach(function(row) {    
@@ -634,8 +629,8 @@ app.post('/add', function(req, res, next){
                                                 //console.log(datos_pro);//debug
                                                 res.render('gastos/add', { title: 'Agregar Nuevo GASTO',id_caja: req.body.id_caja,id_proveedor: req.body.id_proveedor,fecha: req.body.fecha, monto: req.body.monto,exentas: req.body.exentas,iva_10: req.body.iva_10, iva_5: req.body.iva_5,
                                                 gasto_real: req.body.gasto_real,concepto: req.body.concepto, fact_condicion: req.body.fact_condicion,fact_tipo: req.body.fact_tipo, proveedor: req.body.proveedor,fact_nro: req.body.fact_nro, tim_nro: req.body.tim_nro, fecha_fin_tim: req.body.fecha_fin_tim,
-                                                encargado: req.body.encargado,/*agregado 25/03/2020*/ usuario: user, codigo: req.body.codigo, nro_ot: req.body.nro_ot, imputado: req.body.imputado, origen_pago: req.body.origen_pago,
-                                                tipo: req.body.tipo,id_proveeedor: req.body.id_proveeedor,id_caja: req.body.id_caja, caja: req.body.caja, usuario_insert: user, maxdate: formatear_fecha_yyyymmdd(Date.now()),
+                                                encargado: req.body.encargado,/*agregado 25/03/2020*/ usuario: req.session.user, codigo: req.body.codigo, nro_ot: req.body.nro_ot, imputado: req.body.imputado, origen_pago: req.body.origen_pago,
+                                                tipo: req.body.tipo,id_proveeedor: req.body.id_proveeedor,id_caja: req.body.id_caja, caja: req.body.caja, usuario_insert: req.session.user, maxdate: formatear_fecha_yyyymmdd(Date.now()),
                                                 data: datos, data_pro: datos_pro, data_cajas: datos_caja})
                                             }
                                         })
@@ -726,9 +721,7 @@ app.post('/editar/:id', function(req, res, next) {
     if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
-    }
-    //controlamos quien se loga.
-	if(user.length >0){
+
         //validaciones
 
         var fact_cond0= req.sanitize('fact_condicion').trim();

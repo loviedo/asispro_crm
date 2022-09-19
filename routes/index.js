@@ -54,6 +54,7 @@ app.get('/logout', function(req, res) {
         else  
         {  console.log('sesion cerrada / usuario: ' + user1); }  
     }); 
+    req.logOut;
     //req.session = null;
     user = '';
     res.redirect('/'); //cerramos la sesion y vamos al home
