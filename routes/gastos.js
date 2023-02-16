@@ -187,7 +187,7 @@ app.get('/historico', function(req, res, next) {
             conn.query(sql_con,function(err, rows) {
                 if (err) {
                     req.flash('error', err)
-                    res.render('gastos/listar', {title: 'Histórico de GASTOS', data: '',usuario: user})
+                    res.render('gastos/listar', {title: 'Histórico de GASTOS', data: '',usuario: user});
                 } else {
                     //traemos las cajas asignadas para esa persona
                     req.getConnection(function(error, conn) {
@@ -207,7 +207,7 @@ app.get('/historico', function(req, res, next) {
                                         } else {
                                             generar_excel_gastos(rows3);//generamos excel gastos segun el usuario que sea claro
                                             //pasamos los datos y los datos de las cajas en rows2
-                                            res.render('gastos/listar', {title: 'Histórico de GASTOS', usuario: user, data: rows, data_cajas: rows2})
+                                            res.render('gastos/listar', {title: 'Histórico de GASTOS', usuario: user, data: rows, data_cajas: rows2});
                                         }
                                     })
                                 })
