@@ -151,10 +151,8 @@ app.get('/historico', function(req, res, next) {
     if(req.session.loggedIn)
     {   user =  req.session.user;
         userId = req.session.userId;
-    }
 
-    //controlamos quien se loga.
-	if(user.length >0){
+    
         //si el usuario es cristina entonces solo ve lo de ella, si no, se ve todo
         var sql_con ="";
         var sql_lis = "";
@@ -316,9 +314,7 @@ app.get('/add', function(req, res, next){
                 if (err) {console.log(err);}
                 else{
                     datos = [];
-                    rows.forEach(function(row) {    
-                        datos.push(row);
-                    });
+                    rows.forEach(function(row) {datos.push(row);});
                     //console.log(datos);//debug
                     req.getConnection(function(error, conn) {
                         //Cualquier usuario puede ver todos los proveedores listados
@@ -326,9 +322,7 @@ app.get('/add', function(req, res, next){
                             if (err) {console.log(err); }
                             else{
                                 datos_pro = [];
-                                rows2.forEach(function(row) {    
-                                    datos_pro.push(row);
-                                });
+                                rows2.forEach(function(row) {datos_pro.push(row);});
 
                                 //traemos las cajas asignadas para esa persona
                                 req.getConnection(function(error, conn) {
@@ -339,14 +333,12 @@ app.get('/add', function(req, res, next){
                                             res.render('gastos/listar', {title: 'Listado de GASTOS', data: '',usuario: req.session.user})
                                         } else {
                                             datos_caja = [];
-                                            rows3.forEach(function(row) {    
-                                                datos_caja.push(row);
-                                            });
+                                            rows3.forEach(function(row) {datos_caja.push(row);});
                                             //pasamos los datos y los datos de las cajas en rows2
                                             //console.log(datos_pro);//debug
                                             res.render('gastos/add', {
                                                 title: 'Cargar nuevo GASTO', id_proveedor: '', id_caja:'',fecha: '', monto: '0',exentas: '0',iva_10: '0',iva_5: '0',gasto_real: '0',gasto_real1: '0',concepto: '', 
-                                                maxdate: formatear_fecha_yyyymmdd(Date.now()),tim_nro: '',fecha_fin_tim: '',fact_tipo: 'VIRTUAL',
+                                                maxdate: formatear_fecha_yyyymmdd(Date.now()), tim_nro: '',fecha_fin_tim: '',fact_tipo: 'VIRTUAL',
                                                 fact_condicion: 'CONTADO / NOTA DE CREDITO', proveedor: '',fact_nro: '', encargado: '', codigo: '0',nro_ot:'0',imputado:'', origen_pago:'',tipo:'', caja:'', 
                                                 usuario_insert: req.session.user, usuario: req.session.user, data: datos, data_pro: datos_pro, data_cajas: datos_caja});
                                         }
