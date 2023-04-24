@@ -392,7 +392,7 @@ app.get('/', function(req, res, next) {
         }
         //si es el usuario admin/jose, puede ver solamente lo que cargo el.
         if (user=="josorio" || user =="admin")
-        {con_sql = "select c.* from cajas c where codigo = 22 and c.estado ='A' order by fecha desc"; 
+        {con_sql = "select c.* from cajas c where codigo in (22,1) and c.estado ='A' order by fecha desc"; 
             /*con_sql = "select c.* from cajas c inner join users u on u.codigo = c.codigo";*/}
 
         //actualizamos la suma de los gastos asignados para cada subcaja que le corresponda a esta caja // SE SUMA A LOS GASTOS ASIGNADOS A ESA CAJA ORIGINAL
