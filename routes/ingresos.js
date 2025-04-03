@@ -4,7 +4,6 @@ var path = require('path');
 var excel = require('excel4node');//para generar excel
 var user = '';//global para ver el usuario
 var userId = '';//global para userid
-//var datos = []; 
 
 
 function formatear_fecha_yyyymmdd(date) {
